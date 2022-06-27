@@ -1,0 +1,20 @@
+apiVersion: plugin.halo.run/v1alpha1
+kind: Plugin
+metadata:
+  # The name defines how the plugin is invoked,A unique name
+  name: apples
+spec:
+  enabled: true
+  # 'version' is a valid semantic version string (see semver.org).
+  version: 0.0.1-SNAPSHOT
+  requires: "*"
+  author: guqing
+  logo: https://guqing.xyz/avatar
+  pluginClass: io.github.guqing.template.ApplePlugin
+  # 'homepage' usually links to the GitHub repository of the plugin
+  homepage: https://github.com/guqing/halo-plugin-template
+  # 'displayName' explains what the plugin does in only a few words
+  displayName: "测试插件"
+  description: "这是一个用来测试的插件"
+  license: MIT
+
