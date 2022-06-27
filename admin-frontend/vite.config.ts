@@ -1,6 +1,6 @@
-import {fileURLToPath, URL} from "url";
+import { fileURLToPath, URL } from "url";
 
-import {defineConfig} from "vite";
+import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 
@@ -13,11 +13,13 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: fileURLToPath(new URL("../src/main/resources/admin", import.meta.url)),
+    outDir: fileURLToPath(
+      new URL("../src/main/resources/admin", import.meta.url)
+    ),
     emptyOutDir: true,
     lib: {
       entry: "src/index.ts",
-      name: "PluginTemplate",
+      name: "PluginJournals",
       formats: ["iife"],
       fileName: () => "main.js",
     },
@@ -26,7 +28,8 @@ export default defineConfig({
       output: {
         globals: {
           vue: "Vue",
-          "@halo-dev/components": "components",
+          "@halo-dev/components": "HaloComponents",
+          "@halo-dev/admin-shared": "HaloAdminShared",
         },
       },
     },

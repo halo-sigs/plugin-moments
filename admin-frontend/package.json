@@ -10,8 +10,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@halo-dev/admin-shared": "link:/Users/ryanwang/Workspace/github/ruibaby/halo-admin-next/packages/shared",
-    "@halo-dev/components": "link:/Users/ryanwang/Workspace/github/ruibaby/halo-admin-next/packages/components",
+    "@halo-dev/admin-shared": "link:/Users/ryanwang/Workspace/github/halo-dev/halo-admin-next/packages/shared",
+    "@halo-dev/components": "link:/Users/ryanwang/Workspace/github/halo-dev/halo-admin-next/packages/components",
     "vue": "^3.2.36"
   },
   "devDependencies": {

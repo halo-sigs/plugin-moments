@@ -1,10 +1,10 @@
-import type { Plugin } from "@halo-dev/admin-shared/src/types";
+import { definePlugin } from "@halo-dev/admin-shared";
 import DefaultView from "./views/DefaultView.vue";
 import { IconGrid } from "@halo-dev/components";
 import "./styles/index.css";
 
-const plugin: Plugin = {
-  name: "PluginTemplate",
+export default definePlugin({
+  name: "PluginJournals",
   components: [],
   extensionPoints: {},
   routes: [
@@ -32,5 +32,5 @@ const plugin: Plugin = {
   deactivated() {
     // TODO
   },
-};
-export default plugin;
+});
+

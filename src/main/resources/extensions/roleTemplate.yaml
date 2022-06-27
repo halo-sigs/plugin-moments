@@ -1,28 +1,28 @@
 apiVersion: v1alpha1
 kind: Role
 metadata:
-  name: role-template-apple-view
+  name: role-template-journal-view
   labels:
     plugin.halo.run/role-template: "true"
   annotations:
-    plugin.halo.run/module: "Apple Management"
-    plugin.halo.run/alias-name: "苹果查看"
+    plugin.halo.run/module: "Journal Management"
+    plugin.halo.run/alias-name: "日志查看"
 rules:
-  - pluginName: apples
-    resources: [ "apples" ]
+  - pluginName: PluginJournals
+    resources: [ "journals" ]
     verbs: [ "get", "list" ]
 ---
 apiVersion: v1alpha1
 kind: Role
 metadata:
-  name: role-template-apple-manage
+  name: role-template-journal-manage
   labels:
     plugin.halo.run/role-template: "true"
   annotations:
-    plugin.halo.run/dependencies: "[ 'role-template-apple-view' ]"
-    plugin.halo.run/module: "Apple Management"
-    plugin.halo.run/alias-name: "苹果管理"
+    plugin.halo.run/dependencies: "[ 'role-template-journal-view' ]"
+    plugin.halo.run/module: "Journal Management"
+    plugin.halo.run/alias-name: "日志管理"
 rules:
-  - pluginName: apples
-    resources: [ "apples" ]
+  - pluginName: PluginJournals
+    resources: [ "journals" ]
     verbs: [ "create", "patch", "update", "delete", "deletecollection" ]

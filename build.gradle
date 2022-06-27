@@ -1,15 +1,16 @@
 plugins {
     id 'org.springframework.boot' version '3.0.0-M3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id "com.github.node-gradle.node" version "3.3.0"
     id 'java'
 }
 
-group 'io.github.guqing'
+group 'run.halo.journals'
 version '0.0.1-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
-    maven {url 'https://s01.oss.sonatype.org/content/repositories/snapshots'}
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
     maven { url 'https://repo.spring.io/milestone' }
     mavenCentral()
 }
@@ -48,4 +49,18 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+node {
+    nodeProjectDir = file("${project.projectDir}/admin-frontend")
+}
+
+task buildFrontend(type: NpxTask) {
+    command = 'pnpm'
+    args = ['build']
+}
+
+build {
+    // build frontend before build
+    tasks.getByName('compileJava').dependsOn('buildFrontend')
 }
