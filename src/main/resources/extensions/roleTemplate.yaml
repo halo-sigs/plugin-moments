@@ -6,7 +6,7 @@ metadata:
     plugin.halo.run/role-template: "true"
   annotations:
     plugin.halo.run/module: "Journal Management"
-    plugin.halo.run/alias-name: "日志查看"
+    plugin.halo.run/display-name: "日志查看"
 rules:
   - pluginName: PluginJournals
     resources: [ "journals" ]
@@ -19,9 +19,9 @@ metadata:
   labels:
     plugin.halo.run/role-template: "true"
   annotations:
-    plugin.halo.run/dependencies: "[ 'role-template-journal-view' ]"
+    plugin.halo.run/dependencies: "[ \"role-template-journal-view\" ]"
     plugin.halo.run/module: "Journal Management"
-    plugin.halo.run/alias-name: "日志管理"
+    plugin.halo.run/display-name: "日志管理"
 rules:
   - pluginName: PluginJournals
     resources: [ "journals" ]

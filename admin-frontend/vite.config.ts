@@ -24,10 +24,16 @@ export default defineConfig({
       fileName: () => "main.js",
     },
     rollupOptions: {
-      external: ["vue", "@halo-dev/shared", "@halo-dev/components"],
+      external: [
+        "vue",
+        "vue-router",
+        "@halo-dev/shared",
+        "@halo-dev/components",
+      ],
       output: {
         globals: {
           vue: "Vue",
+          "vue-router": "VueRouter",
           "@halo-dev/components": "HaloComponents",
           "@halo-dev/admin-shared": "HaloAdminShared",
         },

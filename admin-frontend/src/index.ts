@@ -1,36 +1,33 @@
-import { definePlugin } from "@halo-dev/admin-shared";
-import DefaultView from "./views/DefaultView.vue";
-import { IconGrid } from "@halo-dev/components";
 import "./styles/index.css";
+import type { PagesPublicState } from "@halo-dev/admin-shared";
+import { BasicLayout, definePlugin } from "@halo-dev/admin-shared";
+import JournalList from "@/views/JournalList.vue";
+import type { Ref } from "vue";
 
 export default definePlugin({
   name: "PluginJournals",
   components: [],
-  extensionPoints: {},
   routes: [
     {
-      path: "/hello-world",
-      name: "HelloWorld",
-      component: DefaultView,
-    },
-  ],
-  menus: [
-    {
-      name: "From PluginTemplate",
-      items: [
+      path: "/pages/functional/journals",
+      component: BasicLayout,
+      children: [
         {
-          name: "HelloWorld",
-          path: "/hello-world",
-          icon: IconGrid,
+          path: "",
+          name: "Journals",
+          component: JournalList,
         },
       ],
     },
   ],
-  activated() {
-    // TODO
-  },
-  deactivated() {
-    // TODO
+  menus: [],
+  extensionPoints: {
+    PAGES: (state: Ref<PagesPublicState>) => {
+      state.value.functionalPages.push({
+        name: "日志",
+        url: "/journals",
+        path: "/pages/functional/journals",
+      });
+    },
   },
 });
-
