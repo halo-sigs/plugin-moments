@@ -12,5 +12,6 @@ spec:
   homepage: https://github.com/halo-sigs/plugin-journals
   displayName: "日志"
   description: "日志管理模块"
-  license: MIT
+  license:
+    - name: "MIT"
 
