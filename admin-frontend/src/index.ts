@@ -18,6 +18,9 @@ export default definePlugin({
           component: JournalList,
         },
       ],
+      meta: {
+        permissions: ["plugin:journals:view"],
+      },
     },
   ],
   menus: [],

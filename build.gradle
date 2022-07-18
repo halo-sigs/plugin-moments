@@ -33,7 +33,7 @@ jar {
 }
 
 dependencies {
-    implementation 'io.github.guqing:pluggable-suite:0.0.1-SNAPSHOT'
+    compileOnly 'io.github.guqing:pluggable-suite:0.0.1-SNAPSHOT'
     compileOnly "io.swagger.core.v3:swagger-core-jakarta:2.2.0"
     compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
     annotationProcessor 'io.github.guqing:pluggable-suite:0.0.1-SNAPSHOT'
