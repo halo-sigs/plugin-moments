@@ -3,7 +3,7 @@ kind: Role
 metadata:
   name: role-template-journal-view
   labels:
-    plugin.halo.run/role-template: "true"
+    halo.run/role-template: "true"
   annotations:
     rbac.authorization.halo.run/module: "Journal Management"
     rbac.authorization.halo.run/display-name: "日志查看"
@@ -19,7 +19,7 @@ kind: Role
 metadata:
   name: role-template-journal-manage
   labels:
-    plugin.halo.run/role-template: "true"
+    halo.run/role-template: "true"
   annotations:
     rbac.authorization.halo.run/module: "Journal Management"
     rbac.authorization.halo.run/display-name: "日志管理"
