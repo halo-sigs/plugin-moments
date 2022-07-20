@@ -5,8 +5,8 @@ metadata:
   labels:
     plugin.halo.run/role-template: "true"
   annotations:
-    plugin.halo.run/module: "Journal Management"
-    plugin.halo.run/display-name: "日志查看"
+    rbac.authorization.halo.run/module: "Journal Management"
+    rbac.authorization.halo.run/display-name: "日志查看"
     rbac.authorization.halo.run/ui-permissions: |
       ["plugin:journals:view"]
 rules:
@@ -21,8 +21,8 @@ metadata:
   labels:
     plugin.halo.run/role-template: "true"
   annotations:
-    plugin.halo.run/module: "Journal Management"
-    plugin.halo.run/display-name: "日志管理"
+    rbac.authorization.halo.run/module: "Journal Management"
+    rbac.authorization.halo.run/display-name: "日志管理"
     rbac.authorization.halo.run/ui-permissions: |
       ["plugin:journals:manage"]
     rbac.authorization.halo.run/dependencies: |
