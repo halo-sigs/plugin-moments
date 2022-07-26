@@ -47,10 +47,10 @@ jobs:
       - name: Build with Gradle
         run: |
           ./gradlew clean build -x test
-      - name: Archive plugin-links jar
+      - name: Archive plugin-journals jar
         uses: actions/upload-artifact@v2
         with:
-          name: plugin-links
+          name: plugin-journals
           path: |
             build/libs
           retention-days: 7
