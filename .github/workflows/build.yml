@@ -1,0 +1,56 @@
+name: Build Plugin Jar
+
+on:
+  push:
+    branches: [ main ]
+
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          cache: 'gradle'
+          java-version: 17
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: pnpm/action-setup@v2.0.1
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/admin-frontend/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: Install Frontend Dependencies
+        run: |
+          ./gradlew pnpmInstall
+      - name: Build with Gradle
+        run: |
+          ./gradlew clean build -x test
+      - name: Archive plugin-links jar
+        uses: actions/upload-artifact@v2
+        with:
+          name: plugin-links
+          path: |
+            build/libs
+          retention-days: 7

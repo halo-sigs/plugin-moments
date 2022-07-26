@@ -10,7 +10,7 @@ metadata:
     rbac.authorization.halo.run/ui-permissions: |
       ["plugin:journals:view"]
 rules:
-  - pluginName: PluginJournals
+  - apiGroups: [ "" ]
     resources: [ "journals" ]
     verbs: [ "get", "list" ]
 ---
@@ -28,6 +28,6 @@ metadata:
     rbac.authorization.halo.run/dependencies: |
       ["role-template-journal-view"]
 rules:
-  - pluginName: PluginJournals
+  - apiGroups: [ "" ]
     resources: [ "journals" ]
     verbs: [ "create", "patch", "update", "delete", "deletecollection" ]

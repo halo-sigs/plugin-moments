@@ -1,10 +1,10 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@halo-dev/admin-shared': link:/Users/ryanwang/Workspace/github/halo-dev/halo-admin-next/packages/shared
-  '@halo-dev/components': link:/Users/ryanwang/Workspace/github/halo-dev/halo-admin-next/packages/components
+  '@halo-dev/admin-shared': '*'
+  '@halo-dev/components': '*'
   '@rushstack/eslint-patch': ^1.1.4
-  '@types/jsdom': ^16.2.14
+  '@types/jsdom': ^16.2.15
   '@types/node': ^16.11.45
   '@vitejs/plugin-vue': ^2.3.3
   '@vitejs/plugin-vue-jsx': ^1.3.10
@@ -24,13 +24,13 @@ specifiers:
   vue-tsc: ^0.35.2
 
 dependencies:
-  '@halo-dev/admin-shared': link:../../../../halo-dev/halo-admin-next/packages/shared
-  '@halo-dev/components': link:../../../../halo-dev/halo-admin-next/packages/components
+  '@halo-dev/admin-shared': 0.0.0-alpha.3_vue@3.2.37
+  '@halo-dev/components': 0.0.0-alpha.2_vue@3.2.37
   vue: 3.2.37
 
 devDependencies:
   '@rushstack/eslint-patch': 1.1.4
-  '@types/jsdom': 16.2.14
+  '@types/jsdom': 16.2.15
   '@types/node': 16.11.45
   '@vitejs/plugin-vue': 2.3.3_vite@2.9.14+vue@3.2.37
   '@vitejs/plugin-vue-jsx': 1.3.10
@@ -359,6 +359,33 @@ packages:
       - supports-color
     dev: true
 
+  /@halo-dev/admin-shared/0.0.0-alpha.3_vue@3.2.37:
+    resolution: {integrity: sha512-rizOLAzAcmcedZN9gwnhGFmKKf7p4byik7m68sqFFBGmFma0nxUtMf9YMjAEky85bCeeZApyVLB80Mxu1KGU9A==}
+    peerDependencies:
+      vue: ^3.2.37
+      vue-router: ^4.0.16
+    dependencies:
+      '@halo-dev/api-client': 0.0.3
+      '@halo-dev/components': 0.0.0-alpha.2_vue@3.2.37
+      axios: 0.27.2
+      vue: 3.2.37
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /@halo-dev/api-client/0.0.3:
+    resolution: {integrity: sha512-ybtVcjeeFqOldPIKRrm3socfGtbSR5GL+MXVmkSJwD2fCwT9OiXEvs3cgceWceIZI0Ug7AEKwxbcO+ZfOmDlYA==}
+    dev: false
+
+  /@halo-dev/components/0.0.0-alpha.2_vue@3.2.37:
+    resolution: {integrity: sha512-0dfzvWLR83wv8AI59vrukExRS4xRtbKKEN9jOxuO83Lr/rlKuc36bQzUbWruHSI9Ceu+LflnPdbOWrjwWRZYKg==}
+    peerDependencies:
+      vue: ^3.2.37
+      vue-router: ^4.0.16
+    dependencies:
+      vue: 3.2.37
+    dev: false
+
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
     engines: {node: '>=10.10.0'}
@@ -460,8 +487,8 @@ packages:
     resolution: {integrity: sha512-/zPMqDkzSZ8t3VtxOa4KPq7uzzW978M9Tvh+j7GHKuo6k6GTLxPJ4J5gE5cjfJ26pnXst0N5Hax8Sr0T2Mi9zQ==}
     dev: true
 
-  /@types/jsdom/16.2.14:
-    resolution: {integrity: sha512-6BAy1xXEmMuHeAJ4Fv4yXKwBDTGTOseExKE3OaHiNycdHdZw59KfYzrt0DkDluvwmik1HRt6QS7bImxUmpSy+w==}
+  /@types/jsdom/16.2.15:
+    resolution: {integrity: sha512-nwF87yjBKuX/roqGYerZZM0Nv1pZDMAT5YhOHYeM/72Fic+VEqJh4nyoqoapzJnW3pUlfxPY5FhgsJtM+dRnQQ==}
     dependencies:
       '@types/node': 16.11.45
       '@types/parse5': 6.0.3
@@ -899,7 +926,15 @@ packages:
 
   /asynckit/0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
-    dev: true
+
+  /axios/0.27.2:
+    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
+    dependencies:
+      follow-redirects: 1.15.1
+      form-data: 4.0.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -1020,7 +1055,6 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       delayed-stream: 1.0.0
-    dev: true
 
   /concat-map/0.0.1:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
@@ -1123,7 +1157,6 @@ packages:
   /delayed-stream/1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
-    dev: true
 
   /dir-glob/3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -1659,6 +1692,16 @@ packages:
     resolution: {integrity: sha512-WIWGi2L3DyTUvUrwRKgGi9TwxQMUEqPOPQBVi71R96jZXJdFskXEmf54BoZaS1kknGODoIGASGEzBUYdyMCBJg==}
     dev: true
 
+  /follow-redirects/1.15.1:
+    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
+
   /form-data/4.0.0:
     resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
     engines: {node: '>= 6'}
@@ -1666,7 +1709,6 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
-    dev: true
 
   /fs.realpath/1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
@@ -2167,14 +2209,12 @@ packages:
   /mime-db/1.52.0:
     resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
     engines: {node: '>= 0.6'}
-    dev: true
 
   /mime-types/2.1.35:
     resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
     engines: {node: '>= 0.6'}
     dependencies:
       mime-db: 1.52.0
-    dev: true
 
   /minimatch/3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
