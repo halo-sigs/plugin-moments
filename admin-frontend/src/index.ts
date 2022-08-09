@@ -1,6 +1,6 @@
 import "./styles/index.css";
 import type { PagesPublicState } from "@halo-dev/admin-shared";
-import { BasicLayout, definePlugin } from "@halo-dev/admin-shared";
+import { definePlugin } from "@halo-dev/admin-shared";
 import JournalList from "@/views/JournalList.vue";
 import type { Ref } from "vue";
 
@@ -9,17 +9,14 @@ export default definePlugin({
   components: [],
   routes: [
     {
-      path: "/pages/functional/journals",
-      component: BasicLayout,
-      children: [
-        {
-          path: "",
-          name: "Journals",
-          component: JournalList,
+      parentName: "BasePages",
+      route: {
+        path: "functional/journals",
+        name: "Journals",
+        component: JournalList,
+        meta: {
+          permissions: ["plugin:journals:view"],
         },
-      ],
-      meta: {
-        permissions: ["plugin:journals:view"],
       },
     },
   ],
