@@ -1,6 +1,6 @@
 import "./styles/index.css";
-import type { PagesPublicState } from "@halo-dev/admin-shared";
-import { definePlugin } from "@halo-dev/admin-shared";
+import type { PagesPublicState } from "@halo-dev/console-shared";
+import { definePlugin } from "@halo-dev/console-shared";
 import JournalList from "@/views/JournalList.vue";
 import type { Ref } from "vue";
 
