@@ -1,3 +1,3 @@
-# plugin-journals
+# plugin-moments
 
-Halo 2.0 的日志管理插件（WIP）。
+Halo 2.0 的瞬间管理插件（WIP）。

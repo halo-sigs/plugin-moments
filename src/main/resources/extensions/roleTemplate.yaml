@@ -1,33 +1,33 @@
 apiVersion: v1alpha1
 kind: Role
 metadata:
-  name: role-template-journal-view
+  name: role-template-moments-view
   labels:
     halo.run/role-template: "true"
   annotations:
-    rbac.authorization.halo.run/module: "Journal Management"
-    rbac.authorization.halo.run/display-name: "日志查看"
+    rbac.authorization.halo.run/module: "Moments Management"
+    rbac.authorization.halo.run/display-name: "瞬间查看"
     rbac.authorization.halo.run/ui-permissions: |
-      ["plugin:journals:view"]
+      ["plugin:moments:view"]
 rules:
   - apiGroups: [ "" ]
-    resources: [ "journals" ]
+    resources: [ "moments" ]
     verbs: [ "get", "list" ]
 ---
 apiVersion: v1alpha1
 kind: Role
 metadata:
-  name: role-template-journal-manage
+  name: role-template-moments-manage
   labels:
     halo.run/role-template: "true"
   annotations:
-    rbac.authorization.halo.run/module: "Journal Management"
-    rbac.authorization.halo.run/display-name: "日志管理"
+    rbac.authorization.halo.run/module: "Moments Management"
+    rbac.authorization.halo.run/display-name: "瞬间管理"
     rbac.authorization.halo.run/ui-permissions: |
-      ["plugin:journals:manage"]
+      ["plugin:moments:manage"]
     rbac.authorization.halo.run/dependencies: |
-      ["role-template-journal-view"]
+      ["role-template-moments-view"]
 rules:
   - apiGroups: [ "" ]
-    resources: [ "journals" ]
+    resources: [ "moments" ]
     verbs: [ "create", "patch", "update", "delete", "deletecollection" ]

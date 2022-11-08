@@ -1,4 +1,4 @@
-package run.halo.journals;
+package run.halo.moments;
 
 import org.pf4j.PluginWrapper;
 import org.springframework.stereotype.Component;
@@ -6,13 +6,13 @@ import run.halo.app.extension.SchemeManager;
 import run.halo.app.plugin.BasePlugin;
 
 @Component
-public class JournalPlugin extends BasePlugin {
+public class MomentsPlugin extends BasePlugin {
 
     private final SchemeManager schemeManager;
 
-    public JournalPlugin(PluginWrapper wrapper) {
+    public MomentsPlugin(PluginWrapper wrapper,SchemeManager schemeManager) {
         super(wrapper);
-        schemeManager = getApplicationContext().getBean(SchemeManager.class);
+        this.schemeManager = schemeManager;
     }
 
     @Override

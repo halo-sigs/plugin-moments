@@ -1,16 +1,16 @@
 apiVersion: plugin.halo.run/v1alpha1
 kind: Plugin
 metadata:
-  name: PluginJournals
+  name: PluginMoments
 spec:
   enabled: true
   version: 0.0.1-SNAPSHOT
   requires: "*"
   author: halo-dev
-  logo: https://halo.run/logo
-  homepage: https://github.com/halo-sigs/plugin-journals
-  displayName: "日志"
-  description: "日志管理模块"
+  logo: logo.png
+  homepage: https://github.com/halo-sigs/plugin-moments
+  displayName: "瞬间"
+  description: "瞬间管理模块"
   license:
     - name: "MIT"
 

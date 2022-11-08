@@ -1,32 +1,31 @@
 import "./styles/index.css";
 import type { PagesPublicState } from "@halo-dev/console-shared";
 import { definePlugin } from "@halo-dev/console-shared";
-import JournalList from "@/views/JournalList.vue";
+import MomentsList from "@/views/MomentsList.vue";
 import type { Ref } from "vue";
 
 export default definePlugin({
-  name: "PluginJournals",
+  name: "PluginMoments",
   components: [],
   routes: [
     {
-      parentName: "BasePages",
+      parentName: "Root",
       route: {
-        path: "functional/journals",
-        name: "Journals",
-        component: JournalList,
+        path: "functional/moments",
+        name: "Moments",
+        component: MomentsList,
         meta: {
-          permissions: ["plugin:journals:view"],
+          permissions: ["plugin:moments:view"],
         },
       },
     },
   ],
-  menus: [],
   extensionPoints: {
     PAGES: (state: Ref<PagesPublicState>) => {
       state.value.functionalPages.push({
-        name: "日志",
-        url: "/journals",
-        path: "/pages/functional/journals",
+        name: "瞬间",
+        url: "/moments",
+        path: "/pages/functional/moments",
       });
     },
   },

@@ -2,7 +2,7 @@
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-  name: "JournalList",
+  name: "MomentsList",
   setup() {
     const name = ref("Ryan");
     return {
