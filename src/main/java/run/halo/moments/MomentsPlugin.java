@@ -17,9 +17,11 @@ public class MomentsPlugin extends BasePlugin {
 
     @Override
     public void start() {
+        schemeManager.register(Moment.class);
     }
 
     @Override
     public void stop() {
+        schemeManager.unregister(schemeManager.get(Moment.class));
     }
 }
