@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '3.0.0-RC2'
+    id 'org.springframework.boot' version '3.0.4'
     id 'io.spring.dependency-management' version '1.1.0'
     id "com.github.node-gradle.node" version "3.3.0"
     id "io.github.guqing.plugin-development" version "0.0.5-SNAPSHOT"
@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'run.halo.moments'
-version '0.0.1-SNAPSHOT'
+version '0.0.1'
 sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -35,7 +35,11 @@ dependencies {
     compileOnly "io.swagger.core.v3:swagger-core-jakarta:2.2.0"
     compileOnly "org.pf4j:pf4j:3.6.0"
     compileOnly files("lib/halo-2.0.0-SNAPSHOT-plain.jar")
+    compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
     compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
+    compileOnly "org.springdoc:springdoc-openapi-starter-webflux-ui:2.0.2"
+
+    compileOnly 'org.springframework.boot:spring-boot-starter-security'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

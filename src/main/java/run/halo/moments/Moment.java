@@ -10,7 +10,7 @@ import lombok.ToString;
 import run.halo.app.extension.AbstractExtension;
 import run.halo.app.extension.GVK;
 
-@GVK(group = "content.halo.run", version = "v1alpha1", kind = "Moment",
+@GVK(group = "moment.halo.run", version = "v1alpha1", kind = "Moment",
     plural = "moments", singular = "moment")
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -29,7 +29,8 @@ public class Moment extends AbstractExtension {
         @Schema(description = "Release timestamp. This field can be customized by owner")
         private Instant releaseTime;
 
-        @Schema(description = "Visible indicates when to show publicly. Default is public")
+        @Schema(description = "Visible indicates when to show publicly. Default is public",
+                defaultValue = "PUBLIC")
         private MomentVisible visible;
 
         @Schema(required = true, description = "Owner of the moment")
@@ -62,6 +63,8 @@ public class Moment extends AbstractExtension {
         @Schema(description = "External URL of media")
         private String url;
 
+        @Schema(description = "Origin type of media.")
+        private String originType;
     }
 
     public enum MomentMediaType {
@@ -80,7 +83,22 @@ public class Moment extends AbstractExtension {
         /**
          * Private visible is only for view for self.
          */
-        PRIVATE,
+        PRIVATE;
         // TODO Might add more visibles here in the future.
+
+        /**
+         * Convert value string to {@link MomentVisible}.
+         *
+         * @param value enum value string
+         * @return {@link MomentVisible} if found, otherwise null
+         */
+        public static MomentVisible from(String value) {
+            for (MomentVisible visible : MomentVisible.values()) {
+                if (visible.name().equalsIgnoreCase(value)) {
+                    return visible;
+                }
+            }
+            return null;
+        }
     }
 }

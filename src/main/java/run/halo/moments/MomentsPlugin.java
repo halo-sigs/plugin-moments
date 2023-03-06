@@ -10,7 +10,7 @@ public class MomentsPlugin extends BasePlugin {
 
     private final SchemeManager schemeManager;
 
-    public MomentsPlugin(PluginWrapper wrapper,SchemeManager schemeManager) {
+    public MomentsPlugin(PluginWrapper wrapper, SchemeManager schemeManager) {
         super(wrapper);
         this.schemeManager = schemeManager;
     }

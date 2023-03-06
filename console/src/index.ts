@@ -1,32 +1,29 @@
+import "./styles/tailwind.css";
 import "./styles/index.css";
-import type { PagesPublicState } from "@halo-dev/console-shared";
 import { definePlugin } from "@halo-dev/console-shared";
 import MomentsList from "@/views/MomentsList.vue";
-import type { Ref } from "vue";
+import { markRaw } from "vue";
+import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 
 export default definePlugin({
   name: "PluginMoments",
-  components: [],
+  components: {},
   routes: [
     {
       parentName: "Root",
       route: {
-        path: "functional/moments",
+        path: "/moments",
         name: "Moments",
         component: MomentsList,
         meta: {
           permissions: ["plugin:moments:view"],
+          menu: {
+            name: "瞬间",
+            group: "content",
+            icon: markRaw(MingcuteMomentsLine),
+          },
         },
       },
     },
   ],
-  extensionPoints: {
-    PAGES: (state: Ref<PagesPublicState>) => {
-      state.value.functionalPages.push({
-        name: "瞬间",
-        url: "/moments",
-        path: "/pages/functional/moments",
-      });
-    },
-  },
 });
