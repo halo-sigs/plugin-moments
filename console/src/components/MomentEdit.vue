@@ -68,7 +68,6 @@ const handlerCreateOrUpdateMoment = async () => {
     } else {
       insertMoment();
     }
-    Toast.success("发布成功");
   } catch (error) {
     console.error(error);
   } finally {
@@ -85,6 +84,7 @@ const insertMoment = async () => {
   );
   emit("save", data);
   handleReset();
+  Toast.success("发布成功");
   return data;
 };
 
@@ -94,6 +94,7 @@ const updateMoment = async () => {
     formState.value
   );
   emit("update", data);
+  Toast.success("发布成功");
   return data;
 };
 
@@ -259,7 +260,10 @@ const removeMedium = (medium: MomentMedia) => {
           <MdiShow v-else @click="formState.spec.visible = 'PRIVATE'" />
         </div>
 
-        <div class="moments-right-0 moments-h-fit moments-mr-3.5">
+        <div
+          class="moments-right-0 moments-h-fit moments-mr-3.5"
+          v-permission="['plugin:moments:manage']"
+        >
           <VButton
             :loading="saving"
             size="sm"

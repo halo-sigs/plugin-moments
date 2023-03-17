@@ -57,7 +57,11 @@ const removeMoment = () => {
         </div>
       </div>
 
-      <div v-show="removeBtnVisible" class="moments-absolute moments-right-3.5">
+      <div
+        v-show="removeBtnVisible"
+        class="moments-absolute moments-right-3.5"
+        v-permission="['plugin:moments:manage']"
+      >
         <VButton
           :loading="saving"
           size="sm"
