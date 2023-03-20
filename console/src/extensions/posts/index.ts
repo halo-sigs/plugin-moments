@@ -17,10 +17,6 @@ const PostsExtension = Extension.create({
     return {
       suggestion: {
         char: "#",
-        items: ({ query }: { query: string }): [] => {
-          //TODO 获取文章列表，需要根据关键字异步搜索
-          return [];
-        },
         render: () => {
           let component: VueRenderer;
           let popup: Instance[];

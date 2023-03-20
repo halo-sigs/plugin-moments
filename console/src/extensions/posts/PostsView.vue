@@ -1,26 +1,77 @@
 <script lang="ts" setup>
-import { ref, watch, type PropType } from "vue";
-import type { Item } from "./index";
+import { computed, ref, toRaw, watch, type PropType } from "vue";
+import { useQuery } from "@tanstack/vue-query";
+import type { ListedPost, Post } from "@halo-dev/api-client/index";
+import { postApiClient } from "@/utils/api-client";
 
 const props = defineProps({
-  items: {
-    type: Array as PropType<Item[]>,
-    required: true,
+  query: {
+    type: String,
   },
   command: {
-    type: Function as PropType<(item: Item) => void>,
+    type: Function as PropType<(post: Post) => void>,
     required: true,
   },
 });
 
 const selectedIndex = ref(0);
 
-watch(
-  () => props.items,
-  () => {
-    selectedIndex.value = 0;
+const page = ref(1);
+const size = ref(20);
+const total = ref(0);
+const hasPrevious = ref(false);
+const hasNext = ref(false);
+
+const keyword = ref(props.query);
+
+const inputIntervalTime = 1000;
+const timeInterval = ref(-1);
+const inputTimestamp = ref<number>(0);
+
+const {
+  data: posts,
+  isLoading,
+  isFetching,
+  refetch,
+} = useQuery<ListedPost[]>({
+  queryKey: ["posts", page, size, keyword],
+  queryFn: async () => {
+    const labelSelector: string[] = ["content.halo.run/deleted=false"];
+
+    const { data } = await postApiClient.listPosts({
+      labelSelector,
+      page: page.value,
+      size: size.value,
+      keyword: keyword.value,
+    });
+
+    total.value = data.total;
+    hasNext.value = data.hasNext;
+    hasPrevious.value = data.hasPrevious;
+
+    return data.items;
+  },
+  refetchOnWindowFocus: false,
+});
+
+const inputFilter = (newValue: string | undefined) => {
+  if (Date.now() - inputTimestamp.value < inputIntervalTime) {
+    inputTimestamp.value = Date.now();
+    return;
+  } else {
+    inputTimestamp.value = Date.now();
+    clearInterval(timeInterval.value);
+    keyword.value = newValue;
   }
-);
+};
+
+watch(props, function (newValue) {
+  clearInterval(timeInterval.value);
+  timeInterval.value = setInterval(
+    () => inputFilter(newValue.query),
+    inputIntervalTime
+  );
+});
 
 const onKeyDown = ({ event }: { event: KeyboardEvent }) => {
   if (event.key === "ArrowUp" || (event.key === "k" && event.ctrlKey)) {
@@ -39,13 +90,15 @@ const onKeyDown = ({ event }: { event: KeyboardEvent }) => {
 };
 
 const handleKeyUp = () => {
+  if (!posts.value) return;
   selectedIndex.value =
-    (selectedIndex.value + props.items.length - 1) % props.items.length;
+    (selectedIndex.value + posts.value.length - 1) % posts.value.length;
   scrollToSelected();
 };
 
 const handleKeyDown = () => {
-  selectedIndex.value = (selectedIndex.value + 1) % props.items.length;
+  if (!posts.value) return;
+  selectedIndex.value = (selectedIndex.value + 1) % posts.value.length;
   scrollToSelected();
 };
 
@@ -54,9 +107,10 @@ const handleKeyEnter = () => {
 };
 
 const handleSelectItem = (index: number) => {
-  const item = props.items[index];
+  if (!posts.value) return;
+  const item = posts.value[index];
   if (item) {
-    props.command(item);
+    props.command(item.post);
   }
 };
 
@@ -80,9 +134,9 @@ defineExpose({
   <div
     class="relative rounded-md bg-white overflow-hidden drop-shadow w-52 p-1 max-h-72 overflow-y-auto;"
   >
-    <template v-if="items.length">
+    <template v-if="posts?.length">
       <div
-        v-for="(item, index) in items"
+        v-for="(post, index) in posts"
         :id="`command-item-${index}`"
         :key="index"
         :class="{ 'is-selected': index === selectedIndex }"
@@ -92,7 +146,7 @@ defineExpose({
         <span
           class="text-xs text-gray-600 group-hover:text-gray-900 group-hover:font-medium peer-[.is-selected]:text-gray-900:font-medium"
         >
-          {{ item.post.spec.title }}
+          {{ post.post.spec.title }}
         </span>
       </div>
     </template>
