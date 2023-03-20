@@ -135,6 +135,15 @@ public class MomentServiceImpl implements MomentService {
         if (visible != null) {
             predicate = predicate.and(moment -> visible.equals(moment.getSpec().getVisible()));
         }
+        
+        Instant startDate = query.getStartDate();
+        Instant endDate = query.getEndDate();
+        if (startDate != null && endDate != null) {
+            predicate = predicate.and(moment -> {
+                Instant releaseTime = moment.getSpec().getReleaseTime();
+                return releaseTime.isAfter(startDate) && releaseTime.isBefore(endDate);
+            });
+        }
 
         Predicate<Extension> labelAndFieldSelectorPredicate =
                 labelAndFieldSelectorToPredicate(query.getLabelSelector(),

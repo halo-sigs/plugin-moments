@@ -122,3 +122,11 @@
 .btn-icon {
   margin-right: 0 !important;
 }
+
+.moment-header input {
+  height: 2.5rem;
+}
+
+.moment-header .mx-datepicker-range {
+  width: 15rem;
+}

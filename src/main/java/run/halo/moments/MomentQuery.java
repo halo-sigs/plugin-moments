@@ -6,6 +6,12 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
 import run.halo.app.extension.router.IListRequest;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.TimeZone;
+
 /**
  * A query object for {@link Moment} list.
  *
@@ -41,6 +47,18 @@ public class MomentQuery extends IListRequest.QueryListRequest {
         String sort = queryParams.getFirst("sort");
         return MomentSorter.convertFrom(sort);
     }
+    
+    @Schema
+    public Instant getStartDate() {
+        String startDate = queryParams.getFirst("startDate");
+        return convertInstantOrNull(startDate);
+    }
+    
+    @Schema
+    public Instant getEndDate() {
+        String endDate = queryParams.getFirst("endDate");
+        return convertInstantOrNull(endDate);
+    }
 
     @Schema(description = "ascending order If it is true; otherwise, it is in descending order.")
     public Boolean getSortOrder() {
@@ -50,5 +68,9 @@ public class MomentQuery extends IListRequest.QueryListRequest {
 
     private Boolean convertBooleanOrNull(String value) {
         return StringUtils.isBlank(value) ? null : Boolean.parseBoolean(value);
+    }
+    
+    private Instant convertInstantOrNull(String timeStr) {
+        return StringUtils.isBlank(timeStr) ? null : Instant.parse(timeStr);
     }
 }

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { VPageHeader, VLoading, VPagination } from "@halo-dev/components";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { User } from "@halo-dev/api-client";
@@ -9,6 +9,10 @@ import apiClient from "@/utils/api-client";
 import MomentItem from "@/components/MomentItem.vue";
 import MomentEdit from "@/components/MomentEdit.vue";
 import SearchMoment from "@/components/SearchMoment.vue";
+import DatePicker from "vue-datepicker-next";
+import "vue-datepicker-next/index.css";
+import "vue-datepicker-next/locale/zh-cn";
+import { toISODayEndOfTime } from "@/utils/date";
 
 interface VisibleItem {
   label: string;
@@ -47,6 +51,15 @@ const selectedVisibleItem = ref<VisibleItem>(VisibleItems[0]);
 const selectedSortItem = ref<SortItem>();
 const selectedContributor = ref<User>();
 const keyword = ref("");
+const momentsRangeTime = ref<Array<Date>>([]);
+
+const startDate = computed(() => {
+  return momentsRangeTime.value[0] || "";
+});
+const endDate = computed(() => {
+  let endTime: Date = momentsRangeTime.value[1] || "";
+  return toISODayEndOfTime(endTime);
+});
 
 const {
   data: moments,
@@ -60,6 +73,8 @@ const {
     selectedContributor,
     selectedVisibleItem,
     selectedSortItem,
+    startDate,
+    endDate,
     keyword,
   ],
   queryFn: async () => {
@@ -79,6 +94,8 @@ const {
           sort: selectedSortItem.value?.sort,
           sortOrder: selectedSortItem.value?.sortOrder,
           keyword: keyword.value,
+          startDate: startDate.value,
+          endDate: endDate.value,
           contributor: contributors,
         },
       }
@@ -111,8 +128,16 @@ const searchFilter = (text: string) => {
   </VPageHeader>
 
   <div class="moments-mt-3">
-    <div class="moments-flex moments-justify-center moments-mb-3">
-      <SearchMoment class="moments-w-160" @search="searchFilter" />
+    <div class="moment-header moments-flex moments-justify-center moments-mb-3">
+      <div class="moments-w-160 moments-flex moments-justify-between">
+        <SearchMoment @search="searchFilter" />
+        <DatePicker
+          class="moments-h-10"
+          range
+          v-model:value="momentsRangeTime"
+          placeholder="筛选日期范围"
+        />
+      </div>
     </div>
 
     <div class="moments-flex moments-justify-center">

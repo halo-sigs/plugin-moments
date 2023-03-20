@@ -11,7 +11,7 @@ export interface MenuItem {
 }
 
 export interface Metadata {
-  name: string;
+  name?: string;
   generateName: string;
   labels?: {
     [key: string]: string;

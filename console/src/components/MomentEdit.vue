@@ -40,7 +40,6 @@ const initMoment: Moment = {
   },
   metadata: {
     generateName: "moment-",
-    name: "",
   },
   kind: "Moment",
   apiVersion: "moment.halo.run/v1alpha1",
@@ -77,7 +76,6 @@ const handlerCreateOrUpdateMoment = async () => {
 
 const insertMoment = async () => {
   formState.value.spec.releaseTime = new Date();
-  formState.value.metadata.name = uuid();
   const { data } = await apiClient.post<Moment>(
     `/apis/api.plugin.halo.run/v1alpha1/moments`,
     formState.value

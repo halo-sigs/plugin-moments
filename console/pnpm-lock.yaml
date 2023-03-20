@@ -37,6 +37,7 @@ specifiers:
   vite: ^2.9.15
   vitest: ^0.13.1
   vue: ^3.2.47
+  vue-datepicker-next: ^1.0.3
   vue-router: ^4.1.6
   vue-tsc: ^0.35.2
 
@@ -55,6 +56,7 @@ dependencies:
   tippy.js: 6.3.7
   uuid: 9.0.0
   vue: 3.2.47
+  vue-datepicker-next: 1.0.3_vue@3.2.47
   vue-router: 4.1.6_vue@3.2.47
 
 devDependencies:
@@ -1991,6 +1993,10 @@ packages:
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
     dev: true
+
+  /date-format-parse/0.2.7:
+    resolution: {integrity: sha512-/+lyMUKoRogMuTeOVii6lUwjbVlesN9YRYLzZT/g3TEZ3uD9QnpjResujeEqUW+OSNbT7T1+SYdyEkTcRv+KDQ==}
+    dev: false
 
   /dayjs/1.11.7:
     resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
@@ -4322,6 +4328,15 @@ packages:
       - stylus
       - supports-color
     dev: true
+
+  /vue-datepicker-next/1.0.3_vue@3.2.47:
+    resolution: {integrity: sha512-Brqjh896BJGVxP7d6tGDsPMu0SDAB8hAdtG7zWF8VIHJB21dk1VB9KgdajD9Y9uXbg+wHN0vmL7sbMPIyehQVQ==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      date-format-parse: 0.2.7
+      vue: 3.2.47
+    dev: false
 
   /vue-demi/0.13.11_vue@3.2.47:
     resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}

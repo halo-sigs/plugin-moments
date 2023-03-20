@@ -35,3 +35,12 @@ export function toDatetimeLocal(
   // see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local#the_y10k_problem_often_client-side
   return dayjs(date).tz(tz).format("YYYY-MM-DDTHH:mm");
 }
+
+export function toISODayEndOfTime(
+  date: string | Date | undefined | null
+): string {
+  if (!date) {
+    return "";
+  }
+  return dayjs(date).endOf("day").toISOString();
+}

@@ -25,6 +25,7 @@
     "tippy.js": "^6.3.7",
     "uuid": "^9.0.0",
     "vue": "^3.2.47",
+    "vue-datepicker-next": "^1.0.3",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
