@@ -60,6 +60,7 @@ import {
   AlignRightMenuItem,
   HighlightMenuItem,
 } from "@halo-dev/richtext-editor";
+import PostsExtension from "@/extensions/posts/index";
 import { computed, watch } from "vue";
 import EditorBubbleMenu from "./EditorBubbleMenu.vue";
 
@@ -171,6 +172,7 @@ const editor = useEditor({
         ];
       },
     }),
+    PostsExtension,
   ],
   autofocus: "end",
   onUpdate: () => {
