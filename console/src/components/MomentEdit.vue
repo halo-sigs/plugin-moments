@@ -7,7 +7,6 @@ import type { AttachmentLike } from "@halo-dev/console-shared";
 import { computed, nextTick, onMounted, ref, toRaw } from "vue";
 import MediumCard from "./MediumCard.vue";
 import TextEditor from "./TextEditor.vue";
-import { v4 as uuid } from "uuid";
 import SendMoment from "~icons/ic/sharp-send";
 import MdiFileImageBox from "~icons/mdi/file-image-box";
 import MdiShow from "~icons/mdi/show";

@@ -30,19 +30,12 @@ import {
   ExtensionSuperscript,
   ExtensionPlaceholder,
   ExtensionHighlight,
-  ExtensionHeading,
   ExtensionCommands,
   ExtensionIframe,
   ExtensionVideo,
   ExtensionAudio,
   CommandsSuggestion,
   CommentParagraph,
-  CommandHeader1,
-  CommandHeader2,
-  CommandHeader3,
-  CommandHeader4,
-  CommandHeader5,
-  CommandHeader6,
   CommandCodeBlock,
   CommandIframe,
   CommandVideo,
@@ -101,7 +94,6 @@ const editor = useEditor({
     ExtensionDropcursor,
     ExtensionGapcursor,
     ExtensionHardBreak,
-    ExtensionHeading,
     ExtensionHistory,
     ExtensionHorizontalRule,
     ExtensionItalic,
@@ -115,6 +107,7 @@ const editor = useEditor({
       allowBase64: false,
       HTMLAttributes: {
         loading: "lazy",
+        class: "moment-image",
       },
     }),
     ExtensionTaskList,
@@ -124,7 +117,7 @@ const editor = useEditor({
       openOnClick: false,
     }),
     ExtensionTextAlign.configure({
-      types: ["heading", "paragraph"],
+      types: ["paragraph"],
     }),
     ExtensionUnderline,
     ExtensionTable.configure({
@@ -142,12 +135,6 @@ const editor = useEditor({
         items: ({ query }: { query: string }) => {
           return [
             CommentParagraph,
-            CommandHeader1,
-            CommandHeader2,
-            CommandHeader3,
-            CommandHeader4,
-            CommandHeader5,
-            CommandHeader6,
             CommandCodeBlock,
             CommandTable,
             CommandBulletList,
@@ -185,7 +172,7 @@ const editor = useEditor({
       },
     }),
   ],
-  autofocus: "start",
+  autofocus: "end",
   onUpdate: () => {
     emit("update:raw", editor.value?.getHTML() + "");
     emit("update:html", editor.value?.getHTML() + "");

@@ -27,7 +27,7 @@ const handlerSearch = () => {
         type="text"
         autocomplete="off"
         placeholder="搜索"
-        class="moments-bg-gray-100 moments-px-8 moments-h-10 moments-border-gray-400 moments-border moments-rounded"
+        class="moments-bg-gray-100 moments-px-8 moments-h-10 moments-border moments-rounded"
         v-model="searchText"
         @keyup.enter="handlerSearch"
       />

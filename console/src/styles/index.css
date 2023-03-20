@@ -125,6 +125,16 @@
 
 .moment-header input {
   height: 2.5rem;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #555;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px #00000013;
 }
 
 .moment-header .mx-datepicker-range {
