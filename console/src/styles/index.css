@@ -159,3 +159,11 @@
   font-weight: 400;
   font-size: 16px;
 }
+
+.v-popper__popper.v-popper__popper--hidden {
+  transition: opacity .5s,visibility .5s !important;
+}
+
+.v-popper__popper.v-popper__popper--shown {
+  transition: opacity .5s !important;
+}

@@ -7,6 +7,7 @@ specifiers:
   '@halo-dev/richtext-editor': 0.0.0-alpha.19
   '@iconify/json': ^2.2.31
   '@rushstack/eslint-patch': ^1.2.0
+  '@tailwindcss/aspect-ratio': ^0.4.2
   '@tanstack/vue-query': ^4.26.1
   '@tiptap/pm': 2.0.0-beta.220
   '@tiptap/suggestion': 2.0.0-beta.220
@@ -64,6 +65,7 @@ dependencies:
 devDependencies:
   '@iconify/json': 2.2.31
   '@rushstack/eslint-patch': 1.2.0
+  '@tailwindcss/aspect-ratio': 0.4.2_tailwindcss@3.2.7
   '@types/jsdom': 16.2.15
   '@types/node': 16.18.14
   '@vitejs/plugin-vue': 2.3.4_vite@2.9.15+vue@3.2.47
@@ -857,6 +859,14 @@ packages:
 
   /@rushstack/eslint-patch/1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
+    dev: true
+
+  /@tailwindcss/aspect-ratio/0.4.2_tailwindcss@3.2.7:
+    resolution: {integrity: sha512-8QPrypskfBa7QIMuKHg2TA7BqES6vhBrDLOv8Unb6FcFyd3TjKbc6lcmb9UPQHxfl24sXoJ41ux/H7qQQvfaSQ==}
+    peerDependencies:
+      tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
+    dependencies:
+      tailwindcss: 3.2.7_postcss@8.4.21
     dev: true
 
   /@tanstack/match-sorter-utils/8.7.6:

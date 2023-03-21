@@ -47,14 +47,14 @@ const handlerCancel = () => {
   <div class="moments-flex moments-justify-center moments-mt-2">
     <MomentEdit
       v-if="editing"
-      :moment="moment"
+      :moment="editingMoment"
       @save="handlerSave"
       @update="handlerUpdate"
       @cancel="handlerCancel"
     ></MomentEdit>
     <template v-else>
       <MomentPreview
-        :moment="moment"
+        :moment="previewMoment"
         @remove="handlerRemove"
         @editor="editing = true"
         @dblclick="editing = true"

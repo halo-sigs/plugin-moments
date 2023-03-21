@@ -2,7 +2,7 @@
 import type { Moment } from "@/types";
 import apiClient from "@/utils/api-client";
 import { formatDatetime } from "@/utils/date";
-import { Dialog, Toast, VButton, IconMore, VSpace } from "@halo-dev/components";
+import { Dialog, Toast, IconMore } from "@halo-dev/components";
 import { ref } from "vue";
 import MdiHide from "~icons/mdi/hide";
 
@@ -60,7 +60,11 @@ const handlerEditor = () => {
       </div>
 
       <div class="moments-absolute moments-right-3.5">
-        <FloatingDropdown>
+        <FloatingDropdown
+          compute-transform-origin
+          :triggers="['hover', 'focus']"
+          :popperTriggers="['hover', 'focus']"
+        >
           <IconMore
             class="h-full w-full moments-text-gray-500 moments-cursor-pointer"
           />
@@ -99,26 +103,22 @@ const handlerEditor = () => {
         <li
           v-for="(medium, index) in props.moment.spec.content.medium"
           :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2"
+          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-28"
         >
-          <template v-if="medium.type == 'PHOTO'">
-            <img
-              :src="medium.url"
-              width="112"
-              height="112"
-              class="moments-object-cover"
-            />
-          </template>
-          <template v-else-if="medium.type == 'VIDEO'">
-            <video
-              width="112"
-              height="112"
-              class="moments-object-cover moments-w-28 moments-h-28"
-              preload="metadata"
-            >
-              <source :src="medium.url" :type="medium.originType" />
-            </video>
-          </template>
+          <div class="aspect-w-10 aspect-h-8">
+            <template v-if="medium.type == 'PHOTO'">
+              <img
+                :src="medium.url"
+                class="moments-object-cover"
+                loading="lazy"
+              />
+            </template>
+            <template v-else-if="medium.type == 'VIDEO'">
+              <video class="moments-object-cover" preload="metadata">
+                <source :src="medium.url" :type="medium.originType" />
+              </video>
+            </template>
+          </div>
         </li>
       </ul>
     </div>

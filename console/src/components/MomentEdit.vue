@@ -185,6 +185,14 @@ const saveDisable = computed(() => {
   if (!isEditorEmpty.value) {
     return false;
   }
+
+  if (isUpdateMode.value) {
+    let oldVisible = props.moment.spec.visible;
+    if (oldVisible != formState.value.spec.visible) {
+      return false;
+    }
+  }
+
   return true;
 });
 
@@ -229,7 +237,7 @@ const handlerCancel = () => {
         <li
           v-for="(medium, index) in formState.spec.content.medium"
           :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2"
+          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-20"
         >
           <MediumCard :medium="medium" @remove="removeMedium"></MediumCard>
         </li>
