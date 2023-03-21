@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, toRaw, watch, type PropType } from "vue";
+import { ref, watch, type PropType } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 import type { ListedPost, Post } from "@halo-dev/api-client/index";
 import { postApiClient } from "@/utils/api-client";
@@ -132,7 +132,7 @@ defineExpose({
 
 <template>
   <div
-    class="relative rounded-md bg-white overflow-hidden drop-shadow w-52 p-1 max-h-72 overflow-y-auto;"
+    class="relative rounded-md bg-white overflow-y-auto drop-shadow w-52 p-1 max-h-72"
   >
     <template v-if="posts?.length">
       <div

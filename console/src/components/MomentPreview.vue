@@ -40,7 +40,7 @@ const removeMoment = () => {
 </script>
 <template>
   <div
-    class="card moments-bg-white moments-shrink moments-border moments-rounded-md moments-w-160 moments-p-3.5 moments-relative"
+    class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-w-160 moments-p-3.5 moments-relative"
     @mouseover="removeBtnVisible = true"
     @mouseout="removeBtnVisible = false"
   >

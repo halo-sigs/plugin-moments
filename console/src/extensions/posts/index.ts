@@ -1,15 +1,15 @@
-import { Editor, Extension, VueRenderer } from "@halo-dev/richtext-editor";
+import {
+  Editor,
+  Extension,
+  VueRenderer,
+  type Range,
+} from "@halo-dev/richtext-editor";
 import Suggestion from "@tiptap/suggestion";
 import { PluginKey } from "@tiptap/pm/state";
 import PostsView from "./PostsView.vue";
 import type { Instance } from "tippy.js";
 import tippy from "tippy.js";
 import type { Post } from "@halo-dev/api-client/index";
-
-export interface Item {
-  post: Post;
-  command: ({ editor, range }: { editor: Editor; range: Range }) => void;
-}
 
 const PostsExtension = Extension.create({
   name: "postsExtension",
@@ -78,9 +78,26 @@ const PostsExtension = Extension.create({
         }: {
           editor: Editor;
           range: Range;
-          props: Record<string, any>;
+          props: Post;
         }) => {
-          props.command({ editor, range });
+          editor
+            .chain()
+            .focus()
+            .deleteRange(range)
+            .insertContent({
+              type: "text",
+              text: props.spec.title,
+              marks: [
+                {
+                  type: "link",
+                  attrs: {
+                    href: props.status?.permalink,
+                    class: "post-link",
+                  },
+                },
+              ],
+            })
+            .run();
         },
       },
     };

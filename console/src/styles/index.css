@@ -140,3 +140,22 @@
 .moment-header .mx-datepicker-range {
   width: 15rem;
 }
+
+.preview {
+  font-size: 14px;
+}
+
+.preview a {
+  color: #5783f7;
+  text-decoration: none;
+}
+
+.preview a.post-link {
+  font-weight: 700;
+}
+
+.preview a.post-link::before {
+  content: "#";
+  font-weight: 400;
+  font-size: 16px;
+}
