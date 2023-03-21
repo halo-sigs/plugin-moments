@@ -20,18 +20,22 @@ const handleRemoveClick = () => {
 };
 </script>
 <template>
-  <div class="moments-relative moments-overflow-hidden aspect-w-10 aspect-h-8">
+  <div class="moments-relative moments-overflow-hidden">
     <template v-if="props.medium.type == 'PHOTO'">
-      <img
-        :src="props.medium.url"
-        class="moments-object-cover"
-        loading="lazy"
-      />
+      <div class="aspect-w-10 aspect-h-8">
+        <img
+          :src="props.medium.url"
+          class="moments-object-cover"
+          loading="lazy"
+        />
+      </div>
     </template>
     <template v-else-if="props.medium.type == 'VIDEO'">
-      <video class="moments-object-cover" preload="metadata">
-        <source :src="props.medium.url" :type="props.medium.originType" />
-      </video>
+      <div class="aspect-w-10 aspect-h-8">
+        <video class="moments-object-cover" preload="metadata">
+          <source :src="props.medium.url" :type="props.medium.originType" />
+        </video>
+      </div>
     </template>
     <label
       class="moments-absolute moments-cursor-pointer moments-right-1 moments-top-1"
