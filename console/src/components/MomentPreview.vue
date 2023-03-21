@@ -2,9 +2,8 @@
 import type { Moment } from "@/types";
 import apiClient from "@/utils/api-client";
 import { formatDatetime } from "@/utils/date";
-import { Dialog, Toast, VButton } from "@halo-dev/components";
+import { Dialog, Toast, VButton, IconMore, VSpace } from "@halo-dev/components";
 import { ref } from "vue";
-import MdiRemoveOctagon from "~icons/mdi/remove-octagon";
 import MdiHide from "~icons/mdi/hide";
 
 const props = defineProps<{
@@ -12,11 +11,12 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
+  (event: "editor"): void;
   (event: "remove", moment: Moment): void;
+  (event: "cancel"): void;
 }>();
 
 const saving = ref<boolean>(false);
-const removeBtnVisible = ref<boolean>(false);
 
 const removeMoment = () => {
   Dialog.warning({
@@ -37,12 +37,14 @@ const removeMoment = () => {
     },
   });
 };
+
+const handlerEditor = () => {
+  emit("editor");
+};
 </script>
 <template>
   <div
     class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-w-160 moments-p-3.5 moments-relative"
-    @mouseover="removeBtnVisible = true"
-    @mouseout="removeBtnVisible = false"
   >
     <div
       class="header moments-flex moments-items-center moments-justify-between"
@@ -57,21 +59,30 @@ const removeMoment = () => {
         </div>
       </div>
 
-      <div
-        v-show="removeBtnVisible"
-        class="moments-absolute moments-right-3.5"
-        v-permission="['plugin:moments:manage']"
-      >
-        <VButton
-          :loading="saving"
-          size="sm"
-          type="danger"
-          @click="removeMoment"
-        >
-          <template #icon>
-            <MdiRemoveOctagon class="h-full w-full" />
+      <div class="moments-absolute moments-right-3.5">
+        <FloatingDropdown>
+          <IconMore
+            class="h-full w-full moments-text-gray-500 moments-cursor-pointer"
+          />
+          <template #popper>
+            <div class="moments-w-48 moments-p-2">
+              <ul class="space-y-1">
+                <li
+                  class="flex cursor-pointer items-center rounded px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  @click="handlerEditor"
+                >
+                  <span class="truncate">编辑</span>
+                </li>
+                <li
+                  class="flex cursor-pointer items-center rounded px-3 py-2 text-sm text-gray-600 hover:bg-gray-100"
+                  @click="removeMoment"
+                >
+                  <span class="truncate moments-text-red-500">删除</span>
+                </li>
+              </ul>
+            </div>
           </template>
-        </VButton>
+        </FloatingDropdown>
       </div>
     </div>
     <div class="moments-overflow-hidden moments-relative">

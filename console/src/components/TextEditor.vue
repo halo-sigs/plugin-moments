@@ -31,16 +31,9 @@ import {
   ExtensionPlaceholder,
   ExtensionHighlight,
   ExtensionCommands,
-  ExtensionIframe,
-  ExtensionVideo,
-  ExtensionAudio,
   CommandsSuggestion,
   CommentParagraph,
   CommandCodeBlock,
-  CommandIframe,
-  CommandVideo,
-  CommandAudio,
-  CommandTable,
   CommandBulletList,
   CommandOrderedList,
   CommandTaskList,
@@ -137,13 +130,9 @@ const editor = useEditor({
           return [
             CommentParagraph,
             CommandCodeBlock,
-            CommandTable,
             CommandBulletList,
             CommandOrderedList,
             CommandTaskList,
-            CommandIframe,
-            CommandVideo,
-            CommandAudio,
           ].filter((item) =>
             [...item.keywords, item.title].some((keyword) =>
               keyword.includes(query)
@@ -155,9 +144,6 @@ const editor = useEditor({
     ExtensionCodeBlock.configure({
       lowlight,
     }),
-    ExtensionIframe,
-    ExtensionVideo,
-    ExtensionAudio,
     Extension.create({
       addGlobalAttributes() {
         return [
@@ -172,7 +158,6 @@ const editor = useEditor({
         ];
       },
     }),
-    PostsExtension,
   ],
   autofocus: "end",
   onUpdate: () => {

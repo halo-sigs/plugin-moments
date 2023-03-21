@@ -38,20 +38,27 @@ const handlerUpdate = (moment: Moment) => {
 const handlerRemove = (moment: Moment) => {
   emit("remove", moment);
 };
+
+const handlerCancel = () => {
+  editing.value = false;
+}
 </script>
 <template>
-  <div
-    @dblclick="editing = !editing"
-    class="moments-flex moments-justify-center moments-mt-2"
-  >
+  <div class="moments-flex moments-justify-center moments-mt-2">
     <MomentEdit
       v-if="editing"
-      :moment="editingMoment"
+      :moment="moment"
       @save="handlerSave"
       @update="handlerUpdate"
+      @cancel="handlerCancel"
     ></MomentEdit>
     <template v-else>
-      <MomentPreview :moment="previewMoment" @remove="handlerRemove" />
+      <MomentPreview
+        :moment="moment"
+        @remove="handlerRemove"
+        @editor="editing = true"
+        @dblclick="editing = true"
+      />
     </template>
   </div>
 </template>

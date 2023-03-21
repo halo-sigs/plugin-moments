@@ -9,7 +9,7 @@ spec:
   author:
     name: Halo OSS Team
     website: https://github.com/halo-dev
-  logo: logo.png
+  logo: logo.svg
   configMapName: plugin-moments-configmap
   settingName: plugin-moments-settings
   homepage: https://github.com/halo-sigs/plugin-moments

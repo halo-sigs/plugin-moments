@@ -140,11 +140,11 @@ defineExpose({
         :id="`command-item-${index}`"
         :key="index"
         :class="{ 'is-selected': index === selectedIndex }"
-        class="group hover:bg-gray-100 flex flex-row items-center rounded gap-4 p-1 peer-[.is-selected]:bg-gray-100"
+        class="group hover:bg-gray-100 flex flex-row items-center rounded gap-4 p-1"
         @click="handleSelectItem(index)"
       >
         <span
-          class="text-xs text-gray-600 group-hover:text-gray-900 group-hover:font-medium peer-[.is-selected]:text-gray-900:font-medium"
+          class="post-text text-xs text-gray-600 group-hover:text-gray-900 group-hover:font-medium"
         >
           {{ post.post.spec.title }}
         </span>
@@ -158,3 +158,14 @@ defineExpose({
     </div>
   </div>
 </template>
+<style>
+.group.is-selected {
+  background-color: rgb(243 244 246);
+}
+
+.group.is-selected .post-text {
+  color: rgb(17 24 39);
+  font-weight: 500;
+
+}
+</style>

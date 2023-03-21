@@ -25,6 +25,7 @@ const props = withDefaults(
 const emit = defineEmits<{
   (event: "save", moment: Moment): void;
   (event: "update", moment: Moment): void;
+  (event: "cancel"): void;
 }>();
 
 const initMoment: Moment = {
@@ -46,7 +47,7 @@ const initMoment: Moment = {
 
 onMounted(() => {
   if (props.moment) {
-    formState.value = toRaw(props.moment);
+    formState.value = cloneDeep(props.moment);
   }
 });
 
@@ -197,6 +198,10 @@ const removeMedium = (medium: MomentMedia) => {
     formMedium.splice(index, 1);
   }
 };
+
+const handlerCancel = () => {
+  emit("cancel");
+};
 </script>
 
 <template>
@@ -255,6 +260,14 @@ const removeMedium = (medium: MomentMedia) => {
             @click="formState.spec.visible = 'PUBLIC'"
           />
           <MdiShow v-else @click="formState.spec.visible = 'PRIVATE'" />
+        </div>
+
+        <div
+          v-if="isUpdateMode"
+          class="moments-right-0 moments-mr-3.5 moments-cursor-pointer moments-px-3 moments-rounded moments-h-7 hover:moments-bg-teal-100"
+          @click="handlerCancel"
+        >
+          <span class="moments-text-xs moments-text-gray-500">取消</span>
         </div>
 
         <div
