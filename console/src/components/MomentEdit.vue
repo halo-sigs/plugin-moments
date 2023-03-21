@@ -15,7 +15,7 @@ import cloneDeep from "lodash.clonedeep";
 
 const props = withDefaults(
   defineProps<{
-    moment: Moment;
+    moment?: Moment;
   }>(),
   {
     moment: undefined,
@@ -187,7 +187,7 @@ const saveDisable = computed(() => {
   }
 
   if (isUpdateMode.value) {
-    let oldVisible = props.moment.spec.visible;
+    let oldVisible = props.moment?.spec.visible;
     if (oldVisible != formState.value.spec.visible) {
       return false;
     }

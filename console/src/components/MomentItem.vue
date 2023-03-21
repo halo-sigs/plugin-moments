@@ -41,7 +41,7 @@ const handlerRemove = (moment: Moment) => {
 
 const handlerCancel = () => {
   editing.value = false;
-}
+};
 </script>
 <template>
   <div class="moments-flex moments-justify-center moments-mt-2">

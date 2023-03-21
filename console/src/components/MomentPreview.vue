@@ -2,9 +2,16 @@
 import type { Moment } from "@/types";
 import apiClient from "@/utils/api-client";
 import { formatDatetime } from "@/utils/date";
-import { Dialog, Toast, IconMore } from "@halo-dev/components";
-import { ref } from "vue";
+import {
+  Dialog,
+  Toast,
+  IconMore,
+  IconArrowLeft,
+  IconArrowRight,
+} from "@halo-dev/components";
+import { computed, ref } from "vue";
 import MdiHide from "~icons/mdi/hide";
+import PreviewDetailModal from "./PreviewDetailModal.vue";
 
 const props = defineProps<{
   moment: Moment;
@@ -14,9 +21,18 @@ const emit = defineEmits<{
   (event: "editor"): void;
   (event: "remove", moment: Moment): void;
   (event: "cancel"): void;
+  (event: "dblclick"): void;
 }>();
 
-const saving = ref<boolean>(false);
+const mediums = ref(props.moment.spec.content.medium || []);
+const detailVisible = ref<boolean>(false);
+const selectedIndex = ref<number>(0);
+const selectedMedium = computed(() => {
+  if (mediums.value.length == 0) {
+    return undefined;
+  }
+  return mediums.value[selectedIndex.value];
+});
 
 const removeMoment = () => {
   Dialog.warning({
@@ -41,10 +57,39 @@ const removeMoment = () => {
 const handlerEditor = () => {
   emit("editor");
 };
+
+const handleDblclick = () => {
+  emit("dblclick");
+};
+
+const handleClickMedium = (index: number) => {
+  selectedIndex.value = index;
+  detailVisible.value = true;
+};
 </script>
 <template>
+  <PreviewDetailModal
+    v-if="selectedMedium"
+    v-model:visible="detailVisible"
+    :medium="selectedMedium"
+    @close="selectedIndex = 0"
+  >
+    <template #actions>
+      <span @click="selectedIndex = (selectedIndex + 1) % mediums.length">
+        <IconArrowLeft />
+      </span>
+      <span
+        @click="
+          selectedIndex = (selectedIndex + mediums.length - 1) % mediums.length
+        "
+      >
+        <IconArrowRight />
+      </span>
+    </template>
+  </PreviewDetailModal>
   <div
     class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-w-160 moments-p-3.5 moments-relative"
+    @dblclick="handleDblclick"
   >
     <div
       class="header moments-flex moments-items-center moments-justify-between"
@@ -103,9 +148,9 @@ const handlerEditor = () => {
         <li
           v-for="(medium, index) in props.moment.spec.content.medium"
           :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-28"
+          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-28 moments-cursor-pointer"
         >
-          <div class="aspect-w-10 aspect-h-8">
+          <div class="aspect-w-10 aspect-h-8" @click="handleClickMedium(index)">
             <template v-if="medium.type == 'PHOTO'">
               <img
                 :src="medium.url"

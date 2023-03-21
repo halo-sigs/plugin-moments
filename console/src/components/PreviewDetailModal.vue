@@ -1,0 +1,66 @@
+<script setup lang="ts">
+import type { MomentMedia } from "@/types";
+import { VModal, VButton, VSpace } from "@halo-dev/components";
+
+const props = withDefaults(
+  defineProps<{
+    visible: boolean;
+    medium: MomentMedia;
+  }>(),
+  {
+    visible: false,
+    medium: undefined,
+  }
+);
+
+const emit = defineEmits<{
+  (event: "update:visible", visible: boolean): void;
+  (event: "close"): void;
+}>();
+
+const onVisibleChange = (visible: boolean) => {
+  emit("update:visible", visible);
+  if (!visible) {
+    emit("close");
+  }
+};
+</script>
+<template>
+  <VModal
+    title="预览"
+    :visible="visible"
+    :width="1000"
+    :layer-closable="true"
+    height="calc(100vh - 20px)"
+    @update:visible="onVisibleChange"
+  >
+    <template #actions>
+      <slot name="actions"></slot>
+    </template>
+    <div
+      class="overflow-hidden bg-white moments-flex moments-items-center moments-justify-center moments-h-full"
+    >
+      <template v-if="props.medium.type === 'PHOTO'">
+        <img :src="medium?.url" class="moments-w-auto" />
+      </template>
+      <template v-else-if="props.medium.type === 'VIDEO'">
+        <video controls muted>
+          <source
+            :src="medium?.url"
+            :type="medium?.originType"
+            class="moments-max-w-full"
+          />
+          当前浏览器不支持该视频播放
+        </video>
+      </template>
+    </div>
+    <template #footer>
+      <VSpace>
+        <VButton type="default" @click="onVisibleChange(false)"
+          >关闭 Esc</VButton
+        >
+        <slot name="footer" />
+      </VSpace>
+    </template>
+  </VModal>
+</template>
