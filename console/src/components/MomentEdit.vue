@@ -167,6 +167,9 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
     formState.value.spec.content.medium = [];
   }
   medias.forEach((media) => {
+    if (!addMediumVerify()) {
+      return false;
+    }
     let fileType = media.type!.split("/")[0];
     formState.value.spec.content.medium?.push({
       type: MediumWhitelist.get(fileType),
@@ -209,6 +212,22 @@ const removeMedium = (medium: MomentMedia) => {
 
 const handlerCancel = () => {
   emit("cancel");
+};
+
+const uploadMediumNum = 9;
+
+const addMediumVerify = () => {
+  let formMedium = formState.value.spec.content.medium;
+  if (!formMedium || formMedium.length == 0) {
+    return true;
+  }
+
+  if (formMedium.length >= uploadMediumNum) {
+    Toast.warning("最多允许添加 " + uploadMediumNum + " 个附件");
+    return false;
+  }
+
+  return true;
 };
 </script>
 
@@ -253,7 +272,7 @@ const handlerCancel = () => {
         <VButton
           size="sm"
           type="primary"
-          @click="attachmentSelectorModal = true"
+          @click="addMediumVerify() && (attachmentSelectorModal = true)"
         >
           <template #icon>
             <MdiFileImageBox class="h-full w-full" />

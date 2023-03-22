@@ -104,7 +104,10 @@ const handleClickMedium = (index: number) => {
         </div>
       </div>
 
-      <div class="moments-absolute moments-right-3.5">
+      <div
+        class="moments-absolute moments-right-3.5"
+        v-permission="['plugin:moments:manage']"
+      >
         <FloatingDropdown
           compute-transform-origin
           :triggers="['hover', 'focus']"
