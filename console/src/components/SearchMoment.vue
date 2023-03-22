@@ -16,18 +16,16 @@ const handlerSearch = () => {
 <template>
   <div>
     <div
-      class="moments-w-60 flex cursor-pointer items-center transition-all moments-relative"
+      class="flex cursor-pointer items-center transition-all moments-relative sm:max-w-lg inline-flex items-center w-full relative box-border border border-gray-300 h-9 rounded-base overflow-hidden focus-within:border-primary focus-within:shadow-sm sm:max-w-lg"
     >
-      <span
-        class="moments-absolute moments-text-gray-400 moments-leading-10 moments-left-2"
-      >
-        <IconSearch />
+      <span class="moments-absolute moments-leading-10 moments-left-2">
+        <slot name="left"></slot>
       </span>
       <input
         type="text"
         autocomplete="off"
-        placeholder="搜索"
-        class="moments-bg-gray-100 moments-px-8 moments-h-10 moments-border moments-rounded"
+        placeholder="输入关键词搜索"
+        class="outline-0 bg-white antialiased resize-none w-full text-black block transition-all appearance-none h-full px-3 text-sm"
         v-model="searchText"
         @keyup.enter="handlerSearch"
       />

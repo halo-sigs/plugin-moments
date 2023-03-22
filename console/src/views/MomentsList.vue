@@ -132,7 +132,7 @@ const searchFilter = (text: string) => {
       <div class="moments-w-160 moments-flex moments-justify-between">
         <SearchMoment @search="searchFilter" />
         <DatePicker
-          class="moments-h-10"
+          class="range-time"
           range
           v-model:value="momentsRangeTime"
           placeholder="筛选日期范围"

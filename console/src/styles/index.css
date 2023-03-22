@@ -115,30 +115,42 @@
   cursor: col-resize !important;
 }
 
+.range-time {
+  max-width: 15rem;
+  height: 2.25rem;
+}
+
+.range-time .mx-input-wrapper {
+  height: 100%;
+}
+
+.range-time .mx-input {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 0.75rem;
+  padding-right: 2rem;
+  height: 100%;
+  border: 1px solid rgb(209 213 219);
+  box-shadow: none;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: black;
+}
+
+.range-time .mx-input:focus {
+  border-color:#4CCBA0;
+}
+
+.range-time .mx-input:hover {
+  border: 1px solid rgb(209 213 219);
+}
+
 .v-popper--theme-editor-block-dropdown .v-popper__arrow-container {
   display: none;
 }
 
 .btn-icon {
   margin-right: 0 !important;
-}
-
-.moment-header input {
-  height: 2.5rem;
-  display: inline-block;
-  box-sizing: border-box;
-  width: 100%;
-  font-size: 14px;
-  line-height: 1.4;
-  color: #555;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 1px #00000013;
-}
-
-.moment-header .mx-datepicker-range {
-  width: 15rem;
 }
 
 .preview {
@@ -158,12 +170,4 @@
   content: "#";
   font-weight: 400;
   font-size: 16px;
-}
-
-.v-popper__popper.v-popper__popper--hidden {
-  transition: opacity .5s,visibility .5s !important;
-}
-
-.v-popper__popper.v-popper__popper--shown {
-  transition: opacity .5s !important;
 }
