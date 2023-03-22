@@ -284,9 +284,14 @@ const addMediumVerify = () => {
         <div class="moments-right-0 moments-mr-3.5 moments-cursor-pointer">
           <MdiHide
             v-if="formState.spec.visible === 'PRIVATE'"
+            v-tooltip="`公开访问`"
             @click="formState.spec.visible = 'PUBLIC'"
           />
-          <MdiShow v-else @click="formState.spec.visible = 'PRIVATE'" />
+          <MdiShow
+            v-else
+            @click="formState.spec.visible = 'PRIVATE'"
+            v-tooltip="`私有访问`"
+          />
         </div>
 
         <div
