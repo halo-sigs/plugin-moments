@@ -44,12 +44,7 @@ const onVisibleChange = (visible: boolean) => {
         <img :src="medium?.url" class="moments-w-auto" />
       </template>
       <template v-else-if="props.medium.type === 'VIDEO'">
-        <video controls muted>
-          <source
-            :src="medium?.url"
-            :type="medium?.originType"
-            class="moments-max-w-full"
-          />
+        <video controls muted :src="medium?.url">
           当前浏览器不支持该视频播放
         </video>
       </template>

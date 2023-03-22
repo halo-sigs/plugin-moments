@@ -75,14 +75,14 @@ const handleClickMedium = (index: number) => {
     @close="selectedIndex = 0"
   >
     <template #actions>
-      <span @click="selectedIndex = (selectedIndex + 1) % mediums.length">
-        <IconArrowLeft />
-      </span>
       <span
         @click="
           selectedIndex = (selectedIndex + mediums.length - 1) % mediums.length
         "
       >
+        <IconArrowLeft />
+      </span>
+      <span @click="selectedIndex = (selectedIndex + 1) % mediums.length">
         <IconArrowRight />
       </span>
     </template>
