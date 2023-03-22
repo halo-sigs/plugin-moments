@@ -12,6 +12,7 @@ import {
 import { computed, ref } from "vue";
 import MdiHide from "~icons/mdi/hide";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
+import hljs from "highlight.js";
 
 const props = defineProps<{
   moment: Moment;
@@ -23,6 +24,15 @@ const emit = defineEmits<{
   (event: "cancel"): void;
   (event: "dblclick"): void;
 }>();
+
+const vHighlight = {
+  mounted: (el: HTMLElement) => {
+    const blocks = el.querySelectorAll("pre code");
+    blocks.forEach((block: any) => {
+      hljs.highlightBlock(block);
+    });
+  },
+};
 
 const mediums = ref(props.moment.spec.content.medium || []);
 const detailVisible = ref<boolean>(false);
@@ -138,7 +148,7 @@ const handleClickMedium = (index: number) => {
       </div>
     </div>
     <div class="moments-overflow-hidden moments-relative">
-      <div v-html="props.moment.spec.content.html"></div>
+      <div v-highlight v-html="props.moment.spec.content.html"></div>
     </div>
     <div
       v-if="
@@ -162,9 +172,11 @@ const handleClickMedium = (index: number) => {
               />
             </template>
             <template v-else-if="medium.type == 'VIDEO'">
-              <video class="moments-object-cover" preload="metadata">
-                <source :src="medium.url" :type="medium.originType" />
-              </video>
+              <video
+                class="moments-object-cover"
+                preload="metadata"
+                :src="medium.url"
+              ></video>
             </template>
           </div>
         </li>
