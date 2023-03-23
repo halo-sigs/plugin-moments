@@ -9,7 +9,7 @@ import run.halo.app.content.Contributor;
  * Listed moment.
  *
  * @author LIlGG
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Data
 @Builder

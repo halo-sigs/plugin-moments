@@ -10,7 +10,7 @@ import run.halo.moments.MomentQuery;
  * Service for {@link run.halo.moments.Moment}.
  *
  * @author LIlGG
- * @since 0.0.1
+ * @since 1.0.0
  */
 public interface MomentService {
     Mono<ListResult<ListedMoment>> listMoment(MomentQuery query);

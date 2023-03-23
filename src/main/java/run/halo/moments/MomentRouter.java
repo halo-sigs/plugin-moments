@@ -5,7 +5,6 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 import static run.halo.app.theme.router.PageUrlUtils.totalPage;
 
 import java.util.Map;
-
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,6 @@ import run.halo.moments.vo.MomentVo;
 
 
 /**
- *
  * Provides a <code>/moments</code> route for the topic end to handle routing.
  * Topic should contain a <code>moments.html</code> file.
  * <p>
@@ -31,7 +29,7 @@ import run.halo.moments.vo.MomentVo;
  * </p>
  *
  * @author LIlGG
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Component
 public class MomentRouter {

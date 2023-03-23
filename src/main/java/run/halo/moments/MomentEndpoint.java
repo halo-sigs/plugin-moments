@@ -5,7 +5,6 @@ import static org.springdoc.core.fn.builders.content.Builder.contentBuilder;
 import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.fn.builders.schema.Builder;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
 import org.springframework.http.MediaType;
@@ -24,9 +23,8 @@ import run.halo.moments.service.MomentService;
  * A custom endpoint for {@link run.halo.moments.Moment}.
  *
  * @author LIlGG
- * @since 0.0.1
+ * @since 1.0.0
  */
-@Slf4j
 @Component
 @AllArgsConstructor
 public class MomentEndpoint implements CustomEndpoint {
@@ -67,15 +65,7 @@ public class MomentEndpoint implements CustomEndpoint {
     public GroupVersion groupVersion() {
         return GroupVersion.parseAPIVersion("api.plugin.halo.run/v1alpha1");
     }
-
-    private Mono<ServerResponse> updateMomentContent(ServerRequest serverRequest) {
-        return null;
-    }
-
-    private Mono<ServerResponse> updateMoment(ServerRequest serverRequest) {
-        return null;
-    }
-
+    
     private Mono<ServerResponse> createMoment(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(Moment.class)
                 .flatMap(momentService::create)

@@ -27,7 +27,7 @@ import run.halo.moments.vo.MomentVo;
  * A default implementation for {@link MomentFinder}.
  *
  * @author LIlGG
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Finder("momentFinder")
 public class MomentFinderImpl implements MomentFinder {

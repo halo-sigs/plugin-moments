@@ -12,7 +12,7 @@ import run.halo.moments.vo.MomentVo;
  * A finder for {@link run.halo.moments.Moment}.
  *
  * @author LIlGG
- * @since 0.0.1
+ * @since 1.0.0
  */
 public interface MomentFinder {
 

@@ -13,7 +13,7 @@ import run.halo.moments.Stats;
  * Listed moment.
  *
  * @author LIlGG
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Data
 @SuperBuilder

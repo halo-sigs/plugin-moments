@@ -31,7 +31,7 @@ import run.halo.moments.service.MomentService;
  * Listed moment.
  *
  * @author LIlGG
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Component
 public class MomentServiceImpl implements MomentService {

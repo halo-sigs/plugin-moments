@@ -9,8 +9,8 @@ import org.springframework.util.comparator.Comparators;
 /**
  * Moment sorter.
  *
- * @author guqing
- * @since 0.0.1
+ * @author LIlGG
+ * @since 1.0.0
  */
 public enum MomentSorter {
     RELEASE_TIM;
