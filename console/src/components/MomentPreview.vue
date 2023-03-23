@@ -78,15 +78,15 @@ const handleClickMedium = (index: number) => {
   detailVisible.value = true;
 };
 
-const canPlayType = (type: string) => {
-  let obj = document.createElement("video");
-  return !!obj.canPlayType(type);
-};
-
 const getExtname = (type: string) => {
-  const ext = type.split("/")[1];
-  if (ext) return ext.toLowerCase();
-  return undefined;
+  if (!type) {
+    return "";
+  }
+  const ext = type.split("/");
+  if (ext.length > 1) {
+    if (ext) return ext[1].toLowerCase();
+  }
+  return "";
 };
 </script>
 <template>
@@ -94,7 +94,7 @@ const getExtname = (type: string) => {
     v-if="selectedMedium"
     v-model:visible="detailVisible"
     :medium="selectedMedium"
-    @close="selectedIndex = 0"
+    @close="(selectedMedium = undefined) && (selectedIndex = 0)"
   >
     <template #actions>
       <span
@@ -184,14 +184,7 @@ const getExtname = (type: string) => {
               />
             </template>
             <template v-else-if="medium.type == 'VIDEO'">
-              <video
-                v-if="canPlayType(medium.originType)"
-                class="moments-object-cover"
-                preload="metadata"
-                :src="medium.url"
-              ></video>
               <div
-                v-else
                 class="flex h-full w-full flex-col items-center justify-center gap-1 moments-bg-gray-100"
               >
                 <LucideFileVideo />

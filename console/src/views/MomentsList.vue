@@ -146,7 +146,7 @@ const searchFilter = (text: string) => {
     <VLoading v-if="isLoading" />
     <Transition v-else appear name="fade">
       <ul class="box-border divide-y divide-gray-100" role="list">
-        <li v-for="(moment, index) in moments" :key="index">
+        <li v-for="moment in moments" :key="moment.moment.metadata.name">
           <MomentItem
             :key="moment.moment.metadata.name"
             :moment="moment.moment"

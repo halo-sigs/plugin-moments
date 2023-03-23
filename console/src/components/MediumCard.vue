@@ -26,9 +26,14 @@ const canPlayType = (type: string) => {
 };
 
 const getExtname = (type: string) => {
-  const ext = type.split("/")[1];
-  if (ext) return ext.toLowerCase();
-  return undefined;
+  if (!type) {
+    return "";
+  }
+  const ext = type.split("/");
+  if (ext.length > 1) {
+    if (ext) return ext[1].toLowerCase();
+  }
+  return "";
 };
 </script>
 <template>
