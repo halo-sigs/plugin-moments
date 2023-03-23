@@ -11,6 +11,7 @@ import {
 } from "@halo-dev/components";
 import { computed, ref } from "vue";
 import MdiHide from "~icons/mdi/hide";
+import LucideFileVideo from "~icons/lucide/file-video";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js";
 
@@ -75,6 +76,17 @@ const handleDblclick = () => {
 const handleClickMedium = (index: number) => {
   selectedIndex.value = index;
   detailVisible.value = true;
+};
+
+const canPlayType = (type: string) => {
+  let obj = document.createElement("video");
+  return !!obj.canPlayType(type);
+};
+
+const getExtname = (type: string) => {
+  const ext = type.split("/")[1];
+  if (ext) return ext.toLowerCase();
+  return undefined;
 };
 </script>
 <template>
@@ -173,10 +185,20 @@ const handleClickMedium = (index: number) => {
             </template>
             <template v-else-if="medium.type == 'VIDEO'">
               <video
+                v-if="canPlayType(medium.originType)"
                 class="moments-object-cover"
                 preload="metadata"
                 :src="medium.url"
               ></video>
+              <div
+                v-else
+                class="flex h-full w-full flex-col items-center justify-center gap-1 moments-bg-gray-100"
+              >
+                <LucideFileVideo />
+                <span class="font-sans text-xs text-gray-500">
+                  {{ getExtname(medium.originType) }}
+                </span>
+              </div>
             </template>
           </div>
         </li>
