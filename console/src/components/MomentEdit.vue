@@ -77,7 +77,7 @@ const handlerCreateOrUpdateMoment = async () => {
 const insertMoment = async () => {
   formState.value.spec.releaseTime = new Date();
   const { data } = await apiClient.post<Moment>(
-    `/apis/api.plugin.halo.run/v1alpha1/moments`,
+    `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
     formState.value
   );
   emit("save", data);

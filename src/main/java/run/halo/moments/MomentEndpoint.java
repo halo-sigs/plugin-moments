@@ -2,8 +2,10 @@ package run.halo.moments;
 
 import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
 import static org.springdoc.core.fn.builders.content.Builder.contentBuilder;
+import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import lombok.AllArgsConstructor;
 import org.springdoc.core.fn.builders.schema.Builder;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
@@ -13,6 +15,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+import run.halo.app.content.PostRequest;
 import run.halo.app.core.extension.endpoint.CustomEndpoint;
 import run.halo.app.extension.GroupVersion;
 import run.halo.app.extension.ListResult;
@@ -28,39 +31,39 @@ import run.halo.moments.service.MomentService;
 @Component
 @AllArgsConstructor
 public class MomentEndpoint implements CustomEndpoint {
-
+    
     private final MomentService momentService;
     
     @Override
     public RouterFunction<ServerResponse> endpoint() {
         final var tag = "api.plugin.halo.run/v1alpha1/Moment";
         return SpringdocRouteBuilder.route()
-                .GET("moments", this::listMoment, builder -> {
-                    builder.operationId("ListMoments")
-                            .description("List moments.")
-                            .tag(tag)
-                            .response(responseBuilder()
-                                .implementation(ListResult.generateGenericClass(ListedMoment.class))
-                        );
-                    QueryParamBuildUtil.buildParametersFromType(builder, MomentQuery.class);
-                })
-                .POST("moments", this::createMoment,
-                        builder -> builder.operationId("CreateMoment")
-                                .description("Create a Moment.")
-                                .tag(tag)
-                                .requestBody(requestBodyBuilder()
-                                        .required(true)
-                                        .content(contentBuilder()
-                                                .mediaType(MediaType.APPLICATION_JSON_VALUE)
-                                                .schema(Builder.schemaBuilder()
-                                                        .implementation(Moment.class))
-                                        ))
-                                .response(responseBuilder()
-                                        .implementation(Moment.class))
-                )
-                .build();
+            .GET("plugins/PluginMoments/moments", this::listMoment, builder -> {
+                builder.operationId("ListMoments")
+                    .description("List moments.")
+                    .tag(tag)
+                    .response(responseBuilder()
+                        .implementation(ListResult.generateGenericClass(ListedMoment.class))
+                    );
+                QueryParamBuildUtil.buildParametersFromType(builder, MomentQuery.class);
+            })
+            .POST("plugins/PluginMoments/moments", this::createMoment,
+                builder -> builder.operationId("CreateMoment")
+                    .description("Create a Moment.")
+                    .tag(tag)
+                    .requestBody(requestBodyBuilder()
+                        .required(true)
+                        .content(contentBuilder()
+                            .mediaType(MediaType.APPLICATION_JSON_VALUE)
+                            .schema(Builder.schemaBuilder()
+                                .implementation(Moment.class))
+                        ))
+                    .response(responseBuilder()
+                        .implementation(Moment.class))
+            )
+            .build();
     }
-
+    
     @Override
     public GroupVersion groupVersion() {
         return GroupVersion.parseAPIVersion("api.plugin.halo.run/v1alpha1");
@@ -68,14 +71,14 @@ public class MomentEndpoint implements CustomEndpoint {
     
     private Mono<ServerResponse> createMoment(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(Moment.class)
-                .flatMap(momentService::create)
-                .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
+            .flatMap(momentService::create)
+            .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
     }
-
+    
     private Mono<ServerResponse> listMoment(ServerRequest serverRequest) {
         MomentQuery query = new MomentQuery(serverRequest.queryParams());
         return momentService.listMoment(query)
-                .flatMap(listedMoments -> ServerResponse.ok().bodyValue(listedMoments));
+            .flatMap(listedMoments -> ServerResponse.ok().bodyValue(listedMoments));
     }
-
+    
 }
