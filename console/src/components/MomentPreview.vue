@@ -8,6 +8,8 @@ import {
   IconMore,
   IconArrowLeft,
   IconArrowRight,
+  VDropdown,
+  VDropdownItem,
 } from "@halo-dev/components";
 import { computed, ref } from "vue";
 import MdiHide from "~icons/mdi/hide";
@@ -29,6 +31,7 @@ const emit = defineEmits<{
 const vHighlight = {
   mounted: (el: HTMLElement) => {
     const blocks = el.querySelectorAll("pre code");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     blocks.forEach((block: any) => {
       hljs.highlightBlock(block);
     });
@@ -130,7 +133,7 @@ const getExtname = (type: string) => {
         class="moments-absolute moments-right-3.5"
         v-permission="['plugin:moments:manage']"
       >
-        <FloatingDropdown
+        <VDropdown
           compute-transform-origin
           :triggers="['hover', 'focus']"
           :popperTriggers="['hover', 'focus']"
@@ -139,24 +142,12 @@ const getExtname = (type: string) => {
             class="h-full w-full moments-text-gray-500 moments-cursor-pointer"
           />
           <template #popper>
-            <div class="moments-w-48 moments-p-2">
-              <ul class="space-y-1">
-                <li
-                  class="flex cursor-pointer items-center rounded px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                  @click="handlerEditor"
-                >
-                  <span class="truncate">编辑</span>
-                </li>
-                <li
-                  class="flex cursor-pointer items-center rounded px-3 py-2 text-sm text-gray-600 hover:bg-gray-100"
-                  @click="removeMoment"
-                >
-                  <span class="truncate moments-text-red-500">删除</span>
-                </li>
-              </ul>
-            </div>
+            <VDropdownItem @click="handlerEditor"> 编辑 </VDropdownItem>
+            <VDropdownItem type="danger" @click="removeMoment">
+              删除
+            </VDropdownItem>
           </template>
-        </FloatingDropdown>
+        </VDropdown>
       </div>
     </div>
     <div class="moments-overflow-hidden moments-relative">

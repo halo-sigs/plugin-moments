@@ -6,7 +6,6 @@ import { markRaw } from "vue";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 
 export default definePlugin({
-  name: "PluginMoments",
   components: {},
   routes: [
     {

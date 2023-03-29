@@ -170,7 +170,10 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
     if (!addMediumVerify()) {
       return false;
     }
-    let fileType = media.type!.split("/")[0];
+    if (!media.type) {
+      return false;
+    }
+    let fileType = media.type.split("/")[0];
     formState.value.spec.content.medium?.push({
       type: MediumWhitelist.get(fileType),
       url: media.url,
@@ -184,7 +187,6 @@ const saveDisable = computed(() => {
   if (medium !== undefined && medium.length > 0) {
     return false;
   }
-  // TODO 更新状态下初始化默认可发送状态有问题
   if (!isEditorEmpty.value) {
     return false;
   }

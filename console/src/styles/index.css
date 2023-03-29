@@ -1,24 +1,24 @@
-.halo-moment-editor {
+.moments-content .halo-moment-editor {
   box-sizing: border-box;
 }
 
-.halo-moment-editor .editor-header {
+.moments-content .halo-moment-editor .editor-header {
   height: 48px;
 }
 
-.halo-moment-editor .editor-content {
+.moments-content .halo-moment-editor .editor-content {
   height: 100%;
   width: 100%;
 }
 
-.halo-moment-editor .editor-content .ProseMirror {
+.moments-content .halo-moment-editor .editor-content .ProseMirror {
   height: 100%;
   max-height: 50vh;
   overflow: auto;
   outline: none !important;
 }
 
-.halo-moment-editor
+.moments-content .halo-moment-editor
   .editor-content
   .ProseMirror
   p.is-editor-empty:first-child::before {
@@ -29,28 +29,28 @@
   height: 0;
 }
 
-.halo-moment-editor .editor-content .ProseMirror pre {
+.moments-content .halo-moment-editor .editor-content .ProseMirror pre {
   padding: 0.75rem 1rem;
   margin: 0;
 }
 
-.halo-moment-editor .editor-content .ProseMirror pre code {
+.moments-content .halo-moment-editor .editor-content .ProseMirror pre code {
   color: inherit;
   background: none;
   font-size: 0.8rem;
 }
 
-.halo-moment-editor .editor-content .ProseMirror ul[data-type="taskList"] {
+.moments-content .halo-moment-editor .editor-content .ProseMirror ul[data-type="taskList"] {
   list-style: none;
   padding: 0;
 }
 
-.halo-moment-editor .editor-content .ProseMirror ul[data-type="taskList"] li {
+.moments-content .halo-moment-editor .editor-content .ProseMirror ul[data-type="taskList"] li {
   display: flex;
   align-items: center;
 }
 
-.halo-moment-editor
+.moments-content .halo-moment-editor
   .editor-content
   .ProseMirror
   ul[data-type="taskList"]
@@ -60,11 +60,11 @@
   margin-right: 0.5rem;
 }
 
-.halo-moment-editor .editor-content .ProseMirror code br {
+.moments-content .halo-moment-editor .editor-content .ProseMirror code br {
   display: block;
 }
 
-.halo-moment-editor .editor-content .ProseMirror table {
+.moments-content .halo-moment-editor .editor-content .ProseMirror table {
   border-collapse: collapse;
   table-layout: fixed;
   width: 100%;
@@ -72,12 +72,12 @@
   overflow: hidden;
 }
 
-.halo-moment-editor .editor-content .ProseMirror p {
+.moments-content .halo-moment-editor .editor-content .ProseMirror p {
   margin-bottom: 0;
   margin-top: 0;
 }
 
-.halo-moment-editor .editor-content .ProseMirror table .selectedCell:after {
+.moments-content .halo-moment-editor .editor-content .ProseMirror table .selectedCell:after {
   z-index: 2;
   position: absolute;
   content: "";
@@ -89,8 +89,8 @@
   pointer-events: none;
 }
 
-.halo-moment-editor .editor-content .ProseMirror table th,
-.halo-moment-editor .editor-content .ProseMirror table td {
+.moments-content .halo-moment-editor .editor-content .ProseMirror table th,
+.moments-content .halo-moment-editor .editor-content .ProseMirror table td {
   min-width: 1em;
   border: 2px solid #ced4da;
   padding: 3px 5px;
@@ -98,13 +98,13 @@
   box-sizing: border-box;
   position: relative;
 }
-.halo-moment-editor .editor-content .ProseMirror table th > *,
-.halo-moment-editor .editor-content .ProseMirror table td > * {
+.moments-content .halo-moment-editor .editor-content .ProseMirror table th > *,
+.moments-content .halo-moment-editor .editor-content .ProseMirror table td > * {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.halo-moment-editor .editor-content .ProseMirror table .column-resize-handle {
+.moments-content .halo-moment-editor .editor-content .ProseMirror table .column-resize-handle {
   position: absolute;
   right: -2px;
   top: 0;
@@ -115,16 +115,16 @@
   cursor: col-resize !important;
 }
 
-.range-time {
+.moments-content .range-time {
   max-width: 15rem;
   height: 2.25rem;
 }
 
-.range-time .mx-input-wrapper {
+.moments-content .range-time .mx-input-wrapper {
   height: 100%;
 }
 
-.range-time .mx-input {
+.moments-content .range-time .mx-input {
   padding-top: 0;
   padding-bottom: 0;
   padding-left: 0.75rem;
@@ -137,36 +137,36 @@
   color: black;
 }
 
-.range-time .mx-input:focus {
+.moments-content .range-time .mx-input:focus {
   border-color:#4CCBA0;
 }
 
-.range-time .mx-input:hover {
+.moments-content .range-time .mx-input:hover {
   border: 1px solid rgb(209 213 219);
 }
 
-.v-popper--theme-editor-block-dropdown .v-popper__arrow-container {
+.moments-content .v-popper--theme-editor-block-dropdown .v-popper__arrow-container {
   display: none;
 }
 
-.btn-icon {
+.moments-content .btn-icon {
   margin-right: 0 !important;
 }
 
-.preview {
+.moments-content .preview {
   font-size: 14px;
 }
 
-.preview a {
+.moments-content .preview a {
   color: #5783f7;
   text-decoration: none;
 }
 
-.preview a.post-link {
+.moments-content .preview a.post-link {
   font-weight: 700;
 }
 
-.preview a.post-link::before {
+.moments-content .preview a.post-link::before {
   content: "#";
   font-weight: 400;
   font-size: 16px;

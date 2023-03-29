@@ -28,12 +28,7 @@ const inputIntervalTime = 1000;
 const timeInterval = ref(-1);
 const inputTimestamp = ref<number>(0);
 
-const {
-  data: posts,
-  isLoading,
-  isFetching,
-  refetch,
-} = useQuery<ListedPost[]>({
+const { data: posts } = useQuery<ListedPost[]>({
   queryKey: ["posts", page, size, keyword],
   queryFn: async () => {
     const labelSelector: string[] = ["content.halo.run/deleted=false"];
@@ -166,6 +161,5 @@ defineExpose({
 .group.is-selected .post-text {
   color: rgb(17 24 39);
   font-weight: 500;
-
 }
 </style>

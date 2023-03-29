@@ -8,7 +8,6 @@ import { useQuery } from "@tanstack/vue-query";
 import apiClient from "@/utils/api-client";
 import MomentItem from "@/components/MomentItem.vue";
 import MomentEdit from "@/components/MomentEdit.vue";
-import SearchMoment from "@/components/SearchMoment.vue";
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn";
@@ -64,7 +63,6 @@ const endDate = computed(() => {
 const {
   data: moments,
   isLoading,
-  isFetching,
   refetch,
 } = useQuery<ListedMoment[]>({
   queryKey: [
@@ -116,9 +114,7 @@ const {
   refetchOnWindowFocus: false,
 });
 
-const searchFilter = (text: string) => {
-  keyword.value = text;
-};
+const searchText = ref("");
 </script>
 <template>
   <VPageHeader title="瞬间">
@@ -127,10 +123,15 @@ const searchFilter = (text: string) => {
     </template>
   </VPageHeader>
 
-  <div class="moments-mt-3">
+  <div class="moments-mt-3 moments-content">
     <div class="moment-header moments-flex moments-justify-center moments-mb-3">
       <div class="moments-w-160 moments-flex moments-justify-between">
-        <SearchMoment @search="searchFilter" />
+        <FormKit
+          v-model="searchText"
+          placeholder="输入关键词搜索"
+          type="text"
+          @keyup.enter="keyword = searchText"
+        ></FormKit>
         <DatePicker
           class="range-time"
           range
