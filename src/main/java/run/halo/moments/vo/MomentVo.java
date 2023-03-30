@@ -20,20 +20,20 @@ import run.halo.moments.Stats;
 @ToString
 @EqualsAndHashCode
 public class MomentVo {
-
+    
     private MetadataOperator metadata;
-
+    
     private Moment.MomentSpec spec;
-
+    
     private ContributorVo owner;
-
+    
     private Stats stats;
-
+    
     public static MomentVo from(Moment moment) {
         Assert.notNull(moment, "The moment must not be null.");
         return MomentVo.builder()
-                .metadata(moment.getMetadata())
-                .spec(moment.getSpec())
-                .build();
+            .metadata(moment.getMetadata())
+            .spec(moment.getSpec())
+            .build();
     }
 }

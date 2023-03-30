@@ -18,18 +18,18 @@ import run.halo.app.core.extension.User;
 @EqualsAndHashCode
 public class ContributorVo {
     private String name;
-
+    
     private String avatar;
-
+    
     private String bio;
-
+    
     private String displayName;
-
+    
     public static ContributorVo from(User user) {
         return builder().name(user.getMetadata().getName())
-                .displayName(user.getSpec().getDisplayName())
-                .avatar(user.getSpec().getAvatar())
-                .bio(user.getSpec().getBio())
-                .build();
+            .displayName(user.getSpec().getDisplayName())
+            .avatar(user.getSpec().getAvatar())
+            .bio(user.getSpec().getBio())
+            .build();
     }
 }

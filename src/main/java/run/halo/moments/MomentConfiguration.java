@@ -10,7 +10,7 @@ import run.halo.app.core.extension.endpoint.CustomEndpointsBuilder;
 
 @Configuration
 public class MomentConfiguration {
-
+    
     @Bean
     RouterFunction<ServerResponse> customEndpoints(ApplicationContext context) {
         var builder = new CustomEndpointsBuilder();

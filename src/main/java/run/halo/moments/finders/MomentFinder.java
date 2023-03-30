@@ -7,7 +7,6 @@ import run.halo.app.extension.ListResult;
 import run.halo.moments.vo.MomentVo;
 
 
-
 /**
  * A finder for {@link run.halo.moments.Moment}.
  *
@@ -15,8 +14,8 @@ import run.halo.moments.vo.MomentVo;
  * @since 1.0.0
  */
 public interface MomentFinder {
-
+    
     Flux<MomentVo> listAll();
-
+    
     Mono<ListResult<MomentVo>> list(@Nullable Integer page, @Nullable Integer size);
 }

@@ -14,13 +14,13 @@ import run.halo.app.content.Contributor;
 @Data
 @Builder
 public class ListedMoment {
-
+    
     @Schema(required = true)
     private Moment moment;
-
+    
     @Schema(required = true)
     private Contributor owner;
-
+    
     @Schema(required = true)
     private Stats stats;
 }
