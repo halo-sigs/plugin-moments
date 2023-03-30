@@ -5,7 +5,6 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 import static run.halo.app.theme.router.PageUrlUtils.totalPage;
 
 import java.util.Map;
-
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -54,7 +53,10 @@ public class MomentRouter {
     private HandlerFunction<ServerResponse> handlerFunction() {
         return request -> ServerResponse.ok().render("moments",
             Map.of("moments", momentList(request),
-                ModelConst.TEMPLATE_ID, "moments"));
+                ModelConst.TEMPLATE_ID, "moments",
+                "title", Mono.fromCallable(() -> this.settingFetcher.get(
+                    "base").get("title").asText("瞬间")))
+        );
     }
     
     
