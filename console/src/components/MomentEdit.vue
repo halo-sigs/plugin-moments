@@ -235,7 +235,7 @@ const addMediumVerify = () => {
 
 <template>
   <div
-    class="card moments-bg-white moments-shrink moments-border moments-rounded-md moments-w-160 moments-overflow-hidden"
+    class="card moments-bg-white moments-shrink moments-border moments-rounded-md moments-w-160 moments-overflow-hidden focus-within:shadow-lg"
   >
     <AttachmentSelectorModal
       v-model:visible="attachmentSelectorModal"

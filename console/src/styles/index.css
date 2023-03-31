@@ -12,8 +12,7 @@
 }
 
 .moments-content .halo-moment-editor .editor-content .ProseMirror {
-  height: 100%;
-  max-height: 50vh;
+  min-height: 7.25rem;
   overflow: auto;
   outline: none !important;
 }
