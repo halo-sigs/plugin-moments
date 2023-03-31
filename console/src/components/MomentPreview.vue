@@ -135,8 +135,8 @@ const getExtname = (type: string) => {
       >
         <VDropdown
           compute-transform-origin
-          :triggers="['hover', 'focus']"
-          :popperTriggers="['hover', 'focus']"
+          :triggers="['click']"
+          :popperTriggers="['click']"
         >
           <IconMore
             class="h-full w-full moments-text-gray-500 moments-cursor-pointer"
