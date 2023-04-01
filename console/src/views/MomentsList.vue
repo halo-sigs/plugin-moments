@@ -128,16 +128,23 @@ const searchText = ref("");
       <div
         class="moment-header moments-flex moments-justify-center moments-mb-3"
       >
-        <div class="moments-w-[40rem] moments-flex moments-justify-between">
-          <FormKit
-            v-model="searchText"
-            placeholder="输入关键词搜索"
-            type="text"
-            @keyup.enter="keyword = searchText"
-          ></FormKit>
+        <div
+          class="moments-w-[25rem] md:moments-w-[40rem] moments-flex moments-justify-between"
+        >
+          <div class="moments-max-w-[10rem] md:moments-max-w-auto">
+            <FormKit
+              v-model="searchText"
+              placeholder="输入关键词搜索"
+              type="text"
+              @keyup.enter="keyword = searchText"
+            ></FormKit>
+          </div>
+
           <DatePicker
-            class="range-time"
+            input-class=""
+            class="range-time moments-max-w-[13rem] md:moments-max-w-[15rem]"
             range
+            :editable="false"
             v-model:value="momentsRangeTime"
             placeholder="筛选日期范围"
           />
@@ -165,7 +172,7 @@ const searchText = ref("");
       v-if="!hasPrevious && !!hasNext"
     >
       <div
-        class="moments-bg-white moments-flex moments-justify-center moments-w-[40rem] moments-my-2 moments-h-20 moments-border moments-rounded-md moments-overflow-hidden"
+        class="moments-bg-white moments-flex moments-justify-center moments-w-[25rem] md:moments-w-[40rem] moments-my-2 moments-h-20 moments-border moments-rounded-md moments-overflow-hidden"
       >
         <VPagination
           v-model:page="page"

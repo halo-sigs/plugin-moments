@@ -111,7 +111,6 @@
 }
 
 .moments-content .range-time {
-  max-width: 15rem;
   height: 2.25rem;
 }
 
@@ -165,4 +164,12 @@
   content: "#";
   font-weight: 400;
   font-size: 16px;
+}
+
+.moments-content .moment-preview-html code {
+  border-radius: 0.375rem;
+}
+
+.moments-content .moment-preview-html code {
+  font-size: .8rem;
 }

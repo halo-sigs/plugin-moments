@@ -113,11 +113,11 @@ const getExtname = (type: string) => {
     </template>
   </PreviewDetailModal>
   <div
-    class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-w-[40rem] moments-p-3.5 moments-relative"
+    class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-p-3.5 moments-relative moments-w-[25rem] md:moments-w-[40rem]"
     @dblclick="handleDblclick"
   >
     <div
-      class="header moments-flex moments-items-center moments-justify-between"
+      class="header moments-flex moments-items-center moments-justify-between moments-h-5"
     >
       <div class="moments-flex moments-items-center">
         <div class="moments-block moments-text-xs moments-text-gray-500">
@@ -138,9 +138,7 @@ const getExtname = (type: string) => {
           :triggers="['click']"
           :popperTriggers="['click']"
         >
-          <IconMore
-            class="h-full w-full moments-text-gray-500 moments-cursor-pointer"
-          />
+          <IconMore class="moments-text-gray-500 moments-cursor-pointer" />
           <template #popper>
             <VDropdownItem @click="handlerEditor"> 编辑 </VDropdownItem>
             <VDropdownItem type="danger" @click="deleteMoment">
@@ -150,7 +148,9 @@ const getExtname = (type: string) => {
         </VDropdown>
       </div>
     </div>
-    <div class="moments-overflow-hidden moments-relative">
+    <div
+      class="moment-preview-html moments-overflow-hidden moments-relative moments-pt-1"
+    >
       <div v-highlight v-html="props.moment.spec.content.html"></div>
     </div>
     <div
