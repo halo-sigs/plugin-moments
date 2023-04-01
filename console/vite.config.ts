@@ -6,48 +6,44 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import Icons from "unplugin-icons/vite";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-  if (mode === "dev") {
-    commonConfig.build.outDir = fileURLToPath(
-      new URL("../build/resources/main/console", import.meta.url)
-    );
-  }
-  return commonConfig;
-});
+export default ({ mode }: { mode: string }) => {
+  const isProduction = mode === "production";
+  const outDir = isProduction
+    ? "../src/main/resources/console"
+    : "../build/resources/main/console";
 
-const commonConfig = {
-  plugins: [vue(), vueJsx(), Icons({ compiler: "vue3" })],
-  resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+  return defineConfig({
+    plugins: [vue(), vueJsx(), Icons({ compiler: "vue3" })],
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+      },
     },
-  },
-  build: {
-    outDir: fileURLToPath(
-      new URL("../src/main/resources/console", import.meta.url)
-    ),
-    emptyOutDir: true,
-    lib: {
-      entry: "src/index.ts",
-      name: "PluginMoments",
-      formats: ["iife"],
-      fileName: () => "main.js",
-    },
-    rollupOptions: {
-      external: [
-        "vue",
-        "vue-router",
-        "@halo-dev/shared",
-        "@halo-dev/components",
-      ],
-      output: {
-        globals: {
-          vue: "Vue",
-          "vue-router": "VueRouter",
-          "@halo-dev/components": "HaloComponents",
-          "@halo-dev/console-shared": "HaloConsoleShared",
+    build: {
+      outDir,
+      emptyOutDir: true,
+      lib: {
+        entry: "src/index.ts",
+        name: "PluginMoments",
+        formats: ["iife"],
+        fileName: () => "main.js",
+      },
+      rollupOptions: {
+        external: [
+          "vue",
+          "vue-router",
+          "@halo-dev/shared",
+          "@halo-dev/components",
+        ],
+        output: {
+          globals: {
+            vue: "Vue",
+            "vue-router": "VueRouter",
+            "@halo-dev/components": "HaloComponents",
+            "@halo-dev/console-shared": "HaloConsoleShared",
+          },
         },
       },
     },
-  },
+  });
 };

@@ -1,16 +1,14 @@
 <script lang="ts" setup>
-import { VButton } from "@halo-dev/components";
+import { VButton, IconEye, IconEyeOff } from "@halo-dev/components";
 import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/types";
 import apiClient from "@/utils/api-client";
 import { Toast } from "@halo-dev/components";
 import type { AttachmentLike } from "@halo-dev/console-shared";
 import { computed, nextTick, onMounted, ref, toRaw } from "vue";
-import MediumCard from "./MediumCard.vue";
+import MediaCard from "./MediaCard.vue";
 import TextEditor from "./TextEditor.vue";
 import SendMoment from "~icons/ic/sharp-send";
 import MdiFileImageBox from "~icons/mdi/file-image-box";
-import MdiShow from "~icons/mdi/show";
-import MdiHide from "~icons/mdi/hide";
 import cloneDeep from "lodash.clonedeep";
 
 const props = withDefaults(
@@ -65,7 +63,7 @@ const handlerCreateOrUpdateMoment = async () => {
     if (isUpdateMode.value) {
       updateMoment();
     } else {
-      insertMoment();
+      createMoment();
     }
   } catch (error) {
     console.error(error);
@@ -74,7 +72,7 @@ const handlerCreateOrUpdateMoment = async () => {
   }
 };
 
-const insertMoment = async () => {
+const createMoment = async () => {
   formState.value.spec.releaseTime = new Date();
   const { data } = await apiClient.post<Moment>(
     `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
@@ -83,7 +81,6 @@ const insertMoment = async () => {
   emit("save", data);
   handleReset();
   Toast.success("发布成功");
-  return data;
 };
 
 const updateMoment = async () => {
@@ -93,7 +90,6 @@ const updateMoment = async () => {
   );
   emit("update", data);
   Toast.success("发布成功");
-  return data;
 };
 
 const handleReset = () => {
@@ -101,6 +97,19 @@ const handleReset = () => {
   isEditorEmpty.value = true;
 };
 
+const supportImageTypes: string[] = [
+  "image/apng",
+  "image/avif",
+  "image/bmp",
+  "image/gif",
+  "image/x-icon",
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/svg+xml",
+  "image/tiff",
+  "image/webp",
+];
 const MediumWhitelist: Map<string, MomentMediaTypeEnum> = new Map([
   ["image", "PHOTO"],
   ["video", "VIDEO"],
@@ -142,7 +151,7 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
     type?: string;
   }[];
 
-  //目前只能弹窗进行提醒，无法做到选择的时候就指定特定类型文件
+  //TODO 目前只能弹窗进行提醒，无法做到选择的时候就指定特定类型文件, 期望后续文件选择组件能支持传入类型
   for (let media of medias) {
     let type = media.type;
     if (!type) {
@@ -150,11 +159,11 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
       nextTick(() => {
         attachmentSelectorModal.value = true;
       });
-
       return;
     }
+    const isImage = supportImageTypes.includes(type);
     let fileType = type.split("/")[0];
-    if (!MediumWhitelist.has(fileType)) {
+    if (!MediumWhitelist.has(fileType) && !isImage) {
       Toast.error("暂不支持【" + type + "】类型的文件");
       nextTick(() => {
         attachmentSelectorModal.value = true;
@@ -201,13 +210,13 @@ const saveDisable = computed(() => {
   return true;
 });
 
-const removeMedium = (medium: MomentMedia) => {
+const removeMedium = (media: MomentMedia) => {
   let formMedium = formState.value.spec.content.medium;
   if (!formMedium) {
     return;
   }
-  let index: number | undefined = formMedium.indexOf(medium);
-  if (index != -1) {
+  let index: number = formMedium.indexOf(medium);
+  if (index > -1) {
     formMedium.splice(index, 1);
   }
 };
@@ -235,7 +244,7 @@ const addMediumVerify = () => {
 
 <template>
   <div
-    class="card moments-bg-white moments-shrink moments-border moments-rounded-md moments-w-160 moments-overflow-hidden focus-within:shadow-lg"
+    class="card moments-bg-white moments-shrink moments-border moments-rounded-md moments-w-[40rem] moments-overflow-hidden focus-within:shadow-lg"
   >
     <AttachmentSelectorModal
       v-model:visible="attachmentSelectorModal"
@@ -245,7 +254,7 @@ const addMediumVerify = () => {
       v-model:raw="formState.spec.content.raw"
       v-model:html="formState.spec.content.html"
       v-model:isEmpty="isEditorEmpty"
-      class="moments-min-h-36 moments-p-3.5"
+      class="moments-min-h-[9rem] moments-p-3.5"
     />
     <div
       v-if="
@@ -256,11 +265,11 @@ const addMediumVerify = () => {
     >
       <ul role="list">
         <li
-          v-for="(medium, index) in formState.spec.content.medium"
+          v-for="(media, index) in formState.spec.content.medium"
           :key="index"
           class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-20"
         >
-          <MediumCard :medium="medium" @remove="removeMedium"></MediumCard>
+          <MediaCard :media="media" @remove="removeMedium"></MediaCard>
         </li>
         <li class="moments-inline-block">
           <div></div>
@@ -284,15 +293,15 @@ const addMediumVerify = () => {
 
       <div class="moments-flex moments-items-center">
         <div class="moments-right-0 moments-mr-3.5 moments-cursor-pointer">
-          <MdiHide
+          <IconEyeOff
             v-if="formState.spec.visible === 'PRIVATE'"
-            v-tooltip="`公开访问`"
+            v-tooltip="`私有访问`"
             @click="formState.spec.visible = 'PUBLIC'"
           />
-          <MdiShow
+          <IconEye
             v-else
             @click="formState.spec.visible = 'PRIVATE'"
-            v-tooltip="`私有访问`"
+            v-tooltip="`公开访问`"
           />
         </div>
 

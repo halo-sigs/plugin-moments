@@ -1,9 +1,9 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@halo-dev/api-client': ^2.3.0
-  '@halo-dev/components': ^1.2.0
-  '@halo-dev/console-shared': ^2.3.0
+  '@halo-dev/api-client': ^2.4.0
+  '@halo-dev/components': ^1.3.0
+  '@halo-dev/console-shared': ^2.4.0
   '@halo-dev/richtext-editor': 0.0.0-alpha.19
   '@iconify/json': ^2.2.31
   '@rushstack/eslint-patch': ^1.2.0
@@ -47,9 +47,9 @@ specifiers:
   vue-tsc: ^0.35.2
 
 dependencies:
-  '@halo-dev/api-client': 2.3.0
-  '@halo-dev/components': 1.2.0_lavcef455lp3wtm2mcdrwhgymm
-  '@halo-dev/console-shared': 2.3.0_lavcef455lp3wtm2mcdrwhgymm
+  '@halo-dev/api-client': 2.4.0
+  '@halo-dev/components': 1.3.0_lavcef455lp3wtm2mcdrwhgymm
+  '@halo-dev/console-shared': 2.4.0_lavcef455lp3wtm2mcdrwhgymm
   '@halo-dev/richtext-editor': 0.0.0-alpha.19_htj2fswe27wsqb7rziordzcpiq
   '@tanstack/vue-query': 4.26.1_vue@3.2.47
   '@tiptap/pm': 2.0.0-beta.220
@@ -574,12 +574,12 @@ packages:
       '@floating-ui/core': 0.3.1
     dev: false
 
-  /@halo-dev/api-client/2.3.0:
-    resolution: {integrity: sha512-llu60ioQEp/sGUduTos5SLXVXEJ0fl5dLionr6oS9Ykwu1xbuFFpIcNmlCJZX/qZb/ZRfM9WOAxPA1EL0sn64w==}
+  /@halo-dev/api-client/2.4.0:
+    resolution: {integrity: sha512-QhA2+oLkiWBHVn/SRXla/Db38LSA7XJUwDM6PfGHxlwj7v48FP1T1yfTnxAmQ07/ZDfR/8IH6wZxU//OMFCTog==}
     dev: false
 
-  /@halo-dev/components/1.2.0_lavcef455lp3wtm2mcdrwhgymm:
-    resolution: {integrity: sha512-GoQvGVnpYvaJxoZrSavVYaz+rvKQ+xmT8UHM2P9urau1xF7CZqn79lMGn/7Mv5nl1ieezOFG4zFF6LC78vHH5g==}
+  /@halo-dev/components/1.3.0_lavcef455lp3wtm2mcdrwhgymm:
+    resolution: {integrity: sha512-tlB6EcDXyYTTWoxT8JS7c1EkRZ49Ss59m6cwij9pa+yJCv4dCxt3E+iDV3gaThdifKRImPgiTM05GSp1NQBdCg==}
     peerDependencies:
       vue: ^3.2.37
       vue-router: ^4.0.16
@@ -594,12 +594,13 @@ packages:
       '@codemirror/state': 6.2.0
       '@codemirror/view': 6.9.1
       codemirror: 6.0.1
+      floating-vue: 2.0.0-beta.20_vue@3.2.47
       vue: 3.2.47
       vue-router: 4.1.6_vue@3.2.47
     dev: false
 
-  /@halo-dev/console-shared/2.3.0_lavcef455lp3wtm2mcdrwhgymm:
-    resolution: {integrity: sha512-7JYSjvgyQpyFFiTOzMUVhzdUEP1WEgpkBfozZJXo0lkwfPvT+8iqeqOHhVMxL1amiI5RhRA0jnZXDRV1PCH6SA==}
+  /@halo-dev/console-shared/2.4.0_lavcef455lp3wtm2mcdrwhgymm:
+    resolution: {integrity: sha512-Q5AF2CKDaIyGrq47dipBTQ0ttnremQnmMiJTRs2K4GAcWqkYD0gciI8Owj++v7+ZD8jzURsuZya0IjmwOkX3qg==}
     peerDependencies:
       vue: ^3.2.37
       vue-router: ^4.0.16

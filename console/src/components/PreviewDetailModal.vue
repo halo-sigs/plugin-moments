@@ -5,11 +5,11 @@ import { VModal, VButton, VSpace } from "@halo-dev/components";
 const props = withDefaults(
   defineProps<{
     visible: boolean;
-    medium: MomentMedia;
+    media: MomentMedia;
   }>(),
   {
     visible: false,
-    medium: undefined,
+    media: undefined,
   }
 );
 
@@ -40,11 +40,11 @@ const onVisibleChange = (visible: boolean) => {
     <div
       class="overflow-hidden bg-white moments-flex moments-items-center moments-justify-center moments-h-full"
     >
-      <template v-if="props.medium.type === 'PHOTO'">
-        <img :src="medium?.url" class="moments-w-auto" />
+      <template v-if="props.media.type === 'PHOTO'">
+        <img :src="media?.url" class="moments-w-auto" />
       </template>
-      <template v-else-if="props.medium.type === 'VIDEO'">
-        <video controls muted :src="medium?.url">
+      <template v-else-if="props.media.type === 'VIDEO'">
+        <video controls muted :src="media?.url">
           当前浏览器不支持该视频播放
         </video>
       </template>

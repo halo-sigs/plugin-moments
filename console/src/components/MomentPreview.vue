@@ -10,9 +10,9 @@ import {
   IconArrowRight,
   VDropdown,
   VDropdownItem,
+  IconEyeOff,
 } from "@halo-dev/components";
 import { computed, ref } from "vue";
-import MdiHide from "~icons/mdi/hide";
 import LucideFileVideo from "~icons/lucide/file-video";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js";
@@ -41,14 +41,14 @@ const vHighlight = {
 const mediums = ref(props.moment.spec.content.medium || []);
 const detailVisible = ref<boolean>(false);
 const selectedIndex = ref<number>(0);
-const selectedMedium = computed(() => {
+const selectedMedia = computed(() => {
   if (mediums.value.length == 0) {
     return undefined;
   }
   return mediums.value[selectedIndex.value];
 });
 
-const removeMoment = () => {
+const deleteMoment = () => {
   Dialog.warning({
     title: "确定要删除该瞬间吗？",
     description: "该操作不可逆",
@@ -94,10 +94,10 @@ const getExtname = (type: string) => {
 </script>
 <template>
   <PreviewDetailModal
-    v-if="selectedMedium"
+    v-if="selectedMedia"
     v-model:visible="detailVisible"
-    :medium="selectedMedium"
-    @close="(selectedMedium = undefined) && (selectedIndex = 0)"
+    :media="selectedMedia"
+    @close="(selectedMedia = undefined) && (selectedIndex = 0)"
   >
     <template #actions>
       <span
@@ -113,7 +113,7 @@ const getExtname = (type: string) => {
     </template>
   </PreviewDetailModal>
   <div
-    class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-w-160 moments-p-3.5 moments-relative"
+    class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-w-[40rem] moments-p-3.5 moments-relative"
     @dblclick="handleDblclick"
   >
     <div
@@ -125,7 +125,7 @@ const getExtname = (type: string) => {
         </div>
 
         <div v-if="props.moment.spec.visible == 'PRIVATE'" class="moments-ml-2">
-          <MdiHide class="moments-text-xs moments-text-gray-500" />
+          <IconEyeOff class="moments-text-xs moments-text-gray-500" />
         </div>
       </div>
 
@@ -143,7 +143,7 @@ const getExtname = (type: string) => {
           />
           <template #popper>
             <VDropdownItem @click="handlerEditor"> 编辑 </VDropdownItem>
-            <VDropdownItem type="danger" @click="removeMoment">
+            <VDropdownItem type="danger" @click="deleteMoment">
               删除
             </VDropdownItem>
           </template>
@@ -162,25 +162,25 @@ const getExtname = (type: string) => {
     >
       <ul role="list">
         <li
-          v-for="(medium, index) in props.moment.spec.content.medium"
+          v-for="(media, index) in props.moment.spec.content.medium"
           :key="index"
           class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-28 moments-cursor-pointer"
         >
           <div class="aspect-w-10 aspect-h-8" @click="handleClickMedium(index)">
-            <template v-if="medium.type == 'PHOTO'">
+            <template v-if="media.type == 'PHOTO'">
               <img
-                :src="medium.url"
+                :src="media.url"
                 class="moments-object-cover"
                 loading="lazy"
               />
             </template>
-            <template v-else-if="medium.type == 'VIDEO'">
+            <template v-else-if="media.type == 'VIDEO'">
               <div
                 class="flex h-full w-full flex-col items-center justify-center gap-1 moments-bg-gray-100"
               >
                 <LucideFileVideo />
                 <span class="font-sans text-xs text-gray-500">
-                  {{ getExtname(medium.originType) }}
+                  {{ getExtname(media.originType) }}
                 </span>
               </div>
             </template>

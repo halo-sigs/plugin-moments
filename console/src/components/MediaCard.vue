@@ -5,19 +5,19 @@ import LucideFileVideo from "~icons/lucide/file-video";
 
 const props = withDefaults(
   defineProps<{
-    medium: MomentMedia;
+    media: MomentMedia;
   }>(),
   {
-    medium: undefined,
+    media: undefined,
   }
 );
 
 const emit = defineEmits<{
-  (event: "remove", medium: MomentMedia): void;
+  (event: "remove", media: MomentMedia): void;
 }>();
 
 const handleRemoveClick = () => {
-  emit("remove", props.medium);
+  emit("remove", props.media);
 };
 
 const canPlayType = (type: string) => {
@@ -38,23 +38,23 @@ const getExtname = (type: string) => {
 </script>
 <template>
   <div class="moments-relative moments-overflow-hidden">
-    <template v-if="props.medium.type == 'PHOTO'">
+    <template v-if="props.media.type == 'PHOTO'">
       <div class="aspect-w-10 aspect-h-8">
         <img
-          :src="props.medium.url"
+          :src="props.media.url"
           class="moments-object-cover"
           loading="lazy"
         />
       </div>
     </template>
-    <template v-else-if="props.medium.type == 'VIDEO'">
+    <template v-else-if="props.media.type == 'VIDEO'">
       <div class="aspect-w-10 aspect-h-8">
         <video
-          v-if="canPlayType(props.medium.originType)"
+          v-if="canPlayType(props.media.originType)"
           class="moments-object-cover"
           preload="metadata"
         >
-          <source :src="props.medium.url" :type="props.medium.originType" />
+          <source :src="props.media.url" :type="props.media.originType" />
         </video>
         <div
           v-else
@@ -62,7 +62,7 @@ const getExtname = (type: string) => {
         >
           <LucideFileVideo />
           <span class="font-sans text-xs text-gray-500">
-            {{ getExtname(props.medium.originType) }}
+            {{ getExtname(props.media.originType) }}
           </span>
         </div>
       </div>

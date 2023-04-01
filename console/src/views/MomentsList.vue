@@ -123,50 +123,57 @@ const searchText = ref("");
     </template>
   </VPageHeader>
 
-  <div class="moments-mt-3 moments-content">
-    <div class="moment-header moments-flex moments-justify-center moments-mb-3">
-      <div class="moments-w-160 moments-flex moments-justify-between">
-        <FormKit
-          v-model="searchText"
-          placeholder="输入关键词搜索"
-          type="text"
-          @keyup.enter="keyword = searchText"
-        ></FormKit>
-        <DatePicker
-          class="range-time"
-          range
-          v-model:value="momentsRangeTime"
-          placeholder="筛选日期范围"
+  <div class="moments-content moments-pb-8 md:moments-pb-0">
+    <div class="moments-mt-3">
+      <div
+        class="moment-header moments-flex moments-justify-center moments-mb-3"
+      >
+        <div class="moments-w-[40rem] moments-flex moments-justify-between">
+          <FormKit
+            v-model="searchText"
+            placeholder="输入关键词搜索"
+            type="text"
+            @keyup.enter="keyword = searchText"
+          ></FormKit>
+          <DatePicker
+            class="range-time"
+            range
+            v-model:value="momentsRangeTime"
+            placeholder="筛选日期范围"
+          />
+        </div>
+      </div>
+
+      <div class="moments-flex moments-justify-center">
+        <MomentEdit @save="refetch()" />
+      </div>
+      <VLoading v-if="isLoading" />
+      <Transition v-else appear name="fade">
+        <ul class="box-border divide-y divide-gray-100" role="list">
+          <li v-for="moment in moments" :key="moment.moment.metadata.name">
+            <MomentItem
+              :key="moment.moment.metadata.name"
+              :moment="moment.moment"
+              @remove="refetch()"
+            />
+          </li>
+        </ul>
+      </Transition>
+    </div>
+    <div
+      class="moments-flex moments-justify-center"
+      v-if="!hasPrevious && !!hasNext"
+    >
+      <div
+        class="moments-bg-white moments-flex moments-justify-center moments-w-[40rem] moments-my-2 moments-h-20 moments-border moments-rounded-md moments-overflow-hidden"
+      >
+        <VPagination
+          v-model:page="page"
+          v-model:size="size"
+          :total="total"
+          :size-options="[20, 30, 50, 100]"
         />
       </div>
-    </div>
-
-    <div class="moments-flex moments-justify-center">
-      <MomentEdit @save="refetch()" />
-    </div>
-    <VLoading v-if="isLoading" />
-    <Transition v-else appear name="fade">
-      <ul class="box-border divide-y divide-gray-100" role="list">
-        <li v-for="moment in moments" :key="moment.moment.metadata.name">
-          <MomentItem
-            :key="moment.moment.metadata.name"
-            :moment="moment.moment"
-            @remove="refetch()"
-          />
-        </li>
-      </ul>
-    </Transition>
-  </div>
-  <div class="moments-flex moments-justify-center" v-if="total > 20">
-    <div
-      class="moments-bg-white moments-flex moments-justify-center moments-w-160 moments-my-2 moments-h-20 moments-border moments-rounded-md moments-overflow-hidden"
-    >
-      <VPagination
-        v-model:page="page"
-        v-model:size="size"
-        :total="total"
-        :size-options="[20, 30, 50, 100]"
-      />
     </div>
   </div>
 </template>

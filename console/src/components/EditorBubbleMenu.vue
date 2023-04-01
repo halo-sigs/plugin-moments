@@ -1,3 +1,4 @@
+<!-- TODO: 后续期望由 @halo-dev/richtext-editor 统一提供 -->
 <script lang="ts" setup>
 import { roundArrow } from "tippy.js";
 import "tippy.js/dist/svg-arrow.css";

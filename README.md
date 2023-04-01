@@ -1,6 +1,17 @@
 # plugin-moments
 
-Halo 2.0 的瞬间管理插件, 支持在 Console 进行管理以及为主题端提供 `/moments` 页面路由。。
+Halo 2.0 的瞬间管理插件, 支持在 Console 进行管理以及为主题端提供 `/moments` 页面路由。
+
+## 使用方式
+
+1. 在 [Releases](https://github.com/halo-sigs/plugin-moments/releases) 下载最新的 JAR 文件。
+2. 在 Halo 后台的插件管理上传 JAR 文件进行安装。
+
+> 需要注意的是，此插件需要主题提供模板（moments.html）才能访问 `/moments`。
+
+## 主题适配
+
+目前此插件为主题端提供了 `/moments` 路由，模板为 `moments.html`，也提供了 [Finder API](https://docs.halo.run/developer-guide/theme/finder-apis)，可以将瞬间列表渲染到任何地方。
 
 ## 开发环境
 
@@ -46,17 +57,6 @@ halo:
     fixedPluginPath:
       - "/path/to/plugin-moments"
 ```
-
-## 使用方式
-
-1. 在 [Releases](https://github.com/halo-sigs/plugin-moments/releases) 下载最新的 JAR 文件。
-2. 在 Halo 后台的插件管理上传 JAR 文件进行安装。
-
-> 需要注意的是，此插件需要主题提供模板（moments.html）才能访问 `/moments`。
-
-## 主题适配
-
-目前此插件为主题端提供了 `/moments` 路由，模板为 `moments.html`，也提供了 [Finder API](https://docs.halo.run/developer-guide/theme/finder-apis)，可以将瞬间列表渲染到任何地方。
 
 ### 模板变量
 

@@ -49,12 +49,7 @@
   align-items: center;
 }
 
-.moments-content .halo-moment-editor
-  .editor-content
-  .ProseMirror
-  ul[data-type="taskList"]
-  li
-  > label {
+.moments-content .halo-moment-editor .editor-content .ProseMirror ul[data-type="taskList"] li > label {
   flex: 0 0 auto;
   margin-right: 0.5rem;
 }
@@ -97,6 +92,7 @@
   box-sizing: border-box;
   position: relative;
 }
+
 .moments-content .halo-moment-editor .editor-content .ProseMirror table th > *,
 .moments-content .halo-moment-editor .editor-content .ProseMirror table td > * {
   margin-top: 0;

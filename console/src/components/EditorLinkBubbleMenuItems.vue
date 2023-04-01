@@ -1,3 +1,4 @@
+<!-- TODO: 后续期望由 @halo-dev/richtext-editor 统一提供 -->
 <script lang="ts" setup>
 import type { Editor } from "@halo-dev/richtext-editor";
 import { computed, type PropType } from "vue";
