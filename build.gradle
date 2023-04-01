@@ -53,13 +53,13 @@ node {
 }
 
 task pnpmInstall(type: NpxTask) {
-    command = "pnpm"
+    command = "pnpm@7"
     args = ["install"]
 }
 
 task buildFrontend(type: NpxTask) {
-    command = 'pnpm'
-    args = ['build']
+    command = "pnpm@7"
+    args = ["build"]
 }
 
 build {
