@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import run.halo.app.core.extension.endpoint.CustomEndpoint;
-import run.halo.app.core.extension.endpoint.CustomEndpointsBuilder;
 
 @Configuration
 public class MomentConfiguration {
