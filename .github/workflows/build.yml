@@ -56,7 +56,7 @@ jobs:
         with:
           name: plugin-moments
           path: |
-            build/libs/*-plain.jar
+            build/libs/*.jar
           retention-days: 1
 
   github-release:
