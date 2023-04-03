@@ -10,8 +10,12 @@ metadata:
     rbac.authorization.halo.run/ui-permissions: |
       ["plugin:moments:view"]
 rules:
-  - apiGroups: [ "" ]
+  - apiGroups: [ "moment.halo.run"]
     resources: [ "moments" ]
+    verbs: [ "get", "list" ]
+  - apiGroups: [ "api.plugin.halo.run"]
+    resources: [ "plugins/moments" ]
+    resourceNames: [ "PluginMoments" ]
     verbs: [ "get", "list" ]
 ---
 apiVersion: v1alpha1
@@ -28,6 +32,10 @@ metadata:
     rbac.authorization.halo.run/dependencies: |
       ["role-template-moments-view"]
 rules:
-  - apiGroups: [ "" ]
+  - apiGroups: [ "moment.halo.run"]
     resources: [ "moments" ]
+    verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
+  - apiGroups: [ "api.plugin.halo.run"]
+    resources: [ "plugins/moments" ]
+    resourceNames: [ "PluginMoments" ]
     verbs: [ "create", "patch", "update", "delete", "deletecollection" ]

@@ -1,47 +1,34 @@
 plugins {
-    id 'org.springframework.boot' version '3.0.0-M3'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id "com.github.node-gradle.node" version "3.3.0"
-    id "io.github.guqing.plugin-development" version "0.0.5-SNAPSHOT"
+    id "io.freefair.lombok" version "8.0.0-rc2"
+    id "io.github.guqing.plugin-development" version "0.0.6-SNAPSHOT"
     id 'java'
 }
 
 group 'run.halo.moments'
-version '0.0.1-SNAPSHOT'
+version '1.0.0-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
-    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
-    maven { url 'https://repo.spring.io/milestone' }
     mavenCentral()
-}
-
-bootJar {
-    enabled = false
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
 }
 
 jar {
     enabled = true
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest.attributes('Plugin-Version': "${project.version}",)
-    from {
-        configurations.runtimeClasspath.collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
+    into('lib') {
+        from configurations.runtimeClasspath
     }
 }
 
 dependencies {
-    compileOnly "io.swagger.core.v3:swagger-core-jakarta:2.2.0"
-    compileOnly "org.pf4j:pf4j:3.6.0"
-    compileOnly files("lib/halo-2.0.0-SNAPSHOT-plain.jar")
-    compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation platform('run.halo.tools.platform:plugin:2.5.0-SNAPSHOT')
+    compileOnly 'run.halo.app:api'
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'run.halo.app:api'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
@@ -58,8 +45,9 @@ task pnpmInstall(type: NpxTask) {
 }
 
 task buildFrontend(type: NpxTask) {
-    command = "pnpm@7"
-    args = ["build"]
+    command = 'pnpm@7'
+    args = ['build']
+    dependsOn("pnpmInstall")
 }
 
 build {

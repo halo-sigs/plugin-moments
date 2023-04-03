@@ -4,13 +4,16 @@ metadata:
   name: PluginMoments
 spec:
   enabled: true
-  version: 0.0.1-SNAPSHOT
-  requires: "*"
-  author: halo-dev
-  logo: logo.png
+  version: 1.0.0
+  requires: ">=2.4.0"
+  author:
+    name: Halo OSS Team
+    website: https://github.com/halo-dev
+  logo: logo.svg
+  configMapName: plugin-moments-configmap
+  settingName: plugin-moments-settings
   homepage: https://github.com/halo-sigs/plugin-moments
   displayName: "瞬间"
   description: "瞬间管理模块"
   license:
     - name: "MIT"
-
