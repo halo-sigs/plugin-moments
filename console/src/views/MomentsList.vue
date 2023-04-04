@@ -124,7 +124,7 @@ const searchText = ref("");
   </VPageHeader>
 
   <div class="moments-content moments-pb-8 md:moments-pb-0">
-    <div class="moments-mt-3">
+    <div class="moments-mt-3 moments-mb-2">
       <div
         class="moment-header moments-flex moments-justify-center moments-mb-3"
       >
@@ -169,10 +169,10 @@ const searchText = ref("");
     </div>
     <div
       class="moments-flex moments-justify-center"
-      v-if="!hasPrevious && !!hasNext"
+      v-if="hasPrevious || hasNext"
     >
       <div
-        class="moments-bg-white moments-flex moments-justify-center moments-w-[25rem] md:moments-w-[40rem] moments-my-2 moments-h-20 moments-border moments-rounded-md moments-overflow-hidden"
+        class="moments-bg-white moments-flex moments-justify-center moments-w-[25rem] md:moments-w-[40rem] moments-mb-2 moments-h-20 moments-border moments-rounded-md moments-overflow-hidden"
       >
         <VPagination
           v-model:page="page"
