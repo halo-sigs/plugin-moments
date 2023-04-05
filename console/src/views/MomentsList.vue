@@ -125,12 +125,10 @@ const searchText = ref("");
 
   <div class="moments-container moments-mx-auto">
     <div
-      class="moments-content moments-m-2 md:moments-m-4 moments-flex moments-flex-col moments-gap-2"
+      class="moments-content moments-m-2 md:moments-m-4 moments-flex moments-flex-col moments-space-y-2"
     >
       <div class="moment-header">
-        <div
-          class="moments-flex moments-justify-between moments-flex-wrap moments-gap-2"
-        >
+        <div class="moments-flex moments-justify-between moments-space-x-2">
           <FormKit
             v-model="searchText"
             placeholder="输入关键词搜索"
@@ -156,7 +154,7 @@ const searchText = ref("");
 
       <Transition v-else appear name="fade">
         <ul
-          class="box-border moments-flex moments-flex-col moments-gap-2"
+          class="box-border moments-flex moments-flex-col moments-space-y-2"
           role="list"
         >
           <li v-for="moment in moments" :key="moment.moment.metadata.name">

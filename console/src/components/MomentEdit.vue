@@ -267,11 +267,11 @@ function handleToggleVisible() {
       v-if="formState.spec.content.medium?.length"
       class="img-box moments-flex moments-px-3.5 moments-py-2"
     >
-      <ul role="list" class="moments-flex moments-gap-2">
+      <ul role="list">
         <li
           v-for="(media, index) in formState.spec.content.medium"
           :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-w-20"
+          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-20"
         >
           <MediaCard :media="media" @remove="removeMedium"></MediaCard>
         </li>
@@ -292,7 +292,7 @@ function handleToggleVisible() {
         </VButton>
       </div>
 
-      <div class="moments-flex moments-items-center moments-gap-2.5">
+      <div class="moments-flex moments-items-center moments-space-x-2.5">
         <button
           v-tooltip="{
             content:

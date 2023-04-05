@@ -58,7 +58,7 @@ const getExtname = (type: string) => {
         </video>
         <div
           v-else
-          class="flex h-full w-full flex-col items-center justify-center gap-1 moments-bg-gray-100"
+          class="flex h-full w-full flex-col items-center justify-center moments-space-y-1 moments-bg-gray-100"
         >
           <LucideFileVideo />
           <span class="font-sans text-xs text-gray-500">

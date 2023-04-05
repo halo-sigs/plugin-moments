@@ -182,11 +182,11 @@ const getExtname = (type: string) => {
       "
       class="img-box moments-flex moments-pt-2"
     >
-      <ul role="list" class="moments-flex moments-gap-2">
+      <ul role="list">
         <li
           v-for="(media, index) in props.moment.spec.content.medium"
           :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-w-28 moments-cursor-pointer"
+          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-28 moments-cursor-pointer"
         >
           <div class="aspect-w-10 aspect-h-8" @click="handleClickMedium(index)">
             <template v-if="media.type == 'PHOTO'">
@@ -198,10 +198,12 @@ const getExtname = (type: string) => {
             </template>
             <template v-else-if="media.type == 'VIDEO'">
               <div
-                class="flex h-full w-full flex-col items-center justify-center gap-1 moments-bg-gray-100"
+                class="moments-flex moments-h-full moments-w-full moments-flex-col moments-items-center moments-justify-center moments-space-y-1 moments-bg-gray-100"
               >
                 <LucideFileVideo />
-                <span class="font-sans text-xs text-gray-500">
+                <span
+                  class="moments-font-sans moments-text-xs moments-text-gray-500"
+                >
                   {{ getExtname(media.originType) }}
                 </span>
               </div>
