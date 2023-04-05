@@ -215,7 +215,7 @@ const removeMedium = (media: MomentMedia) => {
   if (!formMedium) {
     return;
   }
-  let index: number = formMedium.indexOf(medium);
+  let index: number = formMedium.indexOf(media);
   if (index > -1) {
     formMedium.splice(index, 1);
   }
