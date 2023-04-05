@@ -125,7 +125,7 @@ const searchText = ref("");
 
   <div class="moments-container moments-mx-auto">
     <div
-      class="moments-content moments-m-2 md:moments-m-4 moments-flex moments-flex-col moments-space-y-2"
+      class="moments-content moments-my-2 md:moments-my-4 moments-flex moments-flex-col moments-space-y-2"
     >
       <div class="moment-header">
         <div class="moments-flex moments-justify-between moments-space-x-2">
