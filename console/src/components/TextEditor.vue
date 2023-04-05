@@ -31,6 +31,7 @@ import {
   ExtensionPlaceholder,
   ExtensionHighlight,
   ExtensionCommands,
+  ExtensionIframe,
   CommandsSuggestion,
   CommentParagraph,
   CommandCodeBlock,
@@ -143,6 +144,7 @@ const editor = useEditor({
     ExtensionCodeBlock.configure({
       lowlight,
     }),
+    ExtensionIframe,
     Extension.create({
       addGlobalAttributes() {
         return [

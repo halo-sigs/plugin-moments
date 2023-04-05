@@ -38,6 +38,28 @@ const vHighlight = {
   },
 };
 
+const vLazy = {
+  mounted: (el: HTMLElement) => {
+    // iframe
+    const iframes = el.querySelectorAll<any>("iframe");
+    iframes.forEach((iframe: any) => {
+      iframe.loading = "lazy";
+      iframe.importance = "low";
+    });
+    // 图片
+    const imgs = el.querySelectorAll<HTMLImageElement>("img,image");
+    imgs.forEach((img: HTMLImageElement) => {
+      img.loading = "lazy";
+    });
+    // 视频，音频
+    const medium = el.querySelectorAll<HTMLMediaElement>("video,audio");
+    medium.forEach((media: HTMLMediaElement) => {
+      media.autoplay = false;
+      media.preload = "metadata";
+    });
+  },
+};
+
 const mediums = ref(props.moment.spec.content.medium || []);
 const detailVisible = ref<boolean>(false);
 const selectedIndex = ref<number>(0);
@@ -151,7 +173,7 @@ const getExtname = (type: string) => {
     <div
       class="moment-preview-html moments-overflow-hidden moments-relative moments-pt-1"
     >
-      <div v-highlight v-html="props.moment.spec.content.html"></div>
+      <div v-highlight v-lazy v-html="props.moment.spec.content.html"></div>
     </div>
     <div
       v-if="
