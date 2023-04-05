@@ -135,7 +135,7 @@ const getExtname = (type: string) => {
     </template>
   </PreviewDetailModal>
   <div
-    class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-p-3.5 moments-relative moments-w-[25rem] md:moments-w-[40rem]"
+    class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-p-3.5 moments-relative"
     @dblclick="handleDblclick"
   >
     <div
@@ -152,13 +152,13 @@ const getExtname = (type: string) => {
       </div>
 
       <div
-        class="moments-absolute moments-right-3.5"
         v-permission="['plugin:moments:manage']"
+        class="moments-absolute moments-right-3.5"
       >
         <VDropdown
           compute-transform-origin
           :triggers="['click']"
-          :popperTriggers="['click']"
+          :popper-triggers="['click']"
         >
           <IconMore class="moments-text-gray-500 moments-cursor-pointer" />
           <template #popper>
@@ -182,11 +182,11 @@ const getExtname = (type: string) => {
       "
       class="img-box moments-flex moments-pt-2"
     >
-      <ul role="list">
+      <ul role="list" class="moments-flex moments-gap-2">
         <li
           v-for="(media, index) in props.moment.spec.content.medium"
           :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-28 moments-cursor-pointer"
+          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-w-28 moments-cursor-pointer"
         >
           <div class="aspect-w-10 aspect-h-8" @click="handleClickMedium(index)">
             <template v-if="media.type == 'PHOTO'">

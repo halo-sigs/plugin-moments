@@ -35,6 +35,7 @@ const initMoment: Moment = {
     },
     releaseTime: new Date(),
     owner: "",
+    visible: "PUBLIC",
   },
   metadata: {
     generateName: "moment-",
@@ -240,11 +241,17 @@ const addMediumVerify = () => {
 
   return true;
 };
+
+function handleToggleVisible() {
+  const { visible: currentVisible } = formState.value.spec;
+  formState.value.spec.visible =
+    currentVisible === "PUBLIC" ? "PRIVATE" : "PUBLIC";
+}
 </script>
 
 <template>
   <div
-    class="card moments-w-[25rem] md:moments-w-[40rem] moments-bg-white moments-shrink moments-border moments-rounded-md moments-overflow-hidden focus-within:shadow-lg"
+    class="card moments-bg-white moments-shrink moments-border moments-rounded-md moments-overflow-hidden focus-within:shadow-lg"
   >
     <AttachmentSelectorModal
       v-model:visible="attachmentSelectorModal"
@@ -257,29 +264,23 @@ const addMediumVerify = () => {
       class="moments-min-h-[9rem] moments-p-3.5"
     />
     <div
-      v-if="
-        !!formState.spec.content.medium &&
-        formState.spec.content.medium.length > 0
-      "
+      v-if="formState.spec.content.medium?.length"
       class="img-box moments-flex moments-px-3.5 moments-py-2"
     >
-      <ul role="list">
+      <ul role="list" class="moments-flex moments-gap-2">
         <li
           v-for="(media, index) in formState.spec.content.medium"
           :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-20"
+          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-w-20"
         >
           <MediaCard :media="media" @remove="removeMedium"></MediaCard>
-        </li>
-        <li class="moments-inline-block">
-          <div></div>
         </li>
       </ul>
     </div>
     <div
-      class="moments-h-8 moments-bg-white moments-flex moments-justify-between moments-mb-1"
+      class="moments-bg-white moments-flex moments-justify-between moments-px-3.5 moments-py-2"
     >
-      <div class="moments-left-0 moments-h-fit moments-ml-3.5">
+      <div class="moments-h-fit">
         <VButton
           size="sm"
           type="primary"
@@ -291,37 +292,36 @@ const addMediumVerify = () => {
         </VButton>
       </div>
 
-      <div class="moments-flex moments-items-center">
-        <div class="moments-right-0 moments-mr-3.5 moments-cursor-pointer">
+      <div class="moments-flex moments-items-center moments-gap-2.5">
+        <button
+          v-tooltip="{
+            content:
+              formState.spec.visible === 'PRIVATE' ? `私有访问` : '公开访问',
+          }"
+          class="moments-cursor-pointer moments-inline-flex moments-text-gray-500 hover:moments-text-gray-900 moments-items-center moments-rounded moments-h-7 hover:moments-bg-teal-100 moments-px-3"
+          @click="handleToggleVisible()"
+        >
           <IconEyeOff
             v-if="formState.spec.visible === 'PRIVATE'"
-            v-tooltip="`私有访问`"
-            @click="formState.spec.visible = 'PUBLIC'"
+            class="moments-h-4 moments-w-4"
           />
-          <IconEye
-            v-else
-            @click="formState.spec.visible = 'PRIVATE'"
-            v-tooltip="`公开访问`"
-          />
-        </div>
+          <IconEye v-else class="moments-h-4 moments-w-4" />
+        </button>
 
-        <div
+        <button
           v-if="isUpdateMode"
-          class="moments-right-0 moments-mr-3.5 moments-cursor-pointer moments-px-3 moments-rounded moments-h-7 hover:moments-bg-teal-100"
+          class="moments-cursor-pointer moments-text-gray-500 hover:moments-text-gray-900 moments-inline-flex moments-items-center moments-rounded moments-h-7 hover:moments-bg-teal-100 moments-px-3"
           @click="handlerCancel"
         >
-          <span class="moments-text-xs moments-text-gray-500">取消</span>
-        </div>
+          <span class="moments-text-xs"> 取消 </span>
+        </button>
 
-        <div
-          class="moments-right-0 moments-h-fit moments-mr-3.5"
-          v-permission="['plugin:moments:manage']"
-        >
+        <div v-permission="['plugin:moments:manage']" class="moments-h-fit">
           <VButton
+            v-model:disabled="saveDisable"
             :loading="saving"
             size="sm"
             type="primary"
-            v-model:disabled="saveDisable"
             @click="handlerCreateOrUpdateMoment"
           >
             <template #icon>

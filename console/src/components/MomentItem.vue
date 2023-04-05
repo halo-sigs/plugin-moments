@@ -44,7 +44,7 @@ const handlerCancel = () => {
 };
 </script>
 <template>
-  <div class="moments-flex moments-justify-center moments-mt-2">
+  <div>
     <MomentEdit
       v-if="editing"
       :moment="editingMoment"
