@@ -4,7 +4,7 @@ metadata:
   name: PluginMoments
 spec:
   enabled: true
-  version: 1.0.0
+  version: 1.0.1
   requires: ">=2.4.0"
   author:
     name: Halo OSS Team
