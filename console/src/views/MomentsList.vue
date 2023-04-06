@@ -119,44 +119,44 @@ const searchText = ref("");
 <template>
   <VPageHeader title="瞬间">
     <template #icon>
-      <MingcuteMomentsLine class="mr-2 self-center" />
+      <MingcuteMomentsLine class="moments-mr-2 moments-self-center" />
     </template>
   </VPageHeader>
 
-  <div class="moments-content moments-pb-8 md:moments-pb-0">
-    <div class="moments-mt-3 moments-mb-2">
-      <div
-        class="moment-header moments-flex moments-justify-center moments-mb-3"
-      >
-        <div
-          class="moments-w-[25rem] md:moments-w-[40rem] moments-flex moments-justify-between"
-        >
-          <div class="moments-max-w-[10rem] md:moments-max-w-auto">
-            <FormKit
-              v-model="searchText"
-              placeholder="输入关键词搜索"
-              type="text"
-              @keyup.enter="keyword = searchText"
-            ></FormKit>
-          </div>
+  <div class="moments-container moments-mx-auto">
+    <div
+      class="moments-content moments-my-2 md:moments-my-4 moments-flex moments-flex-col moments-space-y-2"
+    >
+      <div class="moment-header">
+        <div class="moments-flex moments-justify-between moments-space-x-2">
+          <FormKit
+            v-model="searchText"
+            placeholder="输入关键词搜索"
+            type="text"
+            outer-class="!moments-p-0"
+            @keyup.enter="keyword = searchText"
+          ></FormKit>
 
           <DatePicker
+            v-model:value="momentsRangeTime"
             input-class=""
             class="range-time moments-max-w-[13rem] md:moments-max-w-[15rem]"
             range
             :editable="false"
-            v-model:value="momentsRangeTime"
             placeholder="筛选日期范围"
           />
         </div>
       </div>
 
-      <div class="moments-flex moments-justify-center">
-        <MomentEdit @save="refetch()" />
-      </div>
+      <MomentEdit @save="refetch()" />
+
       <VLoading v-if="isLoading" />
+
       <Transition v-else appear name="fade">
-        <ul class="box-border divide-y divide-gray-100" role="list">
+        <ul
+          class="box-border moments-flex moments-flex-col moments-space-y-2"
+          role="list"
+        >
           <li v-for="moment in moments" :key="moment.moment.metadata.name">
             <MomentItem
               :key="moment.moment.metadata.name"
@@ -166,17 +166,16 @@ const searchText = ref("");
           </li>
         </ul>
       </Transition>
-    </div>
-    <div
-      class="moments-flex moments-justify-center"
-      v-if="hasPrevious || hasNext"
-    >
+
       <div
-        class="moments-bg-white moments-flex moments-justify-center moments-w-[25rem] md:moments-w-[40rem] moments-mb-2 moments-h-20 moments-border moments-rounded-md moments-overflow-hidden"
+        v-if="hasPrevious || hasNext"
+        s
+        class="moments-my-5 flex moments-justify-center"
       >
         <VPagination
           v-model:page="page"
           v-model:size="size"
+          class="!moments-bg-transparent"
           :total="total"
           :size-options="[20, 30, 50, 100]"
         />
