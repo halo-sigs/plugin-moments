@@ -6,7 +6,6 @@ plugins {
 }
 
 group 'run.halo.moments'
-version '1.0.0-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
