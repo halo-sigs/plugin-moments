@@ -28,9 +28,9 @@ import run.halo.moments.service.MomentService;
 @Component
 @AllArgsConstructor
 public class MomentEndpoint implements CustomEndpoint {
-    
+
     private final MomentService momentService;
-    
+
     @Override
     public RouterFunction<ServerResponse> endpoint() {
         final var tag = "api.plugin.halo.run/v1alpha1/Moment";
@@ -60,22 +60,22 @@ public class MomentEndpoint implements CustomEndpoint {
             )
             .build();
     }
-    
+
     @Override
     public GroupVersion groupVersion() {
         return GroupVersion.parseAPIVersion("api.plugin.halo.run/v1alpha1");
     }
-    
+
     private Mono<ServerResponse> createMoment(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(Moment.class)
             .flatMap(momentService::create)
             .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
     }
-    
+
     private Mono<ServerResponse> listMoment(ServerRequest serverRequest) {
         MomentQuery query = new MomentQuery(serverRequest.queryParams());
         return momentService.listMoment(query)
             .flatMap(listedMoments -> ServerResponse.ok().bodyValue(listedMoments));
     }
-    
+
 }

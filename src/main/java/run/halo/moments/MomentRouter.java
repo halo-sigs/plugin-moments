@@ -13,7 +13,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
-import run.halo.app.plugin.SettingFetcher;
+import run.halo.app.plugin.ReactiveSettingFetcher;
 import run.halo.app.theme.router.PageUrlUtils;
 import run.halo.app.theme.router.UrlContextListResult;
 import run.halo.moments.finders.MomentFinder;
@@ -33,39 +33,43 @@ import run.halo.moments.vo.MomentVo;
 @Component
 public class MomentRouter {
     private final MomentFinder momentFinder;
-    
-    private final SettingFetcher settingFetcher;
-    
+
+    private final ReactiveSettingFetcher settingFetcher;
+
     public MomentRouter(MomentFinder momentFinder,
-                        SettingFetcher settingFetcher) {
+        ReactiveSettingFetcher settingFetcher) {
         this.momentFinder = momentFinder;
         this.settingFetcher = settingFetcher;
     }
-    
+
     @Bean
     RouterFunction<ServerResponse> momentRouter() {
         return route(GET("/moments")
                 .or(GET("/moments/page/{page:\\d+}")),
             handlerFunction());
     }
-    
+
     private HandlerFunction<ServerResponse> handlerFunction() {
         return request -> ServerResponse.ok().render("moments",
             Map.of("moments", momentList(request),
                 ModelConst.TEMPLATE_ID, "moments",
-                "title", Mono.fromCallable(() -> this.settingFetcher.get(
-                    "base").get("title").asText("瞬间")))
+                "title",
+                this.settingFetcher.get("base")
+                    .map(item -> item.get("title").asText("瞬间"))
+                    .defaultIfEmpty("瞬间"),
+                "tags", momentFinder.listTags())
         );
     }
-    
-    
+
+
     private Mono<UrlContextListResult<MomentVo>> momentList(ServerRequest request) {
         String path = request.path();
         int pageNum = pageNumInPathVariable(request);
-        return Mono.fromCallable(
-                () -> this.settingFetcher.get("base").get("pageSize").asInt(10)
-            )
-            .flatMap(pageSize -> momentFinder.list(pageNum, pageSize)
+        String tag = tagPathQueryParam(request);
+        return this.settingFetcher.get("base")
+            .map(item -> item.get("pageSize").asInt(10))
+            .defaultIfEmpty(10)
+            .flatMap(pageSize -> momentFinder.listByTag(pageNum, pageSize, tag)
                 .map(list -> new UrlContextListResult.Builder<MomentVo>()
                     .listResult(list)
                     .nextUrl(PageUrlUtils.nextPageUrl(path, totalPage(list)))
@@ -74,9 +78,13 @@ public class MomentRouter {
                 )
             );
     }
-    
+
     private int pageNumInPathVariable(ServerRequest request) {
         String page = request.pathVariables().get("page");
         return NumberUtils.toInt(page, 1);
+    }
+
+    private String tagPathQueryParam(ServerRequest request) {
+        return request.queryParam("tag").orElse(null);
     }
 }
