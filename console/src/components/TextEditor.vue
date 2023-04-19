@@ -56,6 +56,7 @@ import {
 } from "@halo-dev/richtext-editor";
 import { computed, watch } from "vue";
 import EditorBubbleMenu from "./EditorBubbleMenu.vue";
+import TagExtension from "@/extensions/tags";
 
 const props = withDefaults(
   defineProps<{
@@ -145,6 +146,7 @@ const editor = useEditor({
       lowlight,
     }),
     ExtensionIframe,
+    TagExtension,
     Extension.create({
       addGlobalAttributes() {
         return [

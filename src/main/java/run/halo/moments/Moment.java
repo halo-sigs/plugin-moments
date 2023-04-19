@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -37,7 +38,7 @@ public class Moment extends AbstractExtension {
         private String owner;
 
         @Schema(description = "Tags of the moment")
-        private List<String> tags;
+        private Set<String> tags;
     }
 
     @Data

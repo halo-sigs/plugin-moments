@@ -110,6 +110,21 @@
   cursor: col-resize !important;
 }
 
+.moments-content .halo-moment-editor .editor-content .ProseMirror span.tag {
+  color: #5783f7;
+  cursor: pointer;
+  background-color: #eef3fe;
+  padding: 1px 4px;
+  font-size: 12px;
+  border-radius: 3px;
+  display: inline-block;
+  white-space: nowrap;
+}
+ 
+.moments-content .halo-moment-editor .editor-content .ProseMirror span.tag::before {
+  content: "#";
+}
+
 .moments-content .range-time {
   height: 2.25rem;
 }

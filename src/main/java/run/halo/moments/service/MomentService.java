@@ -14,6 +14,6 @@ import run.halo.moments.MomentQuery;
  */
 public interface MomentService {
     Mono<ListResult<ListedMoment>> listMoment(MomentQuery query);
-    
+
     Mono<Moment> create(Moment moment);
 }
