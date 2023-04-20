@@ -200,7 +200,7 @@ watch(
 );
 </script>
 <template>
-  <div class="halo-moment-editor moments-relative" v-if="editor">
+  <div v-if="editor" class="halo-moment-editor moments-relative">
     <div class="flex moments-flex-col w-full h-full">
       <EditorBubbleMenu
         :editor="editor"

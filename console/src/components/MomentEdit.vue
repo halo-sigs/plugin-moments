@@ -36,6 +36,7 @@ const initMoment: Moment = {
     releaseTime: new Date(),
     owner: "",
     visible: "PUBLIC",
+    tags: [],
   },
   metadata: {
     generateName: "moment-",
@@ -61,6 +62,7 @@ const isEditorEmpty = ref<boolean>(true);
 const handlerCreateOrUpdateMoment = async () => {
   try {
     saving.value = true;
+    queryEditorTags();
     if (isUpdateMode.value) {
       updateMoment();
     } else {
@@ -71,6 +73,24 @@ const handlerCreateOrUpdateMoment = async () => {
   } finally {
     saving.value = false;
   }
+};
+
+const parse = new DOMParser();
+const queryEditorTags = function () {
+  let tags: Set<string> = new Set();
+  let document: Document = parse.parseFromString(
+    formState.value.spec.content.raw,
+    "text/html"
+  );
+  let nodeList: NodeList = document.querySelectorAll("span.tag");
+  if (nodeList) {
+    for (let tagNode of nodeList) {
+      if (tagNode.textContent) {
+        tags.add(tagNode.textContent);
+      }
+    }
+  }
+  formState.value.spec.tags = Array.from(tags);
 };
 
 const createMoment = async () => {

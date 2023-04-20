@@ -110,7 +110,7 @@
   cursor: col-resize !important;
 }
 
-.moments-content .halo-moment-editor .editor-content .ProseMirror span.tag {
+.moments-content span.tag {
   color: #5783f7;
   cursor: pointer;
   background-color: #eef3fe;
@@ -121,7 +121,7 @@
   white-space: nowrap;
 }
  
-.moments-content .halo-moment-editor .editor-content .ProseMirror span.tag::before {
+.moments-content span.tag::before {
   content: "#";
 }
 

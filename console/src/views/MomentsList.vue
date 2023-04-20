@@ -12,6 +12,7 @@ import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn";
 import { toISODayEndOfTime } from "@/utils/date";
+import { useRouteQuery } from "@vueuse/router";
 
 interface VisibleItem {
   label: string;
@@ -38,6 +39,8 @@ const VisibleItems: VisibleItem[] = [
     value: "PRIVATE",
   },
 ];
+
+const tag = useRouteQuery<string>("tag");
 
 const page = ref(1);
 const size = ref(20);
@@ -74,6 +77,7 @@ const {
     startDate,
     endDate,
     keyword,
+    tag,
   ],
   queryFn: async () => {
     let contributors: string[] | undefined;
@@ -95,6 +99,7 @@ const {
           startDate: startDate.value,
           endDate: endDate.value,
           contributor: contributors,
+          tag: tag.value,
         },
       }
     );

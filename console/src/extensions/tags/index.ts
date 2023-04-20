@@ -46,6 +46,12 @@ const TagExtension = Mark.create<TagOptions>({
 
   exitable: true,
 
+  inclusive: false,
+
+  parseHTML() {
+    return [{ tag: "span" }];
+  },
+
   renderHTML({ HTMLAttributes }) {
     return [
       "span",

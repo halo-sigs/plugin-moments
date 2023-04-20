@@ -29,6 +29,7 @@ export interface MomentSpec {
   releaseTime?: Date;
   visible?: MomentVisibleEnum;
   owner: string;
+  tags: string[];
 }
 
 export interface Moment {
@@ -89,4 +90,15 @@ export interface Stats {
   upvote: number;
   totalComment: number;
   approvedComment: number;
+}
+
+export interface MomentTagSpec {
+  displayName: string;
+}
+
+export interface MomentTag {
+  spec: MomentTagSpec;
+  apiVersion: string;
+  kind: string;
+  metadata: Metadata;
 }
