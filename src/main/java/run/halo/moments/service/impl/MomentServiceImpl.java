@@ -188,7 +188,13 @@ public class MomentServiceImpl implements MomentService {
 
         String tag = query.getTag();
         if (tag != null) {
-            predicate = predicate.and(moment -> moment.getSpec().getTags().contains(tag));
+            predicate = predicate.and(moment -> {
+                Set<String> tags = moment.getSpec().getTags();
+                if (CollectionUtils.isEmpty(tags)) {
+                    return false;
+                }
+                return moment.getSpec().getTags().contains(tag);
+            });
         }
 
         Moment.MomentVisible visible = query.getVisible();
