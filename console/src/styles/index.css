@@ -111,7 +111,7 @@
 }
 
 .moments-content span.tag {
-  color: #5783f7;
+  color: rgba(var(--colors-primary),var(--tw-bg-opacity));
   cursor: pointer;
   background-color: #eef3fe;
   padding: 1px 4px;
