@@ -25,4 +25,23 @@ export default definePlugin({
       },
     },
   ],
+  extensionPoints: {
+    "comment:subject-ref:create": () => {
+      return [
+        {
+          Moment: (subject: Extension): CommentSubjectRefResult => {
+            const moment = subject as Moment;
+            return {
+              label: "瞬间",
+              title: moment.spec.content.raw as string,
+              externalUrl: `/moments/${moment.metadata.name}`,
+              route: {
+                name: "Moments",
+              },
+            };
+          },
+        },
+      ];
+    },
+  },
 });
