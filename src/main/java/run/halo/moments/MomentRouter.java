@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.HandlerFunction;
@@ -23,6 +22,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import run.halo.app.extension.ConfigMap;
 import run.halo.app.extension.ReactiveExtensionClient;
+import run.halo.app.infra.ExternalUrlSupplier;
 import run.halo.app.infra.SystemSetting;
 import run.halo.app.infra.utils.JsonUtils;
 import run.halo.app.plugin.ReactiveSettingFetcher;
@@ -52,6 +52,8 @@ public class MomentRouter {
 
     private final ReactiveExtensionClient client;
 
+    private final ExternalUrlSupplier externalUrlSupplier;
+
     @Bean
     RouterFunction<ServerResponse> momentRouter() {
         return route(GET("/moments")
@@ -68,13 +70,17 @@ public class MomentRouter {
     }
 
     private Mono<String> buildRss(ServerRequest request) {
-        URI uri = request.uri();
-        String hostAddress = uri.getScheme() + "://" + uri.getAuthority();
+        var externalUrl = externalUrlSupplier.get();
+        if (!externalUrl.isAbsolute()) {
+            externalUrl = request.exchange().getRequest().getURI().resolve(externalUrl);
+        }
+
+        final var hostAddress = externalUrl;
         return getSystemBasicSetting()
             .flatMap(basicSetting -> getMomentTitle()
                 .map(momentTitle -> RSS2.builder()
-                    .title(basicSetting.getTitle() + momentTitle)
-                    .link(hostAddress)
+                    .title(StringUtils.defaultString(basicSetting.getTitle()) + momentTitle)
+                    .link(StringUtils.removeEnd(hostAddress.toString(), "/"))
                     .description(StringUtils.defaultString(basicSetting.getSubtitle()))
                 )
             )
@@ -84,8 +90,8 @@ public class MomentRouter {
                         + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                         .withZone(ZoneId.systemDefault())
                         .format(momentVo.getSpec().getReleaseTime()))
-                    .link(hostAddress + "/moments/" + momentVo.getMetadata().getName())
-                    .guid(hostAddress + "/moments/" + momentVo.getMetadata().getName())
+                    .link(hostAddress.resolve("moments/" + momentVo.getMetadata().getName()).toString())
+                    .guid(hostAddress.resolve("moments/" + momentVo.getMetadata().getName()).toString())
                     .description("""
                         <![CDATA[%s]]>
                         """.formatted(momentVo.getSpec().getContent().getHtml()))
