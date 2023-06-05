@@ -18,4 +18,6 @@ public interface MomentFinder {
     Flux<MomentVo> listAll();
     
     Mono<ListResult<MomentVo>> list(@Nullable Integer page, @Nullable Integer size);
+    
+    Mono<MomentVo> get(String momentName);
 }

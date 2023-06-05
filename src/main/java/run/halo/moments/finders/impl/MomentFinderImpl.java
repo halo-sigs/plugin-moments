@@ -53,6 +53,13 @@ public class MomentFinderImpl implements MomentFinder {
         return pageMoment(page, size, null, defaultComparator());
     }
     
+    @Override
+    public Mono<MomentVo> get(String momentName) {
+        return client.get(Moment.class, momentName)
+            .filter(FIXED_PREDICATE)
+            .flatMap(this::getMomentVo);
+    }
+    
     private Mono<ListResult<MomentVo>> pageMoment(Integer page, Integer size,
                                                   Predicate<Moment> momentPredicate,
                                                   Comparator<Moment> comparator) {

@@ -63,7 +63,7 @@ halo:
 #### 路由信息
 
 - 模板路径：/templates/moments.html
-- 访问路径：/moments
+- 访问路径：/moments | moments/{page}
 
 #### 变量
 
@@ -97,6 +97,37 @@ moments
     </div>
 </div>
 ```
+
+#### 路由信息
+
+- 模板路径：/templates/moment.html
+- 访问路径：/moments/{name}
+
+#### 变量
+
+moment
+
+##### 变量类型
+
+[#MomnetVo](#momentvo)
+
+##### 示例
+
+```html
+<div>
+    <div th:with="content=${moment.spec.content}">
+        <div th:if="${not #strings.isEmpty(content.html)}" th:utext="${content.html}"></div>
+        <th:block th:if="${not #lists.isEmpty(content.medium)}" th:each="momentItem : ${content.medium}">
+            <img th:if="${momentItem.type.name == 'PHOTO'}" th:src="${momentItem.url}" />
+            <video th:if="${momentItem.type.name == 'VIDEO'}" th:src="${momentItem.url}"></video>
+        </th:block>
+    </div>
+</div>
+```
+
+### RSS 订阅地址
+
+- 访问路径：/moments/rss.xml
 
 ### Finder API
 
