@@ -16,4 +16,5 @@ spec:
   displayName: "瞬间"
   description: "瞬间管理模块"
   license:
-    - name: "MIT"
+    - name: "GPL-3.0"
+      url: "https://github.com/halo-sigs/plugin-moments/blob/main/LICENSE"

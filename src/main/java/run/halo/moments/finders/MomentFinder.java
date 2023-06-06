@@ -55,4 +55,6 @@ public interface MomentFinder {
      * @return a flux of moment tag vo.
      */
     Flux<MomentTagVo> listTags();
+
+    Mono<MomentVo> get(String momentName);
 }
