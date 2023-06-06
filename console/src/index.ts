@@ -6,6 +6,7 @@ import { markRaw } from "vue";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { Moment } from "@/types";
 import { formatDatetime } from "./utils/date";
+import type { Extension } from "@halo-dev/api-client/index";
 
 export default definePlugin({
   components: {},
@@ -31,7 +32,9 @@ export default definePlugin({
     "comment:subject-ref:create": () => {
       return [
         {
-          Moment: (subject: Extension): CommentSubjectRefResult => {
+          kind: "Moment",
+          group: "moment.halo.run",
+          resolve: (subject: Extension): CommentSubjectRefResult => {
             const moment = subject as Moment;
             return {
               label: "瞬间",
@@ -49,11 +52,16 @@ export default definePlugin({
 });
 
 const determineMomentTitle = (moment: Moment) => {
-  const title = stripHtmlTags(moment.spec.content.raw);
-  
-  return !title?.trim() ? formatDatetime(new Date(moment.spec.releaseTime || "")) : title;
+  const pureContent = stripHtmlTags(moment.spec.content.raw);
+  const title = !pureContent?.trim()
+    ? formatDatetime(new Date(moment.spec.releaseTime || ""))
+    : pureContent;
+  return title?.substring(0, 100);
 };
 
 const stripHtmlTags = (str: string) => {
-  return str?.replace(/<\/?[^>]+(>|$)/gi, "") || ""
+  // strip html tags
+  const stripped = str?.replace(/<\/?[^>]+(>|$)/gi, "") || "";
+  // strip newlines and collapse spaces
+  return stripped.replace(/\n/g, " ").replace(/\s+/g, " ");
 };
