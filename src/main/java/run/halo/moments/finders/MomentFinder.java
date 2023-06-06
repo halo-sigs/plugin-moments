@@ -34,27 +34,14 @@ public interface MomentFinder {
     /**
      * List moments by tag.
      *
-     * @param page page number.
-     * @param size page size.
-     * @param tag  tag name.
-     * @return a mono of list result.
-     */
-    Mono<ListResult<MomentVo>> listByTag(Integer page, Integer size, String tag);
-
-    /**
-     * List moments by tag.
-     *
      * @param tag tag name.
      * @return a flux of moment vo.
      */
     Flux<MomentVo> listBy(String tag);
 
-    /**
-     * List tags.
-     *
-     * @return a flux of moment tag vo.
-     */
-    Flux<MomentTagVo> listTags();
-
     Mono<MomentVo> get(String momentName);
+
+    Flux<MomentTagVo> listAllTags();
+
+    Mono<ListResult<MomentVo>> listByTag(int pageNum, Integer pageSize, String tagName);
 }

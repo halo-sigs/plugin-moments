@@ -128,7 +128,7 @@ public class MomentRouter {
         return request -> ServerResponse.ok().render("moments",
             Map.of("moments", momentList(request),
                 ModelConst.TEMPLATE_ID, "moments",
-                "tags", momentFinder.listTags(),
+                "tags", momentFinder.listAllTags(),
                 "title", getMomentTitle()
             )
         );
