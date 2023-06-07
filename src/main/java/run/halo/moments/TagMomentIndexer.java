@@ -2,6 +2,7 @@ package run.halo.moments;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.springframework.lang.NonNull;
@@ -121,7 +122,6 @@ public class TagMomentIndexer {
 
     private boolean checkExtension(Extension extension) {
         return !momentWatcher.isDisposed()
-            && extension.getMetadata().getDeletionTimestamp() == null
             && isMoment(extension);
     }
 
@@ -139,7 +139,7 @@ public class TagMomentIndexer {
         public synchronized void add(Moment moment) {
             Set<String> indexKeys = indexFunc.apply(moment);
             for (String indexKey : indexKeys) {
-                tagMomentCache.put(getObjectKey(moment), indexKey);
+                tagMomentCache.put(indexKey, getObjectKey(moment));
             }
         }
 
@@ -151,14 +151,28 @@ public class TagMomentIndexer {
         public synchronized void delete(Moment moment) {
             Set<String> indexKeys = indexFunc.apply(moment);
             for (String indexKey : indexKeys) {
-                String objectKey = getObjectKey(moment);
-                tagMomentCache.remove(indexKey, objectKey);
+                tagMomentCache.remove(indexKey, getObjectKey(moment));
             }
         }
 
         public synchronized void update(Moment moment) {
-            delete(moment);
-            add(moment);
+            Set<String> indexKeys = indexFunc.apply(moment);
+            String objectKey = getObjectKey(moment);
+            // find old index
+            Set<String> oldIndexKeys = new HashSet<>();
+            for (String indexKey : tagMomentCache.keySet()) {
+                if (tagMomentCache.get(indexKey).contains(objectKey)) {
+                    oldIndexKeys.add(indexKey);
+                }
+            }
+            // remove old index
+            for (String indexKey : oldIndexKeys) {
+                tagMomentCache.remove(indexKey, objectKey);
+            }
+            // add new index
+            for (String indexKey : indexKeys) {
+                tagMomentCache.put(indexKey, objectKey);
+            }
         }
 
         public synchronized Set<String> keySet() {
