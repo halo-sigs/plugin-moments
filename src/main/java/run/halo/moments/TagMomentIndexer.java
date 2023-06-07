@@ -4,34 +4,23 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Consumer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import run.halo.app.extension.Extension;
 import run.halo.app.extension.ExtensionClient;
-import run.halo.app.extension.GroupVersionKind;
-import run.halo.app.extension.Unstructured;
-import run.halo.app.extension.Watcher;
-import run.halo.app.extension.controller.RequestSynchronizer;
+import run.halo.app.extension.controller.Controller;
+import run.halo.app.extension.controller.ControllerBuilder;
+import run.halo.app.extension.controller.Reconciler;
 
 @Component
-public class TagMomentIndexer {
-    private final RequestSynchronizer synchronizer;
+@RequiredArgsConstructor
+public class TagMomentIndexer implements Reconciler<Reconciler.Request> {
+    private static final String FINALIZER_NAME = "tag-moment-protection";
 
-    private final TagIndexer tagIndexer;
+    private final ExtensionClient client;
 
-    private final MomentWatcher momentWatcher;
-
-    public TagMomentIndexer(ExtensionClient client) {
-        tagIndexer = new TagIndexer();
-        this.momentWatcher = new MomentWatcher();
-        this.synchronizer = new RequestSynchronizer(true,
-            client,
-            new Moment(),
-            momentWatcher,
-            this::checkExtension);
-    }
+    private final TagIndexer tagIndexer = new TagIndexer();
 
     @NonNull
     public Set<String> getByTagName(String tagName) {
@@ -43,90 +32,52 @@ public class TagMomentIndexer {
         return tagIndexer.keySet();
     }
 
-    public void destroy() throws Exception {
-        if (momentWatcher != null) {
-            momentWatcher.dispose();
-        }
-        if (synchronizer != null) {
-            synchronizer.dispose();
-        }
-    }
-
-    public void start() {
-        if (!synchronizer.isStarted()) {
-            synchronizer.start();
-        }
-    }
-
-    class MomentWatcher implements Watcher {
-        private Runnable disposeHook;
-        private boolean disposed = false;
-
-        @Override
-        public void onAdd(Extension extension) {
-            if (!checkExtension(extension)) {
+    @Override
+    public Result reconcile(Request request) {
+        client.fetch(Moment.class, request.name()).ifPresent(moment -> {
+            if (moment.getMetadata().getDeletionTimestamp() != null) {
+                tagIndexer.delete(moment);
+                removeFinalizer(request.name());
                 return;
             }
-            handleIndicates(extension, tagIndexer::add);
-        }
-
-        @Override
-        public void onUpdate(Extension oldExt, Extension newExt) {
-            if (!checkExtension(newExt)) {
-                return;
-            }
-            handleIndicates(newExt, tagIndexer::update);
-        }
-
-        @Override
-        public void onDelete(Extension extension) {
-            if (!checkExtension(extension)) {
-                return;
-            }
-            handleIndicates(extension, tagIndexer::delete);
-        }
-
-        @Override
-        public void registerDisposeHook(Runnable dispose) {
-            this.disposeHook = dispose;
-        }
-
-        @Override
-        public void dispose() {
-            if (isDisposed()) {
-                return;
-            }
-            this.disposed = true;
-            if (this.disposeHook != null) {
-                this.disposeHook.run();
-            }
-        }
-
-        @Override
-        public boolean isDisposed() {
-            return this.disposed;
-        }
-
-        void handleIndicates(Extension extension, Consumer<Moment> consumer) {
-            Moment moment = convertTo(extension);
-            consumer.accept(moment);
-        }
+            addFinalizer(moment);
+            tagIndexer.update(moment);
+        });
+        return Result.doNotRetry();
     }
 
-    private Moment convertTo(Extension extension) {
-        if (extension instanceof Moment) {
-            return (Moment) extension;
+    void addFinalizer(Moment oldMoment) {
+        Set<String> oldFinalizers = oldMoment.getMetadata().getFinalizers();
+        if (oldFinalizers != null && oldFinalizers.contains(FINALIZER_NAME)) {
+            return;
         }
-        return Unstructured.OBJECT_MAPPER.convertValue(extension, Moment.class);
+        client.fetch(Moment.class, oldMoment.getMetadata().getName()).ifPresent(moment -> {
+            Set<String> finalizers = moment.getMetadata().getFinalizers();
+            if (finalizers == null) {
+                finalizers = new HashSet<>();
+            }
+            finalizers.add(FINALIZER_NAME);
+            moment.getMetadata().setFinalizers(finalizers);
+            client.update(moment);
+        });
     }
 
-    private boolean checkExtension(Extension extension) {
-        return !momentWatcher.isDisposed()
-            && isMoment(extension);
+    void removeFinalizer(String name) {
+        client.fetch(Moment.class, name).ifPresent(moment -> {
+            Set<String> finalizers = moment.getMetadata().getFinalizers();
+            if (finalizers == null || !finalizers.contains(FINALIZER_NAME)) {
+                return;
+            }
+            finalizers.remove(FINALIZER_NAME);
+            client.update(moment);
+        });
     }
 
-    private boolean isMoment(Extension extension) {
-        return GroupVersionKind.fromExtension(Moment.class).equals(extension.groupVersionKind());
+    @Override
+    public Controller setupWith(ControllerBuilder builder) {
+        return builder
+            .extension(new Moment())
+            .build();
     }
 
     static class TagIndexer {
