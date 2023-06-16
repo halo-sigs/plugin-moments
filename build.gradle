@@ -13,17 +13,8 @@ repositories {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
 }
 
-jar {
-    enabled = true
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    manifest.attributes('Plugin-Version': "${project.version}",)
-    into('lib') {
-        from configurations.runtimeClasspath
-    }
-}
-
 dependencies {
-    implementation platform('run.halo.tools.platform:plugin:2.5.0-SNAPSHOT')
+    implementation platform('run.halo.tools.platform:plugin:2.6.0-SNAPSHOT')
     compileOnly 'run.halo.app:api'
 
     testImplementation 'run.halo.app:api'
@@ -52,4 +43,8 @@ task buildFrontend(type: NpxTask) {
 build {
     // build frontend before build
     tasks.getByName('compileJava').dependsOn('buildFrontend')
+}
+
+halo {
+    version = '2.6.0'
 }
