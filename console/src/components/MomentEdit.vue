@@ -105,11 +105,16 @@ const createMoment = async () => {
 };
 
 const updateMoment = async () => {
-  const { data } = await apiClient.put<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${formState.value.metadata.name}`,
-    formState.value
+  const { data } = await apiClient.get<Moment>(
+    `/apis/moment.halo.run/v1alpha1/moments/${formState.value.metadata.name}`
   );
-  emit("update", data);
+  // 更新当前需要提交的 moment spec 为最新
+  data.spec = formState.value.spec;
+  const updated = await apiClient.put<Moment>(
+    `/apis/moment.halo.run/v1alpha1/moments/${formState.value.metadata.name}`,
+    data
+  );
+  emit("update", updated.data);
   Toast.success("发布成功");
 };
 
