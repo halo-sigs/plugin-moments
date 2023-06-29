@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -23,8 +24,16 @@ public class TagMomentIndexer implements Reconciler<Reconciler.Request> {
     private final TagIndexer tagIndexer = new TagIndexer();
 
     @NonNull
-    public Set<String> getByTagName(String tagName) {
+    public Set<String> listAllByTagName(String tagName) {
         return tagIndexer.getByIndex(tagName);
+    }
+
+    @NonNull
+    public Set<String> listPublicByTagName(String tagName) {
+        return tagIndexer.getByIndex(tagName)
+            .stream()
+            .filter(tagIndexer::isPublicMoment)
+            .collect(Collectors.toSet());
     }
 
     @NonNull
@@ -86,11 +95,15 @@ public class TagMomentIndexer implements Reconciler<Reconciler.Request> {
             return tags != null ? Set.copyOf(tags) : Set.of();
         };
         final SetMultimap<String, String> tagMomentCache = HashMultimap.create();
+        final Set<String> publicMoments = new HashSet<>();
 
         public synchronized void add(Moment moment) {
             Set<String> indexKeys = indexFunc.apply(moment);
             for (String indexKey : indexKeys) {
                 tagMomentCache.put(indexKey, getObjectKey(moment));
+                if (isPublic(moment)) {
+                    publicMoments.add(getObjectKey(moment));
+                }
             }
         }
 
@@ -103,11 +116,11 @@ public class TagMomentIndexer implements Reconciler<Reconciler.Request> {
             Set<String> indexKeys = indexFunc.apply(moment);
             for (String indexKey : indexKeys) {
                 tagMomentCache.remove(indexKey, getObjectKey(moment));
+                publicMoments.remove(getObjectKey(moment));
             }
         }
 
         public synchronized void update(Moment moment) {
-            Set<String> indexKeys = indexFunc.apply(moment);
             String objectKey = getObjectKey(moment);
             // find old index
             Set<String> oldIndexKeys = new HashSet<>();
@@ -119,15 +132,22 @@ public class TagMomentIndexer implements Reconciler<Reconciler.Request> {
             // remove old index
             for (String indexKey : oldIndexKeys) {
                 tagMomentCache.remove(indexKey, objectKey);
+                publicMoments.remove(objectKey);
             }
             // add new index
-            for (String indexKey : indexKeys) {
-                tagMomentCache.put(indexKey, objectKey);
-            }
+            this.add(moment);
         }
 
         public synchronized Set<String> keySet() {
             return Set.copyOf(tagMomentCache.keySet());
+        }
+
+        public synchronized boolean isPublicMoment(String momentName) {
+            return publicMoments.contains(momentName);
+        }
+
+        private boolean isPublic(Moment moment) {
+            return Moment.MomentVisible.PUBLIC.equals(moment.getSpec().getVisible());
         }
 
         @FunctionalInterface

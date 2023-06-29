@@ -75,7 +75,7 @@ public class MomentFinderImpl implements MomentFinder {
         return Flux.fromIterable(tagMomentIndexer.listAllTags())
             .map(tagName -> MomentTagVo.builder()
                 .name(tagName)
-                .momentCount(tagMomentIndexer.getByTagName(tagName).size())
+                .momentCount(tagMomentIndexer.listPublicByTagName(tagName).size())
                 .build()
             );
     }
