@@ -27,8 +27,8 @@ declare module "@halo-dev/richtext-editor" {
   }
 }
 
-export const inputRegex = /#(\w+)(?<!#\S)\s$/;
-export const pasteRegex = /#(\w+)(?<!#\S)\s/g;
+export const inputRegex = /#([\u4E00-\u9FFFa-zA-Z0-9]+)(?<!#\S)\s$/;
+export const pasteRegex = /#([\u4E00-\u9FFFa-zA-Z0-9]+)(?<!#\S)\s/g;
 
 export const TagsExtension = Mark.create<TagOptions>({
   name: "tag",
