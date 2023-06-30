@@ -26,7 +26,7 @@ export interface Metadata {
 
 export interface MomentSpec {
   content: MomentContent;
-  releaseTime?: Date;
+  releaseTime?: string;
   visible?: MomentVisibleEnum;
   owner: string;
 }

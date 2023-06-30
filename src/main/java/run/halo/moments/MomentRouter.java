@@ -4,11 +4,9 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static run.halo.app.theme.router.PageUrlUtils.totalPage;
 
-import java.net.URI;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
-
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -56,9 +54,7 @@ public class MomentRouter {
 
     @Bean
     RouterFunction<ServerResponse> momentRouter() {
-        return route(GET("/moments")
-                .or(GET("/moments/page/{page:\\d+}")),
-            handlerFunction())
+        return route(GET("/moments").or(GET("/moments/page/{page:\\d+}")), handlerFunction())
             .andRoute(GET("/moments/rss.xml"), handlerRss())
             .andRoute(GET("/moments/{momentName:\\S+}"), handlerMomentDefault());
     }
