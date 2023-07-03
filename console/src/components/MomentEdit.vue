@@ -33,7 +33,7 @@ const initMoment: Moment = {
       html: "",
       medium: [],
     },
-    releaseTime: new Date(),
+    releaseTime: new Date().toISOString(),
     owner: "",
     visible: "PUBLIC",
     tags: [],
@@ -82,7 +82,7 @@ const queryEditorTags = function () {
     formState.value.spec.content.raw,
     "text/html"
   );
-  let nodeList: NodeList = document.querySelectorAll("span.tag");
+  let nodeList: NodeList = document.querySelectorAll("a.tag");
   if (nodeList) {
     for (let tagNode of nodeList) {
       if (tagNode.textContent) {
@@ -94,7 +94,7 @@ const queryEditorTags = function () {
 };
 
 const createMoment = async () => {
-  formState.value.spec.releaseTime = new Date();
+  formState.value.spec.releaseTime = new Date().toISOString();
   const { data } = await apiClient.post<Moment>(
     `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
     formState.value

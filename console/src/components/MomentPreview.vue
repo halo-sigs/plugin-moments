@@ -65,13 +65,14 @@ const vLazy = {
 
 const vTag = {
   mounted: (el: HTMLElement) => {
-    const tagNodes = el.querySelectorAll("span.tag");
+    const tagNodes = el.querySelectorAll("a.tag");
     for (let node of tagNodes) {
-      node.addEventListener("click", () => {
+      node.addEventListener("click", (event) => {
+        event.preventDefault();
         let tagName = node.textContent;
         if (tagName) {
           emit("tagClick", node.textContent || "");
-          tag.value = node.textContent;
+          tag.value = node.textContent || "";
         }
       });
     }

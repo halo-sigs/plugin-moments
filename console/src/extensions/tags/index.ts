@@ -115,13 +115,32 @@ export const TagsExtension = Mark.create<TagOptions>({
 
   inclusive: false,
 
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      tagText: {
+        default: null,
+        renderHTML(attributes) {
+          return {
+            href: `?tag=${encodeURI(attributes.tagText)}`,
+            "data-pjax": "",
+          };
+        },
+      },
+    };
+  },
+
   parseHTML() {
-    return [{ tag: "span" }];
+    return [
+      {
+        tag: "a",
+      },
+    ];
   },
 
   renderHTML({ HTMLAttributes }) {
     return [
-      "span",
+      "a",
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
       0,
     ];
@@ -137,6 +156,9 @@ export const TagsExtension = Mark.create<TagOptions>({
             marks: [
               {
                 type: this.name,
+                attrs: {
+                  tagText: tag,
+                },
               },
             ],
             text: tag,
@@ -150,6 +172,11 @@ export const TagsExtension = Mark.create<TagOptions>({
       markInputRule({
         find: inputRegex,
         type: this.type,
+        getAttributes(match) {
+          return {
+            tagText: match[1],
+          };
+        },
       }),
     ];
   },
@@ -159,6 +186,11 @@ export const TagsExtension = Mark.create<TagOptions>({
       markPasteRule({
         find: pasteRegex,
         type: this.type,
+        getAttributes(match) {
+          return {
+            tagText: match[1],
+          };
+        },
       }),
     ];
   },
