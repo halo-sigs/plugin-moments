@@ -70,3 +70,4 @@ application-local.yml
 application-local.yaml
 application-local.properties
 /workplace/
+/src/main/resources/console/
