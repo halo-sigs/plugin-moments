@@ -6,8 +6,8 @@ import java.time.Instant;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -36,30 +36,25 @@ import run.halo.moments.util.MeterUtils;
  * @since 1.0.0
  */
 @Component
+@RequiredArgsConstructor
 public class MomentServiceImpl implements MomentService {
 
     private final ReactiveExtensionClient client;
-
-    public MomentServiceImpl(ReactiveExtensionClient client) {
-        this.client = client;
-    }
 
     @Override
     public Mono<ListResult<ListedMoment>> listMoment(MomentQuery query) {
         Comparator<Moment> comparator =
             MomentSorter.from(query.getSort(), query.getSortOrder());
-        return this.client.list(
-                Moment.class, momentListPredicate(query), comparator,
+        return this.client.list(Moment.class, momentListPredicate(query),
+                comparator,
                 query.getPage(), query.getSize()
             )
-            .flatMap(listResult -> Flux.fromStream(
-                        listResult.getItems().stream().map(this::toListedMoment)
-                    )
-                    .concatMap(Function.identity())
-                    .collectList()
-                    .map(list -> new ListResult<>(listResult.getPage(), listResult.getSize(),
-                        listResult.getTotal(), list)
-                    )
+            .flatMap(listResult -> Flux.fromStream(listResult.get())
+                .concatMap(this::toListedMoment)
+                .collectList()
+                .map(list -> new ListResult<>(listResult.getPage(), listResult.getSize(),
+                    listResult.getTotal(), list)
+                )
             );
     }
 
@@ -74,11 +69,10 @@ public class MomentServiceImpl implements MomentService {
         }
 
         return getContextUser()
-            .map(user -> {
+            .flatMap(user -> {
                 moment.getSpec().setOwner(user.getMetadata().getName());
-                return moment;
-            }).defaultIfEmpty(moment)
-            .flatMap(client::create);
+                return client.create(moment);
+            });
     }
 
     private Mono<ListedMoment> toListedMoment(Moment moment) {
@@ -134,6 +128,7 @@ public class MomentServiceImpl implements MomentService {
             predicate = predicate.and(moment -> StringUtils.containsIgnoreCase(
                 moment.getSpec().getOwner(), ownerName));
         }
+
 
         String tag = query.getTag();
         if (tag != null) {

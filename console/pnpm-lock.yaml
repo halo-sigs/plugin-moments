@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@halo-dev/api-client': ^2.4.0
   '@halo-dev/components': ^1.3.0
-  '@halo-dev/console-shared': ^2.4.0
+  '@halo-dev/console-shared': ^2.7.0
   '@halo-dev/richtext-editor': 0.0.0-alpha.19
   '@iconify/json': ^2.2.31
   '@rushstack/eslint-patch': ^1.2.0
@@ -50,7 +50,7 @@ specifiers:
 dependencies:
   '@halo-dev/api-client': 2.4.0
   '@halo-dev/components': 1.3.0_lavcef455lp3wtm2mcdrwhgymm
-  '@halo-dev/console-shared': 2.4.0_lavcef455lp3wtm2mcdrwhgymm
+  '@halo-dev/console-shared': 2.7.0_lavcef455lp3wtm2mcdrwhgymm
   '@halo-dev/richtext-editor': 0.0.0-alpha.19_htj2fswe27wsqb7rziordzcpiq
   '@tanstack/vue-query': 4.26.1_vue@3.2.47
   '@tiptap/pm': 2.0.0-beta.220
@@ -580,6 +580,10 @@ packages:
     resolution: {integrity: sha512-QhA2+oLkiWBHVn/SRXla/Db38LSA7XJUwDM6PfGHxlwj7v48FP1T1yfTnxAmQ07/ZDfR/8IH6wZxU//OMFCTog==}
     dev: false
 
+  /@halo-dev/api-client/2.7.0:
+    resolution: {integrity: sha512-HT3TIEjX/L2sJafkni7YfYetUPH1SKBqCAs6KoK0MFrOdjkDS27ojUBvJNNUxLVGQs6fLCr9TeEzEBxpPwimsA==}
+    dev: false
+
   /@halo-dev/components/1.3.0_lavcef455lp3wtm2mcdrwhgymm:
     resolution: {integrity: sha512-tlB6EcDXyYTTWoxT8JS7c1EkRZ49Ss59m6cwij9pa+yJCv4dCxt3E+iDV3gaThdifKRImPgiTM05GSp1NQBdCg==}
     peerDependencies:
@@ -601,12 +605,13 @@ packages:
       vue-router: 4.1.6_vue@3.2.47
     dev: false
 
-  /@halo-dev/console-shared/2.4.0_lavcef455lp3wtm2mcdrwhgymm:
-    resolution: {integrity: sha512-Q5AF2CKDaIyGrq47dipBTQ0ttnremQnmMiJTRs2K4GAcWqkYD0gciI8Owj++v7+ZD8jzURsuZya0IjmwOkX3qg==}
+  /@halo-dev/console-shared/2.7.0_lavcef455lp3wtm2mcdrwhgymm:
+    resolution: {integrity: sha512-gU5/ZdC8UaVUcactyLXeYitZP6bK2uRhFJHUkreLPgmfkH2fNCWM6OgxGw7XqmPgyZX0ajNS2S6p60spc7K3bg==}
     peerDependencies:
       vue: ^3.2.37
       vue-router: ^4.0.16
     dependencies:
+      '@halo-dev/api-client': 2.7.0
       vue: 3.2.47
       vue-router: 4.1.6_vue@3.2.47
     dev: false

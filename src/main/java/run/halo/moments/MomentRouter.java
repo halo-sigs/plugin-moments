@@ -54,9 +54,7 @@ public class MomentRouter {
 
     @Bean
     RouterFunction<ServerResponse> momentRouter() {
-        return route(GET("/moments")
-                .or(GET("/moments/page/{page:\\d+}")),
-            handlerFunction())
+        return route(GET("/moments").or(GET("/moments/page/{page:\\d+}")), handlerFunction())
             .andRoute(GET("/moments/rss.xml"), handlerRss())
             .andRoute(GET("/moments/{momentName:\\S+}"), handlerMomentDefault());
     }
