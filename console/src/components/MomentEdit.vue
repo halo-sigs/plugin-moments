@@ -4,13 +4,12 @@ import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/types";
 import apiClient from "@/utils/api-client";
 import { Toast } from "@halo-dev/components";
 import type { AttachmentLike } from "@halo-dev/console-shared";
-import { computed, nextTick, onMounted, ref, toRaw, watchEffect } from "vue";
+import { computed, nextTick, onMounted, ref, toRaw } from "vue";
 import MediaCard from "./MediaCard.vue";
 import TextEditor from "./TextEditor.vue";
 import SendMoment from "~icons/ic/sharp-send";
 import MdiFileImageBox from "~icons/mdi/file-image-box";
 import cloneDeep from "lodash.clonedeep";
-import { useMagicKeys } from "@vueuse/core";
 
 const props = withDefaults(
   defineProps<{
@@ -58,18 +57,10 @@ const isUpdateMode = computed(
   () => !!formState.value.metadata.creationTimestamp
 );
 const isEditorEmpty = ref<boolean>(true);
-
-const { Command_Enter, Ctrl_Enter } = useMagicKeys();
-watchEffect(() => {
-  if (Command_Enter.value || Ctrl_Enter.value) {
-    if (saveDisable.value) {
-      return;
-    }
-    handlerCreateOrUpdateMoment();
-  }
-});
-
 const handlerCreateOrUpdateMoment = async () => {
+  if (saveDisable.value) {
+    return;
+  }
   try {
     saving.value = true;
     if (isUpdateMode.value) {
@@ -258,6 +249,13 @@ function handleToggleVisible() {
   formState.value.spec.visible =
     currentVisible === "PUBLIC" ? "PRIVATE" : "PUBLIC";
 }
+
+function handleKeydown(event: KeyboardEvent) {
+  if (event.ctrlKey && event.key === "Enter") {
+    handlerCreateOrUpdateMoment();
+    return false;
+  }
+}
 </script>
 
 <template>
@@ -273,6 +271,8 @@ function handleToggleVisible() {
       v-model:html="formState.spec.content.html"
       v-model:isEmpty="isEditorEmpty"
       class="moments-min-h-[9rem] moments-p-3.5"
+      tabindex="-1"
+      @keydown="handleKeydown"
     />
     <div
       v-if="formState.spec.content.medium?.length"
