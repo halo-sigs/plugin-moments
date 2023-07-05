@@ -18,7 +18,9 @@ import { useRouteQuery } from "@vueuse/router";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js";
 
-const tag = useRouteQuery<string>("tag");
+const tag = useRouteQuery<string>("tag", "", {
+  mode: "push",
+});
 const props = defineProps<{
   moment: Moment;
 }>();
