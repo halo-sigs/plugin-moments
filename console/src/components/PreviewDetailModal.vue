@@ -31,7 +31,7 @@ const onVisibleChange = (visible: boolean) => {
     :visible="visible"
     :width="1000"
     :layer-closable="true"
-    height="50vh"
+    height="80vh"
     @update:visible="onVisibleChange"
   >
     <template #actions>
