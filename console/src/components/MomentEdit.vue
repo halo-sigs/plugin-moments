@@ -58,8 +58,10 @@ const isUpdateMode = computed(
   () => !!formState.value.metadata.creationTimestamp
 );
 const isEditorEmpty = ref<boolean>(true);
-
 const handlerCreateOrUpdateMoment = async () => {
+  if (saveDisable.value) {
+    return;
+  }
   try {
     saving.value = true;
     queryEditorTags();
@@ -271,6 +273,13 @@ function handleToggleVisible() {
   formState.value.spec.visible =
     currentVisible === "PUBLIC" ? "PRIVATE" : "PUBLIC";
 }
+
+function handleKeydown(event: KeyboardEvent) {
+  if (event.ctrlKey && event.key === "Enter") {
+    handlerCreateOrUpdateMoment();
+    return false;
+  }
+}
 </script>
 
 <template>
@@ -289,6 +298,8 @@ function handleToggleVisible() {
       v-model:html="formState.spec.content.html"
       v-model:isEmpty="isEditorEmpty"
       class="moments-min-h-[9rem] moments-p-3.5"
+      tabindex="-1"
+      @keydown="handleKeydown"
     />
     <div
       v-if="formState.spec.content.medium?.length"
