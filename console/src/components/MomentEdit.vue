@@ -4,7 +4,7 @@ import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/types";
 import apiClient from "@/utils/api-client";
 import { Toast } from "@halo-dev/components";
 import type { AttachmentLike } from "@halo-dev/console-shared";
-import { computed, nextTick, onMounted, ref, toRaw } from "vue";
+import { computed, onMounted, ref, toRaw } from "vue";
 import MediaCard from "./MediaCard.vue";
 import TextEditor from "./TextEditor.vue";
 import SendMoment from "~icons/ic/sharp-send";
@@ -136,7 +136,12 @@ const supportImageTypes: string[] = [
   "image/tiff",
   "image/webp",
 ];
-const MediumWhitelist: Map<string, MomentMediaTypeEnum> = new Map([
+
+const supportVideoTypes: string[] = ["video/*"];
+
+const accepts = [...supportImageTypes, ...supportVideoTypes];
+
+const mediumWhitelist: Map<string, MomentMediaTypeEnum> = new Map([
   ["image", "PHOTO"],
   ["video", "VIDEO"],
 ]);
@@ -176,33 +181,11 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
     displayName?: string;
     type?: string;
   }[];
-
-  //TODO 目前只能弹窗进行提醒，无法做到选择的时候就指定特定类型文件, 期望后续文件选择组件能支持传入类型
-  for (let media of medias) {
-    let type = media.type;
-    if (!type) {
-      Toast.error("不支持未知类型的文件");
-      nextTick(() => {
-        attachmentSelectorModal.value = true;
-      });
-      return;
-    }
-    const isImage = supportImageTypes.includes(type);
-    let fileType = type.split("/")[0];
-    if (!MediumWhitelist.has(fileType) && !isImage) {
-      Toast.error("暂不支持【" + type + "】类型的文件");
-      nextTick(() => {
-        attachmentSelectorModal.value = true;
-      });
-      return;
-    }
-  }
-
   if (!formState.value.spec.content.medium) {
     formState.value.spec.content.medium = [];
   }
   medias.forEach((media) => {
-    if (!addMediumVerify()) {
+    if (!addMediumVerify(media)) {
       return false;
     }
     if (!media.type) {
@@ -210,7 +193,7 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
     }
     let fileType = media.type.split("/")[0];
     formState.value.spec.content.medium?.push({
-      type: MediumWhitelist.get(fileType),
+      type: mediumWhitelist.get(fileType),
       url: media.url,
       originType: media.type,
     } as MomentMedia);
@@ -219,7 +202,7 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
 
 const saveDisable = computed(() => {
   let medium = formState.value.spec.content.medium;
-  if (medium !== undefined && medium.length > 0) {
+  if (medium !== undefined && medium.length > 0 && medium.length <= 9) {
     return false;
   }
   if (!isEditorEmpty.value) {
@@ -253,7 +236,12 @@ const handlerCancel = () => {
 
 const uploadMediumNum = 9;
 
-const addMediumVerify = () => {
+const addMediumVerify = (media?: {
+  url: string;
+  cover?: string;
+  displayName?: string;
+  type?: string;
+}) => {
   let formMedium = formState.value.spec.content.medium;
   if (!formMedium || formMedium.length == 0) {
     return true;
@@ -262,6 +250,17 @@ const addMediumVerify = () => {
   if (formMedium.length >= uploadMediumNum) {
     Toast.warning("最多允许添加 " + uploadMediumNum + " 个附件");
     return false;
+  }
+
+  if (media) {
+    if (
+      formState.value.spec.content.medium?.filter(
+        (item) => item.url == media.url
+      ).length != 0
+    ) {
+      Toast.warning("已过滤重复添加的附件");
+      return false;
+    }
   }
 
   return true;
@@ -280,6 +279,9 @@ function handleToggleVisible() {
   >
     <AttachmentSelectorModal
       v-model:visible="attachmentSelectorModal"
+      :min="1"
+      :max="9"
+      :accepts="accepts"
       @select="onAttachmentsSelect"
     />
     <TextEditor
