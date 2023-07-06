@@ -32,7 +32,7 @@ public class MeterUtils {
         }
         return String.join(".", plural, group) + "/" + name;
     }
-    
+
     public static <T extends AbstractExtension> String nameOf(Class<T> clazz, String name) {
         GVK annotation = clazz.getAnnotation(GVK.class);
         return nameOf(annotation.group(), annotation.plural(), name);

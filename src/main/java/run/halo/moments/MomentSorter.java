@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Function;
-
 import org.springframework.util.comparator.Comparators;
 
 /**
@@ -14,7 +13,7 @@ import org.springframework.util.comparator.Comparators;
  * @since 1.0.0
  */
 public enum MomentSorter {
-    RELEASE_TIM;
+    RELEASE_TIME;
     
     static final Function<Moment, String> name = moment -> moment.getMetadata().getName();
     
@@ -29,7 +28,7 @@ public enum MomentSorter {
         if (sorter == null) {
             return relaseTimeComparator();
         }
-        if (RELEASE_TIM.equals(sorter)) {
+        if (RELEASE_TIME.equals(sorter)) {
             Function<Moment, Instant> comparatorFunc =
                 moment -> moment.getSpec().getReleaseTime();
             return Comparator.comparing(comparatorFunc, Comparators.nullsLow())

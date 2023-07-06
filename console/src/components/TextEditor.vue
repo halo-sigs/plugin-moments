@@ -56,6 +56,7 @@ import {
 } from "@halo-dev/richtext-editor";
 import { computed, watch } from "vue";
 import EditorBubbleMenu from "./EditorBubbleMenu.vue";
+import { TagsExtension } from "@/extensions/tags";
 
 const props = withDefaults(
   defineProps<{
@@ -145,6 +146,7 @@ const editor = useEditor({
       lowlight,
     }),
     ExtensionIframe,
+    TagsExtension,
     Extension.create({
       addGlobalAttributes() {
         return [
@@ -198,7 +200,7 @@ watch(
 );
 </script>
 <template>
-  <div class="halo-moment-editor moments-relative" v-if="editor">
+  <div v-if="editor" class="halo-moment-editor moments-relative">
     <div class="flex moments-flex-col w-full h-full">
       <EditorBubbleMenu
         :editor="editor"

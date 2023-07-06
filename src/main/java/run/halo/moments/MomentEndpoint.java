@@ -2,9 +2,12 @@ package run.halo.moments;
 
 import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
 import static org.springdoc.core.fn.builders.content.Builder.contentBuilder;
+import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.fn.builders.schema.Builder;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
 import org.springframework.http.MediaType;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.endpoint.CustomEndpoint;
 import run.halo.app.extension.GroupVersion;
@@ -28,9 +32,11 @@ import run.halo.moments.service.MomentService;
 @Component
 @AllArgsConstructor
 public class MomentEndpoint implements CustomEndpoint {
-    
+
     private final MomentService momentService;
-    
+
+    private final TagMomentIndexer tagMomentIndexer;
+
     @Override
     public RouterFunction<ServerResponse> endpoint() {
         final var tag = "api.plugin.halo.run/v1alpha1/Moment";
@@ -44,6 +50,20 @@ public class MomentEndpoint implements CustomEndpoint {
                     );
                 QueryParamBuildUtil.buildParametersFromType(builder, MomentQuery.class);
             })
+            .GET("plugins/PluginMoments/tags", this::listTags,
+                builder -> builder.operationId("ListTags")
+                    .description("List all moment tags.")
+                    .tag(tag)
+                    .parameter(parameterBuilder()
+                        .name("name")
+                        .in(ParameterIn.QUERY)
+                        .description("Tag name to query")
+                        .required(false)
+                        .implementation(String.class)
+                    )
+                    .response(responseBuilder()
+                        .implementationArray(String.class)
+                    ))
             .POST("plugins/PluginMoments/moments", this::createMoment,
                 builder -> builder.operationId("CreateMoment")
                     .description("Create a Moment.")
@@ -60,22 +80,30 @@ public class MomentEndpoint implements CustomEndpoint {
             )
             .build();
     }
-    
+
     @Override
     public GroupVersion groupVersion() {
         return GroupVersion.parseAPIVersion("api.plugin.halo.run/v1alpha1");
     }
-    
+
     private Mono<ServerResponse> createMoment(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(Moment.class)
             .flatMap(momentService::create)
             .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
     }
-    
+
     private Mono<ServerResponse> listMoment(ServerRequest serverRequest) {
         MomentQuery query = new MomentQuery(serverRequest.queryParams());
         return momentService.listMoment(query)
             .flatMap(listedMoments -> ServerResponse.ok().bodyValue(listedMoments));
     }
-    
+
+    private Mono<ServerResponse> listTags(ServerRequest request) {
+        String name = request.queryParam("name").orElse(null);
+        return Flux.fromIterable(tagMomentIndexer.listAllTags())
+            .filter(tagName -> StringUtils.isBlank(name) || StringUtils.containsIgnoreCase(tagName,
+                name))
+            .collectList()
+            .flatMap(result -> ServerResponse.ok().bodyValue(result));
+    }
 }

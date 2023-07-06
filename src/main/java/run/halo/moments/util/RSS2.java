@@ -1,42 +1,41 @@
 package run.halo.moments.util;
 
-import lombok.Builder;
-import lombok.Data;
-import org.springframework.util.PropertyPlaceholderHelper;
-
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
+import lombok.Builder;
+import lombok.Data;
+import org.springframework.util.PropertyPlaceholderHelper;
 
 @Data
 @Builder
 public class RSS2 {
     private static final PropertyPlaceholderHelper PLACEHOLDER_HELPER = new PropertyPlaceholderHelper("${", "}");
     private String title;
-    
+
     private String link;
-    
+
     private String description;
-    
+
     private List<Item> items;
-    
+
     @Data
     @Builder
     public static class Item {
         private String title;
-        
+
         private String link;
-        
+
         private String description;
-        
+
         private Instant pubDate;
-        
+
         private String guid;
     }
-    
+
     public String toXmlString() {
         return """
             <?xml version="1.0" encoding="UTF-8"?>
@@ -45,7 +44,7 @@ public class RSS2 {
             </rss>
             """.formatted(channelTag(this));
     }
-    
+
     String channelTag(RSS2 rss) {
         String channelItems = rss2ChannelItemsString(rss.getItems());
         Properties properties = new Properties();
@@ -64,7 +63,7 @@ public class RSS2 {
             </channel>
             """, properties);
     }
-    
+
     String rss2ChannelItemsString(List<RSS2.Item> itemList) {
         return itemList.stream()
             .map(item -> {

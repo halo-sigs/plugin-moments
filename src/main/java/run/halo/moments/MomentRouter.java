@@ -86,8 +86,10 @@ public class MomentRouter {
                         + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                         .withZone(ZoneId.systemDefault())
                         .format(momentVo.getSpec().getReleaseTime()))
-                    .link(hostAddress.resolve("moments/" + momentVo.getMetadata().getName()).toString())
-                    .guid(hostAddress.resolve("moments/" + momentVo.getMetadata().getName()).toString())
+                    .link(hostAddress.resolve("moments/" + momentVo.getMetadata().getName())
+                        .toString())
+                    .guid(hostAddress.resolve("moments/" + momentVo.getMetadata().getName())
+                        .toString())
                     .description("""
                         <![CDATA[%s]]>
                         """.formatted(momentVo.getSpec().getContent().getHtml()))
@@ -124,6 +126,7 @@ public class MomentRouter {
         return request -> ServerResponse.ok().render("moments",
             Map.of("moments", momentList(request),
                 ModelConst.TEMPLATE_ID, "moments",
+                "tags", momentFinder.listAllTags(),
                 "title", getMomentTitle()
             )
         );
@@ -135,14 +138,14 @@ public class MomentRouter {
             .defaultIfEmpty("瞬间");
     }
 
-
     private Mono<UrlContextListResult<MomentVo>> momentList(ServerRequest request) {
         String path = request.path();
         int pageNum = pageNumInPathVariable(request);
+        String tag = tagPathQueryParam(request);
         return this.settingFetcher.get("base")
-            .map(base -> base.get("pageSize").asInt(10))
+            .map(item -> item.get("pageSize").asInt(10))
             .defaultIfEmpty(10)
-            .flatMap(pageSize -> momentFinder.list(pageNum, pageSize)
+            .flatMap(pageSize -> momentFinder.listByTag(pageNum, pageSize, tag)
                 .map(list -> new UrlContextListResult.Builder<MomentVo>()
                     .listResult(list)
                     .nextUrl(PageUrlUtils.nextPageUrl(path, totalPage(list)))
@@ -155,5 +158,9 @@ public class MomentRouter {
     private int pageNumInPathVariable(ServerRequest request) {
         String page = request.pathVariables().get("page");
         return NumberUtils.toInt(page, 1);
+    }
+
+    private String tagPathQueryParam(ServerRequest request) {
+        return request.queryParam("tag").orElse(null);
     }
 }

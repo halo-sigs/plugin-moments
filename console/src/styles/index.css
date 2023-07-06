@@ -17,7 +17,8 @@
   outline: none !important;
 }
 
-.moments-content .halo-moment-editor
+.moments-content
+  .halo-moment-editor
   .editor-content
   .ProseMirror
   p.is-editor-empty:first-child::before {
@@ -39,17 +40,32 @@
   font-size: 0.8rem;
 }
 
-.moments-content .halo-moment-editor .editor-content .ProseMirror ul[data-type="taskList"] {
+.moments-content
+  .halo-moment-editor
+  .editor-content
+  .ProseMirror
+  ul[data-type="taskList"] {
   list-style: none;
   padding: 0;
 }
 
-.moments-content .halo-moment-editor .editor-content .ProseMirror ul[data-type="taskList"] li {
+.moments-content
+  .halo-moment-editor
+  .editor-content
+  .ProseMirror
+  ul[data-type="taskList"]
+  li {
   display: flex;
   align-items: center;
 }
 
-.moments-content .halo-moment-editor .editor-content .ProseMirror ul[data-type="taskList"] li > label {
+.moments-content
+  .halo-moment-editor
+  .editor-content
+  .ProseMirror
+  ul[data-type="taskList"]
+  li
+  > label {
   flex: 0 0 auto;
   margin-right: 0.5rem;
 }
@@ -71,7 +87,12 @@
   margin-top: 0;
 }
 
-.moments-content .halo-moment-editor .editor-content .ProseMirror table .selectedCell:after {
+.moments-content
+  .halo-moment-editor
+  .editor-content
+  .ProseMirror
+  table
+  .selectedCell:after {
   z-index: 2;
   position: absolute;
   content: "";
@@ -99,7 +120,12 @@
   margin-bottom: 0;
 }
 
-.moments-content .halo-moment-editor .editor-content .ProseMirror table .column-resize-handle {
+.moments-content
+  .halo-moment-editor
+  .editor-content
+  .ProseMirror
+  table
+  .column-resize-handle {
   position: absolute;
   right: -2px;
   top: 0;
@@ -132,14 +158,16 @@
 }
 
 .moments-content .range-time .mx-input:focus {
-  border-color:#4CCBA0;
+  border-color: #4ccba0;
 }
 
 .moments-content .range-time .mx-input:hover {
   border: 1px solid rgb(209 213 219);
 }
 
-.moments-content .v-popper--theme-editor-block-dropdown .v-popper__arrow-container {
+.moments-content
+  .v-popper--theme-editor-block-dropdown
+  .v-popper__arrow-container {
   display: none;
 }
 
@@ -171,5 +199,20 @@
 }
 
 .moments-content .moment-preview-html code {
-  font-size: .8rem;
+  font-size: 0.8rem;
+}
+
+.moments-content a.tag {
+  color: rgba(var(--colors-primary), var(--tw-bg-opacity));
+  cursor: pointer;
+  background-color: #eef3fe;
+  padding: 1px 4px;
+  font-size: 12px;
+  border-radius: 3px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.moments-content a.tag::before {
+  content: "#";
 }

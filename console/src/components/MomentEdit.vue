@@ -33,9 +33,10 @@ const initMoment: Moment = {
       html: "",
       medium: [],
     },
-    releaseTime: new Date(),
+    releaseTime: new Date().toISOString(),
     owner: "",
     visible: "PUBLIC",
+    tags: [],
   },
   metadata: {
     generateName: "moment-",
@@ -61,6 +62,7 @@ const isEditorEmpty = ref<boolean>(true);
 const handlerCreateOrUpdateMoment = async () => {
   try {
     saving.value = true;
+    queryEditorTags();
     if (isUpdateMode.value) {
       updateMoment();
     } else {
@@ -73,8 +75,26 @@ const handlerCreateOrUpdateMoment = async () => {
   }
 };
 
+const parse = new DOMParser();
+const queryEditorTags = function () {
+  let tags: Set<string> = new Set();
+  let document: Document = parse.parseFromString(
+    formState.value.spec.content.raw,
+    "text/html"
+  );
+  let nodeList: NodeList = document.querySelectorAll("a.tag");
+  if (nodeList) {
+    for (let tagNode of nodeList) {
+      if (tagNode.textContent) {
+        tags.add(tagNode.textContent);
+      }
+    }
+  }
+  formState.value.spec.tags = Array.from(tags);
+};
+
 const createMoment = async () => {
-  formState.value.spec.releaseTime = new Date();
+  formState.value.spec.releaseTime = new Date().toISOString();
   const { data } = await apiClient.post<Moment>(
     `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
     formState.value
@@ -85,11 +105,16 @@ const createMoment = async () => {
 };
 
 const updateMoment = async () => {
-  const { data } = await apiClient.put<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${formState.value.metadata.name}`,
-    formState.value
+  const { data } = await apiClient.get<Moment>(
+    `/apis/moment.halo.run/v1alpha1/moments/${formState.value.metadata.name}`
   );
-  emit("update", data);
+  // 更新当前需要提交的 moment spec 为最新
+  data.spec = formState.value.spec;
+  const updated = await apiClient.put<Moment>(
+    `/apis/moment.halo.run/v1alpha1/moments/${formState.value.metadata.name}`,
+    data
+  );
+  emit("update", updated.data);
   Toast.success("发布成功");
 };
 

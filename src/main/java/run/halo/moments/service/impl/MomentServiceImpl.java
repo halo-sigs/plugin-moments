@@ -5,12 +5,14 @@ import static run.halo.app.extension.router.selector.SelectorUtil.labelAndFieldS
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.Counter;
@@ -66,12 +68,11 @@ public class MomentServiceImpl implements MomentService {
             moment.getSpec().setVisible(Moment.MomentVisible.PUBLIC);
         }
 
-        return Mono.defer(
-            () -> getContextUser().map(user -> {
+        return getContextUser()
+            .flatMap(user -> {
                 moment.getSpec().setOwner(user.getMetadata().getName());
-                return moment;
-            }).defaultIfEmpty(moment)
-        ).flatMap(client::create);
+                return client.create(moment);
+            });
     }
 
     private Mono<ListedMoment> toListedMoment(Moment moment) {
@@ -126,6 +127,18 @@ public class MomentServiceImpl implements MomentService {
         if (ownerName != null) {
             predicate = predicate.and(moment -> StringUtils.containsIgnoreCase(
                 moment.getSpec().getOwner(), ownerName));
+        }
+
+
+        String tag = query.getTag();
+        if (tag != null) {
+            predicate = predicate.and(moment -> {
+                Set<String> tags = moment.getSpec().getTags();
+                if (CollectionUtils.isEmpty(tags)) {
+                    return false;
+                }
+                return moment.getSpec().getTags().contains(tag);
+            });
         }
 
         Moment.MomentVisible visible = query.getVisible();

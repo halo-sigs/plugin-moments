@@ -12,6 +12,8 @@ import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn";
 import { toISODayEndOfTime } from "@/utils/date";
+import { useRouteQuery } from "@vueuse/router";
+import FilterTag from "@/components/FilterTag.vue";
 
 interface VisibleItem {
   label: string;
@@ -38,6 +40,8 @@ const VisibleItems: VisibleItem[] = [
     value: "PRIVATE",
   },
 ];
+
+const tag = useRouteQuery<string>("tag");
 
 const page = ref(1);
 const size = ref(20);
@@ -74,6 +78,7 @@ const {
     startDate,
     endDate,
     keyword,
+    tag,
   ],
   queryFn: async () => {
     let contributors: string[] | undefined;
@@ -95,6 +100,7 @@ const {
           startDate: startDate.value,
           endDate: endDate.value,
           contributor: contributors,
+          tag: tag.value,
         },
       }
     );
@@ -115,6 +121,10 @@ const {
 });
 
 const searchText = ref("");
+
+const handleCloseTag = () => {
+  tag.value = "";
+};
 </script>
 <template>
   <VPageHeader title="瞬间">
@@ -128,23 +138,34 @@ const searchText = ref("");
       class="moments-content moments-my-2 md:moments-my-4 moments-flex moments-flex-col moments-space-y-2"
     >
       <div class="moment-header">
-        <div class="moments-flex moments-justify-between moments-space-x-2">
-          <FormKit
-            v-model="searchText"
-            placeholder="输入关键词搜索"
-            type="text"
-            outer-class="!moments-p-0"
-            @keyup.enter="keyword = searchText"
-          ></FormKit>
+        <div
+          class="moments-flex moments-justify-between moments-flex-col sm:moments-flex-row moments-space-x-2"
+        >
+          <div
+            class="moments-left-0 moments-mb-2 sm:moments-mb-0 moments-flex moments-items-center moments-justify-between"
+          >
+            <FormKit
+              v-model="searchText"
+              placeholder="输入关键词搜索"
+              type="text"
+              outer-class="!moments-p-0 moments-mr-2"
+              @keyup.enter="keyword = searchText"
+            ></FormKit>
+            <FilterTag v-if="tag" @close="handleCloseTag()">
+              标签：{{ tag }}
+            </FilterTag>
+          </div>
 
-          <DatePicker
-            v-model:value="momentsRangeTime"
-            input-class=""
-            class="range-time moments-max-w-[13rem] md:moments-max-w-[15rem]"
-            range
-            :editable="false"
-            placeholder="筛选日期范围"
-          />
+          <div class="moments-right-0 !moments-ml-0 moments-flex">
+            <DatePicker
+              v-model:value="momentsRangeTime"
+              input-class=""
+              class="range-time moments-max-w-[13rem] md:moments-max-w-[15rem]"
+              range
+              :editable="false"
+              placeholder="筛选日期范围"
+            />
+          </div>
         </div>
       </div>
 

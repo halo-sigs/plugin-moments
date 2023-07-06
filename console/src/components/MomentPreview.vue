@@ -14,9 +14,13 @@ import {
 } from "@halo-dev/components";
 import { computed, ref } from "vue";
 import LucideFileVideo from "~icons/lucide/file-video";
+import { useRouteQuery } from "@vueuse/router";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js";
 
+const tag = useRouteQuery<string>("tag", "", {
+  mode: "push",
+});
 const props = defineProps<{
   moment: Moment;
 }>();
@@ -26,6 +30,7 @@ const emit = defineEmits<{
   (event: "remove", moment: Moment): void;
   (event: "cancel"): void;
   (event: "dblclick"): void;
+  (event: "tagClick", tagName: string): void;
 }>();
 
 const vHighlight = {
@@ -57,6 +62,22 @@ const vLazy = {
       media.autoplay = false;
       media.preload = "metadata";
     });
+  },
+};
+
+const vTag = {
+  mounted: (el: HTMLElement) => {
+    const tagNodes = el.querySelectorAll("a.tag");
+    for (let node of tagNodes) {
+      node.addEventListener("click", (event) => {
+        event.preventDefault();
+        let tagName = node.textContent;
+        if (tagName) {
+          emit("tagClick", node.textContent || "");
+          tag.value = node.textContent || "";
+        }
+      });
+    }
   },
 };
 
@@ -173,7 +194,12 @@ const getExtname = (type: string) => {
     <div
       class="moment-preview-html moments-overflow-hidden moments-relative moments-pt-1"
     >
-      <div v-highlight v-lazy v-html="props.moment.spec.content.html"></div>
+      <div
+        v-highlight
+        v-lazy
+        v-tag
+        v-html="props.moment.spec.content.html"
+      ></div>
     </div>
     <div
       v-if="
