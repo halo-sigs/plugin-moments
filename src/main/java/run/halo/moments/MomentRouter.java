@@ -7,6 +7,7 @@ import static run.halo.app.theme.router.PageUrlUtils.totalPage;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -17,6 +18,7 @@ import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 import run.halo.app.extension.ConfigMap;
 import run.halo.app.extension.ReactiveExtensionClient;
@@ -44,6 +46,7 @@ import run.halo.moments.vo.MomentVo;
 @Component
 @RequiredArgsConstructor
 public class MomentRouter {
+    private static final String TAG_PARAM = "tag";
     private final MomentFinder momentFinder;
 
     private final ReactiveSettingFetcher settingFetcher;
@@ -140,6 +143,9 @@ public class MomentRouter {
 
     private Mono<UrlContextListResult<MomentVo>> momentList(ServerRequest request) {
         String path = request.path();
+        String tagVal = request.queryParam(TAG_PARAM)
+            .filter(StringUtils::isNotBlank)
+            .orElse(null);
         int pageNum = pageNumInPathVariable(request);
         String tag = tagPathQueryParam(request);
         return this.settingFetcher.get("base")
@@ -148,11 +154,20 @@ public class MomentRouter {
             .flatMap(pageSize -> momentFinder.listByTag(pageNum, pageSize, tag)
                 .map(list -> new UrlContextListResult.Builder<MomentVo>()
                     .listResult(list)
-                    .nextUrl(PageUrlUtils.nextPageUrl(path, totalPage(list)))
-                    .prevUrl(PageUrlUtils.prevPageUrl(path))
+                    .nextUrl(appendTagParamIfPresent(
+                        PageUrlUtils.nextPageUrl(path, totalPage(list)), tagVal)
+                    )
+                    .prevUrl(appendTagParamIfPresent(PageUrlUtils.prevPageUrl(path), tagVal))
                     .build()
                 )
             );
+    }
+
+    String appendTagParamIfPresent(String uriString, String tagValue) {
+        return UriComponentsBuilder.fromUriString(uriString)
+            .queryParamIfPresent(TAG_PARAM, Optional.ofNullable(tagValue))
+            .build()
+            .toString();
     }
 
     private int pageNumInPathVariable(ServerRequest request) {
@@ -161,6 +176,6 @@ public class MomentRouter {
     }
 
     private String tagPathQueryParam(ServerRequest request) {
-        return request.queryParam("tag").orElse(null);
+        return request.queryParam(TAG_PARAM).orElse(null);
     }
 }
