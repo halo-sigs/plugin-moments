@@ -103,3 +103,25 @@ jobs:
               name: artifactName,
               data: await fs.readFile(artifactPathName)
             });
+  app-store-release:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Download plugin-moments jar
+        uses: actions/download-artifact@v2
+        with:
+          name: plugin-moments
+          path: build/libs
+      - name: Sync to Halo App Store
+        uses: halo-sigs/app-store-release-action@main
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          app-id: ${{secrets.APP_ID}}
+          release-id: ${{ github.event.release.id }}
+          assets-dir: "build/libs"
+          halo-username: ${{ secrets.HALO_USERNAME }}
+          halo-password: ${{ secrets.HALO_PASSWORD }}
