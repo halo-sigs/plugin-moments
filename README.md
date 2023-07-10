@@ -49,23 +49,23 @@ cd path/to/plugin-moments
 
 ```yaml
 halo:
-    plugin:
-        runtime-mode: development
-        classes-directories:
-            - "build/classes"
-            - "build/resources"
-        lib-directories:
-            - "libs"
-        fixedPluginPath:
-            - "/path/to/plugin-moments"
+  plugin:
+      runtime-mode: development
+      classes-directories:
+          - "build/classes"
+          - "build/resources"
+      lib-directories:
+          - "libs"
+      fixedPluginPath:
+          - "/path/to/plugin-moments"
 ```
 
 ### 模板变量
 
 #### 路由信息
 
--   模板路径：/templates/moments.html
--   访问路径：/moments?tag={tag} | moments/page/{page}?tag={tag}
+- 模板路径：/templates/moments.html
+- 访问路径：/moments?tag={tag} | moments/page/{page}?tag={tag}
 
 #### 参数
 
@@ -116,16 +116,16 @@ tags
 
 ```html
 <ul>
-    <li th:each="tag : ${tags}">
-        <div th:text="${tag.name}"></div>
-    </li>
+  <li th:each="tag : ${tags}">
+    <div th:text="${tag.name}"></div>
+  </li>
 </ul>
 ```
 
 #### 详情路由
 
--   模板路径：/templates/moment.html
--   访问路径：/moments/{name}
+- 模板路径：/templates/moment.html
+- 访问路径：/moments/{name}
 
 #### 变量
 
@@ -151,7 +151,7 @@ moment
 
 ### RSS 订阅地址
 
--   访问路径：/moments/rss.xml
+- 访问路径：/moments/rss.xml
 
 ### Finder API
 
@@ -257,10 +257,10 @@ List<[#MomentVo](#momentvo)>
     "displayName": "string",                              // 显示名称
   },
   "stats": {
-        "upvote": 0, // 点赞数
-        "totalComment": 0, // 评论数
-        "approvedComment": 0 // 审核通过的评论数
-    }
+    "upvote": 0,                                          // 点赞数
+    "totalComment": 0,                                    // 评论数
+    "approvedComment": 0                                  // 审核通过的评论数
+  }
 }
 ```
 
