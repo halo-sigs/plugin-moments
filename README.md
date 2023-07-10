@@ -226,10 +226,10 @@ List<[#MomentVo](#momentvo)>
   "metadata": {
     "name": "string",                                   // 唯一标识
     "labels": {
-      "additionalProp1": "string"
+      "additionalProp1": "string",
     },
     "annotations": {
-      "additionalProp1": "string"
+      "additionalProp1": "string",
     },
     "creationTimestamp": "2022-11-20T13:06:38.512Z",    // 创建时间
   },
@@ -248,7 +248,7 @@ List<[#MomentVo](#momentvo)>
     "releaseTime": "string",                             // 发布时间
     "visible": "PUBLIC",                                 // 可见性              
     "owner": "string",                                   // 所属用户
-    "tags": ["string"]                                   // 所拥有的标签
+    "tags": ["string"],                                  // 所拥有的标签
   },
   "owner": {
     "name": "string",                                     // 用户名
@@ -259,7 +259,7 @@ List<[#MomentVo](#momentvo)>
   "stats": {
     "upvote": 0,                                          // 点赞数
     "totalComment": 0,                                    // 评论数
-    "approvedComment": 0                                  // 审核通过的评论数
+    "approvedComment": 0,                                 // 审核通过的评论数
   }
 }
 ```
@@ -286,7 +286,7 @@ enum Target {
   "last": true,                                // 是否为最后一页
   "hasNext": true,                             // 是否有下一页
   "hasPrevious": true,                         // 是否有上一页
-  "totalPages": 0                              // 总页数
+  "totalPages": 0,                             // 总页数
 }
 ```
 
@@ -304,7 +304,7 @@ enum Target {
   "hasPrevious": true,                         // 是否有上一页
   "totalPages": 0,                             // 总页数
   "prevUrl": "string",                         // 上一页链接
-  "nextUrl": "string"                          // 下一页链接
+  "nextUrl": "string",                         // 下一页链接
 }
 ```
 
@@ -313,6 +313,6 @@ enum Target {
 ```json
 {
     "name": "string",                           // 标签名称
-    "momentCount": "string"                     // 标签名称
+    "momentCount": "string",                    // 标签名称
 }
 ```
