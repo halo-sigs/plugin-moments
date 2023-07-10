@@ -49,23 +49,27 @@ cd path/to/plugin-moments
 
 ```yaml
 halo:
-  plugin:
-    runtime-mode: development
-    classes-directories:
-      - "build/classes"
-      - "build/resources"
-    lib-directories:
-      - "libs"
-    fixedPluginPath:
-      - "/path/to/plugin-moments"
+    plugin:
+        runtime-mode: development
+        classes-directories:
+            - "build/classes"
+            - "build/resources"
+        lib-directories:
+            - "libs"
+        fixedPluginPath:
+            - "/path/to/plugin-moments"
 ```
 
 ### 模板变量
 
 #### 路由信息
 
-- 模板路径：/templates/moments.html
-- 访问路径：/moments | moments/{page}
+-   模板路径：/templates/moments.html
+-   访问路径：/moments?tag={tag} | moments/page/{page}?tag={tag}
+
+#### 参数
+
+tag - 标签名称
 
 #### 变量
 
@@ -100,10 +104,28 @@ moments
 </div>
 ```
 
-#### 路由信息
+#### 变量
 
-- 模板路径：/templates/moment.html
-- 访问路径：/moments/{name}
+tags
+
+##### 变量类型
+
+[#List\<MomentTagVo>](#momenttagvo)
+
+##### 示例
+
+```html
+<ul>
+    <li th:each="tag : ${tags}">
+        <div th:text="${tag.name}"></div>
+    </li>
+</ul>
+```
+
+#### 详情路由
+
+-   模板路径：/templates/moment.html
+-   访问路径：/moments/{name}
 
 #### 变量
 
@@ -111,7 +133,7 @@ moment
 
 ##### 变量类型
 
-[#MomnetVo](#momentvo)
+[#MomentVo](#momentvo)
 
 ##### 示例
 
@@ -129,7 +151,7 @@ moment
 
 ### RSS 订阅地址
 
-- 访问路径：/moments/rss.xml
+-   访问路径：/moments/rss.xml
 
 ### Finder API
 
@@ -226,6 +248,7 @@ List<[#MomentVo](#momentvo)>
     "releaseTime": "string",                             // 发布时间
     "visible": "PUBLIC",                                 // 可见性              
     "owner": "string",                                   // 所属用户
+    "tags": ["string"]                                   // 所拥有的标签
   },
   "owner": {
     "name": "string",                                     // 用户名
@@ -234,10 +257,10 @@ List<[#MomentVo](#momentvo)>
     "displayName": "string",                              // 显示名称
   },
   "stats": {
-    "upvote": 0,                                          // 点赞数                      
-    "totalComment": 0,                                    // 评论数
-    "approvedComment": 0,                                 // 审核通过的评论数
-  }
+        "upvote": 0, // 点赞数
+        "totalComment": 0, // 评论数
+        "approvedComment": 0 // 审核通过的评论数
+    }
 }
 ```
 
@@ -282,5 +305,14 @@ enum Target {
   "totalPages": 0,                             // 总页数
   "prevUrl": "string",                         // 上一页链接
   "nextUrl": "string"                          // 下一页链接
+}
+```
+
+#### MomentTagVo
+
+```json
+{
+    "name": "string",                           // 标签名称
+    "momentCount": "string"                     // 标签名称
 }
 ```
