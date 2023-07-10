@@ -313,6 +313,6 @@ enum Target {
 ```json
 {
     "name": "string",                           // 标签名称
-    "momentCount": "string",                    // 标签名称
+    "momentCount": 0,                           // 标签所属的 moment 数量
 }
 ```
