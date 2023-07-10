@@ -50,14 +50,14 @@ cd path/to/plugin-moments
 ```yaml
 halo:
   plugin:
-      runtime-mode: development
-      classes-directories:
-          - "build/classes"
-          - "build/resources"
-      lib-directories:
-          - "libs"
-      fixedPluginPath:
-          - "/path/to/plugin-moments"
+    runtime-mode: development
+    classes-directories:
+      - "build/classes"
+      - "build/resources"
+    lib-directories:
+      - "libs"
+    fixedPluginPath:
+      - "/path/to/plugin-moments"
 ```
 
 ### 模板变量
