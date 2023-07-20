@@ -65,7 +65,11 @@ halo:
 #### 路由信息
 
 - 模板路径：/templates/moments.html
-- 访问路径：/moments | moments/{page}
+- 访问路径：/moments?tag={tag} | moments/page/{page}?tag={tag}
+
+#### 参数
+
+tag - 标签名称
 
 #### 变量
 
@@ -100,7 +104,25 @@ moments
 </div>
 ```
 
-#### 路由信息
+#### 变量
+
+tags
+
+##### 变量类型
+
+[#List\<MomentTagVo>](#momenttagvo)
+
+##### 示例
+
+```html
+<ul>
+  <li th:each="tag : ${tags}">
+    <div th:text="${tag.name}"></div>
+  </li>
+</ul>
+```
+
+#### 详情路由
 
 - 模板路径：/templates/moment.html
 - 访问路径：/moments/{name}
@@ -111,7 +133,7 @@ moment
 
 ##### 变量类型
 
-[#MomnetVo](#momentvo)
+[#MomentVo](#momentvo)
 
 ##### 示例
 
@@ -204,10 +226,10 @@ List<[#MomentVo](#momentvo)>
   "metadata": {
     "name": "string",                                   // 唯一标识
     "labels": {
-      "additionalProp1": "string"
+      "additionalProp1": "string",
     },
     "annotations": {
-      "additionalProp1": "string"
+      "additionalProp1": "string",
     },
     "creationTimestamp": "2022-11-20T13:06:38.512Z",    // 创建时间
   },
@@ -226,6 +248,7 @@ List<[#MomentVo](#momentvo)>
     "releaseTime": "string",                             // 发布时间
     "visible": "PUBLIC",                                 // 可见性              
     "owner": "string",                                   // 所属用户
+    "tags": ["string"],                                  // 所拥有的标签
   },
   "owner": {
     "name": "string",                                     // 用户名
@@ -234,7 +257,7 @@ List<[#MomentVo](#momentvo)>
     "displayName": "string",                              // 显示名称
   },
   "stats": {
-    "upvote": 0,                                          // 点赞数                      
+    "upvote": 0,                                          // 点赞数
     "totalComment": 0,                                    // 评论数
     "approvedComment": 0,                                 // 审核通过的评论数
   }
@@ -263,7 +286,7 @@ enum Target {
   "last": true,                                // 是否为最后一页
   "hasNext": true,                             // 是否有下一页
   "hasPrevious": true,                         // 是否有上一页
-  "totalPages": 0                              // 总页数
+  "totalPages": 0,                             // 总页数
 }
 ```
 
@@ -281,6 +304,15 @@ enum Target {
   "hasPrevious": true,                         // 是否有上一页
   "totalPages": 0,                             // 总页数
   "prevUrl": "string",                         // 上一页链接
-  "nextUrl": "string"                          // 下一页链接
+  "nextUrl": "string",                         // 下一页链接
+}
+```
+
+#### MomentTagVo
+
+```json
+{
+    "name": "string",                           // 标签名称
+    "momentCount": 0,                           // 标签所属的 moment 数量
 }
 ```
