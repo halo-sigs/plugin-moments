@@ -50,7 +50,7 @@ spec:
         </div>
         <div class="body">
           <div>
-            <div th:text="|${commenter} 评论了您的瞬间|"></div>
+            <div th:text="|${commenter} 评论了你的瞬间|"></div>
             <div>
               <a
                th:href="${momentUrl}"
