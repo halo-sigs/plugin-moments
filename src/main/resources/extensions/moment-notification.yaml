@@ -52,13 +52,15 @@ spec:
           <div>
             <div th:text="|${commenter} 评论了你的瞬间|"></div>
             <div>
+              <span>"</span>
               <a
                th:href="${momentUrl}"
                target="_blank"
-               style="display: block;"
+               style="display: block;font-style: italic;"
                th:utext="${momentHtmlContent}"
               >
               </a>
+              <span>"</span>
             </div>
             <div>以下是评论的具体内容：</div>
           </div>
