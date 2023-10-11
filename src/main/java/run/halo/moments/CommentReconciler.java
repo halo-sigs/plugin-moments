@@ -55,6 +55,8 @@ public class CommentReconciler implements Reconciler<Reconciler.Request> {
     public Controller setupWith(ControllerBuilder builder) {
         return builder
             .extension(new Comment())
+            // avoid triggering notification on startup for old comments
+            .syncAllOnStart(false)
             .build();
     }
 }
