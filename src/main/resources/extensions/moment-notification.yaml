@@ -1,0 +1,68 @@
+apiVersion: notification.halo.run/v1alpha1
+kind: ReasonType
+metadata:
+  name: new-comment-on-moment
+spec:
+  displayName: "我发布的瞬间收到新评论"
+  description: "当你发布的瞬间收到新评论时，你将会收到一条通知，告诉你有新的评论。"
+  properties:
+    - name: momentName
+      type: string
+      description: "The name of the moment."
+    - name: momentCreatedAt
+      type: string
+    - name: momentRawContent
+      type: string
+    - name: momentHtmlContent
+      type: string
+    - name: momentUrl
+      type: string
+    - name: commenter
+      type: string
+      description: "The display name of the commenter."
+    - name: commentName
+      type: string
+      description: "The name of the comment."
+    - name: content
+      type: string
+      description: "The content of the comment."
+---
+apiVersion: notification.halo.run/v1alpha1
+kind: NotificationTemplate
+metadata:
+  name: template-new-comment-on-moment
+spec:
+  reasonSelector:
+    reasonType: new-comment-on-moment
+    language: default
+  template:
+    title: "[(${commenter})] 评论了你在 [(${momentCreatedAt})] 时刻发布的瞬间"
+    rawBody: |
+      [(${subscriber.displayName})] 你好：
+
+      [(${commenter})] 评论了你的瞬间“[(${momentRawContent})]”， 以下是评论的具体内容：
+
+      [(${content})]
+    htmlBody: |
+      <div class="notification-content">
+        <div class="head">
+          <p class="honorific" th:text="|${subscriber.displayName} 你好：|"></p>
+        </div>
+        <div class="body">
+          <div>
+            <div th:text="|${commenter} 评论了你的瞬间|"></div>
+            <div>
+              <a
+               th:href="${momentUrl}"
+               target="_blank"
+               style="display: block;font-style: italic;"
+               th:utext="${momentHtmlContent}"
+              >
+              </a>
+            </div>
+            <div>以下是评论的具体内容：</div>
+          </div>
+          <pre class="content" th:text="${content}"></pre>
+        </div>
+        <div></div>
+      </div>
