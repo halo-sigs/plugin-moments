@@ -1,7 +1,7 @@
 plugins {
-    id "com.github.node-gradle.node" version "3.3.0"
+    id "com.github.node-gradle.node" version "5.0.0"
     id "io.freefair.lombok" version "8.0.0-rc2"
-    id "run.halo.plugin.devtools" version "0.0.5"
+    id "run.halo.plugin.devtools" version "0.0.7"
     id 'java'
 }
 
@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation platform('run.halo.tools.platform:plugin:2.10.0-SNAPSHOT')
+    implementation platform('run.halo.tools.platform:plugin:2.12.0-SNAPSHOT')
     compileOnly 'run.halo.app:api'
 
     testImplementation 'run.halo.app:api'
@@ -29,15 +29,8 @@ node {
     nodeProjectDir = file("${project.projectDir}/console")
 }
 
-task pnpmInstall(type: NpxTask) {
-    command = "pnpm@7"
-    args = ["install"]
-}
-
-task buildFrontend(type: NpxTask) {
-    command = 'pnpm@7'
+task buildFrontend(type: PnpmTask) {
     args = ['build']
-    dependsOn("pnpmInstall")
 }
 
 build {
@@ -46,5 +39,5 @@ build {
 }
 
 halo {
-    version = '2.6.0'
+    version = '2.11.1'
 }
