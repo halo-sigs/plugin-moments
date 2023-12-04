@@ -11,10 +11,23 @@
   width: 100%;
 }
 
+.moments-content .editor-header {
+  display: none;
+}
+
 .moments-content .halo-moment-editor .editor-content .ProseMirror {
-  min-height: 7.25rem;
+  min-height: 10rem;
   overflow: auto;
   outline: none !important;
+  padding: 0 !important;
+}
+
+.moments-content
+  .halo-moment-editor
+  .editor-content
+  .ProseMirror
+  p:first-child {
+  margin-top: 0 !important;
 }
 
 .moments-content
@@ -27,17 +40,6 @@
   color: #adb5bd;
   pointer-events: none;
   height: 0;
-}
-
-.moments-content .halo-moment-editor .editor-content .ProseMirror pre {
-  padding: 0.75rem 1rem;
-  margin: 0;
-}
-
-.moments-content .halo-moment-editor .editor-content .ProseMirror pre code {
-  color: inherit;
-  background: none;
-  font-size: 0.8rem;
 }
 
 .moments-content
@@ -70,23 +72,6 @@
   margin-right: 0.5rem;
 }
 
-.moments-content .halo-moment-editor .editor-content .ProseMirror code br {
-  display: block;
-}
-
-.moments-content .halo-moment-editor .editor-content .ProseMirror table {
-  border-collapse: collapse;
-  table-layout: fixed;
-  width: 100%;
-  margin: 0;
-  overflow: hidden;
-}
-
-.moments-content .halo-moment-editor .editor-content .ProseMirror p {
-  margin-bottom: 0;
-  margin-top: 0;
-}
-
 .moments-content
   .halo-moment-editor
   .editor-content
@@ -102,22 +87,6 @@
   bottom: 0;
   background: rgba(200, 200, 255, 0.4);
   pointer-events: none;
-}
-
-.moments-content .halo-moment-editor .editor-content .ProseMirror table th,
-.moments-content .halo-moment-editor .editor-content .ProseMirror table td {
-  min-width: 1em;
-  border: 2px solid #ced4da;
-  padding: 3px 5px;
-  vertical-align: top;
-  box-sizing: border-box;
-  position: relative;
-}
-
-.moments-content .halo-moment-editor .editor-content .ProseMirror table th > *,
-.moments-content .halo-moment-editor .editor-content .ProseMirror table td > * {
-  margin-top: 0;
-  margin-bottom: 0;
 }
 
 .moments-content

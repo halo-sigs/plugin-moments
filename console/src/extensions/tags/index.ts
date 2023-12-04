@@ -1,5 +1,5 @@
 import {
-  Editor,
+  type Editor,
   Mark,
   VueRenderer,
   markInputRule,
@@ -10,7 +10,7 @@ import type { Instance } from "tippy.js";
 import TagsExtensionView from "./TagsExtensionView.vue";
 import tippy from "tippy.js";
 import Suggestion from "@tiptap/suggestion";
-import { PluginKey } from "@tiptap/pm/state";
+import { PluginKey } from "@halo-dev/richtext-editor";
 
 export interface TagOptions {
   HTMLAttributes: Record<string, any>;
