@@ -16,6 +16,10 @@ export default ({ mode }: { mode: string }) => {
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
+        // To resolve conflict between @tiptap and @halo-dev/richtext-editor
+        "@tiptap/pm/state": "@halo-dev/richtext-editor",
+        "@tiptap/core": "@halo-dev/richtext-editor",
+        "@tiptap/pm/view": "@halo-dev/richtext-editor",
       },
     },
     define: {

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {
-  Extension,
   RichTextEditor,
   ExtensionBlockquote,
   ExtensionBold,
@@ -36,19 +35,11 @@ import {
   ExtensionColor,
   ExtensionIndent,
   lowlight,
-  type AnyExtension,
-  Editor,
-  ToolboxItem,
   ExtensionDraggable,
   ExtensionColumns,
   ExtensionColumn,
   ExtensionNodeSelected,
   ExtensionTrailingNode,
-  ToolbarItem,
-  Plugin,
-  PluginKey,
-  Decoration,
-  DecorationSet,
   useEditor,
 } from "@halo-dev/richtext-editor";
 import { watch } from "vue";
@@ -137,7 +128,7 @@ const editor = useEditor({
       placeholder: "有什么想说的吗...",
     }),
     ExtensionHighlight,
-    // TagsExtension,
+    TagsExtension,
   ],
   autofocus: "end",
   onUpdate: () => {

@@ -5,6 +5,7 @@ import {
   markInputRule,
   markPasteRule,
   mergeAttributes,
+  type Range,
 } from "@halo-dev/richtext-editor";
 import type { Instance } from "tippy.js";
 import TagsExtensionView from "./TagsExtensionView.vue";
@@ -37,74 +38,6 @@ export const TagsExtension = Mark.create<TagOptions>({
     return {
       HTMLAttributes: {
         class: "tag",
-      },
-      suggestion: {
-        char: "#",
-        render: () => {
-          let component: VueRenderer;
-          let popup: Instance[];
-
-          return {
-            onStart: (props: Record<string, any>) => {
-              component = new VueRenderer(TagsExtensionView, {
-                props,
-                editor: props.editor,
-              });
-
-              if (!props.clientRect) {
-                return;
-              }
-
-              popup = tippy("body", {
-                getReferenceClientRect: props.clientRect,
-                appendTo: () => document.body,
-                content: component.element,
-                showOnCreate: true,
-                interactive: true,
-                trigger: "manual",
-                placement: "bottom-start",
-              });
-            },
-
-            onUpdate(props: Record<string, any>) {
-              component.updateProps(props);
-
-              if (!props.clientRect) {
-                return;
-              }
-
-              popup[0].setProps({
-                getReferenceClientRect: props.clientRect,
-              });
-            },
-
-            onKeyDown(props: Record<string, any>) {
-              if (props.event.key === "Escape") {
-                popup[0].hide();
-
-                return true;
-              }
-
-              return component.ref?.onKeyDown(props);
-            },
-
-            onExit() {
-              popup[0].destroy();
-              component.destroy();
-            },
-          };
-        },
-        command: ({
-          editor,
-          range,
-          props,
-        }: {
-          editor: Editor;
-          range: Range;
-          props: string;
-        }) => {
-          editor.chain().focus().deleteRange(range).setTag(props).run();
-        },
       },
     };
   },
@@ -200,7 +133,72 @@ export const TagsExtension = Mark.create<TagOptions>({
       Suggestion({
         pluginKey: new PluginKey("tagsSuggestion"),
         editor: this.editor,
-        ...this.options.suggestion,
+        char: "#",
+        render: () => {
+          let component: VueRenderer;
+          let popup: Instance[];
+
+          return {
+            onStart: (props: Record<string, any>) => {
+              component = new VueRenderer(TagsExtensionView, {
+                props,
+                editor: props.editor,
+              });
+
+              if (!props.clientRect) {
+                return;
+              }
+
+              popup = tippy("body", {
+                getReferenceClientRect: props.clientRect,
+                appendTo: () => document.body,
+                content: component.element,
+                showOnCreate: true,
+                interactive: true,
+                trigger: "manual",
+                placement: "bottom-start",
+              });
+            },
+
+            onUpdate(props: Record<string, any>) {
+              component.updateProps(props);
+
+              if (!props.clientRect) {
+                return;
+              }
+
+              popup[0].setProps({
+                getReferenceClientRect: props.clientRect,
+              });
+            },
+
+            onKeyDown(props: Record<string, any>) {
+              if (props.event.key === "Escape") {
+                popup[0].hide();
+
+                return true;
+              }
+
+              return component.ref?.onKeyDown(props);
+            },
+
+            onExit() {
+              popup[0].destroy();
+              component.destroy();
+            },
+          };
+        },
+        command: ({
+          editor,
+          range,
+          props,
+        }: {
+          editor: Editor;
+          range: Range;
+          props: string;
+        }) => {
+          editor.chain().focus().deleteRange(range).setTag(props).run();
+        },
       }),
     ];
   },
