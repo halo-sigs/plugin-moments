@@ -1,7 +1,4 @@
 {
-  "name": "@halo-dev/plugin-moments",
-  "version": "1.0.1",
-  "private": true,
   "scripts": {
     "dev": "vite build --mode development --watch",
     "build": "vite build",
