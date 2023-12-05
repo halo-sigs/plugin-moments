@@ -16,7 +16,9 @@ import { computed, ref } from "vue";
 import LucideFileVideo from "~icons/lucide/file-video";
 import { useRouteQuery } from "@vueuse/router";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
-import hljs from "highlight.js";
+import hljs from "highlight.js/lib/common";
+import xml from "highlight.js/lib/languages/xml";
+hljs.registerLanguage("xml", xml);
 
 const tag = useRouteQuery<string>("tag", "", {
   mode: "push",

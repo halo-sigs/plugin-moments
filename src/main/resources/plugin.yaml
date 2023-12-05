@@ -5,7 +5,7 @@ metadata:
 spec:
   enabled: true
   version: 1.0.1
-  requires: ">=2.10.0"
+  requires: ">=2.11.0"
   author:
     name: Halo OSS Team
     website: https://github.com/halo-dev

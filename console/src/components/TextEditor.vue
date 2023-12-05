@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import {
-  Extension,
-  EditorContent,
-  useEditor,
+  RichTextEditor,
   ExtensionBlockquote,
   ExtensionBold,
   ExtensionBulletList,
@@ -11,17 +9,15 @@ import {
   ExtensionDropcursor,
   ExtensionGapcursor,
   ExtensionHardBreak,
+  ExtensionHeading,
   ExtensionHistory,
   ExtensionHorizontalRule,
   ExtensionItalic,
-  ExtensionListItem,
   ExtensionOrderedList,
-  ExtensionParagraph,
   ExtensionStrike,
   ExtensionText,
   ExtensionImage,
   ExtensionTaskList,
-  ExtensionTaskItem,
   ExtensionLink,
   ExtensionTextAlign,
   ExtensionUnderline,
@@ -32,30 +28,21 @@ import {
   ExtensionHighlight,
   ExtensionCommands,
   ExtensionIframe,
-  CommandsSuggestion,
-  CommentParagraph,
-  CommandCodeBlock,
-  CommandBulletList,
-  CommandOrderedList,
-  CommandTaskList,
+  ExtensionVideo,
+  ExtensionAudio,
   ExtensionCodeBlock,
+  ExtensionFontSize,
+  ExtensionColor,
+  ExtensionIndent,
   lowlight,
-  BoldMenuItem,
-  ItalicMenuItem,
-  UnderlineMenuItem,
-  StrikeMenuItem,
-  QuoteMenuItem,
-  CodeMenuItem,
-  SuperScriptMenuItem,
-  SubScriptMenuItem,
-  CodeBlockMenuItem,
-  AlignLeftMenuItem,
-  AlignCenterMenuItem,
-  AlignRightMenuItem,
-  HighlightMenuItem,
+  ExtensionDraggable,
+  ExtensionColumns,
+  ExtensionColumn,
+  ExtensionNodeSelected,
+  ExtensionTrailingNode,
+  useEditor,
 } from "@halo-dev/richtext-editor";
-import { computed, watch } from "vue";
-import EditorBubbleMenu from "./EditorBubbleMenu.vue";
+import { watch } from "vue";
 import { TagsExtension } from "@/extensions/tags";
 
 const props = withDefaults(
@@ -86,15 +73,18 @@ const editor = useEditor({
     ExtensionBulletList,
     ExtensionCode,
     ExtensionDocument,
-    ExtensionDropcursor,
+    ExtensionDropcursor.configure({
+      width: 2,
+      class: "dropcursor",
+      color: "skyblue",
+    }),
     ExtensionGapcursor,
     ExtensionHardBreak,
+    ExtensionHeading,
     ExtensionHistory,
     ExtensionHorizontalRule,
     ExtensionItalic,
-    ExtensionListItem,
     ExtensionOrderedList,
-    ExtensionParagraph,
     ExtensionStrike,
     ExtensionText,
     ExtensionImage.configure({
@@ -102,17 +92,15 @@ const editor = useEditor({
       allowBase64: false,
       HTMLAttributes: {
         loading: "lazy",
-        class: "moment-image",
       },
     }),
     ExtensionTaskList,
-    ExtensionTaskItem,
     ExtensionLink.configure({
       autolink: true,
       openOnClick: false,
     }),
     ExtensionTextAlign.configure({
-      types: ["paragraph"],
+      types: ["heading", "paragraph"],
     }),
     ExtensionUnderline,
     ExtensionTable.configure({
@@ -120,47 +108,27 @@ const editor = useEditor({
     }),
     ExtensionSubscript,
     ExtensionSuperscript,
-    ExtensionPlaceholder.configure({
-      placeholder: "有什么想说的吗...",
-    }),
     ExtensionHighlight,
-    ExtensionCommands.configure({
-      suggestion: {
-        ...CommandsSuggestion,
-        items: ({ query }: { query: string }) => {
-          return [
-            CommentParagraph,
-            CommandCodeBlock,
-            CommandBulletList,
-            CommandOrderedList,
-            CommandTaskList,
-          ].filter((item) =>
-            [...item.keywords, item.title].some((keyword) =>
-              keyword.includes(query)
-            )
-          );
-        },
-      },
-    }),
+    ExtensionCommands,
     ExtensionCodeBlock.configure({
       lowlight,
     }),
     ExtensionIframe,
-    TagsExtension,
-    Extension.create({
-      addGlobalAttributes() {
-        return [
-          {
-            types: ["heading"],
-            attributes: {
-              id: {
-                default: null,
-              },
-            },
-          },
-        ];
-      },
+    ExtensionVideo,
+    ExtensionAudio,
+    ExtensionFontSize,
+    ExtensionColor,
+    ExtensionIndent,
+    ExtensionDraggable,
+    ExtensionColumns,
+    ExtensionColumn,
+    ExtensionNodeSelected,
+    ExtensionTrailingNode,
+    ExtensionPlaceholder.configure({
+      placeholder: "有什么想说的吗...",
     }),
+    ExtensionHighlight,
+    TagsExtension,
   ],
   autofocus: "end",
   onUpdate: () => {
@@ -169,25 +137,6 @@ const editor = useEditor({
     emit("update:isEmpty", editor.value?.isEmpty);
     emit("update", editor.value?.getHTML() + "");
   },
-});
-
-const bubbleMenuItems = computed(() => {
-  if (!editor.value) return [];
-  return [
-    BoldMenuItem(editor.value),
-    ItalicMenuItem(editor.value),
-    UnderlineMenuItem(editor.value),
-    StrikeMenuItem(editor.value),
-    HighlightMenuItem(editor.value),
-    QuoteMenuItem(editor.value),
-    CodeMenuItem(editor.value),
-    CodeBlockMenuItem(editor.value),
-    SuperScriptMenuItem(editor.value),
-    SubScriptMenuItem(editor.value),
-    AlignLeftMenuItem(editor.value),
-    AlignCenterMenuItem(editor.value),
-    AlignRightMenuItem(editor.value),
-  ];
 });
 
 watch(
@@ -200,20 +149,10 @@ watch(
 );
 </script>
 <template>
-  <div v-if="editor" class="halo-moment-editor moments-relative">
-    <div class="flex moments-flex-col w-full h-full">
-      <EditorBubbleMenu
-        :editor="editor"
-        :menu-items="bubbleMenuItems"
-      ></EditorBubbleMenu>
-      <EditorContent
-        :editor="editor"
-        :content-styles="{
-          width: '100%',
-          maxHeight: '50vh',
-        }"
-        class="editor-content prose prose-base !max-w-none prose-pre:p-0 bg-white prose-p:mt-3 prose-p:mb-3 prose-img:mt-0 prose-img:mb-0"
-      />
-    </div>
+  <div
+    v-if="editor"
+    class="halo-moment-editor halo-rich-text-editor moments-relative"
+  >
+    <RichTextEditor :editor="editor" locale="zh-CN "> </RichTextEditor>
   </div>
 </template>

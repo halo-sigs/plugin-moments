@@ -10,7 +10,7 @@ import MomentItem from "@/components/MomentItem.vue";
 import MomentEdit from "@/components/MomentEdit.vue";
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
-import "vue-datepicker-next/locale/zh-cn";
+import "vue-datepicker-next/locale/zh-cn.es";
 import { toISODayEndOfTime } from "@/utils/date";
 import { useRouteQuery } from "@vueuse/router";
 import FilterTag from "@/components/FilterTag.vue";
