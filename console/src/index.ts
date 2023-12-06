@@ -1,5 +1,5 @@
 import "./styles/tailwind.css";
-import "./styles/index.css";
+import "./styles/index.scss";
 import { definePlugin } from "@halo-dev/console-shared";
 import MomentsList from "@/views/MomentsList.vue";
 import { markRaw } from "vue";

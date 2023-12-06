@@ -194,7 +194,7 @@ const getExtname = (type: string) => {
       </div>
     </div>
     <div
-      class="moment-preview-html moments-overflow-hidden moments-relative moments-pt-1"
+      class="moment-preview-html markdown-body moments-overflow-hidden moments-relative moments-pt-1"
     >
       <div
         v-highlight

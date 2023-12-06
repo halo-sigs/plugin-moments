@@ -118,6 +118,9 @@ devDependencies:
   prettier:
     specifier: ^2.8.4
     version: 2.8.4
+  sass:
+    specifier: ^1.69.5
+    version: 1.69.5
   tailwindcss:
     specifier: ^3.2.7
     version: 3.2.7(postcss@8.4.21)
@@ -129,10 +132,10 @@ devDependencies:
     version: 0.15.3
   vite:
     specifier: ^4.5.0
-    version: 4.5.0(@types/node@16.18.14)
+    version: 4.5.0(@types/node@16.18.14)(sass@1.69.5)
   vitest:
     specifier: ^0.13.1
-    version: 0.13.1(jsdom@19.0.0)
+    version: 0.13.1(jsdom@19.0.0)(sass@1.69.5)
   vue-tsc:
     specifier: ^0.35.2
     version: 0.35.2(typescript@4.7.4)
@@ -1287,7 +1290,7 @@ packages:
       vite: ^4.0.0 || ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.5.0(@types/node@16.18.14)
+      vite: 4.5.0(@types/node@16.18.14)(sass@1.69.5)
       vue: 3.2.47
     dev: true
 
@@ -2880,6 +2883,10 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
+  /immutable@4.3.4:
+    resolution: {integrity: sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==}
+    dev: true
+
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -3999,6 +4006,16 @@ packages:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: true
 
+  /sass@1.69.5:
+    resolution: {integrity: sha512-qg2+UCJibLr2LCVOt3OlPhr/dqVHWOa9XtZf2OjbLs/T4VPSJ00udtgJxH3neXZm+QqX8B+3cU7RaLqp1iVfcQ==}
+    engines: {node: '>=14.0.0'}
+    hasBin: true
+    dependencies:
+      chokidar: 3.5.3
+      immutable: 4.3.4
+      source-map-js: 1.0.2
+    dev: true
+
   /saxes@5.0.1:
     resolution: {integrity: sha512-5LBh1Tls8c9xgGjw3QrMwETmTMVk0oFgvrFSvWx62llR2hcEInrKNZ2GZCCuuy2lvWrdl5jhbpeqc5hRYKFOcw==}
     engines: {node: '>=10'}
@@ -4412,7 +4429,7 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vite@2.9.15:
+  /vite@2.9.15(sass@1.69.5):
     resolution: {integrity: sha512-fzMt2jK4vQ3yK56te3Kqpkaeq9DkcZfBbzHwYpobasvgYmP2SoAr6Aic05CsB4CzCZbsDv4sujX3pkEGhLabVQ==}
     engines: {node: '>=12.2.0'}
     hasBin: true
@@ -4432,11 +4449,12 @@ packages:
       postcss: 8.4.21
       resolve: 1.22.1
       rollup: 2.77.3
+      sass: 1.69.5
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
 
-  /vite@4.5.0(@types/node@16.18.14):
+  /vite@4.5.0(@types/node@16.18.14)(sass@1.69.5):
     resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -4468,11 +4486,12 @@ packages:
       esbuild: 0.18.20
       postcss: 8.4.32
       rollup: 3.29.4
+      sass: 1.69.5
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
 
-  /vitest@0.13.1(jsdom@19.0.0):
+  /vitest@0.13.1(jsdom@19.0.0)(sass@1.69.5):
     resolution: {integrity: sha512-CfSBf7YFw/i8HumSUQRtZKs0aV91DC9WU8nAgIJAlawKHaFuPHQohDwOTPIFgrxySiuFYUa0Yohf9gDFfBwjxA==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
@@ -4499,7 +4518,7 @@ packages:
       local-pkg: 0.4.3
       tinypool: 0.1.3
       tinyspy: 0.3.3
-      vite: 2.9.15
+      vite: 2.9.15(sass@1.69.5)
     transitivePeerDependencies:
       - less
       - sass
