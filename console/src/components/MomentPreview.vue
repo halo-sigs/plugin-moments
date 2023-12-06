@@ -158,7 +158,7 @@ const getExtname = (type: string) => {
     </template>
   </PreviewDetailModal>
   <div
-    class=" preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-p-3.5 moments-relative"
+    class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-p-3.5 moments-relative"
     @dblclick="handleDblclick"
   >
     <div
