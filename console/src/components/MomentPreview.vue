@@ -158,7 +158,7 @@ const getExtname = (type: string) => {
     </template>
   </PreviewDetailModal>
   <div
-    class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-p-3.5 moments-relative"
+    class=" preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-p-3.5 moments-relative"
     @dblclick="handleDblclick"
   >
     <div
@@ -194,7 +194,7 @@ const getExtname = (type: string) => {
       </div>
     </div>
     <div
-      class="moment-preview-html moments-overflow-hidden moments-relative moments-pt-1"
+      class="moment-preview-html markdown-body moments-overflow-hidden moments-relative moments-pt-1"
     >
       <div
         v-highlight
