@@ -39,7 +39,7 @@ const getExtname = (type: string) => {
 <template>
   <div class="moments-relative moments-overflow-hidden">
     <template v-if="props.media.type == 'PHOTO'">
-      <div class="aspect-w-10 aspect-h-8">
+      <div class="moments-aspect-w-1 moments-aspect-h-1">
         <img
           :src="props.media.url"
           class="moments-object-cover"
@@ -48,7 +48,7 @@ const getExtname = (type: string) => {
       </div>
     </template>
     <template v-else-if="props.media.type == 'VIDEO'">
-      <div class="aspect-w-10 aspect-h-8">
+      <div class="moments-aspect-w-1 moments-aspect-h-1">
         <video
           v-if="canPlayType(props.media.originType)"
           class="moments-object-cover"

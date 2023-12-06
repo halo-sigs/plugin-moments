@@ -210,13 +210,19 @@ const getExtname = (type: string) => {
       "
       class="img-box moments-flex moments-pt-2"
     >
-      <ul role="list">
+      <ul
+        class="moments-grid moments-grid-cols-3 moments-gap-1.5 moments-w-full sm:moments-w-1/2"
+        role="list"
+      >
         <li
           v-for="(media, index) in props.moment.spec.content.medium"
           :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-28 moments-cursor-pointer"
+          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-cursor-pointer"
         >
-          <div class="aspect-w-10 aspect-h-8" @click="handleClickMedium(index)">
+          <div
+            class="moments-aspect-w-1 moments-aspect-h-1"
+            @click="handleClickMedium(index)"
+          >
             <template v-if="media.type == 'PHOTO'">
               <img
                 :src="media.url"
