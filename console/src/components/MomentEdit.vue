@@ -305,11 +305,14 @@ function handleKeydown(event: KeyboardEvent) {
       v-if="formState.spec.content.medium?.length"
       class="img-box moments-flex moments-px-3.5 moments-py-2"
     >
-      <ul role="list">
+      <ul
+        class="moments-grid moments-grid-cols-3 moments-gap-1.5 moments-w-full sm:moments-w-1/2"
+        role="list"
+      >
         <li
           v-for="(media, index) in formState.spec.content.medium"
           :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-mr-2 moments-mb-2 moments-w-20"
+          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block"
         >
           <MediaCard :media="media" @remove="removeMedium"></MediaCard>
         </li>
