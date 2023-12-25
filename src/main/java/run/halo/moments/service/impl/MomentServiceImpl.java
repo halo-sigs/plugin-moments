@@ -75,6 +75,18 @@ public class MomentServiceImpl implements MomentService {
             });
     }
 
+    @Override
+    public Mono<Moment> getByUsername(String momentName, String username) {
+        return client.get(Moment.class, momentName)
+            .filter(post -> post.getSpec() != null)
+            .filter(post -> Objects.equals(username, post.getSpec().getOwner()));
+    }
+
+    @Override
+    public Mono<Moment> update(Moment moment) {
+        return client.update(moment);
+    }
+
     private Mono<ListedMoment> toListedMoment(Moment moment) {
         ListedMoment.ListedMomentBuilder momentBuilder = ListedMoment.builder()
             .moment(moment);

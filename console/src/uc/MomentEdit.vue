@@ -98,7 +98,7 @@ const queryEditorTags = function () {
 const createMoment = async () => {
   formState.value.spec.releaseTime = new Date().toISOString();
   const { data } = await apiClient.post<Moment>(
-    `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
+    `/apis/uc.api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
     formState.value
   );
   emit("save", data);
@@ -108,12 +108,12 @@ const createMoment = async () => {
 
 const updateMoment = async () => {
   const { data } = await apiClient.get<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${formState.value.metadata.name}`
+    `/apis/uc.api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments/${formState.value.metadata.name}`
   );
   // 更新当前需要提交的 moment spec 为最新
   data.spec = formState.value.spec;
   const updated = await apiClient.put<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${formState.value.metadata.name}`,
+    `/apis/uc.api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments/${formState.value.metadata.name}`,
     data
   );
   emit("update", updated.data);
@@ -358,7 +358,10 @@ function handleKeydown(event: KeyboardEvent) {
           <span class="moments-text-xs"> 取消 </span>
         </button>
 
-        <div v-permission="['plugin:moments:manage']" class="moments-h-fit">
+        <div
+          v-permission="['plugin:moments:manage', 'uc:plugin:moments:manage']"
+          class="moments-h-fit"
+        >
           <VButton
             v-model:disabled="saveDisable"
             :loading="saving"

@@ -175,7 +175,7 @@ const getExtname = (type: string) => {
       </div>
 
       <div
-        v-permission="['plugin:moments:manage']"
+        v-permission="['plugin:moments:manage', 'uc:plugin:moments:manage']"
         class="moments-absolute moments-right-3.5"
       >
         <VDropdown

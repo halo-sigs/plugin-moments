@@ -28,7 +28,7 @@ metadata:
     rbac.authorization.halo.run/module: "Moments Management"
     rbac.authorization.halo.run/display-name: "瞬间管理"
     rbac.authorization.halo.run/ui-permissions: |
-      ["plugin:moments:manage"]
+      ["plugin:moments:manage", "uc:plugin:moments:manage"]
     rbac.authorization.halo.run/dependencies: |
       ["role-template-moments-view"]
 rules:
@@ -39,3 +39,20 @@ rules:
     resources: [ "plugins/moments" ]
     resourceNames: [ "PluginMoments" ]
     verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
+---
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-uc-moments-manage
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "Moments Uc Management"
+    rbac.authorization.halo.run/display-name: "发布瞬间"
+    rbac.authorization.halo.run/ui-permissions: |
+      ["uc:plugin:moments:manage"]
+rules:
+  - apiGroups: [ "uc.api.plugin.halo.run"]
+    resources: [ "plugins/moments" ]
+    resourceNames: [ "PluginMoments" ]
+    verbs: [ "create", "get", "list", "update", "delete", "deletecollection" ]

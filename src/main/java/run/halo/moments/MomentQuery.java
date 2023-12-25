@@ -1,5 +1,6 @@
 package run.halo.moments;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import org.apache.commons.lang3.StringUtils;
@@ -15,8 +16,15 @@ import run.halo.app.extension.router.IListRequest;
  */
 public class MomentQuery extends IListRequest.QueryListRequest {
 
+    private final String username;
+
     public MomentQuery(MultiValueMap<String, String> queryParams) {
+        this(queryParams, null);
+    }
+
+    public MomentQuery(MultiValueMap<String, String> queryParams, String username) {
         super(queryParams);
+        this.username = username;
     }
 
     @Nullable
@@ -27,6 +35,9 @@ public class MomentQuery extends IListRequest.QueryListRequest {
 
     @Schema(description = "Owner name.")
     public String getOwnerName() {
+        if (StringUtils.isNotBlank(username)) {
+            return username;
+        }
         String ownerName = queryParams.getFirst("ownerName");
         return StringUtils.isBlank(ownerName) ? null : ownerName;
     }
@@ -73,6 +84,4 @@ public class MomentQuery extends IListRequest.QueryListRequest {
     private Instant convertInstantOrNull(String timeStr) {
         return StringUtils.isBlank(timeStr) ? null : Instant.parse(timeStr);
     }
-    
-    
 }
