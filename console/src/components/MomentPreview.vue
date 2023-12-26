@@ -8,6 +8,9 @@ import {
   VDropdown,
   IconEyeOff,
   VStatusDot,
+  VEntity,
+  VEntityField,
+  VAvatar,
 } from "@halo-dev/components";
 import { computed, ref } from "vue";
 import LucideFileVideo from "~icons/lucide/file-video";
@@ -15,6 +18,7 @@ import { useRouteQuery } from "@vueuse/router";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";
+import type { Contributor } from "@halo-dev/api-client/index";
 hljs.registerLanguage("xml", xml);
 
 const tag = useRouteQuery<string>("tag", "", {
@@ -22,6 +26,7 @@ const tag = useRouteQuery<string>("tag", "", {
 });
 const props = defineProps<{
   moment: Moment;
+  owner?: Contributor;
 }>();
 
 const emit = defineEmits<{
@@ -132,48 +137,60 @@ const getExtname = (type: string) => {
     :class="moment.spec.approved ? '' : 'moments-border-yellow-500'"
     @dblclick="handleDblclick"
   >
-    <div
-      class="header moments-flex moments-items-center moments-justify-between moments-h-5"
-    >
-      <div class="moments-flex moments-items-center">
-        <div class="moments-block moments-text-xs moments-text-gray-500">
-          <span>{{ formatDatetime(moment.spec.releaseTime) }}</span>
-        </div>
+    <div class="header moments-flex moments-justify-between">
+      <VEntity class="!moments-p-0">
+        <template #start>
+          <VEntityField v-if="owner">
+            <template #description>
+              <VAvatar
+                :alt="owner?.displayName"
+                :src="owner?.avatar"
+                size="md"
+                circle
+              ></VAvatar>
+            </template>
+          </VEntityField>
+          <VEntityField :title="owner?.displayName">
+            <template #description>
+              <div class="moments-block moments-text-xs moments-text-gray-500">
+                <span>{{ formatDatetime(moment.spec.releaseTime) }}</span>
+              </div>
 
-        <div v-if="moment.spec.visible == 'PRIVATE'" class="moments-ml-2">
-          <IconEyeOff class="moments-text-xs moments-text-gray-500" />
-        </div>
-      </div>
+              <div v-if="moment.spec.visible == 'PRIVATE'" class="moments-ml-2">
+                <IconEyeOff class="moments-text-xs moments-text-gray-500" />
+              </div>
 
-      <div class="moments-flex moments-absolute moments-right-3.5">
-        <VStatusDot
-          v-show="!moment.spec.approved"
-          v-tooltip="'请等待管理员审核通过'"
-          class="moments-mr-2"
-          state="success"
-          animate
-        >
-          <template #text>
-            <span class="text-xs text-gray-500">
-              {{ `审核中` }}
-            </span>
-          </template>
-        </VStatusDot>
-        <VDropdown
-          v-permission="['plugin:moments:manage', 'uc:plugin:moments:manage']"
-          compute-transform-origin
-          :triggers="['click']"
-          :popper-triggers="['click', 'hover']"
-        >
-          <IconMore class="moments-text-gray-500 moments-cursor-pointer" />
-          <template #popper>
-            <slot name="popper"></slot>
-          </template>
-        </VDropdown>
-      </div>
+              <VStatusDot
+                v-show="!moment.spec.approved"
+                v-tooltip="'请等待管理员审核通过'"
+                class="moments-ml-2"
+                state="success"
+                animate
+              >
+                <template #text>
+                  <span class="text-xs text-gray-500">
+                    {{ `审核中` }}
+                  </span>
+                </template>
+              </VStatusDot>
+            </template>
+          </VEntityField>
+        </template>
+      </VEntity>
+      <VDropdown
+        v-permission="['plugin:moments:manage', 'uc:plugin:moments:manage']"
+        compute-transform-origin
+        :triggers="['click']"
+        :popper-triggers="['click', 'hover']"
+      >
+        <IconMore class="moments-text-gray-500 moments-cursor-pointer" />
+        <template #popper>
+          <slot name="popper"></slot>
+        </template>
+      </VDropdown>
     </div>
     <div
-      class="moment-preview-html markdown-body moments-overflow-hidden moments-relative moments-pt-1"
+      class="moment-preview-html markdown-body moments-overflow-hidden moments-relative moments-pt-2"
     >
       <div v-highlight v-lazy v-tag v-html="moment.spec.content.html"></div>
     </div>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { Moment } from "@/types";
+import type { ListedMoment, Moment } from "@/types";
 import cloneDeep from "lodash.clonedeep";
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 import MomentEdit from "./MomentEdit.vue";
 import MomentPreview from "./MomentPreview.vue";
 import apiClient from "@/utils/api-client";
@@ -9,11 +9,11 @@ import { Dialog, Toast, VDropdownItem } from "@halo-dev/components";
 
 const props = withDefaults(
   defineProps<{
-    moment: Moment;
+    listedMoment: ListedMoment;
     editing: boolean;
   }>(),
   {
-    moment: undefined,
+    listedMoment: undefined,
     editing: false,
   }
 );
@@ -25,8 +25,8 @@ const emit = defineEmits<{
 }>();
 
 const editing = ref(props.editing);
-const editingMoment = ref<Moment>(cloneDeep(props.moment));
-const previewMoment = ref<Moment>(cloneDeep(props.moment));
+const editingMoment = ref<Moment>(toRaw(props.listedMoment.moment));
+const previewMoment = ref<Moment>(toRaw(props.listedMoment.moment));
 
 const handleSave = async (moment: Moment) => {
   moment.spec.releaseTime = new Date().toISOString();
@@ -99,6 +99,7 @@ const handleApproved = () => {
       <MomentPreview
         v-if="previewMoment"
         :moment="previewMoment"
+        :owner="listedMoment?.owner"
         @dblclick="editing = true"
       >
         <template #popper>

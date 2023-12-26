@@ -7,7 +7,6 @@ import type { ListedMoment } from "@/types";
 import { useQuery } from "@tanstack/vue-query";
 import apiClient from "@/utils/api-client";
 import MomentItem from "@/components/MomentItem.vue";
-import MomentEdit from "@/components/MomentEdit.vue";
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn.es";
@@ -181,7 +180,7 @@ const handleCloseTag = () => {
           <li v-for="moment in moments" :key="moment.moment.metadata.name">
             <MomentItem
               :key="moment.moment.metadata.name"
-              :moment="moment.moment"
+              :listed-moment="moment"
               @remove="refetch()"
             />
           </li>
