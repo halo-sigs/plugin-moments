@@ -39,7 +39,8 @@ import run.halo.moments.vo.MomentVo;
 public class MomentFinderImpl implements MomentFinder {
 
     public static final Predicate<Moment> FIXED_PREDICATE = moment -> Objects.equals(
-        moment.getSpec().getVisible(), Moment.MomentVisible.PUBLIC);
+        moment.getSpec().getVisible(), Moment.MomentVisible.PUBLIC)
+        && moment.getSpec().getApproved() == Boolean.TRUE;
 
     private final ReactiveExtensionClient client;
 
@@ -58,8 +59,9 @@ public class MomentFinderImpl implements MomentFinder {
 
     @Override
     public Flux<MomentVo> listBy(String tag) {
-        return this.client.list(Moment.class, FIXED_PREDICATE.and(moment -> moment.getSpec()
-                .getTags().contains(tag)), defaultComparator())
+        return this.client.list(Moment.class,
+                FIXED_PREDICATE.and(moment -> moment.getSpec().getTags().contains(tag)),
+                defaultComparator())
             .flatMap(this::getMomentVo);
     }
 

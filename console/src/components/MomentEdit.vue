@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { VButton, IconEye, IconEyeOff } from "@halo-dev/components";
 import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/types";
-import apiClient from "@/utils/api-client";
 import { Toast } from "@halo-dev/components";
 import type { AttachmentLike } from "@halo-dev/console-shared";
 import { computed, onMounted, ref, toRaw } from "vue";
@@ -21,7 +20,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: "save", moment: Moment): void;
+  (event: "insert", moment: Moment): void;
   (event: "update", moment: Moment): void;
   (event: "cancel"): void;
 }>();
@@ -37,6 +36,7 @@ const initMoment: Moment = {
     owner: "",
     visible: "PUBLIC",
     tags: [],
+    approved: false,
   },
   metadata: {
     generateName: "moment-",
@@ -66,9 +66,10 @@ const handlerCreateOrUpdateMoment = async () => {
     saving.value = true;
     queryEditorTags();
     if (isUpdateMode.value) {
-      updateMoment();
+      emit("update", formState.value);
     } else {
-      createMoment();
+      emit("insert", formState.value);
+      handleReset();
     }
   } catch (error) {
     console.error(error);
@@ -93,31 +94,6 @@ const queryEditorTags = function () {
     }
   }
   formState.value.spec.tags = Array.from(tags);
-};
-
-const createMoment = async () => {
-  formState.value.spec.releaseTime = new Date().toISOString();
-  const { data } = await apiClient.post<Moment>(
-    `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
-    formState.value
-  );
-  emit("save", data);
-  handleReset();
-  Toast.success("发布成功");
-};
-
-const updateMoment = async () => {
-  const { data } = await apiClient.get<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${formState.value.metadata.name}`
-  );
-  // 更新当前需要提交的 moment spec 为最新
-  data.spec = formState.value.spec;
-  const updated = await apiClient.put<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${formState.value.metadata.name}`,
-    data
-  );
-  emit("update", updated.data);
-  Toast.success("发布成功");
 };
 
 const handleReset = () => {
@@ -358,7 +334,10 @@ function handleKeydown(event: KeyboardEvent) {
           <span class="moments-text-xs"> 取消 </span>
         </button>
 
-        <div v-permission="['plugin:moments:manage']" class="moments-h-fit">
+        <div
+          v-permission="['plugin:moments:manage', 'uc:plugin:moments:manage']"
+          class="moments-h-fit"
+        >
           <VButton
             v-model:disabled="saveDisable"
             :loading="saving"

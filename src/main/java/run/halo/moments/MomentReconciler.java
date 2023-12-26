@@ -39,6 +39,12 @@ public class MomentReconciler implements Reconciler<Reconciler.Request> {
                 createCommentSubscriptionForMoment(moment);
                 client.update(moment);
             }
+
+            // add approved marks to the old data by default.
+            if (moment.getSpec().getApproved() == null) {
+                moment.getSpec().setApproved(true);
+                client.update(moment);
+            }
         });
         return Result.doNotRetry();
     }

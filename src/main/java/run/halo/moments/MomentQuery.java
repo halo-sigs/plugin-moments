@@ -1,6 +1,5 @@
 package run.halo.moments;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import org.apache.commons.lang3.StringUtils;
@@ -75,6 +74,11 @@ public class MomentQuery extends IListRequest.QueryListRequest {
     public Boolean getSortOrder() {
         String sortOrder = queryParams.getFirst("sortOrder");
         return convertBooleanOrNull(sortOrder);
+    }
+
+    @Schema(description = "moment approved.")
+    public Boolean getApproved() {
+        return convertBooleanOrNull(queryParams.getFirst("approved"));
     }
 
     private Boolean convertBooleanOrNull(String value) {

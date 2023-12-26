@@ -2,8 +2,8 @@
 import type { Moment } from "@/types";
 import cloneDeep from "lodash.clonedeep";
 import { ref } from "vue";
-import MomentEdit from "./MomentEdit.vue";
-import MomentPreview from "./MomentPreview.vue";
+import MomentEdit from "@/components/MomentEdit.vue";
+import MomentPreview from "@/components/MomentPreview.vue";
 import apiClient from "@/utils/api-client";
 import { Dialog, Toast, VDropdownItem } from "@halo-dev/components";
 
@@ -30,9 +30,8 @@ const previewMoment = ref<Moment>(cloneDeep(props.moment));
 
 const handleSave = async (moment: Moment) => {
   moment.spec.releaseTime = new Date().toISOString();
-  moment.spec.approved = true;
   const { data } = await apiClient.post<Moment>(
-    `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
+    `/apis/uc.api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
     moment
   );
   emit("save", data);
@@ -41,12 +40,12 @@ const handleSave = async (moment: Moment) => {
 
 const handleUpdate = async (moment: Moment) => {
   const { data } = await apiClient.get<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${moment.metadata.name}`
+    `/apis/uc.api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments/${moment.metadata.name}`
   );
   // 更新当前需要提交的 moment spec 为最新
   data.spec = moment.spec;
   const updated = await apiClient.put<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${moment.metadata.name}`,
+    `/apis/uc.api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments/${moment.metadata.name}`,
     data
   );
   editingMoment.value = cloneDeep(moment);
@@ -54,6 +53,10 @@ const handleUpdate = async (moment: Moment) => {
   editing.value = false;
   emit("update", updated.data);
   Toast.success("发布成功");
+};
+
+const handleCancel = () => {
+  editing.value = false;
 };
 
 const handleRemove = (name: string) => {
@@ -64,7 +67,9 @@ const handleRemove = (name: string) => {
     onConfirm: async () => {
       try {
         apiClient
-          .delete(`/apis/moment.halo.run/v1alpha1/moments/${name}`)
+          .delete(
+            `/apis/uc.api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments/${name}`
+          )
           .then(() => {
             Toast.success("删除成功");
             emit("remove", name);
@@ -74,16 +79,6 @@ const handleRemove = (name: string) => {
       }
     },
   });
-};
-
-const handleCancel = () => {
-  editing.value = false;
-};
-
-const handleApproved = () => {
-  editingMoment.value.spec.approved = true;
-  previewMoment.value.spec.approved = true;
-  handleUpdate(editingMoment.value);
 };
 </script>
 <template>
@@ -96,13 +91,8 @@ const handleApproved = () => {
       @cancel="handleCancel"
     ></MomentEdit>
     <template v-else>
-      <MomentPreview
-        v-if="previewMoment"
-        :moment="previewMoment"
-        @dblclick="editing = true"
-      >
+      <MomentPreview :moment="previewMoment" @dblclick="editing = true">
         <template #popper>
-          <VDropdownItem @click="handleApproved"> 审核通过 </VDropdownItem>
           <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
           <VDropdownItem type="danger" @click="handleRemove">
             删除

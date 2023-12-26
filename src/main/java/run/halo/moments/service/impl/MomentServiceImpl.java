@@ -45,8 +45,7 @@ public class MomentServiceImpl implements MomentService {
     public Mono<ListResult<ListedMoment>> listMoment(MomentQuery query) {
         Comparator<Moment> comparator =
             MomentSorter.from(query.getSort(), query.getSortOrder());
-        return this.client.list(Moment.class, momentListPredicate(query),
-                comparator,
+        return this.client.list(Moment.class, momentListPredicate(query), comparator,
                 query.getPage(), query.getSize()
             )
             .flatMap(listResult -> Flux.fromStream(listResult.get())
@@ -83,7 +82,12 @@ public class MomentServiceImpl implements MomentService {
     }
 
     @Override
-    public Mono<Moment> update(Moment moment) {
+    public Mono<Moment> deleteBy(Moment moment) {
+        return client.delete(moment);
+    }
+
+    @Override
+    public Mono<Moment> updateBy(Moment moment) {
         return client.update(moment);
     }
 
@@ -156,6 +160,12 @@ public class MomentServiceImpl implements MomentService {
         Moment.MomentVisible visible = query.getVisible();
         if (visible != null) {
             predicate = predicate.and(moment -> visible.equals(moment.getSpec().getVisible()));
+        }
+
+        Boolean approved = query.getApproved();
+        if (approved != null) {
+            predicate =
+                predicate.and(moment -> Objects.equals(moment.getSpec().getApproved(), approved));
         }
 
         Instant startDate = query.getStartDate();

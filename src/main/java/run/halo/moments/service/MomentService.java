@@ -1,7 +1,5 @@
 package run.halo.moments.service;
 
-import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.extension.ListResult;
 import run.halo.moments.ListedMoment;
@@ -21,5 +19,7 @@ public interface MomentService {
 
     Mono<Moment> getByUsername(String momentName, String username);
 
-    Mono<Moment> update(Moment moment);
+    Mono<Moment> updateBy(Moment moment);
+
+    Mono<Moment> deleteBy(Moment moment);
 }

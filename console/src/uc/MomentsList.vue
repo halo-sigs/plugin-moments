@@ -5,8 +5,8 @@ import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { ListedMoment } from "@/types";
 import { useQuery } from "@tanstack/vue-query";
 import apiClient from "@/utils/api-client";
-import MomentItem from "@/components/MomentItem.vue";
-import MomentEdit from "./MomentEdit.vue";
+import MomentItem from "./MomentItem.vue";
+import MomentEdit from "@/components/MomentEdit.vue";
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn.es";
@@ -159,7 +159,7 @@ const handleCloseTag = () => {
         </div>
       </div>
 
-      <MomentEdit @save="refetch()" />
+      <MomentItem :editing="true" @save="refetch()" />
 
       <VLoading v-if="isLoading" />
 

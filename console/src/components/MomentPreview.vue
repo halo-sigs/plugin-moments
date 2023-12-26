@@ -1,16 +1,13 @@
 <script lang="ts" setup>
 import type { Moment } from "@/types";
-import apiClient from "@/utils/api-client";
 import { formatDatetime } from "@/utils/date";
 import {
-  Dialog,
-  Toast,
   IconMore,
   IconArrowLeft,
   IconArrowRight,
   VDropdown,
-  VDropdownItem,
   IconEyeOff,
+  VStatusDot,
 } from "@halo-dev/components";
 import { computed, ref } from "vue";
 import LucideFileVideo from "~icons/lucide/file-video";
@@ -28,9 +25,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (event: "editor"): void;
-  (event: "remove", moment: Moment): void;
-  (event: "cancel"): void;
   (event: "dblclick"): void;
   (event: "tagClick", tagName: string): void;
 }>();
@@ -93,30 +87,6 @@ const selectedMedia = computed(() => {
   return mediums.value[selectedIndex.value];
 });
 
-const deleteMoment = () => {
-  Dialog.warning({
-    title: "确定要删除该瞬间吗？",
-    description: "该操作不可逆",
-    confirmType: "danger",
-    onConfirm: async () => {
-      try {
-        const { data } = await apiClient.delete(
-          `/apis/moment.halo.run/v1alpha1/moments/${props.moment.metadata.name}`
-        );
-
-        Toast.success("删除成功");
-        emit("remove", data);
-      } catch (error) {
-        console.error("Failed to delete comment", error);
-      }
-    },
-  });
-};
-
-const handlerEditor = () => {
-  emit("editor");
-};
-
 const handleDblclick = () => {
   emit("dblclick");
 };
@@ -159,6 +129,7 @@ const getExtname = (type: string) => {
   </PreviewDetailModal>
   <div
     class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-p-3.5 moments-relative"
+    :class="moment.spec.approved ? '' : 'moments-border-yellow-500'"
     @dblclick="handleDblclick"
   >
     <div
@@ -166,29 +137,37 @@ const getExtname = (type: string) => {
     >
       <div class="moments-flex moments-items-center">
         <div class="moments-block moments-text-xs moments-text-gray-500">
-          <span>{{ formatDatetime(props.moment.spec.releaseTime) }}</span>
+          <span>{{ formatDatetime(moment.spec.releaseTime) }}</span>
         </div>
 
-        <div v-if="props.moment.spec.visible == 'PRIVATE'" class="moments-ml-2">
+        <div v-if="moment.spec.visible == 'PRIVATE'" class="moments-ml-2">
           <IconEyeOff class="moments-text-xs moments-text-gray-500" />
         </div>
       </div>
 
-      <div
-        v-permission="['plugin:moments:manage', 'uc:plugin:moments:manage']"
-        class="moments-absolute moments-right-3.5"
-      >
+      <div class="moments-flex moments-absolute moments-right-3.5">
+        <VStatusDot
+          v-show="!moment.spec.approved"
+          v-tooltip="'请等待管理员审核通过'"
+          class="moments-mr-2"
+          state="success"
+          animate
+        >
+          <template #text>
+            <span class="text-xs text-gray-500">
+              {{ `审核中` }}
+            </span>
+          </template>
+        </VStatusDot>
         <VDropdown
+          v-permission="['plugin:moments:manage', 'uc:plugin:moments:manage']"
           compute-transform-origin
           :triggers="['click']"
-          :popper-triggers="['click']"
+          :popper-triggers="['click', 'hover']"
         >
           <IconMore class="moments-text-gray-500 moments-cursor-pointer" />
           <template #popper>
-            <VDropdownItem @click="handlerEditor"> 编辑 </VDropdownItem>
-            <VDropdownItem type="danger" @click="deleteMoment">
-              删除
-            </VDropdownItem>
+            <slot name="popper"></slot>
           </template>
         </VDropdown>
       </div>
@@ -196,17 +175,11 @@ const getExtname = (type: string) => {
     <div
       class="moment-preview-html markdown-body moments-overflow-hidden moments-relative moments-pt-1"
     >
-      <div
-        v-highlight
-        v-lazy
-        v-tag
-        v-html="props.moment.spec.content.html"
-      ></div>
+      <div v-highlight v-lazy v-tag v-html="moment.spec.content.html"></div>
     </div>
     <div
       v-if="
-        !!props.moment.spec.content.medium &&
-        props.moment.spec.content.medium.length > 0
+        !!moment.spec.content.medium && moment.spec.content.medium.length > 0
       "
       class="img-box moments-flex moments-pt-2"
     >
@@ -215,7 +188,7 @@ const getExtname = (type: string) => {
         role="list"
       >
         <li
-          v-for="(media, index) in props.moment.spec.content.medium"
+          v-for="(media, index) in moment.spec.content.medium"
           :key="index"
           class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-cursor-pointer"
         >

@@ -89,7 +89,21 @@ public class UcMomentEndpoint implements CustomEndpoint {
                     .response(responseBuilder()
                         .implementation(Moment.class))
             )
+            .DELETE("plugins/PluginMoments/moments/{name}", this::deleteMyMoment,
+                builder -> builder.operationId("DeleteMyMoment")
+                    .description("Delete a My Moment.")
+                    .tag(tag)
+                    .response(responseBuilder()
+                        .implementation(Moment.class))
+            )
             .build();
+    }
+
+    private Mono<ServerResponse> deleteMyMoment(ServerRequest request) {
+        var name = request.pathVariable("name");
+        return getMyMoment(name)
+            .flatMap(momentService::deleteBy)
+            .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
     }
 
     private Mono<ServerResponse> updateMyMoment(ServerRequest request) {
@@ -103,8 +117,10 @@ public class UcMomentEndpoint implements CustomEndpoint {
                         Moment.MomentSpec newSpec = newMoment.getSpec();
                         newSpec.setOwner(oldSpec.getOwner());
                         newSpec.setReleaseTime(oldSpec.getReleaseTime());
+                        // Every update needs to be re-reviewed.
+                        newSpec.setApproved(false);
                     })
-                    .flatMap(momentService::update);
+                    .flatMap(momentService::updateBy);
             })
             .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
     }
@@ -128,7 +144,11 @@ public class UcMomentEndpoint implements CustomEndpoint {
     private Mono<ServerResponse> createMyMoment(ServerRequest request) {
         return getCurrentUser()
             .flatMap(username -> request.bodyToMono(Moment.class)
-                .doOnNext(post -> post.getSpec().setOwner(username)))
+                .doOnNext(post -> {
+                    post.getSpec().setOwner(username);
+                    // TODO: 如果是具有审核权限的用户，则不需要审核
+                    post.getSpec().setApproved(false);
+                }))
             .flatMap(momentService::create)
             .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
     }

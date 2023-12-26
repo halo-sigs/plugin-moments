@@ -169,7 +169,7 @@ const handleCloseTag = () => {
         </div>
       </div>
 
-      <MomentEdit @save="refetch()" />
+      <MomentItem :editing="true" @save="refetch()" />
 
       <VLoading v-if="isLoading" />
 
