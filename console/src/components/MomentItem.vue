@@ -25,8 +25,8 @@ const emit = defineEmits<{
 }>();
 
 const editing = ref(props.editing);
-const editingMoment = ref<Moment>(toRaw(props.listedMoment.moment));
-const previewMoment = ref<Moment>(toRaw(props.listedMoment.moment));
+const editingMoment = ref<Moment>(toRaw(props.listedMoment?.moment));
+const previewMoment = ref<Moment>(toRaw(props.listedMoment?.moment));
 
 const handleSave = async (moment: Moment) => {
   moment.spec.releaseTime = new Date().toISOString();

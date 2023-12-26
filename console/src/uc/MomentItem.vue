@@ -25,8 +25,8 @@ const emit = defineEmits<{
 }>();
 
 const editing = ref(props.editing);
-const editingMoment = ref<Moment>(cloneDeep(props.listedMoment.moment));
-const previewMoment = ref<Moment>(cloneDeep(props.listedMoment.moment));
+const editingMoment = ref<Moment>(cloneDeep(props.listedMoment?.moment));
+const previewMoment = ref<Moment>(cloneDeep(props.listedMoment?.moment));
 
 const handleSave = async (moment: Moment) => {
   moment.spec.releaseTime = new Date().toISOString();
@@ -48,8 +48,8 @@ const handleUpdate = async (moment: Moment) => {
     `/apis/uc.api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments/${moment.metadata.name}`,
     data
   );
-  editingMoment.value = cloneDeep(moment);
-  previewMoment.value = cloneDeep(moment);
+  editingMoment.value = cloneDeep(updated.data);
+  previewMoment.value = cloneDeep(updated.data);
   editing.value = false;
   emit("update", updated.data);
   Toast.success("发布成功");
