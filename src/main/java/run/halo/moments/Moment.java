@@ -21,6 +21,8 @@ public class Moment extends AbstractExtension {
     @Schema(required = true)
     private MomentSpec spec;
 
+    private Status status;
+
     @Data
     public static class MomentSpec {
 
@@ -39,6 +41,12 @@ public class Moment extends AbstractExtension {
 
         @Schema(description = "Tags of the moment")
         private Set<String> tags;
+    }
+
+    @Data
+    @Schema(name = "MomentStatus")
+    public static class Status {
+        private long observedVersion;
     }
 
     @Data
