@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springdoc.core.fn.builders.schema.Builder;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -26,7 +25,6 @@ import run.halo.app.extension.router.QueryParamBuildUtil;
 import run.halo.moments.ListedMoment;
 import run.halo.moments.Moment;
 import run.halo.moments.MomentQuery;
-import run.halo.moments.TagMomentIndexer;
 import run.halo.moments.service.MomentService;
 
 /**

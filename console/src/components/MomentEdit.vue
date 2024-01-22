@@ -335,7 +335,9 @@ function handleKeydown(event: KeyboardEvent) {
         </button>
 
         <div
-          v-permission="['plugin:moments:manage', 'uc:plugin:moments:manage']"
+          v-permission="
+            ['plugin:moments:manage'] || ['uc:plugin:moments:publish']
+          "
           class="moments-h-fit"
         >
           <VButton

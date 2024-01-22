@@ -178,7 +178,9 @@ const getExtname = (type: string) => {
         </template>
       </VEntity>
       <VDropdown
-        v-permission="['plugin:moments:manage', 'uc:plugin:moments:manage']"
+        v-permission="
+          ['plugin:moments:manage'] || ['uc:plugin:moments:publish']
+        "
         compute-transform-origin
         :triggers="['click']"
         :popper-triggers="['click', 'hover']"

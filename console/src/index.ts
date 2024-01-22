@@ -37,7 +37,7 @@ export default definePlugin({
         name: "Moments",
         component: UcMomentsList,
         meta: {
-          permissions: ["uc:plugin:moments:manage"],
+          permissions: ["uc:plugin:moments:publish"],
           menu: {
             name: "瞬间",
             group: "content",

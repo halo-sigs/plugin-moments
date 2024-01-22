@@ -56,7 +56,10 @@ const handleUpdate = async (moment: Moment) => {
   Toast.success("发布成功");
 };
 
-const handleRemove = (name: string) => {
+const handleRemove = (name?: string) => {
+  if (!name) {
+    return;
+  }
   Dialog.warning({
     title: "确定要删除该瞬间吗？",
     description: "该操作不可逆",
@@ -105,7 +108,10 @@ const handleApproved = () => {
         <template #popper>
           <VDropdownItem @click="handleApproved"> 审核通过 </VDropdownItem>
           <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
-          <VDropdownItem type="danger" @click="handleRemove">
+          <VDropdownItem
+            type="danger"
+            @click="handleRemove(previewMoment.metadata.name)"
+          >
             删除
           </VDropdownItem>
         </template>

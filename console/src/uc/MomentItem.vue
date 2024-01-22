@@ -59,7 +59,10 @@ const handleCancel = () => {
   editing.value = false;
 };
 
-const handleRemove = (name: string) => {
+const handleRemove = (name?: string) => {
+  if (!name) {
+    return;
+  }
   Dialog.warning({
     title: "确定要删除该瞬间吗？",
     description: "该操作不可逆",
@@ -94,7 +97,11 @@ const handleRemove = (name: string) => {
       <MomentPreview :moment="previewMoment" @dblclick="editing = true">
         <template #popper>
           <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
-          <VDropdownItem type="danger" @click="handleRemove">
+          <VDropdownItem
+            v-permission="['uc:plugin:moments:manage']"
+            type="danger"
+            @click="handleRemove(previewMoment.metadata.name)"
+          >
             删除
           </VDropdownItem>
         </template>
