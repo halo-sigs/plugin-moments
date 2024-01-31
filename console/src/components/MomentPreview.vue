@@ -12,20 +12,21 @@ import {
   VDropdownItem,
   IconEyeOff,
 } from "@halo-dev/components";
-import { computed, ref } from "vue";
+import { computed, inject, ref } from "vue";
 import LucideFileVideo from "~icons/lucide/file-video";
-import { useRouteQuery } from "@vueuse/router";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";
 hljs.registerLanguage("xml", xml);
 
-const tag = useRouteQuery<string>("tag", "", {
-  mode: "push",
-});
 const props = defineProps<{
   moment: Moment;
 }>();
+
+const { updateTagQuery } = inject("tag") as {
+  tag: string;
+  updateTagQuery: (tag: string) => void;
+};
 
 const emit = defineEmits<{
   (event: "editor"): void;
@@ -76,7 +77,7 @@ const vTag = {
         let tagName = node.textContent;
         if (tagName) {
           emit("tagClick", node.textContent || "");
-          tag.value = node.textContent || "";
+          updateTagQuery(node.textContent || "");
         }
       });
     }

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { computed, provide, ref } from "vue";
 import { VPageHeader, VLoading, VPagination } from "@halo-dev/components";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { User } from "@halo-dev/api-client";
@@ -122,9 +122,18 @@ const {
 
 const searchText = ref("");
 
+function updateTagQuery(tagQuery: string) {
+  tag.value = tagQuery;
+}
+
 const handleCloseTag = () => {
-  tag.value = "";
+  updateTagQuery("");
 };
+
+provide("tag", {
+  tag: tag.value,
+  updateTagQuery,
+});
 </script>
 <template>
   <VPageHeader title="瞬间">
@@ -151,7 +160,7 @@ const handleCloseTag = () => {
               outer-class="!moments-p-0 moments-mr-2"
               @keyup.enter="keyword = searchText"
             ></FormKit>
-            <FilterTag v-if="tag" @close="handleCloseTag()">
+            <FilterTag v-if="!!tag" @close="handleCloseTag()">
               标签：{{ tag }}
             </FilterTag>
           </div>
