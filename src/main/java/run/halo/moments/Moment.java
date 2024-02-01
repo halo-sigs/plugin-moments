@@ -17,6 +17,7 @@ import run.halo.app.extension.GVK;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Moment extends AbstractExtension {
+    public static final String REQUIRE_SYNC_ON_STARTUP_INDEX_NAME = "requireSyncOnStartup";
 
     @Schema(required = true)
     private MomentSpec spec;

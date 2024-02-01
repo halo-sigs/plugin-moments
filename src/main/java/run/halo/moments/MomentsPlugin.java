@@ -52,7 +52,7 @@ public class MomentsPlugin extends BasePlugin {
                 }))
             );
             indexSpecs.add(new IndexSpec()
-                .setName("needsSyncOnStartup")
+                .setName(Moment.REQUIRE_SYNC_ON_STARTUP_INDEX_NAME)
                 .setIndexFunc(simpleAttribute(Moment.class, moment -> {
                     var observedVersion = Optional.ofNullable(moment.getStatus())
                         .map(Moment.Status::getObservedVersion)
