@@ -11,7 +11,7 @@
     "@halo-dev/api-client": "^2.11.0",
     "@halo-dev/components": "^1.10.0",
     "@halo-dev/console-shared": "^2.11.0",
-    "@halo-dev/richtext-editor": "0.0.0-alpha.33",
+    "@halo-dev/richtext-editor": "2.12.0",
     "@tanstack/vue-query": "^4.26.1",
     "@tiptap/suggestion": "^2.1.13",
     "@types/lodash.clonedeep": "^4.5.7",
