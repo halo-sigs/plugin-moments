@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.endpoint.CustomEndpoint;
 import run.halo.app.extension.GroupVersion;
@@ -34,8 +33,6 @@ import run.halo.moments.service.MomentService;
 public class MomentEndpoint implements CustomEndpoint {
 
     private final MomentService momentService;
-
-    private final TagMomentIndexer tagMomentIndexer;
 
     @Override
     public RouterFunction<ServerResponse> endpoint() {
@@ -93,14 +90,14 @@ public class MomentEndpoint implements CustomEndpoint {
     }
 
     private Mono<ServerResponse> listMoment(ServerRequest serverRequest) {
-        MomentQuery query = new MomentQuery(serverRequest.queryParams());
+        MomentQuery query = new MomentQuery(serverRequest.exchange());
         return momentService.listMoment(query)
             .flatMap(listedMoments -> ServerResponse.ok().bodyValue(listedMoments));
     }
 
     private Mono<ServerResponse> listTags(ServerRequest request) {
         String name = request.queryParam("name").orElse(null);
-        return Flux.fromIterable(tagMomentIndexer.listAllTags())
+        return momentService.listAllTags()
             .filter(tagName -> StringUtils.isBlank(name) || StringUtils.containsIgnoreCase(tagName,
                 name))
             .collectList()
