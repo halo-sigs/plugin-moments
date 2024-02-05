@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import { computed, provide, ref } from "vue";
-import { VPageHeader, VLoading, VPagination } from "@halo-dev/components";
+import {
+  VPageHeader,
+  VLoading,
+  VPagination,
+  VCard,
+} from "@halo-dev/components";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { User } from "@halo-dev/api-client";
 import type { ListedMoment } from "@/types";
@@ -141,68 +146,86 @@ provide("tag", {
       <MingcuteMomentsLine class="moments-mr-2 moments-self-center" />
     </template>
   </VPageHeader>
+  <VCard class="moments-m-0 md:moments-m-4 moments-h-full">
+    <div class="moments-container moments-mx-auto">
+      <div
+        class="moments-content moments-my-2 md:moments-my-4 moments-flex moments-flex-col moments-space-y-2"
+      >
+        <MomentEdit @save="refetch()" />
 
-  <div class="moments-container moments-mx-auto">
-    <div
-      class="moments-content moments-my-2 md:moments-my-4 moments-flex moments-flex-col moments-space-y-2"
-    >
-      <div class="moment-header">
-        <div
-          class="moments-flex moments-justify-between moments-flex-col sm:moments-flex-row moments-space-x-2"
-        >
+        <div class="moment-header moments-pt-4 moments-pb-2">
           <div
-            class="moments-left-0 moments-mb-2 sm:moments-mb-0 moments-flex moments-items-center moments-justify-between"
+            class="moments-flex moments-justify-between moments-flex-col sm:moments-flex-row moments-space-x-2"
           >
-            <FilterTag v-if="!!tag" @close="handleCloseTag()">
-              标签：{{ tag }}
-            </FilterTag>
-          </div>
+            <div
+              class="moments-left-0 moments-mb-2 sm:moments-mb-0 moments-flex moments-items-center moments-justify-between"
+            >
+              <FilterTag v-if="!!tag" @close="handleCloseTag()">
+                标签：{{ tag }}
+              </FilterTag>
+            </div>
 
-          <div class="moments-right-0 !moments-ml-0 moments-flex">
-            <DatePicker
-              v-model:value="momentsRangeTime"
-              input-class=""
-              class="range-time moments-max-w-[13rem] md:moments-max-w-[15rem]"
-              range
-              :editable="false"
-              placeholder="筛选日期范围"
-            />
+            <div
+              class="moments-right-0 !moments-ml-0 moments-flex moments-rounded"
+            >
+              <DatePicker
+                v-model:value="momentsRangeTime"
+                input-class="mx-input moments-rounded"
+                class="date-picker range-time moments-max-w-[13rem] md:moments-max-w-[15rem]"
+                range
+                :editable="false"
+                placeholder="筛选日期范围"
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      <MomentEdit @save="refetch()" />
+        <VLoading v-if="isLoading" />
 
-      <VLoading v-if="isLoading" />
+        <Transition v-else appear name="fade">
+          <ul
+            v-if="moments && moments.length > 0"
+            class="box-border moments-flex moments-flex-col moments-space-y-2"
+            role="list"
+          >
+            <li v-for="moment in moments" :key="moment.moment.metadata.name">
+              <MomentItem
+                :key="moment.moment.metadata.name"
+                :moment="moment.moment"
+                @remove="refetch()"
+              />
+            </li>
+          </ul>
+          <template v-else>
+            <div
+              class="moments-flex moments-justify-center moments-items-center moments-h-full"
+            >
+              <span class="moments-text-gray-500">暂无数据</span>
+            </div>
+          </template>
+        </Transition>
 
-      <Transition v-else appear name="fade">
-        <ul
-          class="box-border moments-flex moments-flex-col moments-space-y-2"
-          role="list"
+        <div
+          v-if="hasPrevious || hasNext"
+          s
+          class="moments-my-5 flex moments-justify-center"
         >
-          <li v-for="moment in moments" :key="moment.moment.metadata.name">
-            <MomentItem
-              :key="moment.moment.metadata.name"
-              :moment="moment.moment"
-              @remove="refetch()"
-            />
-          </li>
-        </ul>
-      </Transition>
-
-      <div
-        v-if="hasPrevious || hasNext"
-        s
-        class="moments-my-5 flex moments-justify-center"
-      >
-        <VPagination
-          v-model:page="page"
-          v-model:size="size"
-          class="!moments-bg-transparent"
-          :total="total"
-          :size-options="[20, 30, 50, 100]"
-        />
+          <VPagination
+            v-model:page="page"
+            v-model:size="size"
+            class="!moments-bg-transparent"
+            :total="total"
+            :size-options="[20, 30, 50, 100]"
+          />
+        </div>
       </div>
     </div>
-  </div>
+  </VCard>
 </template>
+<style lang="scss">
+.date-picker {
+  & input {
+    @apply moments-rounded-md;
+  }
+}
+</style>
