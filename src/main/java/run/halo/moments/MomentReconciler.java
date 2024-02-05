@@ -1,14 +1,18 @@
 package run.halo.moments;
 
+import static run.halo.app.extension.index.query.QueryFactory.equal;
+
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import run.halo.app.core.extension.notification.Subscription;
+import run.halo.app.extension.DefaultExtensionMatcher;
 import run.halo.app.extension.ExtensionClient;
 import run.halo.app.extension.ExtensionUtil;
 import run.halo.app.extension.controller.Controller;
 import run.halo.app.extension.controller.ControllerBuilder;
 import run.halo.app.extension.controller.Reconciler;
+import run.halo.app.extension.router.selector.FieldSelector;
 import run.halo.app.notification.NotificationCenter;
 
 /**
@@ -37,14 +41,18 @@ public class MomentReconciler implements Reconciler<Reconciler.Request> {
             if (ExtensionUtil.addFinalizers(moment.getMetadata(), Set.of(FINALIZER))) {
                 // auto subscribe to new comment on moment
                 createCommentSubscriptionForMoment(moment);
-                client.update(moment);
             }
-
+            var status = moment.getStatus();
+            if (status == null) {
+                status = new Moment.Status();
+                moment.setStatus(status);
+            }
+            status.setObservedVersion(moment.getMetadata().getVersion() + 1);
             // add approved marks to the old data by default.
             if (moment.getSpec().getApproved() == null) {
                 moment.getSpec().setApproved(true);
-                client.update(moment);
             }
+            client.update(moment);
         });
         return Result.doNotRetry();
     }
@@ -63,9 +71,16 @@ public class MomentReconciler implements Reconciler<Reconciler.Request> {
 
     @Override
     public Controller setupWith(ControllerBuilder builder) {
+        final var moment = new Moment();
         return builder
-            .extension(new Moment())
+            .extension(moment)
             .workerCount(5)
+            .onAddMatcher(DefaultExtensionMatcher.builder(client, moment.groupVersionKind())
+                .fieldSelector(
+                    FieldSelector.of(equal(Moment.REQUIRE_SYNC_ON_STARTUP_INDEX_NAME, "true"))
+                )
+                .build()
+            )
             .build();
     }
 }

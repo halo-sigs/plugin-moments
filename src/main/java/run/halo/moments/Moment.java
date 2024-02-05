@@ -19,9 +19,12 @@ import run.halo.app.extension.GVK;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Moment extends AbstractExtension {
+    public static final String REQUIRE_SYNC_ON_STARTUP_INDEX_NAME = "requireSyncOnStartup";
 
     @Schema(requiredMode = REQUIRED)
     private MomentSpec spec;
+
+    private Status status;
 
     @Data
     public static class MomentSpec {
@@ -44,6 +47,12 @@ public class Moment extends AbstractExtension {
 
         @Schema(defaultValue = "false")
         private Boolean approved;
+    }
+
+    @Data
+    @Schema(name = "MomentStatus")
+    public static class Status {
+        private long observedVersion;
     }
 
     @Data

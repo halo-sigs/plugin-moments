@@ -56,7 +56,7 @@ public class MomentRouter {
     private final ExternalUrlSupplier externalUrlSupplier;
 
     @Bean
-    RouterFunction<ServerResponse> momentRouter() {
+    RouterFunction<ServerResponse> momentRouterFunction() {
         return route(GET("/moments").or(GET("/moments/page/{page:\\d+}")), handlerFunction())
             .andRoute(GET("/moments/rss.xml"), handlerRss())
             .andRoute(GET("/moments/{momentName:\\S+}"), handlerMomentDefault());
