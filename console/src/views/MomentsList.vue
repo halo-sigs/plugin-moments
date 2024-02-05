@@ -153,13 +153,6 @@ provide("tag", {
           <div
             class="moments-left-0 moments-mb-2 sm:moments-mb-0 moments-flex moments-items-center moments-justify-between"
           >
-            <FormKit
-              v-model="searchText"
-              placeholder="输入关键词搜索"
-              type="text"
-              outer-class="!moments-p-0 moments-mr-2"
-              @keyup.enter="keyword = searchText"
-            ></FormKit>
             <FilterTag v-if="!!tag" @close="handleCloseTag()">
               标签：{{ tag }}
             </FilterTag>
