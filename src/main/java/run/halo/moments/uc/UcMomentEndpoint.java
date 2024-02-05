@@ -153,7 +153,7 @@ public class UcMomentEndpoint implements CustomEndpoint {
 
     private Mono<ServerResponse> listMyMoment(ServerRequest request) {
         return getCurrentUser()
-            .map(username -> new MomentQuery(request.queryParams(), username))
+            .map(username -> new MomentQuery(request.exchange(), username))
             .flatMap(momentService::listMoment)
             .flatMap(listedMoments -> ServerResponse.ok().bodyValue(listedMoments));
     }
