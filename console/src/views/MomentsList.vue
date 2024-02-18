@@ -18,7 +18,7 @@ import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn.es";
 import { toISODayEndOfTime } from "@/utils/date";
 import { useRouteQuery } from "@vueuse/router";
-import FilterTag from "@/components/FilterTag.vue";
+import TagFilterDropdown from "@/components/TagFilterDropdown.vue";
 
 interface VisibleItem {
   label: string;
@@ -125,8 +125,6 @@ const {
   refetchOnWindowFocus: false,
 });
 
-const searchText = ref("");
-
 function updateTagQuery(tagQuery: string) {
   tag.value = tagQuery;
 }
@@ -146,7 +144,7 @@ provide("tag", {
       <MingcuteMomentsLine class="moments-mr-2 moments-self-center" />
     </template>
   </VPageHeader>
-  <VCard class="moments-m-0 md:moments-m-4 moments-h-full">
+  <VCard class="moments-m-0 md:moments-m-4">
     <div class="moments-container moments-mx-auto">
       <div
         class="moments-content moments-my-2 md:moments-my-4 moments-flex moments-flex-col moments-space-y-2"
@@ -155,19 +153,18 @@ provide("tag", {
 
         <div class="moment-header moments-pt-4 moments-pb-2">
           <div
-            class="moments-flex moments-justify-between moments-flex-col sm:moments-flex-row moments-space-x-2"
+            class="moments-flex moments-flex-col moments-justify-between sm:moments-flex-row moments-space-x-2"
           >
             <div
-              class="moments-left-0 moments-mb-2 sm:moments-mb-0 moments-flex moments-items-center moments-justify-between"
+              class="moments-left-0 moments-mb-2 sm:moments-mb-0 moments-flex moments-items-center moments-mr-2"
             >
-              <FilterTag v-if="!!tag" @close="handleCloseTag()">
-                标签：{{ tag }}
-              </FilterTag>
+              <TagFilterDropdown
+                v-model="tag"
+                :label="'标签'"
+              ></TagFilterDropdown>
             </div>
 
-            <div
-              class="moments-right-0 !moments-ml-0 moments-flex moments-rounded"
-            >
+            <div class="moments-right-0 !moments-ml-0 moments-flex">
               <DatePicker
                 v-model:value="momentsRangeTime"
                 input-class="mx-input moments-rounded"
@@ -192,6 +189,7 @@ provide("tag", {
               <MomentItem
                 :key="moment.moment.metadata.name"
                 :moment="moment.moment"
+                :owner="moment.owner"
                 @remove="refetch()"
               />
             </li>
