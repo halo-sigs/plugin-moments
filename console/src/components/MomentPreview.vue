@@ -162,7 +162,7 @@ const getExtname = (type: string) => {
     </template>
   </PreviewDetailModal>
   <div
-    class="preview card moments-bg-white moments-shrink moments-p-3.5 moments-py-6 moments-relative moments-border-t-[1px] moments-border-gray-300"
+    class="preview card moments-bg-white moments-shrink moments-py-6 moments-relative moments-border-t-[1px] moments-border-gray-300"
     @dblclick="handleDblclick"
   >
     <div class="header moments-flex moments-justify-between">
@@ -181,7 +181,7 @@ const getExtname = (type: string) => {
       </div>
       <div
         v-permission="['plugin:moments:manage']"
-        class="moments-absolute moments-right-3.5 moments-flex moments-justify-center moments-items-center"
+        class="moments-absolute moments-right-0 moments-flex moments-justify-center moments-items-center"
       >
         <div class="moments-text-xs moments-text-gray-500 moments-mr-2">
           <span
