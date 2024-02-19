@@ -3,6 +3,7 @@ import {
   VEntity,
   VDropdown,
   IconArrowDown,
+  IconClose,
   VEntityField,
 } from "@halo-dev/components";
 import { computed, ref } from "vue";
@@ -21,7 +22,6 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (event: "update:modelValue", value?: string): void;
-  (event: "clearFilter"): void;
 }>();
 
 const page = ref(1);
@@ -57,20 +57,30 @@ const handleSelect = (tag: string) => {
 
   dropdown.value.hide();
 };
+
+const handleCloseTag = (event: Event) => {
+  emit("update:modelValue", undefined);
+  event.stopPropagation();
+};
 </script>
 
 <template>
   <VDropdown ref="dropdown" :classes="['!p-0']">
     <div
-      class="tag-filter-label"
+      class="tag-filter-label moments-group"
       :class="{ 'font-semibold text-gray-700': modelValue !== undefined }"
     >
       <span v-if="!modelValue" class="mr-0.5">
         {{ label }}
       </span>
       <span v-else class="mr-0.5"> {{ label }}：{{ modelValue }} </span>
-      <span>
-        <IconArrowDown />
+      <span class="moments-text-base">
+        <IconArrowDown :class="{ 'group-hover:moments-hidden': modelValue }" />
+        <IconClose
+          v-if="modelValue"
+          class="moments-hidden group-hover:moments-block"
+          @click="handleCloseTag"
+        />
       </span>
     </div>
     <template #popper>
