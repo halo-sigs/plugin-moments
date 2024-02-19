@@ -30,6 +30,7 @@
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
+    "@halo-dev/ui-plugin-bundler-kit": "^2.12.0",
     "@iconify/json": "^2.2.180",
     "@rushstack/eslint-patch": "^1.2.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
