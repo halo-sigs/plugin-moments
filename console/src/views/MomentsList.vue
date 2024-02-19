@@ -168,7 +168,7 @@ provide("tag", {
               <DatePicker
                 v-model:value="momentsRangeTime"
                 input-class="mx-input moments-rounded"
-                class="date-picker range-time moments-max-w-[13rem] md:moments-max-w-[15rem]"
+                class="moments-cursor-pointer date-picker range-time moments-max-w-[13rem] md:moments-max-w-[15rem]"
                 range
                 :editable="false"
                 placeholder="筛选日期范围"

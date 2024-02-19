@@ -79,7 +79,7 @@ const handleSelect = (tag: string) => {
           <FormKit
             id="tagFilterDropdownInput"
             v-model="keyword"
-            placeholder="过滤标签"
+            :placeholder="`输入${label}搜索`"
             type="text"
           ></FormKit>
         </div>
