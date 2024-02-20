@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import org.springframework.web.server.ServerWebInputException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.Counter;
@@ -20,6 +21,7 @@ import run.halo.moments.ListedMoment;
 import run.halo.moments.Moment;
 import run.halo.moments.MomentQuery;
 import run.halo.moments.Stats;
+import run.halo.moments.exception.NotFoundException;
 import run.halo.moments.service.MomentService;
 import run.halo.moments.util.MeterUtils;
 
@@ -79,6 +81,7 @@ public class MomentServiceImpl implements MomentService {
     @Override
     public Mono<ListedMoment> findMomentByName(String name) {
         return client.fetch(Moment.class, name)
+            .switchIfEmpty(Mono.error(new NotFoundException("Moment not found.")))
             .flatMap(this::toListedMoment);
     }
 
