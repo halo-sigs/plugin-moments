@@ -47,6 +47,20 @@ public class MomentEndpoint implements CustomEndpoint {
                     );
                 QueryParamBuildUtil.buildParametersFromType(builder, MomentQuery.class);
             })
+            .GET("plugins/PluginMoments/moments/{name}", this::getMoment,
+                builder -> builder.operationId("GetMoment")
+                    .description("Get a moment by name.")
+                    .tag(tag)
+                    .parameter(parameterBuilder()
+                        .name("name")
+                        .in(ParameterIn.PATH)
+                        .description("Moment name")
+                        .required(true)
+                        .implementation(String.class)
+                    )
+                    .response(responseBuilder()
+                        .implementation(ListedMoment.class)
+                    ))
             .GET("plugins/PluginMoments/tags", this::listTags,
                 builder -> builder.operationId("ListTags")
                     .description("List all moment tags.")
@@ -76,6 +90,12 @@ public class MomentEndpoint implements CustomEndpoint {
                         .implementation(Moment.class))
             )
             .build();
+    }
+
+    private Mono<ServerResponse> getMoment(ServerRequest request) {
+        var name = request.pathVariable("name");
+        return momentService.findMomentByName(name)
+            .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
     }
 
     @Override

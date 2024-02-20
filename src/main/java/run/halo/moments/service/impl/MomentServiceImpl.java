@@ -76,6 +76,12 @@ public class MomentServiceImpl implements MomentService {
             .distinct();
     }
 
+    @Override
+    public Mono<ListedMoment> findMomentByName(String name) {
+        return client.fetch(Moment.class, name)
+            .flatMap(this::toListedMoment);
+    }
+
     private Mono<ListedMoment> toListedMoment(Moment moment) {
         ListedMoment.ListedMomentBuilder momentBuilder = ListedMoment.builder()
             .moment(moment);
