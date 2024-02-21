@@ -8,8 +8,8 @@ import { computed, onMounted, ref, toRaw } from "vue";
 import MediaCard from "./MediaCard.vue";
 import TextEditor from "./TextEditor.vue";
 import SendMoment from "~icons/ic/sharp-send";
-import MdiFileImageBox from "~icons/mdi/file-image-box";
 import cloneDeep from "lodash.clonedeep";
+import TablerPhoto from "~icons/tabler/photo";
 
 const props = withDefaults(
   defineProps<{
@@ -322,36 +322,43 @@ function handleKeydown(event: KeyboardEvent) {
       class="moments-bg-white moments-flex moments-justify-between moments-px-3.5 moments-py-2"
     >
       <div class="moments-h-fit">
-        <VButton
-          size="sm"
-          type="primary"
-          @click="addMediumVerify() && (attachmentSelectorModal = true)"
+        <div
+          class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
         >
-          <template #icon>
-            <MdiFileImageBox class="h-full w-full" />
-          </template>
-        </VButton>
+          <TablerPhoto
+            class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600"
+            @click="addMediumVerify() && (attachmentSelectorModal = true)"
+          />
+        </div>
       </div>
 
       <div class="moments-flex moments-items-center moments-space-x-2.5">
-        <button
+        <div
           v-tooltip="{
             content:
               formState.spec.visible === 'PRIVATE' ? `私有访问` : '公开访问',
           }"
-          class="moments-cursor-pointer moments-inline-flex moments-text-gray-500 hover:moments-text-gray-900 moments-items-center moments-rounded moments-h-7 hover:moments-bg-teal-100 moments-px-3"
+          class="moments-p-2 moments-group moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
+          :class="
+            formState.spec.visible === 'PRIVATE'
+              ? 'hover:moments-bg-red-600/10'
+              : 'hover:moments-bg-green-600/10'
+          "
           @click="handleToggleVisible()"
         >
           <IconEyeOff
             v-if="formState.spec.visible === 'PRIVATE'"
-            class="moments-h-4 moments-w-4"
+            class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-red-600"
           />
-          <IconEye v-else class="moments-h-4 moments-w-4" />
-        </button>
+          <IconEye
+            v-else
+            class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-green-600"
+          />
+        </div>
 
         <button
           v-if="isUpdateMode"
-          class="moments-cursor-pointer moments-text-gray-500 hover:moments-text-gray-900 moments-inline-flex moments-items-center moments-rounded moments-h-7 hover:moments-bg-teal-100 moments-px-3"
+          class="moments-cursor-pointer moments-text-gray-600 hover:moments-text-sky-600 moments-inline-flex moments-items-center moments-rounded moments-h-7 hover:moments-bg-sky-600/10 moments-px-3"
           @click="handlerCancel"
         >
           <span class="moments-text-xs"> 取消 </span>
@@ -366,7 +373,7 @@ function handleKeydown(event: KeyboardEvent) {
             @click="handlerCreateOrUpdateMoment"
           >
             <template #icon>
-              <SendMoment class="h-full w-full" />
+              <SendMoment class="moments-scale-[1.35] h-full w-full" />
             </template>
           </VButton>
         </div>
