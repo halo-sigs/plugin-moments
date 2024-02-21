@@ -88,7 +88,7 @@ const {
     }
 
     const { data } = await apiClient.get(
-      "/apis/api.moment.halo.run/v1alpha1/moments",
+      "/apis/console.api.moment.halo.run/v1alpha1/moments",
       {
         params: {
           page: page.value,
