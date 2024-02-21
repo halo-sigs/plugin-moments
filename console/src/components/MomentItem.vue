@@ -106,7 +106,12 @@ const handleApproved = () => {
         @dblclick="editing = true"
       >
         <template #popper>
-          <VDropdownItem @click="handleApproved"> 审核通过 </VDropdownItem>
+          <VDropdownItem
+            v-if="!previewMoment.spec.approved"
+            @click="handleApproved"
+          >
+            审核通过
+          </VDropdownItem>
           <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
           <VDropdownItem
             type="danger"

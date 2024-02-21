@@ -20,6 +20,8 @@ public interface MomentService {
 
     Flux<String> listAllTags();
 
+    Mono<ListedMoment> findMomentByName(String name);
+
     Mono<Moment> getByUsername(String momentName, String username);
 
     Mono<Moment> updateBy(Moment moment);

@@ -41,9 +41,9 @@ public class UcMomentEndpoint implements CustomEndpoint {
 
     @Override
     public RouterFunction<ServerResponse> endpoint() {
-        final var tag = groupVersion() + "/Moment";
+        final var tag = groupVersion() + "/moment";
         return SpringdocRouteBuilder.route()
-            .GET("plugins/PluginMoments/moments", this::listMyMoment, builder -> {
+            .GET("moments", this::listMyMoment, builder -> {
                 builder.operationId("ListMyMoments")
                     .description("List My moments.")
                     .tag(tag)
@@ -52,14 +52,14 @@ public class UcMomentEndpoint implements CustomEndpoint {
                     );
                 QueryParamBuildUtil.buildParametersFromType(builder, MomentQuery.class);
             })
-            .GET("plugins/PluginMoments/moments/{name}", this::getMyMoment,
+            .GET("moments/{name}", this::getMyMoment,
                 builder -> builder.operationId("GetMyMoment")
                     .description("Get a My Moment.")
                     .tag(tag)
                     .response(responseBuilder()
                         .implementation(Moment.class))
             )
-            .POST("plugins/PluginMoments/moments", this::createMyMoment,
+            .POST("moments", this::createMyMoment,
                 builder -> builder.operationId("CreateMyMoment")
                     .description("Create a My Moment.")
                     .tag(tag)
@@ -73,7 +73,7 @@ public class UcMomentEndpoint implements CustomEndpoint {
                     .response(responseBuilder()
                         .implementation(Moment.class))
             )
-            .PUT("plugins/PluginMoments/moments/{name}", this::updateMyMoment,
+            .PUT("moments/{name}", this::updateMyMoment,
                 builder -> builder.operationId("UpdateMyMoment")
                     .description("Update a My Moment.")
                     .tag(tag)
@@ -87,7 +87,7 @@ public class UcMomentEndpoint implements CustomEndpoint {
                     .response(responseBuilder()
                         .implementation(Moment.class))
             )
-            .DELETE("plugins/PluginMoments/moments/{name}", this::deleteMyMoment,
+            .DELETE("moments/{name}", this::deleteMyMoment,
                 builder -> builder.operationId("DeleteMyMoment")
                     .description("Delete a My Moment.")
                     .tag(tag)
@@ -167,6 +167,6 @@ public class UcMomentEndpoint implements CustomEndpoint {
 
     @Override
     public GroupVersion groupVersion() {
-        return GroupVersion.parseAPIVersion("uc.api.plugin.halo.run/v1alpha1");
+        return GroupVersion.parseAPIVersion("uc.api.moment.halo.run/v1alpha1");
     }
 }

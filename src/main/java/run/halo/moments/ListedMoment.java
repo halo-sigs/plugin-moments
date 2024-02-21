@@ -14,12 +14,12 @@ import lombok.Data;
 @Builder
 public class ListedMoment {
     
-    @Schema(required = true)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private Moment moment;
     
-    @Schema(required = true)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private Contributor owner;
     
-    @Schema(required = true)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private Stats stats;
 }

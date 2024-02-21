@@ -3,9 +3,11 @@ import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(timezone);
 dayjs.extend(utc);
+dayjs.extend(relativeTime);
 
 dayjs.locale("zh-cn");
 
@@ -44,4 +46,23 @@ export function toISODayEndOfTime(
     return "";
   }
   return dayjs(date).endOf("day").toISOString();
+}
+
+/**
+ * Get relative time to end date
+ *
+ * @param date end date
+ * @returns relative time to end date
+ *
+ * @example
+ *
+ * // now is 2020-12-01
+ * RelativeTimeTo("2021-01-01") // in 1 month
+ */
+export function relativeTimeTo(date: string | Date | undefined | null) {
+  if (!date) {
+    return;
+  }
+
+  return dayjs().to(dayjs(date));
 }
