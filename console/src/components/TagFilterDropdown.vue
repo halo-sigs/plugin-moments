@@ -27,7 +27,7 @@ const emit = defineEmits<{
 const keyword = ref(undefined);
 
 const { data: tags, refetch } = useQuery<string[]>({
-  queryKey: ["tags"],
+  queryKey: ["moments-tags"],
   queryFn: async () => {
     const { data } = await apiClient.get(
       "/apis/console.api.moment.halo.run/v1alpha1/tags",
