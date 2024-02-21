@@ -1,29 +1,16 @@
 <script lang="ts" setup>
 import type { Moment } from "@/types";
-import apiClient from "@/utils/api-client";
-import { formatDatetime, relativeTimeTo } from "@/utils/date";
-import {
-  Dialog,
-  Toast,
-  IconArrowLeft,
-  IconArrowRight,
-  VDropdown,
-  VDropdownItem,
-  VAvatar,
-} from "@halo-dev/components";
+import { IconArrowLeft, IconArrowRight } from "@halo-dev/components";
 import { computed, inject, ref } from "vue";
 import LucideFileVideo from "~icons/lucide/file-video";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";
-import LucideMoreHorizontal from "~icons/lucide/more-horizontal";
-import type { Contributor } from "@halo-dev/api-client/index";
 
 hljs.registerLanguage("xml", xml);
 
 const props = defineProps<{
   moment: Moment;
-  owner?: Contributor;
 }>();
 
 const { updateTagQuery } = inject("tag") as {
@@ -32,11 +19,7 @@ const { updateTagQuery } = inject("tag") as {
 };
 
 const emit = defineEmits<{
-  (event: "editor"): void;
-  (event: "remove", moment: Moment): void;
-  (event: "cancel"): void;
-  (event: "dblclick"): void;
-  (event: "tagClick", tagName: string): void;
+  (event: "switchEditMode"): void;
 }>();
 
 const vHighlight = {
@@ -79,7 +62,6 @@ const vTag = {
         event.preventDefault();
         let tagName = node.textContent;
         if (tagName) {
-          emit("tagClick", node.textContent || "");
           updateTagQuery(node.textContent || "");
         }
       });
@@ -97,32 +79,8 @@ const selectedMedia = computed(() => {
   return mediums.value[selectedIndex.value];
 });
 
-const deleteMoment = () => {
-  Dialog.warning({
-    title: "确定要删除该瞬间吗？",
-    description: "该操作不可逆",
-    confirmType: "danger",
-    onConfirm: async () => {
-      try {
-        const { data } = await apiClient.delete(
-          `/apis/moment.halo.run/v1alpha1/moments/${props.moment.metadata.name}`
-        );
-
-        Toast.success("删除成功");
-        emit("remove", data);
-      } catch (error) {
-        console.error("Failed to delete comment", error);
-      }
-    },
-  });
-};
-
-const handlerEditor = () => {
-  emit("editor");
-};
-
-const handleDblclick = () => {
-  emit("dblclick");
+const handleSwitchEdit = () => {
+  emit("switchEditMode");
 };
 
 const handleClickMedium = (index: number) => {
@@ -162,110 +120,53 @@ const getExtname = (type: string) => {
     </template>
   </PreviewDetailModal>
   <div
-    class="preview card moments-bg-white moments-shrink moments-py-6 moments-relative moments-border-t-[1px] moments-border-gray-300"
-    @dblclick="handleDblclick"
+    class="moment-preview-html markdown-body moments-overflow-hidden moments-relative"
+    @dblclick="handleSwitchEdit"
   >
-    <div class="header moments-flex moments-justify-between">
-      <div
-        class="moments-flex moments-justify-center moments-items-center moments-space-x-4"
+    <div v-highlight v-lazy v-tag v-html="props.moment.spec.content.html"></div>
+
+    <div
+      v-if="
+        !!props.moment.spec.content.medium &&
+        props.moment.spec.content.medium.length > 0
+      "
+      class="img-box moments-flex moments-pt-2"
+    >
+      <ul
+        class="moments-grid moments-grid-cols-3 moments-gap-1.5 moments-w-full sm:moments-w-1/2 !moments-pl-0"
+        role="list"
       >
-        <VAvatar
-          :alt="owner?.displayName"
-          :src="owner?.avatar"
-          size="md"
-          circle
-        ></VAvatar>
-        <div>
-          <b> {{ owner?.displayName }} </b>
-        </div>
-      </div>
-      <div
-        v-permission="['plugin:moments:manage']"
-        class="moments-absolute moments-right-0 moments-flex moments-justify-center moments-items-center"
-      >
-        <div class="moments-text-xs moments-text-gray-500 moments-mr-2">
-          <span
-            v-tooltip="{
-              content: formatDatetime(moment.spec.releaseTime),
-            }"
-          >
-            {{ relativeTimeTo(moment.spec.releaseTime) }}
-          </span>
-        </div>
-        <VDropdown
-          compute-transform-origin
-          :triggers="['click']"
-          :popper-triggers="['click']"
+        <li
+          v-for="(media, index) in props.moment.spec.content.medium"
+          :key="index"
+          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-cursor-pointer"
         >
           <div
-            class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
+            class="moments-aspect-w-1 moments-aspect-h-1"
+            @click="handleClickMedium(index)"
           >
-            <LucideMoreHorizontal
-              class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600 moments-cursor-pointer"
-            />
-          </div>
-          <template #popper>
-            <VDropdownItem @click="handlerEditor"> 编辑 </VDropdownItem>
-            <VDropdownItem type="danger" @click="deleteMoment">
-              删除
-            </VDropdownItem>
-          </template>
-        </VDropdown>
-      </div>
-    </div>
-    <div
-      class="moment-preview-html markdown-body moments-overflow-hidden moments-relative moments-pt-3 moments-pl-14"
-    >
-      <div
-        v-highlight
-        v-lazy
-        v-tag
-        v-html="props.moment.spec.content.html"
-      ></div>
-
-      <div
-        v-if="
-          !!props.moment.spec.content.medium &&
-          props.moment.spec.content.medium.length > 0
-        "
-        class="img-box moments-flex moments-pt-2"
-      >
-        <ul
-          class="moments-grid moments-grid-cols-3 moments-gap-1.5 moments-w-full sm:moments-w-1/2 !moments-pl-0"
-          role="list"
-        >
-          <li
-            v-for="(media, index) in props.moment.spec.content.medium"
-            :key="index"
-            class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-cursor-pointer"
-          >
-            <div
-              class="moments-aspect-w-1 moments-aspect-h-1"
-              @click="handleClickMedium(index)"
-            >
-              <template v-if="media.type == 'PHOTO'">
-                <img
-                  :src="media.url"
-                  class="moments-object-cover"
-                  loading="lazy"
-                />
-              </template>
-              <template v-else-if="media.type == 'VIDEO'">
-                <div
-                  class="moments-flex moments-h-full moments-w-full moments-flex-col moments-items-center moments-justify-center moments-space-y-1 moments-bg-gray-100"
+            <template v-if="media.type == 'PHOTO'">
+              <img
+                :src="media.url"
+                class="moments-object-cover"
+                loading="lazy"
+              />
+            </template>
+            <template v-else-if="media.type == 'VIDEO'">
+              <div
+                class="moments-flex moments-h-full moments-w-full moments-flex-col moments-items-center moments-justify-center moments-space-y-1 moments-bg-gray-100"
+              >
+                <LucideFileVideo />
+                <span
+                  class="moments-font-sans moments-text-xs moments-text-gray-500"
                 >
-                  <LucideFileVideo />
-                  <span
-                    class="moments-font-sans moments-text-xs moments-text-gray-500"
-                  >
-                    {{ getExtname(media.originType) }}
-                  </span>
-                </div>
-              </template>
-            </div>
-          </li>
-        </ul>
-      </div>
+                  {{ getExtname(media.originType) }}
+                </span>
+              </div>
+            </template>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
