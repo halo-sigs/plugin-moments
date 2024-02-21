@@ -98,7 +98,7 @@ const queryEditorTags = function () {
 const createMoment = async () => {
   formState.value.spec.releaseTime = new Date().toISOString();
   const { data } = await apiClient.post<Moment>(
-    `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
+    `/apis/console.api.moment.halo.run/v1alpha1/moments`,
     formState.value
   );
   emit("save", data);

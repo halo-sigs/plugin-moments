@@ -36,9 +36,9 @@ public class MomentEndpoint implements CustomEndpoint {
 
     @Override
     public RouterFunction<ServerResponse> endpoint() {
-        final var tag = "api.plugin.halo.run/v1alpha1/Moment";
+        final var tag = "console.api.moment.halo.run/v1alpha1/Moment";
         return SpringdocRouteBuilder.route()
-            .GET("plugins/PluginMoments/moments", this::listMoment, builder -> {
+            .GET("moments", this::listMoment, builder -> {
                 builder.operationId("ListMoments")
                     .description("List moments.")
                     .tag(tag)
@@ -47,7 +47,7 @@ public class MomentEndpoint implements CustomEndpoint {
                     );
                 QueryParamBuildUtil.buildParametersFromType(builder, MomentQuery.class);
             })
-            .GET("plugins/PluginMoments/tags", this::listTags,
+            .GET("tags", this::listTags,
                 builder -> builder.operationId("ListTags")
                     .description("List all moment tags.")
                     .tag(tag)
@@ -61,7 +61,7 @@ public class MomentEndpoint implements CustomEndpoint {
                     .response(responseBuilder()
                         .implementationArray(String.class)
                     ))
-            .POST("plugins/PluginMoments/moments", this::createMoment,
+            .POST("moments", this::createMoment,
                 builder -> builder.operationId("CreateMoment")
                     .description("Create a Moment.")
                     .tag(tag)
@@ -80,7 +80,7 @@ public class MomentEndpoint implements CustomEndpoint {
 
     @Override
     public GroupVersion groupVersion() {
-        return GroupVersion.parseAPIVersion("api.plugin.halo.run/v1alpha1");
+        return GroupVersion.parseAPIVersion("console.api.moment.halo.run/v1alpha1");
     }
 
     private Mono<ServerResponse> createMoment(ServerRequest serverRequest) {
