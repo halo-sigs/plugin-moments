@@ -24,12 +24,10 @@ const emit = defineEmits<{
   (event: "update:modelValue", value?: string): void;
 }>();
 
-const page = ref(1);
-const size = ref(20);
-const keyword = ref<string | undefined>(undefined);
+const keyword = ref(undefined);
 
-const { data: tags } = useQuery<string[]>({
-  queryKey: ["tags", page, size, keyword],
+const { data: tags, refetch } = useQuery<string[]>({
+  queryKey: ["tags"],
   queryFn: async () => {
     const { data } = await apiClient.get(
       "/apis/console.api.moment.halo.run/v1alpha1/tags",
@@ -41,7 +39,6 @@ const { data: tags } = useQuery<string[]>({
     );
     return data;
   },
-  refetchOnWindowFocus: false,
 });
 
 const searchResults = computed(() => tags.value || []);
@@ -65,7 +62,7 @@ const handleCloseTag = (event: Event) => {
 </script>
 
 <template>
-  <VDropdown ref="dropdown" :classes="['!p-0']">
+  <VDropdown ref="dropdown" :classes="['!p-0']" @show="refetch">
     <div
       class="tag-filter-label moments-group"
       :class="{ 'font-semibold text-gray-700': modelValue !== undefined }"
