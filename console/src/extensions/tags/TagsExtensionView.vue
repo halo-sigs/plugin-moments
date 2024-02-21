@@ -27,7 +27,7 @@ const { data: tags } = useQuery<string[]>({
   queryKey: ["tags", page, size, keyword],
   queryFn: async () => {
     const { data } = await apiClient.get(
-      "/apis/api.plugin.halo.run/v1alpha1/plugins/PluginMoments/tags",
+      "/apis/console.api.moment.halo.run/v1alpha1/tags",
       {
         params: {
           name: keyword.value,

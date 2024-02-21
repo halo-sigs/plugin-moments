@@ -1,26 +1,29 @@
 <script lang="ts" setup>
 import type { Moment } from "@/types";
 import apiClient from "@/utils/api-client";
-import { formatDatetime } from "@/utils/date";
+import { formatDatetime, relativeTimeTo } from "@/utils/date";
 import {
   Dialog,
   Toast,
-  IconMore,
   IconArrowLeft,
   IconArrowRight,
   VDropdown,
   VDropdownItem,
-  IconEyeOff,
+  VAvatar,
 } from "@halo-dev/components";
 import { computed, inject, ref } from "vue";
 import LucideFileVideo from "~icons/lucide/file-video";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";
+import LucideMoreHorizontal from "~icons/lucide/more-horizontal";
+import type { Contributor } from "@halo-dev/api-client/index";
+
 hljs.registerLanguage("xml", xml);
 
 const props = defineProps<{
   moment: Moment;
+  owner?: Contributor;
 }>();
 
 const { updateTagQuery } = inject("tag") as {
@@ -159,32 +162,48 @@ const getExtname = (type: string) => {
     </template>
   </PreviewDetailModal>
   <div
-    class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-p-3.5 moments-relative"
+    class="preview card moments-bg-white moments-shrink moments-py-6 moments-relative moments-border-t-[1px] moments-border-gray-300"
     @dblclick="handleDblclick"
   >
-    <div
-      class="header moments-flex moments-items-center moments-justify-between moments-h-5"
-    >
-      <div class="moments-flex moments-items-center">
-        <div class="moments-block moments-text-xs moments-text-gray-500">
-          <span>{{ formatDatetime(props.moment.spec.releaseTime) }}</span>
-        </div>
-
-        <div v-if="props.moment.spec.visible == 'PRIVATE'" class="moments-ml-2">
-          <IconEyeOff class="moments-text-xs moments-text-gray-500" />
+    <div class="header moments-flex moments-justify-between">
+      <div
+        class="moments-flex moments-justify-center moments-items-center moments-space-x-4"
+      >
+        <VAvatar
+          :alt="owner?.displayName"
+          :src="owner?.avatar"
+          size="md"
+          circle
+        ></VAvatar>
+        <div>
+          <b> {{ owner?.displayName }} </b>
         </div>
       </div>
-
       <div
         v-permission="['plugin:moments:manage']"
-        class="moments-absolute moments-right-3.5"
+        class="moments-absolute moments-right-0 moments-flex moments-justify-center moments-items-center"
       >
+        <div class="moments-text-xs moments-text-gray-500 moments-mr-2">
+          <span
+            v-tooltip="{
+              content: formatDatetime(moment.spec.releaseTime),
+            }"
+          >
+            {{ relativeTimeTo(moment.spec.releaseTime) }}
+          </span>
+        </div>
         <VDropdown
           compute-transform-origin
           :triggers="['click']"
           :popper-triggers="['click']"
         >
-          <IconMore class="moments-text-gray-500 moments-cursor-pointer" />
+          <div
+            class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
+          >
+            <LucideMoreHorizontal
+              class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600 moments-cursor-pointer"
+            />
+          </div>
           <template #popper>
             <VDropdownItem @click="handlerEditor"> 编辑 </VDropdownItem>
             <VDropdownItem type="danger" @click="deleteMoment">
@@ -195,7 +214,7 @@ const getExtname = (type: string) => {
       </div>
     </div>
     <div
-      class="moment-preview-html markdown-body moments-overflow-hidden moments-relative moments-pt-1"
+      class="moment-preview-html markdown-body moments-overflow-hidden moments-relative moments-pt-3 moments-pl-14"
     >
       <div
         v-highlight
@@ -203,49 +222,50 @@ const getExtname = (type: string) => {
         v-tag
         v-html="props.moment.spec.content.html"
       ></div>
-    </div>
-    <div
-      v-if="
-        !!props.moment.spec.content.medium &&
-        props.moment.spec.content.medium.length > 0
-      "
-      class="img-box moments-flex moments-pt-2"
-    >
-      <ul
-        class="moments-grid moments-grid-cols-3 moments-gap-1.5 moments-w-full sm:moments-w-1/2"
-        role="list"
+
+      <div
+        v-if="
+          !!props.moment.spec.content.medium &&
+          props.moment.spec.content.medium.length > 0
+        "
+        class="img-box moments-flex moments-pt-2"
       >
-        <li
-          v-for="(media, index) in props.moment.spec.content.medium"
-          :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-cursor-pointer"
+        <ul
+          class="moments-grid moments-grid-cols-3 moments-gap-1.5 moments-w-full sm:moments-w-1/2 !moments-pl-0"
+          role="list"
         >
-          <div
-            class="moments-aspect-w-1 moments-aspect-h-1"
-            @click="handleClickMedium(index)"
+          <li
+            v-for="(media, index) in props.moment.spec.content.medium"
+            :key="index"
+            class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-cursor-pointer"
           >
-            <template v-if="media.type == 'PHOTO'">
-              <img
-                :src="media.url"
-                class="moments-object-cover"
-                loading="lazy"
-              />
-            </template>
-            <template v-else-if="media.type == 'VIDEO'">
-              <div
-                class="moments-flex moments-h-full moments-w-full moments-flex-col moments-items-center moments-justify-center moments-space-y-1 moments-bg-gray-100"
-              >
-                <LucideFileVideo />
-                <span
-                  class="moments-font-sans moments-text-xs moments-text-gray-500"
+            <div
+              class="moments-aspect-w-1 moments-aspect-h-1"
+              @click="handleClickMedium(index)"
+            >
+              <template v-if="media.type == 'PHOTO'">
+                <img
+                  :src="media.url"
+                  class="moments-object-cover"
+                  loading="lazy"
+                />
+              </template>
+              <template v-else-if="media.type == 'VIDEO'">
+                <div
+                  class="moments-flex moments-h-full moments-w-full moments-flex-col moments-items-center moments-justify-center moments-space-y-1 moments-bg-gray-100"
                 >
-                  {{ getExtname(media.originType) }}
-                </span>
-              </div>
-            </template>
-          </div>
-        </li>
-      </ul>
+                  <LucideFileVideo />
+                  <span
+                    class="moments-font-sans moments-text-xs moments-text-gray-500"
+                  >
+                    {{ getExtname(media.originType) }}
+                  </span>
+                </div>
+              </template>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>

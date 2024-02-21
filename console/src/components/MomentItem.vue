@@ -4,13 +4,16 @@ import cloneDeep from "lodash.clonedeep";
 import { ref } from "vue";
 import MomentEdit from "./MomentEdit.vue";
 import MomentPreview from "./MomentPreview.vue";
+import type { Contributor } from "@halo-dev/api-client/index";
 
 const props = withDefaults(
   defineProps<{
     moment: Moment;
+    owner: Contributor;
   }>(),
   {
     moment: undefined,
+    owner: undefined,
   }
 );
 
@@ -55,6 +58,7 @@ const handlerCancel = () => {
     <template v-else>
       <MomentPreview
         :moment="previewMoment"
+        :owner="owner"
         @remove="handlerRemove"
         @editor="editing = true"
         @dblclick="editing = true"

@@ -13,9 +13,8 @@ rules:
   - apiGroups: [ "moment.halo.run"]
     resources: [ "moments" ]
     verbs: [ "get", "list" ]
-  - apiGroups: [ "api.plugin.halo.run"]
-    resources: [ "plugins/moments" ]
-    resourceNames: [ "PluginMoments" ]
+  - apiGroups: [ "console.api.moment.halo.run"]
+    resources: [ "moments", "tags" ]
     verbs: [ "get", "list" ]
 ---
 apiVersion: v1alpha1
@@ -35,7 +34,6 @@ rules:
   - apiGroups: [ "moment.halo.run"]
     resources: [ "moments" ]
     verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
-  - apiGroups: [ "api.plugin.halo.run"]
-    resources: [ "plugins/moments" ]
-    resourceNames: [ "PluginMoments" ]
+  - apiGroups: [ "console.api.moment.halo.run"]
+    resources: [ "moments", "tags" ]
     verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
