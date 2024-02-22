@@ -1,12 +1,9 @@
 <script lang="ts" setup>
 import type { ListedMoment, Moment } from "@/types";
-import cloneDeep from "lodash.clonedeep";
-import { ref, toRaw } from "vue";
+import { computed, ref, toRaw } from "vue";
 import MomentEdit from "./MomentEdit.vue";
 import MomentPreview from "./MomentPreview.vue";
 import apiClient from "@/utils/api-client";
-import { Dialog, Toast, VDropdownItem } from "@halo-dev/components";
-import type { Contributor } from "@halo-dev/api-client/index";
 import {
   Dialog,
   Toast,
@@ -14,11 +11,10 @@ import {
   VDropdown,
   VDropdownItem,
   IconEyeOff,
+  VStatusDot,
 } from "@halo-dev/components";
 import { formatDatetime, relativeTimeTo } from "@/utils/date";
 import LucideMoreHorizontal from "~icons/lucide/more-horizontal";
-
-import apiClient from "@/utils/api-client";
 
 const props = withDefaults(
   defineProps<{
@@ -40,34 +36,7 @@ const emit = defineEmits<{
 const editing = ref(props.editing);
 const editingMoment = ref<Moment>(toRaw(props.listedMoment?.moment));
 const previewMoment = ref<Moment>(toRaw(props.listedMoment?.moment));
-
-const handleSave = async (moment: Moment) => {
-  moment.spec.releaseTime = new Date().toISOString();
-  moment.spec.approved = true;
-  const { data } = await apiClient.post<Moment>(
-    `/apis/api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
-    moment
-  );
-  emit("save", data);
-  Toast.success("发布成功");
-};
-
-const handleUpdate = async (moment: Moment) => {
-  const { data } = await apiClient.get<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${moment.metadata.name}`
-  );
-  // 更新当前需要提交的 moment spec 为最新
-  data.spec = moment.spec;
-  const updated = await apiClient.put<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${moment.metadata.name}`,
-    data
-  );
-  editingMoment.value = cloneDeep(moment);
-  previewMoment.value = cloneDeep(moment);
-  editing.value = false;
-  emit("update", updated.data);
-  Toast.success("发布成功");
-};
+const owner = computed(() => props.listedMoment?.owner);
 
 const deleteMoment = () => {
   Dialog.warning({
@@ -77,7 +46,7 @@ const deleteMoment = () => {
     onConfirm: async () => {
       try {
         const { data } = await apiClient.delete(
-          `/apis/moment.halo.run/v1alpha1/moments/${props.moment.metadata.name}`
+          `/apis/moment.halo.run/v1alpha1/moments/${previewMoment.value.metadata.name}`
         );
 
         Toast.success("删除成功");
@@ -89,14 +58,24 @@ const deleteMoment = () => {
   });
 };
 
-const handleCancel = () => {
+const handleUpdate = (moment: Moment) => {
+  editingMoment.value = toRaw(moment);
+  previewMoment.value = toRaw(moment);
   editing.value = false;
 };
 
-const handleApproved = () => {
+const handleApproved = async () => {
+  const { data } = await apiClient.get<Moment>(
+    `/apis/moment.halo.run/v1alpha1/moments/${editingMoment.value.metadata.name}`
+  );
+  // 更新当前需要提交的 moment spec 为最新
+  data.spec.approved = true;
+  await apiClient.put<Moment>(
+    `/apis/moment.halo.run/v1alpha1/moments/${editingMoment.value.metadata.name}`,
+    data
+  );
   editingMoment.value.spec.approved = true;
   previewMoment.value.spec.approved = true;
-  handleUpdate(editingMoment.value);
 };
 </script>
 <template>
@@ -120,12 +99,27 @@ const handleApproved = () => {
             <b> {{ owner?.displayName }} </b>
           </div>
           <div
-            v-if="props.moment.spec.visible == 'PRIVATE'"
+            v-if="previewMoment.spec.visible == 'PRIVATE'"
             v-tooltip="{
               content: '私有访问',
             }"
           >
             <IconEyeOff class="moments-text-xs moments-text-gray-500" />
+          </div>
+          <div>
+            <VStatusDot
+              v-show="!previewMoment.spec.approved"
+              v-tooltip="'请审核'"
+              class="moments-mr-2 moments-cursor-default"
+              state="success"
+              animate
+            >
+              <template #text>
+                <span class="text-xs text-gray-500">
+                  {{ `待审核` }}
+                </span>
+              </template>
+            </VStatusDot>
           </div>
         </div>
         <div
@@ -136,10 +130,10 @@ const handleApproved = () => {
           >
             <span
               v-tooltip="{
-                content: formatDatetime(moment?.spec.releaseTime),
+                content: formatDatetime(previewMoment.spec.releaseTime),
               }"
             >
-              {{ relativeTimeTo(moment?.spec.releaseTime) }}
+              {{ relativeTimeTo(previewMoment.spec.releaseTime) }}
             </span>
           </div>
           <VDropdown
@@ -154,12 +148,12 @@ const handleApproved = () => {
               />
             </div>
             <template #popper>
-                      <VDropdownItem
-                        v-if="!previewMoment.spec.approved"
-                        @click="handleApproved"
-                      >
-                        审核通过
-                      </VDropdownItem>
+              <VDropdownItem
+                v-if="previewMoment.spec.approved == false"
+                @click="handleApproved"
+              >
+                审核通过
+              </VDropdownItem>
               <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
               <VDropdownItem type="danger" @click="deleteMoment">
                 删除
@@ -172,9 +166,8 @@ const handleApproved = () => {
         <MomentEdit
           v-if="editing"
           :moment="editingMoment"
-          @save="handlerSave"
-          @update="handlerUpdate"
-          @cancel="handlerCancel"
+          @update="handleUpdate"
+          @cancel="editing = false"
         ></MomentEdit>
         <MomentPreview
           v-else

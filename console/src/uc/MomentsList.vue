@@ -11,14 +11,14 @@ import type { User } from "@halo-dev/api-client";
 import type { ListedMoment } from "@/types";
 import { useQuery } from "@tanstack/vue-query";
 import apiClient from "@/utils/api-client";
-import MomentItem from "./MomentItem.vue";
+import MomentItem from ".//MomentItem.vue";
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn.es";
 import { toISODayEndOfTime } from "@/utils/date";
 import { useRouteQuery } from "@vueuse/router";
 import TagFilterDropdown from "@/components/TagFilterDropdown.vue";
-import MomentEdit from "@/components/MomentEdit.vue";
+import MomentEdit from "./MomentEdit.vue";
 
 interface VisibleItem {
   label: string;
@@ -140,14 +140,14 @@ provide("tag", {
       <MingcuteMomentsLine class="moments-mr-2 moments-self-center" />
     </template>
   </VPageHeader>
-  <VCard class="moments-m-0 md:moments-m-4">
+  <VCard class="moments-m-0 md:moments-m-4 moments-flex-1">
     <div class="moments-container moments-mx-auto">
       <div
         class="moments-content moments-my-2 md:moments-my-4 moments-flex moments-flex-col moments-space-y-2"
       >
         <MomentEdit @save="refetch()" />
 
-        <div class="moment-header moments-pt-4 moments-pb-2">
+        <div class="moment-header moments-pt-8 moments-pb-2">
           <div
             class="moments-flex moments-flex-col moments-justify-between sm:moments-flex-row moments-space-x-2"
           >

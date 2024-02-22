@@ -1,11 +1,20 @@
 <script lang="ts" setup>
 import type { ListedMoment, Moment } from "@/types";
-import cloneDeep from "lodash.clonedeep";
-import { ref } from "vue";
-import MomentEdit from "@/components/MomentEdit.vue";
+import { computed, ref, toRaw } from "vue";
+import MomentEdit from "./MomentEdit.vue";
 import MomentPreview from "@/components/MomentPreview.vue";
 import apiClient from "@/utils/api-client";
-import { Dialog, Toast, VDropdownItem } from "@halo-dev/components";
+import {
+  Dialog,
+  Toast,
+  VAvatar,
+  VDropdown,
+  VDropdownItem,
+  IconEyeOff,
+  VStatusDot,
+} from "@halo-dev/components";
+import { formatDatetime, relativeTimeTo } from "@/utils/date";
+import LucideMoreHorizontal from "~icons/lucide/more-horizontal";
 
 const props = withDefaults(
   defineProps<{
@@ -25,90 +34,127 @@ const emit = defineEmits<{
 }>();
 
 const editing = ref(props.editing);
-const editingMoment = ref<Moment>(cloneDeep(props.listedMoment?.moment));
-const previewMoment = ref<Moment>(cloneDeep(props.listedMoment?.moment));
+const editingMoment = ref<Moment>(toRaw(props.listedMoment?.moment));
+const previewMoment = ref<Moment>(toRaw(props.listedMoment?.moment));
+const owner = computed(() => props.listedMoment?.owner);
 
-const handleSave = async (moment: Moment) => {
-  moment.spec.releaseTime = new Date().toISOString();
-  const { data } = await apiClient.post<Moment>(
-    `/apis/uc.api.moment.halo.run/v1alpha1/moments`,
-    moment
-  );
-  emit("save", data);
-  Toast.success("发布成功");
-};
-
-const handleUpdate = async (moment: Moment) => {
-  const { data } = await apiClient.get<Moment>(
-    `/apis/uc.api.moment.halo.run/v1alpha1/moments/${moment.metadata.name}`
-  );
-  // 更新当前需要提交的 moment spec 为最新
-  data.spec = moment.spec;
-  const updated = await apiClient.put<Moment>(
-    `/apis/uc.api.moment.halo.run/v1alpha1/moments/${moment.metadata.name}`,
-    data
-  );
-  editingMoment.value = cloneDeep(updated.data);
-  previewMoment.value = cloneDeep(updated.data);
-  editing.value = false;
-  emit("update", updated.data);
-  Toast.success("发布成功");
-};
-
-const handleCancel = () => {
-  editing.value = false;
-};
-
-const handleRemove = (name?: string) => {
-  if (!name) {
-    return;
-  }
+const deleteMoment = () => {
   Dialog.warning({
     title: "确定要删除该瞬间吗？",
     description: "该操作不可逆",
     confirmType: "danger",
     onConfirm: async () => {
       try {
-        apiClient
-          .delete(`/apis/uc.api.moment.halo.run/v1alpha1/moments/${name}`)
-          .then(() => {
-            Toast.success("删除成功");
-            emit("remove", name);
-          });
+        const { data } = await apiClient.delete(
+          `/apis/uc.api.moment.halo.run/v1alpha1/moments/${previewMoment.value.metadata.name}`
+        );
+
+        Toast.success("删除成功");
+        emit("remove", data);
       } catch (error) {
         console.error("Failed to delete comment", error);
       }
     },
   });
 };
+
+const handleUpdate = (moment: Moment) => {
+  editingMoment.value = toRaw(moment);
+  previewMoment.value = toRaw(moment);
+  editing.value = false;
+};
 </script>
 <template>
   <div>
-    <MomentEdit
-      v-if="editing"
-      :moment="editingMoment"
-      @insert="handleSave"
-      @update="handleUpdate"
-      @cancel="handleCancel"
-    ></MomentEdit>
-    <template v-else>
-      <MomentPreview
-        v-if="previewMoment"
-        :moment="previewMoment"
-        :owner="listedMoment?.owner"
-        @dblclick="editing = true"
+    <div
+      class="preview card moments-bg-white moments-shrink moments-py-6 moments-relative moments-border-t-[1px] moments-border-gray-300"
+    >
+      <div
+        class="header moments-flex moments-justify-between moments-items-center"
       >
-        <template #popper>
-          <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
-          <VDropdownItem
-            v-permission="['uc:plugin:moments:manage']"
-            type="danger"
-            @click="handleRemove(previewMoment.metadata.name)"
+        <div
+          class="moments-flex moments-justify-center moments-items-center moments-space-x-3"
+        >
+          <VAvatar
+            :alt="owner?.displayName"
+            :src="owner?.avatar"
+            size="md"
+            circle
+          ></VAvatar>
+          <div>
+            <b> {{ owner?.displayName }} </b>
+          </div>
+          <div
+            v-if="previewMoment.spec.visible == 'PRIVATE'"
+            v-tooltip="{
+              content: '私有访问',
+            }"
           >
-            删除
-          </VDropdownItem>
-        </template>
-      </MomentPreview>
-    </template>
+            <IconEyeOff class="moments-text-xs moments-text-gray-500" />
+          </div>
+          <div>
+            <VStatusDot
+              v-show="!previewMoment.spec.approved"
+              v-tooltip="'请等待管理员审核通过'"
+              class="moments-mr-2 moments-cursor-default"
+              state="success"
+              animate
+            >
+              <template #text>
+                <span class="text-xs text-gray-500">
+                  {{ `审核中` }}
+                </span>
+              </template>
+            </VStatusDot>
+          </div>
+        </div>
+        <div
+          class="moments-absolute moments-right-0 moments-flex moments-justify-center moments-items-center"
+        >
+          <div
+            class="moments-text-xs moments-text-gray-500 moments-mr-2 moments-cursor-default"
+          >
+            <span
+              v-tooltip="{
+                content: formatDatetime(previewMoment.spec.releaseTime),
+              }"
+            >
+              {{ relativeTimeTo(previewMoment.spec.releaseTime) }}
+            </span>
+          </div>
+          <VDropdown
+            v-permission="['uc:plugin:moments:manage']"
+            compute-transform-origin
+          >
+            <div
+              class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
+            >
+              <LucideMoreHorizontal
+                class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600 moments-cursor-pointer"
+              />
+            </div>
+            <template #popper>
+              <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
+              <VDropdownItem type="danger" @click="deleteMoment">
+                删除
+              </VDropdownItem>
+            </template>
+          </VDropdown>
+        </div>
+      </div>
+      <div class="moments-pl-14 moments-pt-3">
+        <MomentEdit
+          v-if="editing"
+          :moment="editingMoment"
+          @update="handleUpdate"
+          @cancel="editing = false"
+        ></MomentEdit>
+        <MomentPreview
+          v-else
+          :moment="previewMoment"
+          @switch-edit-mode="editing = true"
+        />
+      </div>
+    </div>
   </div>
 </template>
