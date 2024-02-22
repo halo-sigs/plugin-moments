@@ -100,6 +100,10 @@ public class MomentQuery extends SortableRequest {
             query = and(query, equal("spec.visible", getVisible().name()));
         }
 
+        if (getApproved() != null) {
+            query = and(query, equal("spec.approved", Boolean.toString(getApproved())));
+        }
+
         if (getStartDate() != null) {
             query = and(query, greaterThanOrEqual("spec.releaseTime", getStartDate().toString()));
         }

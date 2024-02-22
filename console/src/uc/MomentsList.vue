@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, provide, ref } from "vue";
+import { computed, provide, ref, watch } from "vue";
 import {
   VPageHeader,
   VLoading,
@@ -17,7 +17,7 @@ import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn.es";
 import { toISODayEndOfTime } from "@/utils/date";
 import { useRouteQuery } from "@vueuse/router";
-import TagFilterDropdown from "@/components/TagFilterDropdown.vue";
+import TagFilterDropdown from "./TagFilterDropdown.vue";
 import MomentEdit from "./MomentEdit.vue";
 
 interface VisibleItem {
@@ -132,6 +132,12 @@ function updateTagQuery(tagQuery: string) {
 provide("tag", {
   tag: tag.value,
   updateTagQuery,
+});
+
+watch([tag, momentsRangeTime], () => {
+  page.value = 1;
+  size.value = 20;
+  refetch();
 });
 </script>
 <template>

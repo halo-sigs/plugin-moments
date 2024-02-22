@@ -108,8 +108,7 @@ const handleApproved = async () => {
           </div>
           <div>
             <VStatusDot
-              v-show="!previewMoment.spec.approved"
-              v-tooltip="'请审核'"
+              v-show="previewMoment.spec.approved === false"
               class="moments-mr-2 moments-cursor-default"
               state="success"
               animate

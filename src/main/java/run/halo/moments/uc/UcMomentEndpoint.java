@@ -2,9 +2,12 @@ package run.halo.moments.uc;
 
 import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
 import static org.springdoc.core.fn.builders.content.Builder.contentBuilder;
+import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.fn.builders.schema.Builder;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
 import org.springframework.http.HttpStatus;
@@ -94,6 +97,20 @@ public class UcMomentEndpoint implements CustomEndpoint {
                     .response(responseBuilder()
                         .implementation(Moment.class))
             )
+            .GET("tags", this::listTags,
+                builder -> builder.operationId("ListTags")
+                    .description("List all moment tags.")
+                    .tag(tag)
+                    .parameter(parameterBuilder()
+                        .name("name")
+                        .in(ParameterIn.QUERY)
+                        .description("Tag name to query")
+                        .required(false)
+                        .implementation(String.class)
+                    )
+                    .response(responseBuilder()
+                        .implementationArray(String.class)
+                    ))
             .build();
     }
 
@@ -164,6 +181,14 @@ public class UcMomentEndpoint implements CustomEndpoint {
             .map(Authentication::getName);
     }
 
+    private Mono<ServerResponse> listTags(ServerRequest request) {
+        String name = request.queryParam("name").orElse(null);
+        return momentService.listAllTags()
+            .filter(tagName -> StringUtils.isBlank(name) || StringUtils.containsIgnoreCase(tagName,
+                name))
+            .collectList()
+            .flatMap(result -> ServerResponse.ok().bodyValue(result));
+    }
 
     @Override
     public GroupVersion groupVersion() {

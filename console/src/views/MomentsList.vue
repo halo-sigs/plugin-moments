@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, provide, ref } from "vue";
+import { computed, provide, ref, watch } from "vue";
 import {
   VPageHeader,
   VLoading,
@@ -7,7 +7,6 @@ import {
   VCard,
 } from "@halo-dev/components";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
-import type { User } from "@halo-dev/api-client";
 import type { ListedMoment } from "@/types";
 import { useQuery } from "@tanstack/vue-query";
 import apiClient from "@/utils/api-client";
@@ -19,34 +18,17 @@ import { toISODayEndOfTime } from "@/utils/date";
 import { useRouteQuery } from "@vueuse/router";
 import TagFilterDropdown from "@/components/TagFilterDropdown.vue";
 import MomentEdit from "@/components/MomentEdit.vue";
-
-interface VisibleItem {
-  label: string;
-  value?: "PUBLIC" | "PRIVATE";
-}
-
-interface SortItem {
-  label: string;
-  sort: "RELEASE_TIME";
-  sortOrder: boolean;
-}
-
-const VisibleItems: VisibleItem[] = [
-  {
-    label: "全部",
-    value: undefined,
-  },
-  {
-    label: "公开",
-    value: "PUBLIC",
-  },
-  {
-    label: "私有",
-    value: "PRIVATE",
-  },
-];
+import FilterDropdown from "@/components/FilterDropdown.vue";
 
 const tag = useRouteQuery<string>("tag");
+const selectedApprovedStatus = useRouteQuery<
+  string | undefined,
+  boolean | undefined
+>("approved", undefined, {
+  transform: (value) => {
+    return value ? value === "true" : undefined;
+  },
+});
 
 const page = ref(1);
 const size = ref(20);
@@ -55,9 +37,6 @@ const totalPages = ref(1);
 const hasPrevious = ref(false);
 const hasNext = ref(false);
 
-const selectedVisibleItem = ref<VisibleItem>(VisibleItems[0]);
-const selectedSortItem = ref<SortItem>();
-const selectedContributor = ref<User>();
 const keyword = ref("");
 const momentsRangeTime = ref<Array<Date>>([]);
 
@@ -77,34 +56,23 @@ const {
   queryKey: [
     page,
     size,
-    selectedContributor,
-    selectedVisibleItem,
-    selectedSortItem,
+    selectedApprovedStatus,
     startDate,
     endDate,
     keyword,
     tag,
   ],
   queryFn: async () => {
-    let contributors: string[] | undefined;
-
-    if (selectedContributor.value) {
-      contributors = [selectedContributor.value.metadata.name];
-    }
-
     const { data } = await apiClient.get(
       "/apis/console.api.moment.halo.run/v1alpha1/moments",
       {
         params: {
           page: page.value,
           size: size.value,
-          visible: selectedVisibleItem.value?.value,
-          sort: selectedSortItem.value?.sort,
-          sortOrder: selectedSortItem.value?.sortOrder,
+          approved: selectedApprovedStatus.value,
           keyword: keyword.value,
           startDate: startDate.value,
           endDate: endDate.value,
-          contributor: contributors,
           tag: tag.value,
         },
       }
@@ -133,6 +101,12 @@ provide("tag", {
   tag: tag.value,
   updateTagQuery,
 });
+
+watch([tag, selectedApprovedStatus, momentsRangeTime], () => {
+  page.value = 1;
+  size.value = 20;
+  refetch();
+});
 </script>
 <template>
   <VPageHeader title="瞬间">
@@ -152,12 +126,29 @@ provide("tag", {
             class="moments-flex moments-flex-col moments-justify-between sm:moments-flex-row moments-space-x-2"
           >
             <div
-              class="moments-left-0 moments-mb-2 sm:moments-mb-0 moments-flex moments-items-center moments-mr-2"
+              class="moments-left-0 moments-mb-2 sm:moments-mb-0 moments-flex moments-items-center moments-mr-2 moments-space-x-2"
             >
               <TagFilterDropdown
                 v-model="tag"
                 :label="'标签'"
               ></TagFilterDropdown>
+              <FilterDropdown
+                v-model="selectedApprovedStatus"
+                label="状态"
+                :items="[
+                  {
+                    label: '全部',
+                  },
+                  {
+                    label: '已审核',
+                    value: true,
+                  },
+                  {
+                    label: '待审核',
+                    value: false,
+                  },
+                ]"
+              />
             </div>
 
             <div class="moments-right-0 !moments-ml-0 moments-flex">
