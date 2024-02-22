@@ -144,14 +144,14 @@ provide("tag", {
       <MingcuteMomentsLine class="moments-mr-2 moments-self-center" />
     </template>
   </VPageHeader>
-  <VCard class="moments-m-0 md:moments-m-4">
+  <VCard class="moments-m-0 md:moments-m-4 moments-flex-1">
     <div class="moments-container moments-mx-auto">
       <div
         class="moments-content moments-my-2 md:moments-my-4 moments-flex moments-flex-col moments-space-y-2"
       >
         <MomentEdit @save="refetch()" />
 
-        <div class="moment-header moments-pt-4 moments-pb-2">
+        <div class="moment-header moments-pt-8 moments-pb-2">
           <div
             class="moments-flex moments-flex-col moments-justify-between sm:moments-flex-row moments-space-x-2"
           >
