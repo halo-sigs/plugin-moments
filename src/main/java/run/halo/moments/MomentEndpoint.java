@@ -11,6 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.fn.builders.schema.Builder;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -61,7 +64,7 @@ public class MomentEndpoint implements CustomEndpoint {
                     .response(responseBuilder()
                         .implementation(ListedMoment.class)
                     ))
-            .GET("tags", this::listTags,
+            .GET("tags", this::listMyTags,
                 builder -> builder.operationId("ListTags")
                     .description("List all moment tags.")
                     .tag(tag)
@@ -115,12 +118,20 @@ public class MomentEndpoint implements CustomEndpoint {
             .flatMap(listedMoments -> ServerResponse.ok().bodyValue(listedMoments));
     }
 
-    private Mono<ServerResponse> listTags(ServerRequest request) {
+    private Mono<ServerResponse> listMyTags(ServerRequest request) {
         String name = request.queryParam("name").orElse(null);
-        return momentService.listAllTags()
+        return getCurrentUser()
+            .map(username -> new MomentQuery(request.exchange(), username))
+            .flatMapMany(momentService::listAllTags)
             .filter(tagName -> StringUtils.isBlank(name) || StringUtils.containsIgnoreCase(tagName,
                 name))
             .collectList()
             .flatMap(result -> ServerResponse.ok().bodyValue(result));
+    }
+
+    private Mono<String> getCurrentUser() {
+        return ReactiveSecurityContextHolder.getContext()
+            .map(SecurityContext::getAuthentication)
+            .map(Authentication::getName);
     }
 }

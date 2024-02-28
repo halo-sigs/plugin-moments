@@ -18,7 +18,7 @@ public interface MomentService {
 
     Mono<Moment> create(Moment moment);
 
-    Flux<String> listAllTags();
+    Flux<String> listAllTags(MomentQuery query);
 
     Mono<ListedMoment> findMomentByName(String name);
 

@@ -97,7 +97,7 @@ public class UcMomentEndpoint implements CustomEndpoint {
                     .response(responseBuilder()
                         .implementation(Moment.class))
             )
-            .GET("tags", this::listTags,
+            .GET("tags", this::listMyTags,
                 builder -> builder.operationId("ListTags")
                     .description("List all moment tags.")
                     .tag(tag)
@@ -181,9 +181,11 @@ public class UcMomentEndpoint implements CustomEndpoint {
             .map(Authentication::getName);
     }
 
-    private Mono<ServerResponse> listTags(ServerRequest request) {
+    private Mono<ServerResponse> listMyTags(ServerRequest request) {
         String name = request.queryParam("name").orElse(null);
-        return momentService.listAllTags()
+        return getCurrentUser()
+            .map(username -> new MomentQuery(request.exchange(), username))
+            .flatMapMany(momentService::listAllTags)
             .filter(tagName -> StringUtils.isBlank(name) || StringUtils.containsIgnoreCase(tagName,
                 name))
             .collectList()

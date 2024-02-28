@@ -111,8 +111,7 @@ public class MomentQuery extends SortableRequest {
             query = and(query, lessThanOrEqual("spec.releaseTime", getEndDate().toString()));
         }
 
-        if (listOptions.getFieldSelector() != null
-            && listOptions.getFieldSelector().query() != null) {
+        if (listOptions.getFieldSelector() != null) {
             query = and(query, listOptions.getFieldSelector().query());
         }
         if (StringUtils.isNotBlank(getKeyword())) {

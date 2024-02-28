@@ -10,6 +10,7 @@ import SendMoment from "~icons/ic/sharp-send";
 import cloneDeep from "lodash.clonedeep";
 import TablerPhoto from "~icons/tabler/photo";
 import apiClient from "@/utils/api-client";
+import { useUCTagQueryFetch } from "@/composables/use-tag";
 
 const props = withDefaults(
   defineProps<{
@@ -300,6 +301,7 @@ function handleKeydown(event: KeyboardEvent) {
       v-model:raw="formState.spec.content.raw"
       v-model:html="formState.spec.content.html"
       v-model:isEmpty="isEditorEmpty"
+      :tag-query-fetch="useUCTagQueryFetch"
       class="moments-min-h-[9rem] moments-p-3.5"
       tabindex="-1"
       @keydown="handleKeydown"

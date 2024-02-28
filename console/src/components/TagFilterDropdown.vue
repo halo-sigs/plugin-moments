@@ -7,8 +7,7 @@ import {
   VEntityField,
 } from "@halo-dev/components";
 import { computed, ref } from "vue";
-import { useQuery } from "@tanstack/vue-query";
-import apiClient from "@/utils/api-client";
+import { useConsoleTagQueryFetch } from "@/composables/use-tag";
 
 const props = withDefaults(
   defineProps<{
@@ -26,19 +25,8 @@ const emit = defineEmits<{
 
 const keyword = ref(undefined);
 
-const { data: tags, refetch } = useQuery<string[]>({
-  queryKey: ["moments-tags"],
-  queryFn: async () => {
-    const { data } = await apiClient.get(
-      "/apis/console.api.moment.halo.run/v1alpha1/tags",
-      {
-        params: {
-          name: keyword.value,
-        },
-      }
-    );
-    return data;
-  },
+const { data: tags, refetch } = useConsoleTagQueryFetch({
+  keyword,
 });
 
 const searchResults = computed(() => tags.value || []);

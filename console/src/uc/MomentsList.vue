@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, provide, ref, watch } from "vue";
+import { computed, provide, ref, watch, type Ref } from "vue";
 import {
   VPageHeader,
   VLoading,

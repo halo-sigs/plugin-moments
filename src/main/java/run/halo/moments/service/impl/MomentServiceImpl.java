@@ -68,8 +68,8 @@ public class MomentServiceImpl implements MomentService {
     }
 
     @Override
-    public Flux<String> listAllTags() {
-        return client.listAll(Moment.class, new ListOptions(),
+    public Flux<String> listAllTags(MomentQuery query) {
+        return client.listAll(Moment.class, query.toListOptions(),
                 Sort.by("metadata.name").descending())
             .flatMapIterable(moment -> {
                 var tags = moment.getSpec().getTags();
