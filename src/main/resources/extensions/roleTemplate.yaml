@@ -10,12 +10,12 @@ metadata:
     rbac.authorization.halo.run/ui-permissions: |
       ["plugin:moments:view"]
 rules:
-  - apiGroups: [ "moment.halo.run" ]
-    resources: [ "moments" ]
-    verbs: [ "get", "list" ]
-  - apiGroups: [ "console.api.moment.halo.run"]
-    resources: [ "moments", "tags" ]
-    verbs: [ "get", "list" ]
+  - apiGroups: ["moment.halo.run"]
+    resources: ["moments"]
+    verbs: ["get", "list"]
+  - apiGroups: ["console.api.moment.halo.run"]
+    resources: ["moments", "tags"]
+    verbs: ["get", "list"]
 ---
 apiVersion: v1alpha1
 kind: Role
@@ -31,12 +31,12 @@ metadata:
     rbac.authorization.halo.run/dependencies: |
       ["role-template-moments-view"]
 rules:
-  - apiGroups: [ "moment.halo.run" ]
-    resources: [ "moments" ]
-    verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
-  - apiGroups: [ "console.api.moment.halo.run"]
-    resources: [ "moments", "tags" ]
-    verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
+  - apiGroups: ["moment.halo.run"]
+    resources: ["moments"]
+    verbs: ["create", "patch", "update", "delete", "deletecollection"]
+  - apiGroups: ["console.api.moment.halo.run"]
+    resources: ["moments", "tags"]
+    verbs: ["create", "patch", "update", "delete", "deletecollection"]
 ---
 apiVersion: v1alpha1
 kind: Role
@@ -50,9 +50,9 @@ metadata:
     rbac.authorization.halo.run/ui-permissions: |
       ["uc:plugin:moments:publish"]
 rules:
-  - apiGroups: [ "uc.api.moment.halo.run" ]
-    resources: [ "moments", "tags" ]
-    verbs: [ "get", "list", "create", "update" ]
+  - apiGroups: ["uc.api.moment.halo.run"]
+    resources: ["moments", "tags"]
+    verbs: ["get", "list", "create", "update"]
 ---
 apiVersion: v1alpha1
 kind: Role
@@ -68,6 +68,6 @@ metadata:
     rbac.authorization.halo.run/ui-permissions: |
       ["uc:plugin:moments:manage"]
 rules:
-  - apiGroups: [ "uc.api.moment.halo.run" ]
-    resources: [ "moments", "tags" ]
-    verbs: [ "delete", "deletecollection" ]
+  - apiGroups: ["uc.api.moment.halo.run"]
+    resources: ["moments", "tags"]
+    verbs: ["delete", "deletecollection"]
