@@ -47,6 +47,8 @@ public class Moment extends AbstractExtension {
 
         @Schema(defaultValue = "false")
         private Boolean approved;
+
+        private Instant approvedTime;
     }
 
     @Data

@@ -6,6 +6,7 @@ import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.fn.builders.schema.Builder;
@@ -108,6 +109,11 @@ public class MomentEndpoint implements CustomEndpoint {
 
     private Mono<ServerResponse> createMoment(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(Moment.class)
+            .map(moment -> {
+                moment.getSpec().setApproved(true);
+                moment.getSpec().setApprovedTime(Instant.now());
+                return moment;
+            })
             .flatMap(momentService::create)
             .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
     }
