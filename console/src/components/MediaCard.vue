@@ -2,6 +2,7 @@
 import type { MomentMedia } from "@/types";
 import MingCloseCircle from "~icons/mingcute/close-circle-fill";
 import LucideFileVideo from "~icons/lucide/file-video";
+import LucideFileAudio from '~icons/lucide/file-audio';
 
 const props = withDefaults(
   defineProps<{
@@ -22,6 +23,10 @@ const handleRemoveClick = () => {
 
 const canPlayType = (type: string) => {
   let obj = document.createElement("video");
+  return !!obj.canPlayType(type);
+};
+const audioType = (type: string) => {
+  let obj = document.createElement("audio");
   return !!obj.canPlayType(type);
 };
 
@@ -61,6 +66,26 @@ const getExtname = (type: string) => {
           class="flex h-full w-full flex-col items-center justify-center moments-space-y-1 moments-bg-gray-100"
         >
           <LucideFileVideo />
+          <span class="font-sans text-xs text-gray-500">
+            {{ getExtname(props.media.originType) }}
+          </span>
+        </div>
+      </div>
+    </template>
+    <template v-else-if="props.media.type == 'AUDIO'">
+      <div class="moments-aspect-w-1 moments-aspect-h-1">
+        <audio
+          v-if="audioType(props.media.originType)"
+          class="moments-object-cover"
+          preload="metadata"
+        >
+          <source :src="props.media.url" :type="props.media.originType" />
+        </audio>
+        <div
+          v-else
+          class="flex h-full w-full flex-col items-center justify-center moments-space-y-1 moments-bg-gray-100"
+        >
+          <LucideFileAudio />
           <span class="font-sans text-xs text-gray-500">
             {{ getExtname(props.media.originType) }}
           </span>

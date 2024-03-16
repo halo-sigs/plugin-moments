@@ -141,11 +141,14 @@ const supportImageTypes: string[] = [
 
 const supportVideoTypes: string[] = ["video/*"];
 
-const accepts = [...supportImageTypes, ...supportVideoTypes];
+const supportAudioTypes: string[] = ["audio/*"];
+
+const accepts = [...supportImageTypes, ...supportVideoTypes, ...supportAudioTypes];
 
 const mediumWhitelist: Map<string, MomentMediaTypeEnum> = new Map([
   ["image", "PHOTO"],
   ["video", "VIDEO"],
+  ["audio", "AUDIO"],
 ]);
 
 const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
