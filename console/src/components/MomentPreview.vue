@@ -3,6 +3,7 @@ import type { Moment } from "@/types";
 import { IconArrowLeft, IconArrowRight } from "@halo-dev/components";
 import { computed, inject, ref } from "vue";
 import LucideFileVideo from "~icons/lucide/file-video";
+import LucideFileAudio from '~icons/lucide/file-audio';
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";
@@ -157,6 +158,18 @@ const getExtname = (type: string) => {
                 class="moments-flex moments-h-full moments-w-full moments-flex-col moments-items-center moments-justify-center moments-space-y-1 moments-bg-gray-100"
               >
                 <LucideFileVideo />
+                <span
+                  class="moments-font-sans moments-text-xs moments-text-gray-500"
+                >
+                  {{ getExtname(media.originType) }}
+                </span>
+              </div>
+            </template>
+            <template v-else-if="media.type == 'AUDIO'">
+              <div
+                class="moments-flex moments-h-full moments-w-full moments-flex-col moments-items-center moments-justify-center moments-space-y-1 moments-bg-gray-100"
+              >
+                <LucideFileAudio />
                 <span
                   class="moments-font-sans moments-text-xs moments-text-gray-500"
                 >

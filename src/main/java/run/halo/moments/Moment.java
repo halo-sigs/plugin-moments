@@ -83,6 +83,7 @@ public class Moment extends AbstractExtension {
         PHOTO,
         VIDEO,
         POST,
+        AUDIO,
         // TODO Might add more types here in the future
     }
 
