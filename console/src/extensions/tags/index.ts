@@ -12,9 +12,14 @@ import TagsExtensionView from "./TagsExtensionView.vue";
 import tippy from "tippy.js";
 import Suggestion from "@tiptap/suggestion";
 import { PluginKey } from "@halo-dev/richtext-editor";
+import type { useTagQueryFetchProps } from "@/composables/use-tag";
+import type { UseQueryReturnType } from "@tanstack/vue-query";
 
 export interface TagOptions {
   HTMLAttributes: Record<string, any>;
+  tagQueryFetch: (
+    props: useTagQueryFetchProps
+  ) => UseQueryReturnType<unknown, unknown>;
 }
 
 declare module "@halo-dev/richtext-editor" {
@@ -38,6 +43,9 @@ export const TagsExtension = Mark.create<TagOptions>({
     return {
       HTMLAttributes: {
         class: "tag",
+      },
+      tagQueryFetch: () => {
+        throw new Error("tagQueryFetch is not defined");
       },
     };
   },
@@ -141,7 +149,7 @@ export const TagsExtension = Mark.create<TagOptions>({
           return {
             onStart: (props: Record<string, any>) => {
               component = new VueRenderer(TagsExtensionView, {
-                props,
+                props: { ...props, tagQueryFetch: this.options.tagQueryFetch },
                 editor: props.editor,
               });
 

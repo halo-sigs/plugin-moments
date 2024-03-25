@@ -188,14 +188,20 @@
           }
         }
 
-        p > img {
-          border-radius: 0.4rem;
-          overflow: hidden;
-          @apply moments-shadow;
-        }
+        p {
+          & > img {
+            border-radius: 0.4rem;
+            overflow: hidden;
+            @apply moments-shadow;
+          }
 
-        :not(pre) > code {
-          background-color: #afb8c133;
+          &:last-child {
+            margin-bottom: 0 !important;
+          }
+
+          &:not(pre) > code {
+            background-color: #afb8c133;
+          }
         }
       }
     }

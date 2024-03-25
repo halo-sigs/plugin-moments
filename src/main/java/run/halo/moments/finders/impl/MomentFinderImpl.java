@@ -21,6 +21,7 @@ import run.halo.app.extension.ListResult;
 import run.halo.app.extension.PageRequest;
 import run.halo.app.extension.PageRequestImpl;
 import run.halo.app.extension.ReactiveExtensionClient;
+import run.halo.app.extension.index.query.Query;
 import run.halo.app.extension.router.selector.FieldSelector;
 import run.halo.app.theme.finders.Finder;
 import run.halo.moments.Moment;
@@ -42,7 +43,13 @@ import run.halo.moments.vo.MomentVo;
 public class MomentFinderImpl implements MomentFinder {
 
     public static final Predicate<Moment> FIXED_PREDICATE = moment -> Objects.equals(
-        moment.getSpec().getVisible(), Moment.MomentVisible.PUBLIC);
+        moment.getSpec().getVisible(), Moment.MomentVisible.PUBLIC)
+        && moment.getSpec().getApproved() == Boolean.TRUE;
+
+    public static final Query FIXED_QUERY = and(
+        equal("spec.visible", Moment.MomentVisible.PUBLIC.name()),
+        equal("spec.approved", Boolean.TRUE.toString())
+    );
 
     private final ReactiveExtensionClient client;
 
@@ -50,7 +57,7 @@ public class MomentFinderImpl implements MomentFinder {
     public Flux<MomentVo> listAll() {
         var listOptions = new ListOptions();
         listOptions.setFieldSelector(
-            FieldSelector.of(equal("spec.visible", Moment.MomentVisible.PUBLIC.name())));
+            FieldSelector.of(FIXED_QUERY));
         return client.listAll(Moment.class, listOptions, defaultSort())
             .flatMap(this::getMomentVo);
     }
@@ -68,8 +75,7 @@ public class MomentFinderImpl implements MomentFinder {
     @Override
     public Flux<MomentVo> listBy(String tag) {
         var listOptions = new ListOptions();
-        var query = and(equal("spec.visible", Moment.MomentVisible.PUBLIC.name()),
-            equal("spec.tags", tag));
+        var query = and(FIXED_QUERY, equal("spec.tags", tag));
         listOptions.setFieldSelector(FieldSelector.of(query));
         return client.listAll(Moment.class, listOptions, defaultSort())
             .flatMap(this::getMomentVo);
@@ -85,8 +91,7 @@ public class MomentFinderImpl implements MomentFinder {
     @Override
     public Flux<MomentTagVo> listAllTags() {
         var listOptions = new ListOptions();
-        var query = and(all("spec.tags"),
-            equal("spec.visible", Moment.MomentVisible.PUBLIC.name()));
+        var query = and(all("spec.tags"), FIXED_QUERY);
         listOptions.setFieldSelector(FieldSelector.of(query));
         return client.listAll(Moment.class, listOptions, defaultSort())
             .flatMapIterable(moment -> {
@@ -125,8 +130,8 @@ public class MomentFinderImpl implements MomentFinder {
 
     private Mono<ListResult<MomentVo>> pageMoment(FieldSelector fieldSelector, PageRequest page) {
         var listOptions = new ListOptions();
-        var query = equal("spec.visible", Moment.MomentVisible.PUBLIC.name());
-        if (fieldSelector != null && fieldSelector.query() != null) {
+        var query = FIXED_QUERY;
+        if (fieldSelector != null) {
             query = and(query, fieldSelector.query());
         }
         listOptions.setFieldSelector(FieldSelector.of(query));

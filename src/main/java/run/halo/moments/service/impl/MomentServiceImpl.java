@@ -68,8 +68,8 @@ public class MomentServiceImpl implements MomentService {
     }
 
     @Override
-    public Flux<String> listAllTags() {
-        return client.listAll(Moment.class, new ListOptions(),
+    public Flux<String> listAllTags(MomentQuery query) {
+        return client.listAll(Moment.class, query.toListOptions(),
                 Sort.by("metadata.name").descending())
             .flatMapIterable(moment -> {
                 var tags = moment.getSpec().getTags();
@@ -83,6 +83,23 @@ public class MomentServiceImpl implements MomentService {
         return client.fetch(Moment.class, name)
             .switchIfEmpty(Mono.error(new NotFoundException("Moment not found.")))
             .flatMap(this::toListedMoment);
+    }
+
+    @Override
+    public Mono<Moment> getByUsername(String momentName, String username) {
+        return client.get(Moment.class, momentName)
+            .filter(post -> post.getSpec() != null)
+            .filter(post -> Objects.equals(username, post.getSpec().getOwner()));
+    }
+
+    @Override
+    public Mono<Moment> deleteBy(Moment moment) {
+        return client.delete(moment);
+    }
+
+    @Override
+    public Mono<Moment> updateBy(Moment moment) {
+        return client.update(moment);
     }
 
     private Mono<ListedMoment> toListedMoment(Moment moment) {
