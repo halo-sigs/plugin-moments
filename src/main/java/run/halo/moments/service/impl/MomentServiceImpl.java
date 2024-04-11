@@ -1,31 +1,27 @@
 package run.halo.moments.service.impl;
 
-import static run.halo.app.extension.router.selector.SelectorUtil.labelAndFieldSelectorToPredicate;
-
 import java.time.Instant;
-import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
+import org.springframework.web.server.ServerWebInputException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.Counter;
 import run.halo.app.core.extension.User;
-import run.halo.app.extension.Extension;
+import run.halo.app.extension.ListOptions;
 import run.halo.app.extension.ListResult;
 import run.halo.app.extension.ReactiveExtensionClient;
 import run.halo.moments.Contributor;
 import run.halo.moments.ListedMoment;
 import run.halo.moments.Moment;
 import run.halo.moments.MomentQuery;
-import run.halo.moments.MomentSorter;
 import run.halo.moments.Stats;
+import run.halo.moments.exception.NotFoundException;
 import run.halo.moments.service.MomentService;
 import run.halo.moments.util.MeterUtils;
 
@@ -33,6 +29,7 @@ import run.halo.moments.util.MeterUtils;
  * Listed moment.
  *
  * @author LIlGG
+ * @author guqing
  * @since 1.0.0
  */
 @Component
@@ -43,12 +40,7 @@ public class MomentServiceImpl implements MomentService {
 
     @Override
     public Mono<ListResult<ListedMoment>> listMoment(MomentQuery query) {
-        Comparator<Moment> comparator =
-            MomentSorter.from(query.getSort(), query.getSortOrder());
-        return this.client.list(Moment.class, momentListPredicate(query),
-                comparator,
-                query.getPage(), query.getSize()
-            )
+        return client.listBy(Moment.class, query.toListOptions(), query.toPageRequest())
             .flatMap(listResult -> Flux.fromStream(listResult.get())
                 .concatMap(this::toListedMoment)
                 .collectList()
@@ -73,6 +65,24 @@ public class MomentServiceImpl implements MomentService {
                 moment.getSpec().setOwner(user.getMetadata().getName());
                 return client.create(moment);
             });
+    }
+
+    @Override
+    public Flux<String> listAllTags() {
+        return client.listAll(Moment.class, new ListOptions(),
+                Sort.by("metadata.name").descending())
+            .flatMapIterable(moment -> {
+                var tags = moment.getSpec().getTags();
+                return Objects.requireNonNullElseGet(tags, List::of);
+            })
+            .distinct();
+    }
+
+    @Override
+    public Mono<ListedMoment> findMomentByName(String name) {
+        return client.fetch(Moment.class, name)
+            .switchIfEmpty(Mono.error(new NotFoundException("Moment not found.")))
+            .flatMap(this::toListedMoment);
     }
 
     private Mono<ListedMoment> toListedMoment(Moment moment) {
@@ -110,55 +120,6 @@ public class MomentServiceImpl implements MomentService {
                 .build())
             .defaultIfEmpty(Stats.empty());
 
-    }
-
-    Predicate<Moment> momentListPredicate(MomentQuery query) {
-        Predicate<Moment> predicate = moment -> true;
-        String keyword = query.getKeyword();
-
-        if (keyword != null) {
-            predicate = predicate.and(moment -> {
-                String raw = moment.getSpec().getContent().getRaw();
-                return StringUtils.containsIgnoreCase(raw, keyword);
-            });
-        }
-
-        String ownerName = query.getOwnerName();
-        if (ownerName != null) {
-            predicate = predicate.and(moment -> StringUtils.containsIgnoreCase(
-                moment.getSpec().getOwner(), ownerName));
-        }
-
-
-        String tag = query.getTag();
-        if (tag != null) {
-            predicate = predicate.and(moment -> {
-                Set<String> tags = moment.getSpec().getTags();
-                if (CollectionUtils.isEmpty(tags)) {
-                    return false;
-                }
-                return moment.getSpec().getTags().contains(tag);
-            });
-        }
-
-        Moment.MomentVisible visible = query.getVisible();
-        if (visible != null) {
-            predicate = predicate.and(moment -> visible.equals(moment.getSpec().getVisible()));
-        }
-
-        Instant startDate = query.getStartDate();
-        Instant endDate = query.getEndDate();
-        if (startDate != null && endDate != null) {
-            predicate = predicate.and(moment -> {
-                Instant releaseTime = moment.getSpec().getReleaseTime();
-                return releaseTime.isAfter(startDate) && releaseTime.isBefore(endDate);
-            });
-        }
-
-        Predicate<Extension> labelAndFieldSelectorPredicate =
-            labelAndFieldSelectorToPredicate(query.getLabelSelector(),
-                query.getFieldSelector());
-        return predicate.and(labelAndFieldSelectorPredicate);
     }
 
     protected Mono<User> getContextUser() {

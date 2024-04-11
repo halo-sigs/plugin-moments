@@ -89,6 +89,7 @@ moments
             <th:block th:if="${not #lists.isEmpty(content.medium)}" th:each="momentItem : ${content.medium}">
                 <img th:if="${momentItem.type.name == 'PHOTO'}" th:src="${momentItem.url}" />
                 <video th:if="${momentItem.type.name == 'VIDEO'}" th:src="${momentItem.url}"></video>
+                <audio th:if="${momentItem.type.name == 'AUDIO'}" th:src="${momentItem.url}" controls="true"></audio>
             </th:block>
         </li>
     </ul>
@@ -144,6 +145,7 @@ moment
         <th:block th:if="${not #lists.isEmpty(content.medium)}" th:each="momentItem : ${content.medium}">
             <img th:if="${momentItem.type.name == 'PHOTO'}" th:src="${momentItem.url}" />
             <video th:if="${momentItem.type.name == 'VIDEO'}" th:src="${momentItem.url}"></video>
+            <audio th:if="${momentItem.type.name == 'AUDIO'}" th:src="${momentItem.url}" controls="true"></audio>
         </th:block>
     </div>
 </div>
@@ -178,6 +180,7 @@ List<[#MomentVo](#momentvo)>
         <th:block th:if="${not #lists.isEmpty(content.medium)}" th:each="momentItem : ${content.medium}">
             <img th:if="${momentItem.type.name == 'PHOTO'}" th:src="${momentItem.url}" />
             <video th:if="${momentItem.type.name == 'VIDEO'}" th:src="${momentItem.url}"></video>
+            <audio th:if="${momentItem.type.name == 'AUDIO'}" th:src="${momentItem.url}" controls="true"></audio>
         </th:block>
     </li>
 </ul>
@@ -208,6 +211,7 @@ List<[#MomentVo](#momentvo)>
             <th:block th:if="${not #lists.isEmpty(content.medium)}" th:each="momentItem : ${content.medium}">
                 <img th:if="${momentItem.type.name == 'PHOTO'}" th:src="${momentItem.url}" />
                 <video th:if="${momentItem.type.name == 'VIDEO'}" th:src="${momentItem.url}"></video>
+                <audio th:if="${momentItem.type.name == 'AUDIO'}" th:src="${momentItem.url}" controls="true"></audio>
             </th:block>
         </li>
     </ul>
@@ -270,7 +274,8 @@ List<[#MomentVo](#momentvo)>
 enum Target {
   PHOTO,                                     // 图片
   VIDEO,                                     // 视频
-  POST;                                      // 文章
+  POST,                                      // 文章
+  AUDIO;                                     // 音频
 }
 ```
 

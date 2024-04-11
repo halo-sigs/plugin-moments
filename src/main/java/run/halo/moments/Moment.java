@@ -17,9 +17,12 @@ import run.halo.app.extension.GVK;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Moment extends AbstractExtension {
+    public static final String REQUIRE_SYNC_ON_STARTUP_INDEX_NAME = "requireSyncOnStartup";
 
     @Schema(required = true)
     private MomentSpec spec;
+
+    private Status status;
 
     @Data
     public static class MomentSpec {
@@ -39,6 +42,12 @@ public class Moment extends AbstractExtension {
 
         @Schema(description = "Tags of the moment")
         private Set<String> tags;
+    }
+
+    @Data
+    @Schema(name = "MomentStatus")
+    public static class Status {
+        private long observedVersion;
     }
 
     @Data
@@ -74,6 +83,7 @@ public class Moment extends AbstractExtension {
         PHOTO,
         VIDEO,
         POST,
+        AUDIO,
         // TODO Might add more types here in the future
     }
 

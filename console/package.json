@@ -11,7 +11,7 @@
     "@halo-dev/api-client": "^2.11.0",
     "@halo-dev/components": "^1.10.0",
     "@halo-dev/console-shared": "^2.11.0",
-    "@halo-dev/richtext-editor": "2.12.0",
+    "@halo-dev/richtext-editor": "^2.12.0",
     "@tanstack/vue-query": "^4.26.1",
     "@tiptap/suggestion": "^2.1.13",
     "@types/lodash.clonedeep": "^4.5.7",
@@ -30,7 +30,8 @@
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.31",
+    "@halo-dev/ui-plugin-bundler-kit": "^2.12.0",
+    "@iconify/json": "^2.2.180",
     "@rushstack/eslint-patch": "^1.2.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/jsdom": "^16.2.15",

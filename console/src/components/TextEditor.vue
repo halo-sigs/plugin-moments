@@ -40,6 +40,7 @@ import {
   ExtensionNodeSelected,
   ExtensionTrailingNode,
   useEditor,
+  ExtensionListKeymap,
 } from "@halo-dev/richtext-editor";
 import { watch } from "vue";
 import { TagsExtension } from "@/extensions/tags";
@@ -128,6 +129,7 @@ const editor = useEditor({
       placeholder: "有什么想说的吗...",
     }),
     ExtensionHighlight,
+    ExtensionListKeymap,
     TagsExtension,
   ],
   autofocus: "end",

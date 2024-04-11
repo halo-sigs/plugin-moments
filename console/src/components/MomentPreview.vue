@@ -1,38 +1,26 @@
 <script lang="ts" setup>
 import type { Moment } from "@/types";
-import apiClient from "@/utils/api-client";
-import { formatDatetime } from "@/utils/date";
-import {
-  Dialog,
-  Toast,
-  IconMore,
-  IconArrowLeft,
-  IconArrowRight,
-  VDropdown,
-  VDropdownItem,
-  IconEyeOff,
-} from "@halo-dev/components";
-import { computed, ref } from "vue";
+import { IconArrowLeft, IconArrowRight } from "@halo-dev/components";
+import { computed, inject, ref } from "vue";
 import LucideFileVideo from "~icons/lucide/file-video";
-import { useRouteQuery } from "@vueuse/router";
+import LucideFileAudio from '~icons/lucide/file-audio';
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";
+
 hljs.registerLanguage("xml", xml);
 
-const tag = useRouteQuery<string>("tag", "", {
-  mode: "push",
-});
 const props = defineProps<{
   moment: Moment;
 }>();
 
+const { updateTagQuery } = inject("tag") as {
+  tag: string;
+  updateTagQuery: (tag: string) => void;
+};
+
 const emit = defineEmits<{
-  (event: "editor"): void;
-  (event: "remove", moment: Moment): void;
-  (event: "cancel"): void;
-  (event: "dblclick"): void;
-  (event: "tagClick", tagName: string): void;
+  (event: "switchEditMode"): void;
 }>();
 
 const vHighlight = {
@@ -75,8 +63,7 @@ const vTag = {
         event.preventDefault();
         let tagName = node.textContent;
         if (tagName) {
-          emit("tagClick", node.textContent || "");
-          tag.value = node.textContent || "";
+          updateTagQuery(node.textContent || "");
         }
       });
     }
@@ -93,32 +80,8 @@ const selectedMedia = computed(() => {
   return mediums.value[selectedIndex.value];
 });
 
-const deleteMoment = () => {
-  Dialog.warning({
-    title: "确定要删除该瞬间吗？",
-    description: "该操作不可逆",
-    confirmType: "danger",
-    onConfirm: async () => {
-      try {
-        const { data } = await apiClient.delete(
-          `/apis/moment.halo.run/v1alpha1/moments/${props.moment.metadata.name}`
-        );
-
-        Toast.success("删除成功");
-        emit("remove", data);
-      } catch (error) {
-        console.error("Failed to delete comment", error);
-      }
-    },
-  });
-};
-
-const handlerEditor = () => {
-  emit("editor");
-};
-
-const handleDblclick = () => {
-  emit("dblclick");
+const handleSwitchEdit = () => {
+  emit("switchEditMode");
 };
 
 const handleClickMedium = (index: number) => {
@@ -158,51 +121,11 @@ const getExtname = (type: string) => {
     </template>
   </PreviewDetailModal>
   <div
-    class="preview card moments-bg-white moments-shrink moments-border moments-rounded-md moments-p-3.5 moments-relative"
-    @dblclick="handleDblclick"
+    class="moment-preview-html markdown-body moments-overflow-hidden moments-relative"
+    @dblclick="handleSwitchEdit"
   >
-    <div
-      class="header moments-flex moments-items-center moments-justify-between moments-h-5"
-    >
-      <div class="moments-flex moments-items-center">
-        <div class="moments-block moments-text-xs moments-text-gray-500">
-          <span>{{ formatDatetime(props.moment.spec.releaseTime) }}</span>
-        </div>
+    <div v-highlight v-lazy v-tag v-html="props.moment.spec.content.html"></div>
 
-        <div v-if="props.moment.spec.visible == 'PRIVATE'" class="moments-ml-2">
-          <IconEyeOff class="moments-text-xs moments-text-gray-500" />
-        </div>
-      </div>
-
-      <div
-        v-permission="['plugin:moments:manage']"
-        class="moments-absolute moments-right-3.5"
-      >
-        <VDropdown
-          compute-transform-origin
-          :triggers="['click']"
-          :popper-triggers="['click']"
-        >
-          <IconMore class="moments-text-gray-500 moments-cursor-pointer" />
-          <template #popper>
-            <VDropdownItem @click="handlerEditor"> 编辑 </VDropdownItem>
-            <VDropdownItem type="danger" @click="deleteMoment">
-              删除
-            </VDropdownItem>
-          </template>
-        </VDropdown>
-      </div>
-    </div>
-    <div
-      class="moment-preview-html markdown-body moments-overflow-hidden moments-relative moments-pt-1"
-    >
-      <div
-        v-highlight
-        v-lazy
-        v-tag
-        v-html="props.moment.spec.content.html"
-      ></div>
-    </div>
     <div
       v-if="
         !!props.moment.spec.content.medium &&
@@ -211,7 +134,7 @@ const getExtname = (type: string) => {
       class="img-box moments-flex moments-pt-2"
     >
       <ul
-        class="moments-grid moments-grid-cols-3 moments-gap-1.5 moments-w-full sm:moments-w-1/2"
+        class="moments-grid moments-grid-cols-3 moments-gap-1.5 moments-w-full sm:moments-w-1/2 !moments-pl-0"
         role="list"
       >
         <li
@@ -235,6 +158,18 @@ const getExtname = (type: string) => {
                 class="moments-flex moments-h-full moments-w-full moments-flex-col moments-items-center moments-justify-center moments-space-y-1 moments-bg-gray-100"
               >
                 <LucideFileVideo />
+                <span
+                  class="moments-font-sans moments-text-xs moments-text-gray-500"
+                >
+                  {{ getExtname(media.originType) }}
+                </span>
+              </div>
+            </template>
+            <template v-else-if="media.type == 'AUDIO'">
+              <div
+                class="moments-flex moments-h-full moments-w-full moments-flex-col moments-items-center moments-justify-center moments-space-y-1 moments-bg-gray-100"
+              >
+                <LucideFileAudio />
                 <span
                   class="moments-font-sans moments-text-xs moments-text-gray-500"
                 >

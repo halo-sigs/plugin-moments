@@ -1,5 +1,6 @@
 package run.halo.moments.service;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.extension.ListResult;
 import run.halo.moments.ListedMoment;
@@ -16,4 +17,8 @@ public interface MomentService {
     Mono<ListResult<ListedMoment>> listMoment(MomentQuery query);
 
     Mono<Moment> create(Moment moment);
+
+    Flux<String> listAllTags();
+
+    Mono<ListedMoment> findMomentByName(String name);
 }

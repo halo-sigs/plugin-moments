@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.endpoint.CustomEndpoint;
 import run.halo.app.extension.GroupVersion;
@@ -35,13 +34,11 @@ public class MomentEndpoint implements CustomEndpoint {
 
     private final MomentService momentService;
 
-    private final TagMomentIndexer tagMomentIndexer;
-
     @Override
     public RouterFunction<ServerResponse> endpoint() {
-        final var tag = "api.plugin.halo.run/v1alpha1/Moment";
+        final var tag = "console.api.moment.halo.run/v1alpha1/Moment";
         return SpringdocRouteBuilder.route()
-            .GET("plugins/PluginMoments/moments", this::listMoment, builder -> {
+            .GET("moments", this::listMoment, builder -> {
                 builder.operationId("ListMoments")
                     .description("List moments.")
                     .tag(tag)
@@ -50,7 +47,21 @@ public class MomentEndpoint implements CustomEndpoint {
                     );
                 QueryParamBuildUtil.buildParametersFromType(builder, MomentQuery.class);
             })
-            .GET("plugins/PluginMoments/tags", this::listTags,
+            .GET("moments/{name}", this::getMoment,
+                builder -> builder.operationId("GetMoment")
+                    .description("Get a moment by name.")
+                    .tag(tag)
+                    .parameter(parameterBuilder()
+                        .name("name")
+                        .in(ParameterIn.PATH)
+                        .description("Moment name")
+                        .required(true)
+                        .implementation(String.class)
+                    )
+                    .response(responseBuilder()
+                        .implementation(ListedMoment.class)
+                    ))
+            .GET("tags", this::listTags,
                 builder -> builder.operationId("ListTags")
                     .description("List all moment tags.")
                     .tag(tag)
@@ -64,7 +75,7 @@ public class MomentEndpoint implements CustomEndpoint {
                     .response(responseBuilder()
                         .implementationArray(String.class)
                     ))
-            .POST("plugins/PluginMoments/moments", this::createMoment,
+            .POST("moments", this::createMoment,
                 builder -> builder.operationId("CreateMoment")
                     .description("Create a Moment.")
                     .tag(tag)
@@ -81,9 +92,15 @@ public class MomentEndpoint implements CustomEndpoint {
             .build();
     }
 
+    private Mono<ServerResponse> getMoment(ServerRequest request) {
+        var name = request.pathVariable("name");
+        return momentService.findMomentByName(name)
+            .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
+    }
+
     @Override
     public GroupVersion groupVersion() {
-        return GroupVersion.parseAPIVersion("api.plugin.halo.run/v1alpha1");
+        return GroupVersion.parseAPIVersion("console.api.moment.halo.run/v1alpha1");
     }
 
     private Mono<ServerResponse> createMoment(ServerRequest serverRequest) {
@@ -93,14 +110,14 @@ public class MomentEndpoint implements CustomEndpoint {
     }
 
     private Mono<ServerResponse> listMoment(ServerRequest serverRequest) {
-        MomentQuery query = new MomentQuery(serverRequest.queryParams());
+        MomentQuery query = new MomentQuery(serverRequest.exchange());
         return momentService.listMoment(query)
             .flatMap(listedMoments -> ServerResponse.ok().bodyValue(listedMoments));
     }
 
     private Mono<ServerResponse> listTags(ServerRequest request) {
         String name = request.queryParam("name").orElse(null);
-        return Flux.fromIterable(tagMomentIndexer.listAllTags())
+        return momentService.listAllTags()
             .filter(tagName -> StringUtils.isBlank(name) || StringUtils.containsIgnoreCase(tagName,
                 name))
             .collectList()
