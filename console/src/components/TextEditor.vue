@@ -45,12 +45,17 @@ import {
 } from "@halo-dev/richtext-editor";
 import { watch } from "vue";
 import { TagsExtension } from "@/extensions/tags";
+import type { useTagQueryFetchProps } from "@/composables/use-tag";
+import type { UseQueryReturnType } from "@tanstack/vue-query";
 
 const props = withDefaults(
   defineProps<{
     html: string;
     raw: string;
     isEmpty: boolean;
+    tagQueryFetch: (
+      props: useTagQueryFetchProps
+    ) => UseQueryReturnType<unknown, unknown>;
   }>(),
   {
     html: "",
@@ -130,7 +135,9 @@ const editor = useEditor({
     }),
     ExtensionHighlight,
     ExtensionListKeymap,
-    TagsExtension,
+    TagsExtension.configure({
+      tagQueryFetch: props.tagQueryFetch,
+    }),
   ],
   autofocus: "end",
   onUpdate: () => {

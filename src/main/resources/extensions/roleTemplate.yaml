@@ -10,12 +10,12 @@ metadata:
     rbac.authorization.halo.run/ui-permissions: |
       ["plugin:moments:view"]
 rules:
-  - apiGroups: [ "moment.halo.run"]
-    resources: [ "moments" ]
-    verbs: [ "get", "list" ]
-  - apiGroups: [ "console.api.moment.halo.run"]
-    resources: [ "moments", "tags" ]
-    verbs: [ "get", "list" ]
+  - apiGroups: ["moment.halo.run"]
+    resources: ["moments"]
+    verbs: ["get", "list"]
+  - apiGroups: ["console.api.moment.halo.run"]
+    resources: ["moments", "tags"]
+    verbs: ["get", "list"]
 ---
 apiVersion: v1alpha1
 kind: Role
@@ -31,9 +31,43 @@ metadata:
     rbac.authorization.halo.run/dependencies: |
       ["role-template-moments-view"]
 rules:
-  - apiGroups: [ "moment.halo.run"]
-    resources: [ "moments" ]
-    verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
-  - apiGroups: [ "console.api.moment.halo.run"]
-    resources: [ "moments", "tags" ]
-    verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
+  - apiGroups: ["moment.halo.run"]
+    resources: ["moments"]
+    verbs: ["create", "patch", "update", "delete", "deletecollection"]
+  - apiGroups: ["console.api.moment.halo.run"]
+    resources: ["moments", "tags"]
+    verbs: ["create", "patch", "update", "delete", "deletecollection"]
+---
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-uc-moments-publish
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "Moments Management"
+    rbac.authorization.halo.run/display-name: "允许发布自己的瞬间"
+    rbac.authorization.halo.run/ui-permissions: |
+      ["uc:plugin:moments:publish"]
+rules:
+  - apiGroups: ["uc.api.moment.halo.run"]
+    resources: ["moments", "tags"]
+    verbs: ["get", "list", "create", "update"]
+---
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-uc-moments-manage
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "Moments Management"
+    rbac.authorization.halo.run/display-name: "允许管理自己的瞬间"
+    rbac.authorization.halo.run/dependencies: |
+      ["role-template-uc-moments-publish"]
+    rbac.authorization.halo.run/ui-permissions: |
+      ["uc:plugin:moments:manage"]
+rules:
+  - apiGroups: ["uc.api.moment.halo.run"]
+    resources: ["moments", "tags"]
+    verbs: ["delete", "deletecollection"]

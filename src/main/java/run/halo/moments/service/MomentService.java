@@ -18,7 +18,13 @@ public interface MomentService {
 
     Mono<Moment> create(Moment moment);
 
-    Flux<String> listAllTags();
+    Flux<String> listAllTags(MomentQuery query);
 
     Mono<ListedMoment> findMomentByName(String name);
+
+    Mono<Moment> getByUsername(String momentName, String username);
+
+    Mono<Moment> updateBy(Moment moment);
+
+    Mono<Moment> deleteBy(Moment moment);
 }

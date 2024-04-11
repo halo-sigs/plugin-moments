@@ -30,6 +30,7 @@ export interface MomentSpec {
   visible?: MomentVisibleEnum;
   owner: string;
   tags: string[];
+  approved: boolean;
 }
 
 export interface Moment {

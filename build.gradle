@@ -40,4 +40,5 @@ build {
 
 halo {
     version = '2.12.0'
+    debug = true;
 }

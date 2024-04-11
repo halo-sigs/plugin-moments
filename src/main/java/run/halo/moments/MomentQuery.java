@@ -31,9 +31,16 @@ import run.halo.app.extension.router.selector.FieldSelector;
 public class MomentQuery extends SortableRequest {
     private final MultiValueMap<String, String> queryParams;
 
+    private String username;
+
     public MomentQuery(ServerWebExchange exchange) {
         super(exchange);
         this.queryParams = exchange.getRequest().getQueryParams();
+    }
+
+    public MomentQuery(ServerWebExchange exchange, String username) {
+        this(exchange);
+        this.username = username;
     }
 
     @Nullable
@@ -44,6 +51,9 @@ public class MomentQuery extends SortableRequest {
 
     @Schema(description = "Owner name.")
     public String getOwnerName() {
+        if (StringUtils.isNotBlank(username)) {
+            return username;
+        }
         String ownerName = queryParams.getFirst("ownerName");
         return StringUtils.isBlank(ownerName) ? null : ownerName;
     }
@@ -90,6 +100,10 @@ public class MomentQuery extends SortableRequest {
             query = and(query, equal("spec.visible", getVisible().name()));
         }
 
+        if (getApproved() != null) {
+            query = and(query, equal("spec.approved", Boolean.toString(getApproved())));
+        }
+
         if (getStartDate() != null) {
             query = and(query, greaterThanOrEqual("spec.releaseTime", getStartDate().toString()));
         }
@@ -97,8 +111,7 @@ public class MomentQuery extends SortableRequest {
             query = and(query, lessThanOrEqual("spec.releaseTime", getEndDate().toString()));
         }
 
-        if (listOptions.getFieldSelector() != null
-            && listOptions.getFieldSelector().query() != null) {
+        if (listOptions.getFieldSelector() != null) {
             query = and(query, listOptions.getFieldSelector().query());
         }
         if (StringUtils.isNotBlank(getKeyword())) {
@@ -114,6 +127,15 @@ public class MomentQuery extends SortableRequest {
             sort = Sort.by("spec.releaseTime").descending();
         }
         return PageRequestImpl.of(getPage(), getSize(), sort);
+    }
+
+    @Schema(description = "moment approved.")
+    public Boolean getApproved() {
+        return convertBooleanOrNull(queryParams.getFirst("approved"));
+    }
+
+    private Boolean convertBooleanOrNull(String value) {
+        return StringUtils.isBlank(value) ? null : Boolean.parseBoolean(value);
     }
 
     private Instant convertInstantOrNull(String timeStr) {

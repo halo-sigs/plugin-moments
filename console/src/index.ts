@@ -2,6 +2,7 @@ import "./styles/tailwind.css";
 import "./styles/index.scss";
 import { definePlugin } from "@halo-dev/console-shared";
 import MomentsList from "@/views/MomentsList.vue";
+import UcMomentsList from "@/uc/MomentsList.vue";
 import { markRaw } from "vue";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { Moment } from "@/types";
@@ -19,6 +20,24 @@ export default definePlugin({
         component: MomentsList,
         meta: {
           permissions: ["plugin:moments:view"],
+          menu: {
+            name: "瞬间",
+            group: "content",
+            icon: markRaw(MingcuteMomentsLine),
+          },
+        },
+      },
+    },
+  ],
+  ucRoutes: [
+    {
+      parentName: "Root",
+      route: {
+        path: "/moments",
+        name: "Moments",
+        component: UcMomentsList,
+        meta: {
+          permissions: ["uc:plugin:moments:publish"],
           menu: {
             name: "瞬间",
             group: "content",
