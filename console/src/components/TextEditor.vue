@@ -41,10 +41,10 @@ import {
   ExtensionTrailingNode,
   useEditor,
   ExtensionListKeymap,
+  ExtensionParagraph,
 } from "@halo-dev/richtext-editor";
 import { watch } from "vue";
 import { TagsExtension } from "@/extensions/tags";
-import { ExtensionParagraph } from "@halo-dev/richtext-editor";
 
 const props = withDefaults(
   defineProps<{
