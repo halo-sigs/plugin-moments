@@ -1,0 +1,18 @@
+name: CD
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  cd:
+    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-cd.yaml@v1
+    secrets:
+      halo-username: ${{ secrets.HALO_USERNAME }}
+      halo-password: ${{ secrets.HALO_PASSWORD }}
+    permissions:
+      contents: write
+    with:
+      app-id: app-SnwWD
+      ui-path: "console"
