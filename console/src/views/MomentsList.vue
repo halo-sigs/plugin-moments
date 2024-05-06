@@ -5,6 +5,8 @@ import {
   VLoading,
   VPagination,
   VCard,
+  VButton,
+  IconExternalLinkLine,
 } from "@halo-dev/components";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { User } from "@halo-dev/api-client";
@@ -137,11 +139,23 @@ provide("tag", {
   tag: tag.value,
   updateTagQuery,
 });
+
+const handleJumpToFrontDesk = () => {
+  window.open("/moments", "_blank");
+};
 </script>
 <template>
   <VPageHeader title="瞬间">
     <template #icon>
       <MingcuteMomentsLine class="moments-mr-2 moments-self-center" />
+    </template>
+    <template #actions>
+      <VButton @click="handleJumpToFrontDesk">
+        <template #icon>
+          <IconExternalLinkLine class="h-full w-full" />
+        </template>
+        跳转到前台
+      </VButton>
     </template>
   </VPageHeader>
   <VCard class="moments-m-0 md:moments-m-4 moments-flex-1">
