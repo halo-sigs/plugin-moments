@@ -33,14 +33,14 @@ public class DefaultRoleService implements RoleService {
     private final ReactiveExtensionClient client;
 
     @Override
-    public Mono<Boolean> contains(Collection<String> source, Collection<String> candidates) {
+    public Mono<Boolean> joint(Collection<String> source, Collection<String> candidates) {
         if (source.contains(AuthorityUtils.SUPER_ROLE_NAME)) {
             return Mono.just(true);
         }
         return listDependencies(new HashSet<>(source))
             .map(role -> role.getMetadata().getName())
             .collect(Collectors.toSet())
-            .map(roleNames -> roleNames.containsAll(candidates));
+            .map(roleNames -> !Collections.disjoint(roleNames, candidates));
     }
 
     private Flux<Role> listDependencies(Set<String> names) {

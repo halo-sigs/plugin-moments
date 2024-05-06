@@ -169,8 +169,9 @@ public class UcMomentEndpoint implements CustomEndpoint {
                     post.getSpec().setApproved(false);
                     post.getSpec().setOwner(user.getName());
                     var roles = AuthorityUtils.authoritiesToRoles(user.getAuthorities());
-                    return roleService.contains(roles,
-                            Set.of(AuthorityUtils.MOMENT_MANAGEMENT_ROLE_NAME))
+                    return roleService.joint(roles,
+                            Set.of(AuthorityUtils.MOMENT_PUBLISH_APPROVAL_ROLE_NAME,
+                                AuthorityUtils.SUPER_ROLE_NAME))
                         .doOnNext(result -> {
                             if (result) {
                                 // If it is a user with audit authority, there is no need to review.

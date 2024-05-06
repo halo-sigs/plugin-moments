@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
+
 /**
  * Utility methods for manipulating GrantedAuthority collection.
  *
@@ -14,6 +15,9 @@ public enum AuthorityUtils {
     ;
     public static final String ROLE_PREFIX = "ROLE_";
     public static final String SUPER_ROLE_NAME = "super-role";
+
+    public static final String MOMENT_PUBLISH_APPROVAL_ROLE_NAME =
+        "role-template-uc-moments-approved";
 
     public static final String MOMENT_MANAGEMENT_ROLE_NAME = "role-template-moments-manage";
 
@@ -31,6 +35,7 @@ public enum AuthorityUtils {
             .map(authority -> StringUtils.removeStart(authority, ROLE_PREFIX))
             .collect(Collectors.toSet());
     }
+
     public static boolean containsSuperRole(Collection<String> roles) {
         return roles.contains(SUPER_ROLE_NAME);
     }

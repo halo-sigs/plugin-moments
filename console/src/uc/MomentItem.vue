@@ -122,24 +122,32 @@ const handleUpdate = (moment: Moment) => {
               {{ relativeTimeTo(previewMoment.spec.releaseTime) }}
             </span>
           </div>
-          <VDropdown
-            v-permission="['uc:plugin:moments:manage']"
-            compute-transform-origin
+          <HasPermission
+            :permissions="[
+              'uc:plugin:moments:publish',
+              'uc:plugin:moments:delete',
+            ]"
           >
-            <div
-              class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
-            >
-              <LucideMoreHorizontal
-                class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600 moments-cursor-pointer"
-              />
-            </div>
-            <template #popper>
-              <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
-              <VDropdownItem type="danger" @click="deleteMoment">
-                删除
-              </VDropdownItem>
-            </template>
-          </VDropdown>
+            <VDropdown compute-transform-origin>
+              <div
+                class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
+              >
+                <LucideMoreHorizontal
+                  class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600 moments-cursor-pointer"
+                />
+              </div>
+              <template #popper>
+                <HasPermission :permissions="['uc:plugin:moments:publish']">
+                  <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
+                </HasPermission>
+                <HasPermission :permissions="['uc:plugin:moments:delete']">
+                  <VDropdownItem type="danger" @click="deleteMoment">
+                    删除
+                  </VDropdownItem>
+                </HasPermission>
+              </template>
+            </VDropdown>
+          </HasPermission>
         </div>
       </div>
       <div class="moments-pl-14 moments-pt-3">

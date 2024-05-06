@@ -5,7 +5,7 @@ metadata:
   labels:
     halo.run/role-template: "true"
   annotations:
-    rbac.authorization.halo.run/module: "Moments Management"
+    rbac.authorization.halo.run/module: "Moments"
     rbac.authorization.halo.run/display-name: "瞬间查看"
     rbac.authorization.halo.run/ui-permissions: |
       ["plugin:moments:view"]
@@ -24,7 +24,7 @@ metadata:
   labels:
     halo.run/role-template: "true"
   annotations:
-    rbac.authorization.halo.run/module: "Moments Management"
+    rbac.authorization.halo.run/module: "Moments"
     rbac.authorization.halo.run/display-name: "瞬间管理"
     rbac.authorization.halo.run/ui-permissions: |
       ["plugin:moments:manage"]
@@ -45,7 +45,7 @@ metadata:
   labels:
     halo.run/role-template: "true"
   annotations:
-    rbac.authorization.halo.run/module: "Moments Management"
+    rbac.authorization.halo.run/module: "Moments"
     rbac.authorization.halo.run/display-name: "允许发布自己的瞬间"
     rbac.authorization.halo.run/ui-permissions: |
       ["uc:plugin:moments:publish"]
@@ -57,16 +57,28 @@ rules:
 apiVersion: v1alpha1
 kind: Role
 metadata:
-  name: role-template-uc-moments-manage
+  name: role-template-uc-moments-approved
   labels:
     halo.run/role-template: "true"
   annotations:
-    rbac.authorization.halo.run/module: "Moments Management"
-    rbac.authorization.halo.run/display-name: "允许管理自己的瞬间"
+    rbac.authorization.halo.run/module: "Moments"
+    rbac.authorization.halo.run/display-name: "发布瞬间无需审核"
     rbac.authorization.halo.run/dependencies: |
       ["role-template-uc-moments-publish"]
+rules:
+  - nonResourceURLs: ["*"]
+---
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-uc-moments-delete
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "Moments"
+    rbac.authorization.halo.run/display-name: "允许删除自己的瞬间"
     rbac.authorization.halo.run/ui-permissions: |
-      ["uc:plugin:moments:manage"]
+      ["uc:plugin:moments:delete"]
 rules:
   - apiGroups: ["uc.api.moment.halo.run"]
     resources: ["moments", "tags"]
