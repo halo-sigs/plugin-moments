@@ -9,14 +9,12 @@ import {
   ExtensionDropcursor,
   ExtensionGapcursor,
   ExtensionHardBreak,
-  ExtensionHeading,
   ExtensionHistory,
   ExtensionHorizontalRule,
   ExtensionItalic,
   ExtensionOrderedList,
   ExtensionStrike,
   ExtensionText,
-  ExtensionImage,
   ExtensionTaskList,
   ExtensionLink,
   ExtensionTextAlign,
@@ -42,11 +40,13 @@ import {
   ExtensionTrailingNode,
   useEditor,
   ExtensionListKeymap,
+  ExtensionParagraph,
 } from "@halo-dev/richtext-editor";
 import { watch } from "vue";
 import { TagsExtension } from "@/extensions/tags";
 import type { useTagQueryFetchProps } from "@/composables/use-tag";
 import type { UseQueryReturnType } from "@tanstack/vue-query";
+import MomentExtensionImage from "@/extensions/images";
 
 const props = withDefaults(
   defineProps<{
@@ -74,6 +74,7 @@ const emit = defineEmits<{
 const editor = useEditor({
   content: props.raw,
   extensions: [
+    ExtensionParagraph,
     ExtensionBlockquote,
     ExtensionBold,
     ExtensionBulletList,
@@ -86,14 +87,13 @@ const editor = useEditor({
     }),
     ExtensionGapcursor,
     ExtensionHardBreak,
-    ExtensionHeading,
     ExtensionHistory,
     ExtensionHorizontalRule,
     ExtensionItalic,
     ExtensionOrderedList,
     ExtensionStrike,
     ExtensionText,
-    ExtensionImage.configure({
+    MomentExtensionImage.configure({
       inline: true,
       allowBase64: false,
       HTMLAttributes: {
