@@ -9,7 +9,6 @@ import {
   ExtensionDropcursor,
   ExtensionGapcursor,
   ExtensionHardBreak,
-  ExtensionHeading,
   ExtensionHistory,
   ExtensionHorizontalRule,
   ExtensionItalic,
@@ -42,6 +41,7 @@ import {
   ExtensionTrailingNode,
   useEditor,
   ExtensionListKeymap,
+  ExtensionParagraph,
 } from "@halo-dev/richtext-editor";
 import { watch } from "vue";
 import { TagsExtension } from "@/extensions/tags";
@@ -69,6 +69,7 @@ const emit = defineEmits<{
 const editor = useEditor({
   content: props.raw,
   extensions: [
+    ExtensionParagraph,
     ExtensionBlockquote,
     ExtensionBold,
     ExtensionBulletList,
@@ -81,7 +82,6 @@ const editor = useEditor({
     }),
     ExtensionGapcursor,
     ExtensionHardBreak,
-    ExtensionHeading,
     ExtensionHistory,
     ExtensionHorizontalRule,
     ExtensionItalic,
