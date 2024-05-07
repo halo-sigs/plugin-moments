@@ -2,6 +2,7 @@ package run.halo.moments;
 
 import static run.halo.app.extension.index.query.QueryFactory.equal;
 
+import java.time.Instant;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -48,6 +49,13 @@ public class MomentReconciler implements Reconciler<Reconciler.Request> {
                 moment.setStatus(status);
             }
             status.setObservedVersion(moment.getMetadata().getVersion() + 1);
+            // add approved marks to the old data by default.
+            if (moment.getSpec().getApproved() == null) {
+                moment.getSpec().setApproved(true);
+            }
+            if (moment.getSpec().getApproved() && moment.getSpec().getApprovedTime() == null) {
+                moment.getSpec().setApprovedTime(Instant.now());
+            }
             client.update(moment);
         });
         return Result.doNotRetry();

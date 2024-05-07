@@ -1,42 +1,35 @@
 <script lang="ts" setup>
 import { ref, watch, type PropType } from "vue";
-import { useQuery } from "@tanstack/vue-query";
-import apiClient from "@/utils/api-client";
+import type { UseQueryReturnType } from "@tanstack/vue-query";
+import type { useTagQueryFetchProps } from "@/composables/use-tag";
 
 const props = defineProps({
   query: {
     type: String,
+    required: true,
   },
   command: {
     type: Function as PropType<(tag: string) => void>,
+    required: true,
+  },
+  tagQueryFetch: {
+    type: Function as PropType<
+      (props: useTagQueryFetchProps) => UseQueryReturnType<string[], unknown>
+    >,
     required: true,
   },
 });
 
 const selectedIndex = ref(0);
 
-const page = ref(1);
-const size = ref(20);
 const keyword = ref(props.query);
 
 const inputIntervalTime = 100;
 const timeInterval = ref(-1);
 const inputTimestamp = ref<number>(0);
 
-const { data: tags } = useQuery<string[]>({
-  queryKey: ["tags", page, size, keyword],
-  queryFn: async () => {
-    const { data } = await apiClient.get(
-      "/apis/console.api.moment.halo.run/v1alpha1/tags",
-      {
-        params: {
-          name: keyword.value,
-        },
-      }
-    );
-    return data;
-  },
-  refetchOnWindowFocus: false,
+const { data: tags } = props.tagQueryFetch({
+  keyword,
 });
 
 const inputFilter = (newValue: string | undefined) => {

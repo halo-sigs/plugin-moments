@@ -1,36 +1,52 @@
 <script lang="ts" setup>
-import { computed, provide, ref, watch } from "vue";
+import { computed, provide, ref, watch, type Ref } from "vue";
 import {
   VPageHeader,
   VLoading,
   VPagination,
   VCard,
-  VButton,
-  IconExternalLinkLine,
 } from "@halo-dev/components";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
+import type { User } from "@halo-dev/api-client";
 import type { ListedMoment } from "@/types";
 import { useQuery } from "@tanstack/vue-query";
 import apiClient from "@/utils/api-client";
-import MomentItem from "@/components/MomentItem.vue";
+import MomentItem from ".//MomentItem.vue";
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn.es";
 import { toISODayEndOfTime } from "@/utils/date";
 import { useRouteQuery } from "@vueuse/router";
-import TagFilterDropdown from "@/components/TagFilterDropdown.vue";
-import MomentEdit from "@/components/MomentEdit.vue";
-import FilterDropdown from "@/components/FilterDropdown.vue";
+import TagFilterDropdown from "./TagFilterDropdown.vue";
+import MomentEdit from "./MomentEdit.vue";
+
+interface VisibleItem {
+  label: string;
+  value?: "PUBLIC" | "PRIVATE";
+}
+
+interface SortItem {
+  label: string;
+  sort: "RELEASE_TIME";
+  sortOrder: boolean;
+}
+
+const VisibleItems: VisibleItem[] = [
+  {
+    label: "全部",
+    value: undefined,
+  },
+  {
+    label: "公开",
+    value: "PUBLIC",
+  },
+  {
+    label: "私有",
+    value: "PRIVATE",
+  },
+];
 
 const tag = useRouteQuery<string>("tag");
-const selectedApprovedStatus = useRouteQuery<
-  string | undefined,
-  boolean | undefined
->("approved", undefined, {
-  transform: (value) => {
-    return value ? value === "true" : undefined;
-  },
-});
 
 const page = ref(1);
 const size = ref(20);
@@ -39,6 +55,9 @@ const totalPages = ref(1);
 const hasPrevious = ref(false);
 const hasNext = ref(false);
 
+const selectedVisibleItem = ref<VisibleItem>(VisibleItems[0]);
+const selectedSortItem = ref<SortItem>();
+const selectedContributor = ref<User>();
 const keyword = ref("");
 const momentsRangeTime = ref<Array<Date>>([]);
 
@@ -58,23 +77,34 @@ const {
   queryKey: [
     page,
     size,
-    selectedApprovedStatus,
+    selectedContributor,
+    selectedVisibleItem,
+    selectedSortItem,
     startDate,
     endDate,
     keyword,
     tag,
   ],
   queryFn: async () => {
+    let contributors: string[] | undefined;
+
+    if (selectedContributor.value) {
+      contributors = [selectedContributor.value.metadata.name];
+    }
+
     const { data } = await apiClient.get(
-      "/apis/console.api.moment.halo.run/v1alpha1/moments",
+      "/apis/uc.api.moment.halo.run/v1alpha1/moments",
       {
         params: {
           page: page.value,
           size: size.value,
-          approved: selectedApprovedStatus.value,
+          visible: selectedVisibleItem.value?.value,
+          sort: selectedSortItem.value?.sort,
+          sortOrder: selectedSortItem.value?.sortOrder,
           keyword: keyword.value,
           startDate: startDate.value,
           endDate: endDate.value,
+          contributor: contributors,
           tag: tag.value,
         },
       }
@@ -104,28 +134,16 @@ provide("tag", {
   updateTagQuery,
 });
 
-watch([tag, selectedApprovedStatus, momentsRangeTime], () => {
+watch([tag, momentsRangeTime], () => {
   page.value = 1;
   size.value = 20;
   refetch();
 });
-
-const handleJumpToFrontDesk = () => {
-  window.open("/moments", "_blank");
-};
 </script>
 <template>
   <VPageHeader title="瞬间">
     <template #icon>
       <MingcuteMomentsLine class="moments-mr-2 moments-self-center" />
-    </template>
-    <template #actions>
-      <VButton @click="handleJumpToFrontDesk">
-        <template #icon>
-          <IconExternalLinkLine class="h-full w-full" />
-        </template>
-        跳转到前台
-      </VButton>
     </template>
   </VPageHeader>
   <VCard class="moments-m-0 md:moments-m-4 moments-flex-1">
@@ -140,29 +158,12 @@ const handleJumpToFrontDesk = () => {
             class="moments-flex moments-flex-col moments-justify-between sm:moments-flex-row moments-space-x-2"
           >
             <div
-              class="moments-left-0 moments-mb-2 sm:moments-mb-0 moments-flex moments-items-center moments-mr-2 moments-space-x-2"
+              class="moments-left-0 moments-mb-2 sm:moments-mb-0 moments-flex moments-items-center moments-mr-2"
             >
               <TagFilterDropdown
                 v-model="tag"
                 :label="'标签'"
               ></TagFilterDropdown>
-              <FilterDropdown
-                v-model="selectedApprovedStatus"
-                label="状态"
-                :items="[
-                  {
-                    label: '全部',
-                  },
-                  {
-                    label: '已审核',
-                    value: true,
-                  },
-                  {
-                    label: '待审核',
-                    value: false,
-                  },
-                ]"
-              />
             </div>
 
             <div class="moments-right-0 !moments-ml-0 moments-flex">

@@ -53,6 +53,14 @@ public class MomentsPlugin extends BasePlugin {
                 }))
             );
             indexSpecs.add(new IndexSpec()
+                .setName("spec.approved")
+                .setIndexFunc(simpleAttribute(Moment.class, moment -> {
+                    var approved = moment.getSpec().getApproved();
+                    return approved == null ? null : approved.toString();
+                }))
+            );
+
+            indexSpecs.add(new IndexSpec()
                 .setName(Moment.REQUIRE_SYNC_ON_STARTUP_INDEX_NAME)
                 .setIndexFunc(simpleAttribute(Moment.class, moment -> {
                     var observedVersion = Optional.ofNullable(moment.getStatus())

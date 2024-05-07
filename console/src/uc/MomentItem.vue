@@ -2,7 +2,7 @@
 import type { ListedMoment, Moment } from "@/types";
 import { computed, ref, toRaw } from "vue";
 import MomentEdit from "./MomentEdit.vue";
-import MomentPreview from "./MomentPreview.vue";
+import MomentPreview from "@/components/MomentPreview.vue";
 import apiClient from "@/utils/api-client";
 import {
   Dialog,
@@ -46,7 +46,7 @@ const deleteMoment = () => {
     onConfirm: async () => {
       try {
         const { data } = await apiClient.delete(
-          `/apis/moment.halo.run/v1alpha1/moments/${previewMoment.value.metadata.name}`
+          `/apis/uc.api.moment.halo.run/v1alpha1/moments/${previewMoment.value.metadata.name}`
         );
 
         Toast.success("删除成功");
@@ -62,20 +62,6 @@ const handleUpdate = (moment: Moment) => {
   editingMoment.value = toRaw(moment);
   previewMoment.value = toRaw(moment);
   editing.value = false;
-};
-
-const handleApproved = async () => {
-  const { data } = await apiClient.get<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${editingMoment.value.metadata.name}`
-  );
-  // 更新当前需要提交的 moment spec 为最新
-  data.spec.approved = true;
-  await apiClient.put<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${editingMoment.value.metadata.name}`,
-    data
-  );
-  editingMoment.value.spec.approved = true;
-  previewMoment.value.spec.approved = true;
 };
 </script>
 <template>
@@ -108,14 +94,15 @@ const handleApproved = async () => {
           </div>
           <div>
             <VStatusDot
-              v-show="previewMoment.spec.approved === false"
+              v-show="!previewMoment.spec.approved"
+              v-tooltip="'请等待管理员审核通过'"
               class="moments-mr-2 moments-cursor-default"
               state="success"
               animate
             >
               <template #text>
                 <span class="text-xs text-gray-500">
-                  {{ `待审核` }}
+                  {{ `审核中` }}
                 </span>
               </template>
             </VStatusDot>
@@ -135,30 +122,32 @@ const handleApproved = async () => {
               {{ relativeTimeTo(previewMoment.spec.releaseTime) }}
             </span>
           </div>
-          <VDropdown
-            v-permission="['plugin:moments:manage']"
-            compute-transform-origin
+          <HasPermission
+            :permissions="[
+              'uc:plugin:moments:publish',
+              'uc:plugin:moments:delete',
+            ]"
           >
-            <div
-              class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
-            >
-              <LucideMoreHorizontal
-                class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600 moments-cursor-pointer"
-              />
-            </div>
-            <template #popper>
-              <VDropdownItem
-                v-if="previewMoment.spec.approved == false"
-                @click="handleApproved"
+            <VDropdown compute-transform-origin>
+              <div
+                class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
               >
-                审核通过
-              </VDropdownItem>
-              <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
-              <VDropdownItem type="danger" @click="deleteMoment">
-                删除
-              </VDropdownItem>
-            </template>
-          </VDropdown>
+                <LucideMoreHorizontal
+                  class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600 moments-cursor-pointer"
+                />
+              </div>
+              <template #popper>
+                <HasPermission :permissions="['uc:plugin:moments:publish']">
+                  <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
+                </HasPermission>
+                <HasPermission :permissions="['uc:plugin:moments:delete']">
+                  <VDropdownItem type="danger" @click="deleteMoment">
+                    删除
+                  </VDropdownItem>
+                </HasPermission>
+              </template>
+            </VDropdown>
+          </HasPermission>
         </div>
       </div>
       <div class="moments-pl-14 moments-pt-3">

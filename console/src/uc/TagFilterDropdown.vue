@@ -7,7 +7,7 @@ import {
   VEntityField,
 } from "@halo-dev/components";
 import { computed, ref } from "vue";
-import { useConsoleTagQueryFetch } from "@/composables/use-tag";
+import { useUCTagQueryFetch } from "@/composables/use-tag";
 
 const props = withDefaults(
   defineProps<{
@@ -25,7 +25,7 @@ const emit = defineEmits<{
 
 const keyword = ref(undefined);
 
-const { data: tags, refetch } = useConsoleTagQueryFetch({
+const { data: tags, refetch } = useUCTagQueryFetch({
   keyword,
 });
 

@@ -1,5 +1,7 @@
 package run.halo.moments;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
@@ -19,7 +21,7 @@ import run.halo.app.extension.GVK;
 public class Moment extends AbstractExtension {
     public static final String REQUIRE_SYNC_ON_STARTUP_INDEX_NAME = "requireSyncOnStartup";
 
-    @Schema(required = true)
+    @Schema(requiredMode = REQUIRED)
     private MomentSpec spec;
 
     private Status status;
@@ -27,7 +29,7 @@ public class Moment extends AbstractExtension {
     @Data
     public static class MomentSpec {
 
-        @Schema(required = true)
+        @Schema(requiredMode = REQUIRED)
         private MomentContent content;
 
         @Schema(description = "Release timestamp. This field can be customized by owner")
@@ -37,11 +39,16 @@ public class Moment extends AbstractExtension {
             defaultValue = "PUBLIC")
         private MomentVisible visible;
 
-        @Schema(required = true, description = "Owner of the moment")
+        @Schema(requiredMode = REQUIRED, description = "Owner of the moment")
         private String owner;
 
         @Schema(description = "Tags of the moment")
         private Set<String> tags;
+
+        @Schema(defaultValue = "false")
+        private Boolean approved;
+
+        private Instant approvedTime;
     }
 
     @Data

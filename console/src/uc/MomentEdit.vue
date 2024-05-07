@@ -10,7 +10,7 @@ import SendMoment from "~icons/ic/sharp-send";
 import cloneDeep from "lodash.clonedeep";
 import TablerPhoto from "~icons/tabler/photo";
 import apiClient from "@/utils/api-client";
-import { useConsoleTagQueryFetch } from "@/composables/use-tag";
+import { useUCTagQueryFetch } from "@/composables/use-tag";
 
 const props = withDefaults(
   defineProps<{
@@ -38,7 +38,7 @@ const initMoment: Moment = {
     owner: "",
     visible: "PUBLIC",
     tags: [],
-    approved: true,
+    approved: false,
   },
   metadata: {
     generateName: "moment-",
@@ -84,7 +84,7 @@ const handleSave = async (moment: Moment) => {
   moment.spec.releaseTime = new Date().toISOString();
   moment.spec.approved = true;
   const { data } = await apiClient.post<Moment>(
-    `/apis/console.api.moment.halo.run/v1alpha1/moments`,
+    `/apis/uc.api.moment.halo.run/v1alpha1/moments`,
     moment
   );
   emit("save", data);
@@ -93,12 +93,12 @@ const handleSave = async (moment: Moment) => {
 
 const handleUpdate = async (moment: Moment) => {
   const { data } = await apiClient.get<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${moment.metadata.name}`
+    `/apis/uc.api.moment.halo.run/v1alpha1/moments/${moment.metadata.name}`
   );
   // 更新当前需要提交的 moment spec 为最新
   data.spec = moment.spec;
   const updated = await apiClient.put<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${moment.metadata.name}`,
+    `/apis/uc.api.moment.halo.run/v1alpha1/moments/${moment.metadata.name}`,
     data
   );
   emit("update", updated.data);
@@ -308,7 +308,7 @@ function handleKeydown(event: KeyboardEvent) {
       v-model:raw="formState.spec.content.raw"
       v-model:html="formState.spec.content.html"
       v-model:isEmpty="isEditorEmpty"
-      :tag-query-fetch="useConsoleTagQueryFetch"
+      :tag-query-fetch="useUCTagQueryFetch"
       class="moments-min-h-[9rem] moments-p-3.5"
       tabindex="-1"
       @keydown="handleKeydown"
@@ -376,12 +376,7 @@ function handleKeydown(event: KeyboardEvent) {
           <span class="moments-text-xs"> 取消 </span>
         </button>
 
-        <div
-          v-permission="
-            ['plugin:moments:manage'] || ['uc:plugin:moments:publish']
-          "
-          class="moments-h-fit"
-        >
+        <div v-permission="['uc:plugin:moments:publish']" class="moments-h-fit">
           <VButton
             v-model:disabled="saveDisable"
             :loading="saving"
