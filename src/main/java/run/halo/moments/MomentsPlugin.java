@@ -6,6 +6,7 @@ import static run.halo.app.extension.index.IndexAttributeFactory.simpleAttribute
 import java.util.Optional;
 import java.util.Set;
 import org.apache.commons.lang3.BooleanUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import run.halo.app.extension.Scheme;
 import run.halo.app.extension.SchemeManager;
@@ -17,10 +18,13 @@ import run.halo.app.plugin.PluginContext;
 public class MomentsPlugin extends BasePlugin {
 
     private final SchemeManager schemeManager;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public MomentsPlugin(PluginContext pluginContext, SchemeManager schemeManager) {
+    public MomentsPlugin(PluginContext pluginContext, SchemeManager schemeManager,
+        ApplicationEventPublisher eventPublisher) {
         super(pluginContext);
         this.schemeManager = schemeManager;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -73,6 +77,7 @@ public class MomentsPlugin extends BasePlugin {
                     return null;
                 })));
         });
+        eventPublisher.publishEvent(new SchemeRegistered(this));
     }
 
     @Override

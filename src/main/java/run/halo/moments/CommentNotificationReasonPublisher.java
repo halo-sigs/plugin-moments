@@ -91,6 +91,7 @@ public class CommentNotificationReasonPublisher {
             builder -> {
                 var attributes = CommentOnMomentReasonData.builder()
                     .momentName(moment.getMetadata().getName())
+                    .momentOwner(moment.getSpec().getOwner())
                     .momentCreatedAt(
                         DEFAULT_DATE_FORMATTER.format(moment.getMetadata().getCreationTimestamp()))
                     .momentHtmlContent(cleanHtmlTag(momentContent.getHtml(), Safelist.basic()))
@@ -138,7 +139,7 @@ public class CommentNotificationReasonPublisher {
     }
 
     @Builder
-    record CommentOnMomentReasonData(String momentName, String momentCreatedAt,
+    record CommentOnMomentReasonData(String momentName, String momentOwner, String momentCreatedAt,
                                      String momentHtmlContent, String momentRawContent,
                                      String momentUrl, String commenter, String content,
                                      String commentName) {
