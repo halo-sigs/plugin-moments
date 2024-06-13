@@ -62,14 +62,12 @@ public class MomentReconciler implements Reconciler<Reconciler.Request> {
     }
 
     void createCommentSubscriptionForMoment(Moment moment) {
+        var owner = moment.getSpec().getOwner();
         var interestReason = new Subscription.InterestReason();
         interestReason.setReasonType("new-comment-on-moment");
-        interestReason.setSubject(Subscription.ReasonSubject.builder()
-            .apiVersion(moment.getApiVersion())
-            .kind(moment.getKind())
-            .build());
+        interestReason.setExpression("props.momentOwner == '%s'".formatted(owner));
         var subscriber = new Subscription.Subscriber();
-        subscriber.setName(moment.getSpec().getOwner());
+        subscriber.setName(owner);
         notificationCenter.subscribe(subscriber, interestReason).block();
     }
 
