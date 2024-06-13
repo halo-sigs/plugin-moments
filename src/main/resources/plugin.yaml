@@ -9,14 +9,16 @@ spec:
   version: 1.0.1
   requires: ">=2.15.0"
   author:
-    name: Halo OSS Team
+    name: Halo
     website: https://github.com/halo-dev
   logo: logo.svg
   configMapName: plugin-moments-configmap
   settingName: plugin-moments-settings
-  homepage: https://github.com/halo-sigs/plugin-moments
+  homepage: https://www.halo.run/store/apps/app-SnwWD
+  repo: https://github.com/halo-sigs/plugin-moments
+  issues: https://github.com/halo-sigs/plugin-moments/issues
   displayName: "瞬间"
-  description: "瞬间管理模块"
+  description: "Halo 2.0 的瞬间管理插件，提供一个轻量级的内容发布功能，支持发布图文、视频、音频等内容。"
   license:
     - name: "GPL-3.0"
       url: "https://github.com/halo-sigs/plugin-moments/blob/main/LICENSE"
