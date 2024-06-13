@@ -2,6 +2,8 @@ apiVersion: plugin.halo.run/v1alpha1
 kind: Plugin
 metadata:
   name: PluginMoments
+  annotations:
+    "store.halo.run/app-id": "app-SnwWD"
 spec:
   enabled: true
   version: 1.0.1
