@@ -129,7 +129,7 @@ const handleJumpToFrontDesk = () => {
     </template>
   </VPageHeader>
   <VCard class="moments-m-0 md:moments-m-4 moments-flex-1">
-    <div class="moments-container moments-mx-auto">
+    <div class="moments-max-w-4xl moments-px-4 md:moments-px-8 moments-mx-auto">
       <div
         class="moments-content moments-my-2 md:moments-my-4 moments-flex moments-flex-col moments-space-y-2"
       >
