@@ -3,7 +3,7 @@ import type { ListedMoment, Moment } from "@/types";
 import { computed, ref, toRaw } from "vue";
 import MomentEdit from "./MomentEdit.vue";
 import MomentPreview from "./MomentPreview.vue";
-import apiClient from "@/utils/api-client";
+import { axiosInstance } from "@halo-dev/api-client";
 import {
   Dialog,
   Toast,
@@ -45,7 +45,7 @@ const deleteMoment = () => {
     confirmType: "danger",
     onConfirm: async () => {
       try {
-        const { data } = await apiClient.delete(
+        const { data } = await axiosInstance.delete(
           `/apis/moment.halo.run/v1alpha1/moments/${previewMoment.value.metadata.name}`
         );
 
@@ -65,12 +65,12 @@ const handleUpdate = (moment: Moment) => {
 };
 
 const handleApproved = async () => {
-  const { data } = await apiClient.get<Moment>(
+  const { data } = await axiosInstance.get<Moment>(
     `/apis/moment.halo.run/v1alpha1/moments/${editingMoment.value.metadata.name}`
   );
   // 更新当前需要提交的 moment spec 为最新
   data.spec.approved = true;
-  await apiClient.put<Moment>(
+  await axiosInstance.put<Moment>(
     `/apis/moment.halo.run/v1alpha1/moments/${editingMoment.value.metadata.name}`,
     data
   );

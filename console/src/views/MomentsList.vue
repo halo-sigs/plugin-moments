@@ -11,7 +11,7 @@ import {
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { ListedMoment } from "@/types";
 import { useQuery } from "@tanstack/vue-query";
-import apiClient from "@/utils/api-client";
+import { axiosInstance } from "@halo-dev/api-client";
 import MomentItem from "@/components/MomentItem.vue";
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
@@ -65,7 +65,7 @@ const {
     tag,
   ],
   queryFn: async () => {
-    const { data } = await apiClient.get(
+    const { data } = await axiosInstance.get(
       "/apis/console.api.moment.halo.run/v1alpha1/moments",
       {
         params: {

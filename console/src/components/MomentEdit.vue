@@ -9,7 +9,7 @@ import TextEditor from "@/components/TextEditor.vue";
 import SendMoment from "~icons/ic/sharp-send";
 import cloneDeep from "lodash.clonedeep";
 import TablerPhoto from "~icons/tabler/photo";
-import apiClient from "@/utils/api-client";
+import { axiosInstance } from "@halo-dev/api-client";
 import { useConsoleTagQueryFetch } from "@/composables/use-tag";
 
 const props = withDefaults(
@@ -83,7 +83,7 @@ const handlerCreateOrUpdateMoment = async () => {
 const handleSave = async (moment: Moment) => {
   moment.spec.releaseTime = new Date().toISOString();
   moment.spec.approved = true;
-  const { data } = await apiClient.post<Moment>(
+  const { data } = await axiosInstance.post<Moment>(
     `/apis/console.api.moment.halo.run/v1alpha1/moments`,
     moment
   );
@@ -92,12 +92,12 @@ const handleSave = async (moment: Moment) => {
 };
 
 const handleUpdate = async (moment: Moment) => {
-  const { data } = await apiClient.get<Moment>(
+  const { data } = await axiosInstance.get<Moment>(
     `/apis/moment.halo.run/v1alpha1/moments/${moment.metadata.name}`
   );
   // 更新当前需要提交的 moment spec 为最新
   data.spec = moment.spec;
-  const updated = await apiClient.put<Moment>(
+  const updated = await axiosInstance.put<Moment>(
     `/apis/moment.halo.run/v1alpha1/moments/${moment.metadata.name}`,
     data
   );
