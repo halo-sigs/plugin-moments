@@ -1,12 +1,16 @@
 import { fileURLToPath, URL } from "url";
 
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import vue from "@vitejs/plugin-vue";
 import Icons from "unplugin-icons/vite";
 import { HaloUIPluginBundlerKit } from "@halo-dev/ui-plugin-bundler-kit";
 
 export default defineConfig({
-  plugins: [vue(), Icons({ compiler: "vue3" }), HaloUIPluginBundlerKit()],
+  plugins: [
+    vue(),
+    Icons({ compiler: "vue3" }),
+    HaloUIPluginBundlerKit() as Plugin,
+  ],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

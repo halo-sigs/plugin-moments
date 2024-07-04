@@ -1,4 +1,4 @@
-import apiClient from "@/utils/api-client";
+import { axiosInstance } from "@halo-dev/api-client";
 import { useQuery } from "@tanstack/vue-query";
 import type { Ref } from "vue";
 
@@ -25,7 +25,7 @@ export function useTagQueryFetch(
   return useQuery<string[]>({
     queryKey: ["moments-tags", props.keyword],
     queryFn: async () => {
-      const { data } = await apiClient.get(
+      const { data } = await axiosInstance.get(
         `/apis/${group}.api.moment.halo.run/v1alpha1/tags`,
         {
           params: {

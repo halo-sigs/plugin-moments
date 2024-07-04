@@ -3,7 +3,7 @@ import type { ListedMoment, Moment } from "@/types";
 import { computed, ref, toRaw } from "vue";
 import MomentEdit from "./MomentEdit.vue";
 import MomentPreview from "@/components/MomentPreview.vue";
-import apiClient from "@/utils/api-client";
+import { axiosInstance } from "@halo-dev/api-client";
 import {
   Dialog,
   Toast,
@@ -45,7 +45,7 @@ const deleteMoment = () => {
     confirmType: "danger",
     onConfirm: async () => {
       try {
-        const { data } = await apiClient.delete(
+        const { data } = await axiosInstance.delete(
           `/apis/uc.api.moment.halo.run/v1alpha1/moments/${previewMoment.value.metadata.name}`
         );
 
