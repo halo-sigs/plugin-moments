@@ -13,6 +13,7 @@ Halo 2.0 的瞬间管理插件，提供一个轻量级的内容发布功能，�
 3. 安装完成之后，访问 Console 左侧的**瞬间**菜单项，即可进行管理。
 4. 前台访问地址为 `/moments`，需要注意的是，此插件需要主题提供模板（moments.html）才能访问 `/moments`。
 5. 此插件也提供了 RSS 订阅的路由，可以访问 `/moments/rss.xml`。
+6. 此插件将数据同步至 Halo 搜索，type 为 `moment.moment.halo.run`。
 
 ## 开发环境
 
@@ -170,6 +171,12 @@ halo:
     </div>
 </div>
 ```
+
+#### 搜索路由
+
+**变量**：
+
+- type: moment.moment.halo.run
 
 ### Finder API
 
