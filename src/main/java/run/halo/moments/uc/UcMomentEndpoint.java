@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.endpoint.CustomEndpoint;
 import run.halo.app.extension.GroupVersion;
 import run.halo.app.extension.ListResult;
-import run.halo.app.extension.router.QueryParamBuildUtil;
 import run.halo.moments.ListedMoment;
 import run.halo.moments.Moment;
 import run.halo.moments.MomentQuery;
@@ -59,7 +58,6 @@ public class UcMomentEndpoint implements CustomEndpoint {
                     .response(responseBuilder()
                         .implementation(ListResult.generateGenericClass(ListedMoment.class))
                     );
-                QueryParamBuildUtil.buildParametersFromType(builder, MomentQuery.class);
             })
             .GET("moments/{name}", this::getMyMoment,
                 builder -> builder.operationId("GetMyMoment")

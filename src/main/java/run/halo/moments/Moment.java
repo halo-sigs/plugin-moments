@@ -55,6 +55,8 @@ public class Moment extends AbstractExtension {
     @Schema(name = "MomentStatus")
     public static class Status {
         private long observedVersion;
+
+        private String permalink;
     }
 
     @Data
