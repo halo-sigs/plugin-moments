@@ -67,14 +67,10 @@ const handleUpdate = (moment: Moment) => {
 <template>
   <div>
     <div
-      class="preview card moments-bg-white moments-shrink moments-py-6 moments-relative moments-border-t-[1px] moments-border-gray-300"
+      class="preview card bg-white shrink py-6 relative border-t-[1px] border-gray-100"
     >
-      <div
-        class="header moments-flex moments-justify-between moments-items-center"
-      >
-        <div
-          class="moments-flex moments-justify-center moments-items-center moments-space-x-3"
-        >
+      <div class="header flex justify-between items-center">
+        <div class="flex justify-center items-center space-x-3">
           <VAvatar
             :alt="owner?.displayName"
             :src="owner?.avatar"
@@ -90,13 +86,13 @@ const handleUpdate = (moment: Moment) => {
               content: '私有访问',
             }"
           >
-            <IconEyeOff class="moments-text-xs moments-text-gray-500" />
+            <IconEyeOff class="text-xs text-gray-500" />
           </div>
           <div>
             <VStatusDot
               v-show="!previewMoment.spec.approved"
               v-tooltip="'请等待管理员审核通过'"
-              class="moments-mr-2 moments-cursor-default"
+              class="mr-2 cursor-default"
               state="success"
               animate
             >
@@ -108,12 +104,8 @@ const handleUpdate = (moment: Moment) => {
             </VStatusDot>
           </div>
         </div>
-        <div
-          class="moments-absolute moments-right-0 moments-flex moments-justify-center moments-items-center"
-        >
-          <div
-            class="moments-text-xs moments-text-gray-500 moments-mr-2 moments-cursor-default"
-          >
+        <div class="absolute right-0 flex justify-center items-center">
+          <div class="text-xs text-gray-500 mr-2 cursor-default">
             <span
               v-tooltip="{
                 content: formatDatetime(previewMoment.spec.releaseTime),
@@ -130,10 +122,10 @@ const handleUpdate = (moment: Moment) => {
           >
             <VDropdown compute-transform-origin>
               <div
-                class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
+                class="p-2 group hover:bg-sky-600/10 cursor-pointer rounded-full flex items-center justify-center"
               >
                 <LucideMoreHorizontal
-                  class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600 moments-cursor-pointer"
+                  class="size-full text-base text-gray-600 group-hover:text-sky-600 cursor-pointer"
                 />
               </div>
               <template #popper>
@@ -150,7 +142,7 @@ const handleUpdate = (moment: Moment) => {
           </HasPermission>
         </div>
       </div>
-      <div class="moments-pl-14 moments-pt-3">
+      <div class="pl-14 pt-3">
         <MomentEdit
           v-if="editing"
           :moment="editingMoment"

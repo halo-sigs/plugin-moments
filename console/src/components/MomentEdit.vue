@@ -293,9 +293,7 @@ function handleKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <div
-    class="card moments-bg-white moments-shrink moments-border moments-rounded-md moments-overflow-hidden focus-within:shadow-lg"
-  >
+  <div class="card bg-white shrink border rounded-md overflow-hidden">
     <AttachmentSelectorModal
       v-model:visible="attachmentSelectorModal"
       v-permission="['system:attachments:view']"
@@ -309,78 +307,73 @@ function handleKeydown(event: KeyboardEvent) {
       v-model:html="formState.spec.content.html"
       v-model:isEmpty="isEditorEmpty"
       :tag-query-fetch="useConsoleTagQueryFetch"
-      class="moments-min-h-[9rem] moments-p-3.5"
+      class="min-h-[9rem] p-3.5"
       tabindex="-1"
       @keydown="handleKeydown"
     />
     <div
       v-if="formState.spec.content.medium?.length"
-      class="img-box moments-flex moments-px-3.5 moments-py-2"
+      class="img-box flex px-3.5 py-2"
     >
-      <ul
-        class="moments-grid moments-grid-cols-3 moments-gap-1.5 moments-w-full sm:moments-w-1/2"
-        role="list"
-      >
+      <ul class="grid grid-cols-3 gap-1.5 w-full sm:w-1/2" role="list">
         <li
           v-for="(media, index) in formState.spec.content.medium"
           :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block"
+          class="rounded-md border overflow-hidden inline-block"
         >
           <MediaCard :media="media" @remove="removeMedium"></MediaCard>
         </li>
       </ul>
     </div>
-    <div
-      class="moments-bg-white moments-flex moments-justify-between moments-px-3.5 moments-py-2"
-    >
-      <div class="moments-h-fit">
+    <div class="bg-white flex justify-between px-3.5 py-2">
+      <div class="h-fit">
         <div
-          class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
+          class="p-2 group hover:bg-sky-600/10 cursor-pointer rounded-full flex items-center justify-center"
         >
           <TablerPhoto
-            class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600"
+            class="size-full text-base text-gray-600 group-hover:text-sky-600"
             @click="addMediumVerify() && (attachmentSelectorModal = true)"
           />
         </div>
       </div>
 
-      <div class="moments-flex moments-items-center moments-space-x-2.5">
+      <div class="flex items-center space-x-2.5">
         <div
           v-tooltip="{
             content:
               formState.spec.visible === 'PRIVATE' ? `私有访问` : '公开访问',
           }"
-          class="moments-p-2 moments-group moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
+          class="p-2 group cursor-pointer rounded-full flex items-center justify-center"
           :class="
             formState.spec.visible === 'PRIVATE'
-              ? 'hover:moments-bg-red-600/10'
-              : 'hover:moments-bg-green-600/10'
+              ? 'hover:bg-red-600/10'
+              : 'hover:bg-green-600/10'
           "
           @click="handleToggleVisible()"
         >
           <IconEyeOff
             v-if="formState.spec.visible === 'PRIVATE'"
-            class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-red-600"
+            class="size-full text-base text-gray-600 group-hover:text-red-600"
           />
           <IconEye
             v-else
-            class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-green-600"
+            class="size-full text-base text-gray-600 group-hover:text-green-600"
           />
         </div>
 
         <button
           v-if="isUpdateMode"
-          class="moments-cursor-pointer moments-text-gray-600 hover:moments-text-sky-600 moments-inline-flex moments-items-center moments-rounded moments-h-7 hover:moments-bg-sky-600/10 moments-px-3"
+          class="cursor-pointer text-gray-600 hover:text-sky-600 inline-flex items-center rounded h-7 hover:bg-sky-600/10 px-3"
           @click="handlerCancel"
         >
-          <span class="moments-text-xs"> 取消 </span>
+          <span class="text-xs"> 取消 </span>
         </button>
 
         <div
           v-permission="
             ['plugin:moments:manage'] || ['uc:plugin:moments:publish']
           "
-          class="moments-h-fit"
+          class="h-fit"
         >
           <VButton
             v-model:disabled="saveDisable"
@@ -390,7 +383,7 @@ function handleKeydown(event: KeyboardEvent) {
             @click="handlerCreateOrUpdateMoment"
           >
             <template #icon>
-              <SendMoment class="moments-scale-[1.35] h-full w-full" />
+              <SendMoment class="scale-[1.35] size-full" />
             </template>
           </VButton>
         </div>

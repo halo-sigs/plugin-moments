@@ -1,7 +1,7 @@
 .moments-content {
   a {
     &.tag {
-      color: rgba(var(--colors-primary), var(--tw-bg-opacity));
+      color: rgba(var(--colors-primary), 1);
       cursor: pointer;
       background-color: #eef3fe;
       padding: 1px 4px;
@@ -192,7 +192,8 @@
           & > img {
             border-radius: 0.4rem;
             overflow: hidden;
-            @apply moments-shadow;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+              0 1px 2px 0 rgba(0, 0, 0, 0.06);
           }
 
           &:last-child {

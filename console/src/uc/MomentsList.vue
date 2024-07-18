@@ -143,34 +143,28 @@ watch([tag, momentsRangeTime], () => {
 <template>
   <VPageHeader title="瞬间">
     <template #icon>
-      <MingcuteMomentsLine class="moments-mr-2 moments-self-center" />
+      <MingcuteMomentsLine class="mr-2 self-center" />
     </template>
   </VPageHeader>
-  <VCard class="moments-m-0 md:moments-m-4 moments-flex-1">
-    <div class="moments-max-w-4xl moments-px-4 md:moments-px-8 moments-mx-auto">
-      <div
-        class="moments-content moments-my-2 md:moments-my-4 moments-flex moments-flex-col moments-space-y-2"
-      >
+  <VCard class="m-0 md:m-4 flex-1">
+    <div class="max-w-4xl px-4 md:px-8 mx-auto">
+      <div class="moments-content my-2 md:my-4 flex flex-col space-y-2">
         <MomentEdit @save="refetch()" />
 
-        <div class="moment-header moments-pt-8 moments-pb-2">
-          <div
-            class="moments-flex moments-flex-col moments-justify-between sm:moments-flex-row moments-space-x-2"
-          >
-            <div
-              class="moments-left-0 moments-mb-2 sm:moments-mb-0 moments-flex moments-items-center moments-mr-2"
-            >
+        <div class="moment-header pt-8 pb-2">
+          <div class="flex flex-col justify-between sm:flex-row space-x-2">
+            <div class="left-0 mb-2 sm:mb-0 flex items-center mr-2">
               <TagFilterDropdown
                 v-model="tag"
                 :label="'标签'"
               ></TagFilterDropdown>
             </div>
 
-            <div class="moments-right-0 !moments-ml-0 moments-flex">
+            <div class="right-0 !ml-0 flex">
               <DatePicker
                 v-model:value="momentsRangeTime"
-                input-class="mx-input moments-rounded"
-                class="moments-cursor-pointer date-picker range-time moments-max-w-[13rem] md:moments-max-w-[15rem]"
+                input-class="mx-input rounded"
+                class="cursor-pointer date-picker range-time max-w-[13rem] md:max-w-[15rem]"
                 range
                 :editable="false"
                 placeholder="筛选日期范围"
@@ -184,7 +178,7 @@ watch([tag, momentsRangeTime], () => {
         <Transition v-else appear name="fade">
           <ul
             v-if="moments && moments.length > 0"
-            class="box-border moments-flex moments-flex-col moments-space-y-2"
+            class="box-border flex flex-col space-y-2"
             role="list"
           >
             <li v-for="moment in moments" :key="moment.moment.metadata.name">
@@ -196,23 +190,17 @@ watch([tag, momentsRangeTime], () => {
             </li>
           </ul>
           <template v-else>
-            <div
-              class="moments-flex moments-justify-center moments-items-center moments-h-full"
-            >
-              <span class="moments-text-gray-500">暂无数据</span>
+            <div class="flex justify-center items-center h-full">
+              <span class="text-gray-500">暂无数据</span>
             </div>
           </template>
         </Transition>
 
-        <div
-          v-if="hasPrevious || hasNext"
-          s
-          class="moments-my-5 flex moments-justify-center"
-        >
+        <div v-if="hasPrevious || hasNext" s class="my-5 flex justify-center">
           <VPagination
             v-model:page="page"
             v-model:size="size"
-            class="!moments-bg-transparent"
+            class="!bg-transparent"
             :total="total"
             :size-options="[20, 30, 50, 100]"
           />
@@ -224,7 +212,7 @@ watch([tag, momentsRangeTime], () => {
 <style lang="scss">
 .date-picker {
   & input {
-    @apply moments-rounded-md;
+    border-radius: 0.375rem;
   }
 }
 </style>

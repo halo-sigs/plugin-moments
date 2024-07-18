@@ -81,98 +81,97 @@ const handleApproved = async () => {
 <template>
   <div>
     <div
-      class="preview card moments-bg-white moments-shrink moments-py-6 moments-relative moments-border-t-[1px] moments-border-gray-300"
+      class="preview card bg-white shrink py-6 relative border-t border-gray-100"
     >
-      <div
-        class="header moments-flex moments-justify-between moments-items-center"
-      >
-        <div
-          class="moments-flex moments-justify-center moments-items-center moments-space-x-3"
-        >
-          <VAvatar
-            :alt="owner?.displayName"
-            :src="owner?.avatar"
-            size="md"
-            circle
-          ></VAvatar>
-          <div>
-            <b> {{ owner?.displayName }} </b>
-          </div>
-          <div
-            v-if="previewMoment.spec.visible == 'PRIVATE'"
-            v-tooltip="{
-              content: '私有访问',
-            }"
-          >
-            <IconEyeOff class="moments-text-xs moments-text-gray-500" />
-          </div>
-          <div>
-            <VStatusDot
-              v-show="previewMoment.spec.approved === false"
-              class="moments-mr-2 moments-cursor-default"
-              state="success"
-              animate
-            >
-              <template #text>
-                <span class="text-xs text-gray-500">
-                  {{ `待审核` }}
-                </span>
-              </template>
-            </VStatusDot>
-          </div>
-        </div>
-        <div
-          class="moments-absolute moments-right-0 moments-flex moments-justify-center moments-items-center"
-        >
-          <div
-            class="moments-text-xs moments-text-gray-500 moments-mr-2 moments-cursor-default"
-          >
-            <span
-              v-tooltip="{
-                content: formatDatetime(previewMoment.spec.releaseTime),
-              }"
-            >
-              {{ relativeTimeTo(previewMoment.spec.releaseTime) }}
-            </span>
-          </div>
-          <VDropdown
-            v-permission="['plugin:moments:manage']"
-            compute-transform-origin
-          >
-            <div
-              class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
-            >
-              <LucideMoreHorizontal
-                class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600 moments-cursor-pointer"
-              />
-            </div>
-            <template #popper>
-              <VDropdownItem
-                v-if="previewMoment.spec.approved == false"
-                @click="handleApproved"
+      <div class="flex items-start gap-2">
+        <VAvatar
+          :alt="owner?.displayName"
+          :src="owner?.avatar"
+          size="md"
+          circle
+          class="flex-none"
+        ></VAvatar>
+        <div class="flex-1 shrink min-w-0">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+              <div>
+                <b> {{ owner?.displayName }} </b>
+              </div>
+              <div
+                v-if="previewMoment.spec.visible == 'PRIVATE'"
+                v-tooltip="{
+                  content: '私有访问',
+                }"
               >
-                审核通过
-              </VDropdownItem>
-              <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
-              <VDropdownItem type="danger" @click="deleteMoment">
-                删除
-              </VDropdownItem>
-            </template>
-          </VDropdown>
+                <IconEyeOff class="text-xs text-gray-500" />
+              </div>
+              <div>
+                <VStatusDot
+                  v-show="previewMoment.spec.approved === false"
+                  class="mr-2 cursor-default"
+                  state="success"
+                  animate
+                >
+                  <template #text>
+                    <span class="text-xs text-gray-500">
+                      {{ `待审核` }}
+                    </span>
+                  </template>
+                </VStatusDot>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="text-xs text-gray-500 mr-2 cursor-default">
+                <span
+                  v-tooltip="{
+                    content: formatDatetime(previewMoment.spec.releaseTime),
+                  }"
+                >
+                  {{ relativeTimeTo(previewMoment.spec.releaseTime) }}
+                </span>
+              </div>
+              <VDropdown
+                v-permission="['plugin:moments:manage']"
+                compute-transform-origin
+              >
+                <div
+                  class="p-2 group hover:bg-sky-600/10 cursor-pointer rounded-full flex items-center justify-center"
+                >
+                  <LucideMoreHorizontal
+                    class="size-full text-base text-gray-600 group-hover:text-sky-600 cursor-pointer"
+                  />
+                </div>
+                <template #popper>
+                  <VDropdownItem
+                    v-if="previewMoment.spec.approved == false"
+                    @click="handleApproved"
+                  >
+                    审核通过
+                  </VDropdownItem>
+                  <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
+                  <VDropdownItem type="danger" @click="deleteMoment">
+                    删除
+                  </VDropdownItem>
+                </template>
+              </VDropdown>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <MomentEdit
+              v-if="editing"
+              :moment="editingMoment"
+              @update="handleUpdate"
+              @cancel="editing = false"
+            ></MomentEdit>
+            <MomentPreview
+              v-else
+              :moment="previewMoment"
+              @switch-edit-mode="editing = true"
+            />
+          </div>
         </div>
-      </div>
-      <div class="moments-pl-14 moments-pt-3">
-        <MomentEdit
-          v-if="editing"
-          :moment="editingMoment"
-          @update="handleUpdate"
-          @cancel="editing = false"
-        ></MomentEdit>
-        <MomentPreview
-          v-else
-          :moment="previewMoment"
-          @switch-edit-mode="editing = true"
-        />
       </div>
     </div>
   </div>

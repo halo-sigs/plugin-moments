@@ -38,10 +38,10 @@ const onVisibleChange = (visible: boolean) => {
       <slot name="actions"></slot>
     </template>
     <div
-      class="overflow-hidden bg-white moments-flex moments-items-center moments-justify-center moments-h-full"
+      class="overflow-hidden bg-white flex items-center justify-center h-full"
     >
       <template v-if="props.media.type === 'PHOTO'">
-        <img :src="media?.url" class="moments-w-auto moments-h-full" />
+        <img :src="media?.url" class="w-auto h-full" />
       </template>
       <template v-else-if="props.media.type === 'VIDEO'">
         <video controls muted :src="media?.url">

@@ -1,13 +1,15 @@
-import "./styles/tailwind.css";
-import "./styles/index.scss";
-import { definePlugin } from "@halo-dev/console-shared";
-import MomentsList from "@/views/MomentsList.vue";
+import type { Moment } from "@/types";
 import UcMomentsList from "@/uc/MomentsList.vue";
+import MomentsList from "@/views/MomentsList.vue";
+import type { Extension } from "@halo-dev/api-client";
+import {
+  type CommentSubjectRefResult,
+  definePlugin,
+} from "@halo-dev/console-shared";
 import { markRaw } from "vue";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
-import type { Moment } from "@/types";
+import "./styles/index.scss";
 import { formatDatetime } from "./utils/date";
-import type { Extension } from "@halo-dev/api-client/index";
 
 export default definePlugin({
   components: {},

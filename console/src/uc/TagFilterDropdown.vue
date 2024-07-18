@@ -52,18 +52,18 @@ const handleCloseTag = (event: Event) => {
 <template>
   <VDropdown ref="dropdown" :classes="['!p-0']" @show="refetch">
     <div
-      class="tag-filter-label moments-group"
+      class="group flex cursor-pointer select-none items-center text-sm leading-9 px-3 text-gray-700 rounded-lg hover:text-black border"
       :class="{ 'font-semibold text-gray-700': modelValue !== undefined }"
     >
       <span v-if="!modelValue" class="mr-0.5">
         {{ label }}
       </span>
       <span v-else class="mr-0.5"> {{ label }}：{{ modelValue }} </span>
-      <span class="moments-text-base">
-        <IconArrowDown :class="{ 'group-hover:moments-hidden': modelValue }" />
+      <span class="text-base">
+        <IconArrowDown :class="{ 'group-hover:hidden': modelValue }" />
         <IconClose
           v-if="modelValue"
-          class="moments-hidden group-hover:moments-block"
+          class="hidden group-hover:block"
           @click="handleCloseTag"
         />
       </span>
@@ -79,10 +79,7 @@ const handleCloseTag = (event: Event) => {
           ></FormKit>
         </div>
         <div>
-          <ul
-            class="box-border h-full w-full divide-y divide-gray-100"
-            role="list"
-          >
+          <ul class="box-border size-full divide-y divide-gray-100" role="list">
             <li
               v-for="(tag, index) in searchResults"
               :key="index"
@@ -104,9 +101,3 @@ const handleCloseTag = (event: Event) => {
     </template>
   </VDropdown>
 </template>
-<style scoped lang="scss">
-.tag-filter-label {
-  @apply moments-flex moments-cursor-pointer moments-select-none moments-items-center moments-text-sm moments-leading-9 moments-px-3 moments-text-gray-700 moments-rounded-lg hover:moments-text-black;
-  border: 1px solid rgb(209 213 219);
-}
-</style>
