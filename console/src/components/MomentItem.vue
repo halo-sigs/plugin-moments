@@ -1,20 +1,20 @@
 <script lang="ts" setup>
 import type { ListedMoment, Moment } from "@/types";
-import { computed, ref, toRaw } from "vue";
-import MomentEdit from "./MomentEdit.vue";
-import MomentPreview from "./MomentPreview.vue";
+import { formatDatetime, relativeTimeTo } from "@/utils/date";
 import { axiosInstance } from "@halo-dev/api-client";
 import {
   Dialog,
+  IconEyeOff,
   Toast,
   VAvatar,
   VDropdown,
   VDropdownItem,
-  IconEyeOff,
   VStatusDot,
 } from "@halo-dev/components";
-import { formatDatetime, relativeTimeTo } from "@/utils/date";
+import { computed, ref, toRaw } from "vue";
 import LucideMoreHorizontal from "~icons/lucide/more-horizontal";
+import MomentEdit from "./MomentEdit.vue";
+import MomentPreview from "./MomentPreview.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -83,7 +83,7 @@ const handleApproved = async () => {
     <div
       class="preview card bg-white shrink py-6 relative border-t border-gray-100"
     >
-      <div class="flex items-start gap-2">
+      <div class="flex items-start gap-3">
         <VAvatar
           :alt="owner?.displayName"
           :src="owner?.avatar"
