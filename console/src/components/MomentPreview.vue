@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { Moment } from "@/types";
 import { IconArrowLeft, IconArrowRight } from "@halo-dev/components";
-import { computed, inject, ref } from "vue";
-import LucideFileVideo from "~icons/lucide/file-video";
-import LucideFileAudio from "~icons/lucide/file-audio";
-import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";
+import { computed, inject, ref } from "vue";
+import LucideFileAudio from "~icons/lucide/file-audio";
+import LucideFileVideo from "~icons/lucide/file-video";
+import PreviewDetailModal from "./PreviewDetailModal.vue";
 
 hljs.registerLanguage("xml", xml);
 
@@ -120,7 +120,7 @@ const getExtname = (type: string) => {
       </span>
     </template>
   </PreviewDetailModal>
-  <div class="overflow-hidden relative" @dblclick="handleSwitchEdit">
+  <div class="relative overflow-hidden" @dblclick="handleSwitchEdit">
     <div
       v-highlight
       v-lazy
@@ -136,36 +136,36 @@ const getExtname = (type: string) => {
       "
       class="img-box flex pt-2"
     >
-      <ul class="grid grid-cols-3 gap-1.5 w-full sm:w-1/2 !pl-0" role="list">
+      <ul class="grid grid-cols-3 w-full gap-1.5 sm:w-1/2 !pl-0" role="list">
         <li
           v-for="(media, index) in props.moment.spec.content.medium"
           :key="index"
-          class="rounded-md border overflow-hidden inline-block cursor-pointer"
+          class="inline-block cursor-pointer overflow-hidden border rounded-md"
         >
           <div class="aspect-square" @click="handleClickMedium(index)">
             <template v-if="media.type == 'PHOTO'">
               <img
                 :src="media.url"
-                class="object-cover size-full"
+                class="size-full object-cover"
                 loading="lazy"
               />
             </template>
             <template v-else-if="media.type == 'VIDEO'">
               <div
-                class="flex size-full flex-col items-center justify-center space-y-1 bg-gray-100"
+                class="size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
               >
                 <LucideFileVideo />
-                <span class="font-sans text-xs text-gray-500">
+                <span class="text-xs text-gray-500 font-sans">
                   {{ getExtname(media.originType) }}
                 </span>
               </div>
             </template>
             <template v-else-if="media.type == 'AUDIO'">
               <div
-                class="flex size-full flex-col items-center justify-center space-y-1 bg-gray-100"
+                class="size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
               >
                 <LucideFileAudio />
-                <span class="font-sans text-xs text-gray-500">
+                <span class="text-xs text-gray-500 font-sans">
                   {{ getExtname(media.originType) }}
                 </span>
               </div>

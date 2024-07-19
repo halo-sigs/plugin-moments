@@ -52,7 +52,7 @@ const handleClear = (event: Event) => {
 <template>
   <VDropdown>
     <div
-      class="border group flex cursor-pointer select-none items-center text-sm leading-9 px-3 text-gray-700 rounded-lg hover:text-black"
+      class="group flex cursor-pointer select-none items-center border rounded-lg px-3 text-sm text-gray-700 leading-9 hover:text-black"
       :class="{
         'font-semibold text-gray-700': modelValue !== undefined,
       }"

@@ -293,7 +293,7 @@ function handleKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <div class="card bg-white shrink border rounded-md overflow-hidden">
+  <div class="card shrink overflow-hidden border rounded-md bg-white">
     <AttachmentSelectorModal
       v-model:visible="attachmentSelectorModal"
       v-permission="['system:attachments:view']"
@@ -315,20 +315,20 @@ function handleKeydown(event: KeyboardEvent) {
       v-if="formState.spec.content.medium?.length"
       class="img-box flex px-3.5 py-2"
     >
-      <ul class="grid grid-cols-3 gap-1.5 w-full sm:w-1/2" role="list">
+      <ul class="grid grid-cols-3 w-full gap-1.5 sm:w-1/2" role="list">
         <li
           v-for="(media, index) in formState.spec.content.medium"
           :key="index"
-          class="rounded-md border overflow-hidden inline-block"
+          class="inline-block overflow-hidden border rounded-md"
         >
           <MediaCard :media="media" @remove="removeMedium"></MediaCard>
         </li>
       </ul>
     </div>
-    <div class="bg-white flex justify-between px-3.5 py-2">
+    <div class="flex justify-between bg-white px-3.5 py-2">
       <div class="h-fit">
         <div
-          class="p-2 group hover:bg-sky-600/10 cursor-pointer rounded-full flex items-center justify-center"
+          class="group flex cursor-pointer items-center justify-center rounded-full p-2 hover:bg-sky-600/10"
         >
           <TablerPhoto
             class="size-full text-base text-gray-600 group-hover:text-sky-600"
@@ -343,7 +343,7 @@ function handleKeydown(event: KeyboardEvent) {
             content:
               formState.spec.visible === 'PRIVATE' ? `私有访问` : '公开访问',
           }"
-          class="p-2 group cursor-pointer rounded-full flex items-center justify-center"
+          class="group flex cursor-pointer items-center justify-center rounded-full p-2"
           :class="
             formState.spec.visible === 'PRIVATE'
               ? 'hover:bg-red-600/10'
@@ -363,7 +363,7 @@ function handleKeydown(event: KeyboardEvent) {
 
         <button
           v-if="isUpdateMode"
-          class="cursor-pointer text-gray-600 hover:text-sky-600 inline-flex items-center rounded h-7 hover:bg-sky-600/10 px-3"
+          class="h-7 inline-flex cursor-pointer items-center rounded px-3 text-gray-600 hover:bg-sky-600/10 hover:text-sky-600"
           @click="handlerCancel"
         >
           <span class="text-xs"> 取消 </span>
@@ -378,7 +378,7 @@ function handleKeydown(event: KeyboardEvent) {
             @click="handlerCreateOrUpdateMoment"
           >
             <template #icon>
-              <SendMoment class="scale-[1.35] size-full" />
+              <SendMoment class="size-full scale-[1.35]" />
             </template>
           </VButton>
         </div>

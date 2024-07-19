@@ -1,24 +1,24 @@
 <script lang="ts" setup>
-import { computed, provide, ref, watch, type Ref } from "vue";
-import {
-  VPageHeader,
-  VLoading,
-  VPagination,
-  VCard,
-} from "@halo-dev/components";
-import MingcuteMomentsLine from "~icons/mingcute/moment-line";
-import type { User } from "@halo-dev/api-client";
 import type { ListedMoment } from "@/types";
-import { useQuery } from "@tanstack/vue-query";
+import { toISODayEndOfTime } from "@/utils/date";
+import type { User } from "@halo-dev/api-client";
 import { axiosInstance } from "@halo-dev/api-client";
-import MomentItem from "./MomentItem.vue";
+import {
+  VCard,
+  VLoading,
+  VPageHeader,
+  VPagination,
+} from "@halo-dev/components";
+import { useQuery } from "@tanstack/vue-query";
+import { useRouteQuery } from "@vueuse/router";
+import { computed, provide, ref, watch } from "vue";
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn.es";
-import { toISODayEndOfTime } from "@/utils/date";
-import { useRouteQuery } from "@vueuse/router";
-import TagFilterDropdown from "./TagFilterDropdown.vue";
+import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import MomentEdit from "./MomentEdit.vue";
+import MomentItem from "./MomentItem.vue";
+import TagFilterDropdown from "./TagFilterDropdown.vue";
 
 interface VisibleItem {
   label: string;
@@ -146,25 +146,25 @@ watch([tag, momentsRangeTime], () => {
       <MingcuteMomentsLine class="mr-2 self-center" />
     </template>
   </VPageHeader>
-  <VCard class="m-0 md:m-4 flex-1">
-    <div class="max-w-4xl px-4 md:px-8 mx-auto">
-      <div class="moments-content my-2 md:my-4 flex flex-col space-y-2">
+  <VCard class="m-0 flex-1 md:m-4">
+    <div class="mx-auto max-w-4xl px-4 md:px-8">
+      <div class="moments-content my-2 flex flex-col md:my-4 space-y-2">
         <MomentEdit @save="refetch()" />
 
-        <div class="moment-header pt-8 pb-2">
+        <div class="moment-header pb-2 pt-8">
           <div class="flex flex-col justify-between sm:flex-row space-x-2">
-            <div class="left-0 mb-2 sm:mb-0 flex items-center mr-2">
+            <div class="left-0 mb-2 mr-2 flex items-center sm:mb-0">
               <TagFilterDropdown
                 v-model="tag"
                 :label="'标签'"
               ></TagFilterDropdown>
             </div>
 
-            <div class="right-0 !ml-0 flex">
+            <div class="right-0 flex !ml-0">
               <DatePicker
                 v-model:value="momentsRangeTime"
                 input-class="mx-input rounded"
-                class="cursor-pointer date-picker range-time max-w-[13rem] md:max-w-[15rem]"
+                class="date-picker range-time max-w-[13rem] cursor-pointer md:max-w-[15rem]"
                 range
                 :editable="false"
                 placeholder="筛选日期范围"
@@ -190,7 +190,7 @@ watch([tag, momentsRangeTime], () => {
             </li>
           </ul>
           <template v-else>
-            <div class="flex justify-center items-center h-full">
+            <div class="h-full flex items-center justify-center">
               <span class="text-gray-500">暂无数据</span>
             </div>
           </template>

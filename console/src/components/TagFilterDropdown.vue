@@ -52,7 +52,7 @@ const handleCloseTag = (event: Event) => {
 <template>
   <VDropdown ref="dropdown" :classes="['!p-0']" @show="refetch">
     <div
-      class="border group flex cursor-pointer select-none items-center text-sm leading-9 px-3 text-gray-700 rounded-lg hover:text-black"
+      class="group flex cursor-pointer select-none items-center border rounded-lg px-3 text-sm text-gray-700 leading-9 hover:text-black"
       :class="{ 'font-semibold text-gray-700': modelValue !== undefined }"
     >
       <span v-if="!modelValue" class="mr-0.5">

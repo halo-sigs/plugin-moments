@@ -49,7 +49,7 @@ function handleUnSetLink() {
   <VDropdown class="inline-flex" :triggers="['click']" :distance="10">
     <button
       v-tooltip="`${editor.isActive('link') ? '修改' : '添加'}链接`"
-      class="text-gray-600 text-lg hover:bg-gray-100 p-0.5 rounded-sm"
+      class="rounded-sm p-0.5 text-lg text-gray-600 hover:bg-gray-100"
       :class="{ 'bg-gray-200 !text-black': editor.isActive('link') }"
     >
       <MdiLinkVariant />
@@ -57,18 +57,18 @@ function handleUnSetLink() {
 
     <template #popper>
       <div
-        class="relative rounded-md bg-white overflow-hidden drop-shadow w-96 p-1 max-h-72 overflow-y-auto"
+        class="relative max-h-72 w-96 overflow-hidden overflow-y-auto rounded-md bg-white p-1 drop-shadow"
       >
         <input
           v-model.lazy="href"
           placeholder="链接地址"
-          class="bg-gray-50 rounded-md hover:bg-gray-100 block px-2 w-full py-1.5 text-sm text-gray-900 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+          class="block w-full border border-gray-300 rounded-md bg-gray-50 px-2 py-1.5 text-sm text-gray-900 focus:border-blue-500 hover:bg-gray-100 focus:ring-blue-500"
         />
-        <label class="inline-flex items-center mt-2">
+        <label class="mt-2 inline-flex items-center">
           <input
             v-model="target"
             type="checkbox"
-            class="form-checkbox text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            class="form-checkbox border-gray-300 rounded text-blue-600 focus:ring-blue-500"
           />
           <span class="ml-2 text-sm text-gray-500">在新窗口打开</span>
         </label>
@@ -79,7 +79,7 @@ function handleUnSetLink() {
   <button
     v-if="editor.isActive('link')"
     v-tooltip="`取消链接`"
-    class="text-gray-600 text-lg hover:bg-gray-100 p-0.5 rounded-sm"
+    class="rounded-sm p-0.5 text-lg text-gray-600 hover:bg-gray-100"
     @click="handleUnSetLink"
   >
     <MdiLinkVariantOff />
@@ -88,7 +88,7 @@ function handleUnSetLink() {
   <a
     v-if="editor.isActive('link')"
     v-tooltip="`打开链接`"
-    class="text-gray-600 text-lg hover:bg-gray-100 p-0.5 rounded-sm"
+    class="rounded-sm p-0.5 text-lg text-gray-600 hover:bg-gray-100"
     :href="editor.getAttributes('link')?.href"
     target="_blank"
   >

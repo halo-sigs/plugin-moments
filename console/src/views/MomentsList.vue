@@ -128,14 +128,14 @@ const handleJumpToFrontDesk = () => {
       </VButton>
     </template>
   </VPageHeader>
-  <VCard class="m-0 md:m-4 flex-1">
-    <div class="max-w-4xl px-4 md:px-8 mx-auto">
-      <div class="moments-content my-2 md:my-4 flex flex-col space-y-2">
+  <VCard class="m-0 flex-1 md:m-4">
+    <div class="mx-auto max-w-4xl px-4 md:px-8">
+      <div class="moments-content my-2 flex flex-col md:my-4 space-y-2">
         <MomentEdit @save="refetch()" />
 
-        <div class="moment-header pt-8 pb-2">
+        <div class="moment-header pb-2 pt-8">
           <div class="flex flex-col justify-between sm:flex-row space-x-2">
-            <div class="left-0 mb-2 sm:mb-0 flex items-center mr-2 space-x-2">
+            <div class="left-0 mb-2 mr-2 flex items-center sm:mb-0 space-x-2">
               <TagFilterDropdown
                 v-model="tag"
                 :label="'标签'"
@@ -159,11 +159,11 @@ const handleJumpToFrontDesk = () => {
               />
             </div>
 
-            <div class="right-0 !ml-0 flex">
+            <div class="right-0 flex !ml-0">
               <DatePicker
                 v-model:value="momentsRangeTime"
                 input-class="mx-input rounded"
-                class="cursor-pointer date-picker range-time max-w-[13rem] md:max-w-[15rem]"
+                class="date-picker range-time max-w-[13rem] cursor-pointer md:max-w-[15rem]"
                 range
                 :editable="false"
                 placeholder="筛选日期范围"
@@ -189,7 +189,7 @@ const handleJumpToFrontDesk = () => {
             </li>
           </ul>
           <template v-else>
-            <div class="flex justify-center items-center h-full">
+            <div class="h-full flex items-center justify-center">
               <span class="text-gray-500">暂无数据</span>
             </div>
           </template>

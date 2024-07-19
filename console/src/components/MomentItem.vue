@@ -81,7 +81,7 @@ const handleApproved = async () => {
 <template>
   <div>
     <div
-      class="preview card bg-white shrink py-6 relative border-t border-gray-100"
+      class="card preview relative shrink border-t border-gray-100 bg-white py-6"
     >
       <div class="flex items-start gap-3">
         <VAvatar
@@ -91,8 +91,8 @@ const handleApproved = async () => {
           circle
           class="flex-none"
         ></VAvatar>
-        <div class="flex-1 shrink min-w-0">
-          <div class="flex justify-between items-center">
+        <div class="min-w-0 flex-1 shrink">
+          <div class="flex items-center justify-between">
             <div class="flex items-center space-x-3">
               <div>
                 <b> {{ owner?.displayName }} </b>
@@ -122,7 +122,7 @@ const handleApproved = async () => {
             </div>
 
             <div class="flex items-center">
-              <div class="text-xs text-gray-500 mr-2 cursor-default">
+              <div class="mr-2 cursor-default text-xs text-gray-500">
                 <span
                   v-tooltip="{
                     content: formatDatetime(previewMoment.spec.releaseTime),
@@ -136,10 +136,10 @@ const handleApproved = async () => {
                 compute-transform-origin
               >
                 <div
-                  class="p-2 group hover:bg-sky-600/10 cursor-pointer rounded-full flex items-center justify-center"
+                  class="group flex cursor-pointer items-center justify-center rounded-full p-2 hover:bg-sky-600/10"
                 >
                   <LucideMoreHorizontal
-                    class="size-full text-base text-gray-600 group-hover:text-sky-600 cursor-pointer"
+                    class="size-full cursor-pointer text-base text-gray-600 group-hover:text-sky-600"
                   />
                 </div>
                 <template #popper>
