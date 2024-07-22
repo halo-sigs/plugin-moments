@@ -5,6 +5,7 @@ import static run.halo.moments.search.MomentHaloDocumentsProvider.MOMENT_DOCUMEN
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
@@ -41,7 +42,8 @@ public class DocumentConverter implements Converter<Moment, Mono<HaloDocument>> 
         haloDoc.setDescription(momentContent.getHtml());
         haloDoc.setExposed(isExposed(moment));
         haloDoc.setContent(momentContent.getHtml());
-        haloDoc.setTags(moment.getSpec().getTags().stream().toList());
+        var tags = moment.getSpec().getTags();
+        Optional.ofNullable(tags).ifPresent((tag) -> haloDoc.setTags(tag.stream().toList()));
         haloDoc.setOwnerName(moment.getSpec().getOwner());
         haloDoc.setUpdateTimestamp(moment.getSpec().getReleaseTime());
         haloDoc.setCreationTimestamp(moment.getMetadata().getCreationTimestamp());
