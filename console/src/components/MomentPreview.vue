@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { Moment } from "@/types";
 import { IconArrowLeft, IconArrowRight } from "@halo-dev/components";
-import { computed, inject, ref } from "vue";
-import LucideFileVideo from "~icons/lucide/file-video";
-import LucideFileAudio from '~icons/lucide/file-audio';
-import PreviewDetailModal from "./PreviewDetailModal.vue";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";
+import { computed, inject, ref } from "vue";
+import LucideFileAudio from "~icons/lucide/file-audio";
+import LucideFileVideo from "~icons/lucide/file-video";
+import PreviewDetailModal from "./PreviewDetailModal.vue";
 
 hljs.registerLanguage("xml", xml);
 
@@ -120,59 +120,52 @@ const getExtname = (type: string) => {
       </span>
     </template>
   </PreviewDetailModal>
-  <div
-    class="moment-preview-html markdown-body moments-overflow-hidden moments-relative"
-    @dblclick="handleSwitchEdit"
-  >
-    <div v-highlight v-lazy v-tag v-html="props.moment.spec.content.html"></div>
+  <div class="relative overflow-hidden" @dblclick="handleSwitchEdit">
+    <div
+      v-highlight
+      v-lazy
+      v-tag
+      class="markdown-body moment-preview-html"
+      v-html="props.moment.spec.content.html"
+    ></div>
 
     <div
       v-if="
         !!props.moment.spec.content.medium &&
         props.moment.spec.content.medium.length > 0
       "
-      class="img-box moments-flex moments-pt-2"
+      class="img-box flex pt-2"
     >
-      <ul
-        class="moments-grid moments-grid-cols-3 moments-gap-1.5 moments-w-full sm:moments-w-1/2 !moments-pl-0"
-        role="list"
-      >
+      <ul class="grid grid-cols-3 w-full gap-1.5 sm:w-1/2 !pl-0" role="list">
         <li
           v-for="(media, index) in props.moment.spec.content.medium"
           :key="index"
-          class="moments-rounded-md moments-border moments-overflow-hidden moments-inline-block moments-cursor-pointer"
+          class="inline-block cursor-pointer overflow-hidden border rounded-md"
         >
-          <div
-            class="moments-aspect-w-1 moments-aspect-h-1"
-            @click="handleClickMedium(index)"
-          >
+          <div class="aspect-square" @click="handleClickMedium(index)">
             <template v-if="media.type == 'PHOTO'">
               <img
                 :src="media.url"
-                class="moments-object-cover"
+                class="size-full object-cover"
                 loading="lazy"
               />
             </template>
             <template v-else-if="media.type == 'VIDEO'">
               <div
-                class="moments-flex moments-h-full moments-w-full moments-flex-col moments-items-center moments-justify-center moments-space-y-1 moments-bg-gray-100"
+                class="size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
               >
                 <LucideFileVideo />
-                <span
-                  class="moments-font-sans moments-text-xs moments-text-gray-500"
-                >
+                <span class="text-xs text-gray-500 font-sans">
                   {{ getExtname(media.originType) }}
                 </span>
               </div>
             </template>
             <template v-else-if="media.type == 'AUDIO'">
               <div
-                class="moments-flex moments-h-full moments-w-full moments-flex-col moments-items-center moments-justify-center moments-space-y-1 moments-bg-gray-100"
+                class="size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
               >
                 <LucideFileAudio />
-                <span
-                  class="moments-font-sans moments-text-xs moments-text-gray-500"
-                >
+                <span class="text-xs text-gray-500 font-sans">
                   {{ getExtname(media.originType) }}
                 </span>
               </div>

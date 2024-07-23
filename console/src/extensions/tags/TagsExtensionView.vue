@@ -115,14 +115,14 @@ defineExpose({
   <div>
     <ul
       v-if="tags?.length"
-      class="relative rounded-md bg-white overflow-y-auto drop-shadow w-52 p-1 max-h-72 overflow-y-auto"
+      class="relative max-h-72 w-52 overflow-y-auto overflow-y-auto rounded-md bg-white p-1 drop-shadow"
     >
       <li
         v-for="(tag, index) in tags"
         :id="`command-tag-item-${index}`"
         :key="index"
         :class="{ 'is-selected': index === selectedIndex }"
-        class="group hover:bg-gray-100 flex flex-row items-center rounded gap-4 p-1"
+        class="group flex flex-row items-center gap-4 rounded p-1 hover:bg-gray-100"
         @click="handleSelectItem(index)"
       >
         <span

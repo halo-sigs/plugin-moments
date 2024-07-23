@@ -52,22 +52,22 @@ const handleClear = (event: Event) => {
 <template>
   <VDropdown>
     <div
-      class="filter-dropdown moments-group"
+      class="group flex cursor-pointer select-none items-center border rounded-lg px-3 text-sm text-gray-700 leading-9 hover:text-black"
       :class="{
-        'moments-font-semibold moments-text-gray-700': modelValue !== undefined,
+        'font-semibold text-gray-700': modelValue !== undefined,
       }"
     >
       <span v-if="!selectedItem" class="mr-0.5">
         {{ label }}
       </span>
       <span v-else class="mr-0.5"> {{ label }}：{{ selectedItem.label }} </span>
-      <span class="moments-text-base">
+      <span class="text-base">
         <IconArrowDown
-          :class="{ 'group-hover:moments-hidden': modelValue !== undefined }"
+          :class="{ 'group-hover:hidden': modelValue !== undefined }"
         />
         <IconClose
           v-if="modelValue !== undefined"
-          class="moments-hidden group-hover:moments-block"
+          class="hidden group-hover:block"
           @click="handleClear"
         />
       </span>
@@ -84,9 +84,3 @@ const handleClear = (event: Event) => {
     </template>
   </VDropdown>
 </template>
-<style scoped lang="scss">
-.filter-dropdown {
-  @apply moments-flex moments-cursor-pointer moments-select-none moments-items-center moments-text-sm moments-leading-9 moments-px-3 moments-text-gray-700 moments-rounded-lg hover:moments-text-black;
-  border: 1px solid rgb(209 213 219);
-}
-</style>

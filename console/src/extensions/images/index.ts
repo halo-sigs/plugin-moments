@@ -1,4 +1,8 @@
-import { Editor, ExtensionImage, type Range } from "@halo-dev/richtext-editor";
+import {
+  type Editor,
+  ExtensionImage,
+  type Range,
+} from "@halo-dev/richtext-editor";
 import type { ExtensionOptions } from "@halo-dev/richtext-editor/dist/types";
 import { markRaw } from "vue";
 import MdiFileImageBox from "~icons/mdi/file-image-box";

@@ -2,7 +2,7 @@
 import type { MomentMedia } from "@/types";
 import MingCloseCircle from "~icons/mingcute/close-circle-fill";
 import LucideFileVideo from "~icons/lucide/file-video";
-import LucideFileAudio from '~icons/lucide/file-audio';
+import LucideFileAudio from "~icons/lucide/file-audio";
 
 const props = withDefaults(
   defineProps<{
@@ -42,63 +42,58 @@ const getExtname = (type: string) => {
 };
 </script>
 <template>
-  <div class="moments-relative moments-overflow-hidden">
+  <div class="relative overflow-hidden">
     <template v-if="props.media.type == 'PHOTO'">
-      <div class="moments-aspect-w-1 moments-aspect-h-1">
+      <div class="aspect-square">
         <img
           :src="props.media.url"
-          class="moments-object-cover"
+          class="size-full object-cover"
           loading="lazy"
         />
       </div>
     </template>
     <template v-else-if="props.media.type == 'VIDEO'">
-      <div class="moments-aspect-w-1 moments-aspect-h-1">
+      <div class="aspect-square">
         <video
           v-if="canPlayType(props.media.originType)"
-          class="moments-object-cover"
+          class="size-full object-cover"
           preload="metadata"
         >
           <source :src="props.media.url" :type="props.media.originType" />
         </video>
         <div
           v-else
-          class="flex h-full w-full flex-col items-center justify-center moments-space-y-1 moments-bg-gray-100"
+          class="size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
         >
           <LucideFileVideo />
-          <span class="font-sans text-xs text-gray-500">
+          <span class="text-xs text-gray-500 font-sans">
             {{ getExtname(props.media.originType) }}
           </span>
         </div>
       </div>
     </template>
     <template v-else-if="props.media.type == 'AUDIO'">
-      <div class="moments-aspect-w-1 moments-aspect-h-1">
+      <div class="aspect-square">
         <audio
           v-if="audioType(props.media.originType)"
-          class="moments-object-cover"
+          class="object-cover"
           preload="metadata"
         >
           <source :src="props.media.url" :type="props.media.originType" />
         </audio>
         <div
           v-else
-          class="flex h-full w-full flex-col items-center justify-center moments-space-y-1 moments-bg-gray-100"
+          class="size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
         >
           <LucideFileAudio />
-          <span class="font-sans text-xs text-gray-500">
+          <span class="text-xs text-gray-500 font-sans">
             {{ getExtname(props.media.originType) }}
           </span>
         </div>
       </div>
     </template>
-    <label
-      class="moments-absolute moments-cursor-pointer moments-right-1 moments-top-1"
-    >
-      <MingCloseCircle
-        class="moments-text-gray-700"
-        @click="handleRemoveClick"
-      />
+    <label class="absolute right-1 top-1 cursor-pointer">
+      <MingCloseCircle class="text-gray-700" @click="handleRemoveClick" />
     </label>
   </div>
 </template>

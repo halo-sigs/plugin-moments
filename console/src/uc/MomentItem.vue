@@ -1,20 +1,20 @@
 <script lang="ts" setup>
-import type { ListedMoment, Moment } from "@/types";
-import { computed, ref, toRaw } from "vue";
-import MomentEdit from "./MomentEdit.vue";
 import MomentPreview from "@/components/MomentPreview.vue";
+import type { ListedMoment, Moment } from "@/types";
+import { formatDatetime, relativeTimeTo } from "@/utils/date";
 import { axiosInstance } from "@halo-dev/api-client";
 import {
   Dialog,
+  IconEyeOff,
   Toast,
   VAvatar,
   VDropdown,
   VDropdownItem,
-  IconEyeOff,
   VStatusDot,
 } from "@halo-dev/components";
-import { formatDatetime, relativeTimeTo } from "@/utils/date";
+import { computed, ref, toRaw } from "vue";
 import LucideMoreHorizontal from "~icons/lucide/more-horizontal";
+import MomentEdit from "./MomentEdit.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -67,101 +67,101 @@ const handleUpdate = (moment: Moment) => {
 <template>
   <div>
     <div
-      class="preview card moments-bg-white moments-shrink moments-py-6 moments-relative moments-border-t-[1px] moments-border-gray-300"
+      class="preview card relative shrink border-t-[1px] border-gray-100 bg-white py-6"
     >
-      <div
-        class="header moments-flex moments-justify-between moments-items-center"
-      >
-        <div
-          class="moments-flex moments-justify-center moments-items-center moments-space-x-3"
-        >
-          <VAvatar
-            :alt="owner?.displayName"
-            :src="owner?.avatar"
-            size="md"
-            circle
-          ></VAvatar>
-          <div>
-            <b> {{ owner?.displayName }} </b>
-          </div>
-          <div
-            v-if="previewMoment.spec.visible == 'PRIVATE'"
-            v-tooltip="{
-              content: '私有访问',
-            }"
-          >
-            <IconEyeOff class="moments-text-xs moments-text-gray-500" />
-          </div>
-          <div>
-            <VStatusDot
-              v-show="!previewMoment.spec.approved"
-              v-tooltip="'请等待管理员审核通过'"
-              class="moments-mr-2 moments-cursor-default"
-              state="success"
-              animate
-            >
-              <template #text>
-                <span class="text-xs text-gray-500">
-                  {{ `审核中` }}
-                </span>
-              </template>
-            </VStatusDot>
-          </div>
-        </div>
-        <div
-          class="moments-absolute moments-right-0 moments-flex moments-justify-center moments-items-center"
-        >
-          <div
-            class="moments-text-xs moments-text-gray-500 moments-mr-2 moments-cursor-default"
-          >
-            <span
-              v-tooltip="{
-                content: formatDatetime(previewMoment.spec.releaseTime),
-              }"
-            >
-              {{ relativeTimeTo(previewMoment.spec.releaseTime) }}
-            </span>
-          </div>
-          <HasPermission
-            :permissions="[
-              'uc:plugin:moments:publish',
-              'uc:plugin:moments:delete',
-            ]"
-          >
-            <VDropdown compute-transform-origin>
-              <div
-                class="moments-p-2 moments-group hover:moments-bg-sky-600/10 moments-cursor-pointer moments-rounded-full moments-flex moments-items-center moments-justify-center"
-              >
-                <LucideMoreHorizontal
-                  class="h-full w-full moments-text-md moments-text-gray-600 group-hover:moments-text-sky-600 moments-cursor-pointer"
-                />
+      <div class="flex items-start gap-3">
+        <VAvatar
+          :alt="owner?.displayName"
+          :src="owner?.avatar"
+          size="md"
+          circle
+          class="flex-none"
+        ></VAvatar>
+        <div class="min-w-0 flex-1 shrink">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div>
+                <b> {{ owner?.displayName }} </b>
               </div>
-              <template #popper>
-                <HasPermission :permissions="['uc:plugin:moments:publish']">
-                  <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
-                </HasPermission>
-                <HasPermission :permissions="['uc:plugin:moments:delete']">
-                  <VDropdownItem type="danger" @click="deleteMoment">
-                    删除
-                  </VDropdownItem>
-                </HasPermission>
-              </template>
-            </VDropdown>
-          </HasPermission>
+              <div
+                v-if="previewMoment.spec.visible == 'PRIVATE'"
+                v-tooltip="{
+                  content: '私有访问',
+                }"
+              >
+                <IconEyeOff class="text-xs text-gray-500" />
+              </div>
+              <div>
+                <VStatusDot
+                  v-show="!previewMoment.spec.approved"
+                  v-tooltip="'请等待管理员审核通过'"
+                  class="mr-2 cursor-default"
+                  state="success"
+                  animate
+                >
+                  <template #text>
+                    <span class="text-xs text-gray-500">
+                      {{ `审核中` }}
+                    </span>
+                  </template>
+                </VStatusDot>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <div class="mr-2 cursor-default text-xs text-gray-500">
+                <span
+                  v-tooltip="{
+                    content: formatDatetime(previewMoment.spec.releaseTime),
+                  }"
+                >
+                  {{ relativeTimeTo(previewMoment.spec.releaseTime) }}
+                </span>
+              </div>
+              <HasPermission
+                :permissions="[
+                  'uc:plugin:moments:publish',
+                  'uc:plugin:moments:delete',
+                ]"
+              >
+                <VDropdown compute-transform-origin>
+                  <div
+                    class="group flex cursor-pointer items-center justify-center rounded-full p-2 hover:bg-sky-600/10"
+                  >
+                    <LucideMoreHorizontal
+                      class="size-full cursor-pointer text-base text-gray-600 group-hover:text-sky-600"
+                    />
+                  </div>
+                  <template #popper>
+                    <HasPermission :permissions="['uc:plugin:moments:publish']">
+                      <VDropdownItem @click="editing = true">
+                        编辑
+                      </VDropdownItem>
+                    </HasPermission>
+                    <HasPermission :permissions="['uc:plugin:moments:delete']">
+                      <VDropdownItem type="danger" @click="deleteMoment">
+                        删除
+                      </VDropdownItem>
+                    </HasPermission>
+                  </template>
+                </VDropdown>
+              </HasPermission>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <MomentEdit
+              v-if="editing"
+              :moment="editingMoment"
+              @update="handleUpdate"
+              @cancel="editing = false"
+            ></MomentEdit>
+            <MomentPreview
+              v-else
+              :moment="previewMoment"
+              @switch-edit-mode="editing = true"
+            />
+          </div>
         </div>
-      </div>
-      <div class="moments-pl-14 moments-pt-3">
-        <MomentEdit
-          v-if="editing"
-          :moment="editingMoment"
-          @update="handleUpdate"
-          @cancel="editing = false"
-        ></MomentEdit>
-        <MomentPreview
-          v-else
-          :moment="previewMoment"
-          @switch-edit-mode="editing = true"
-        />
       </div>
     </div>
   </div>

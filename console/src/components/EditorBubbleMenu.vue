@@ -26,7 +26,7 @@ defineProps({
     :tippy-options="{ duration: 100, arrow: roundArrow, maxWidth: '100%' }"
   >
     <div
-      class="bg-white flex items-center rounded p-1 border drop-shadow space-x-0.5"
+      class="flex items-center border rounded bg-white p-1 drop-shadow space-x-0.5"
     >
       <button
         v-for="(menuItem, index) in menuItems"
@@ -34,7 +34,7 @@ defineProps({
         v-tooltip="menuItem.title"
         :class="{ 'bg-gray-200 !text-black': menuItem?.isActive?.() }"
         :title="menuItem.title"
-        class="text-gray-600 text-lg hover:bg-gray-100 p-0.5 rounded-sm"
+        class="rounded-sm p-0.5 text-lg text-gray-600 hover:bg-gray-100"
         @click="menuItem.action?.()"
       >
         <component :is="menuItem.icon" />
