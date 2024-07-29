@@ -14,5 +14,7 @@ jobs:
     permissions:
       contents: write
     with:
+      node-version: "20"
+      pnpm-version: "9"
       app-id: app-SnwWD
       ui-path: "console"
