@@ -1,16 +1,20 @@
 package run.halo.moments;
 
+import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static run.halo.app.extension.index.query.QueryFactory.all;
 import static run.halo.app.extension.index.query.QueryFactory.and;
 import static run.halo.app.extension.index.query.QueryFactory.contains;
 import static run.halo.app.extension.index.query.QueryFactory.equal;
 import static run.halo.app.extension.index.query.QueryFactory.greaterThanOrEqual;
 import static run.halo.app.extension.index.query.QueryFactory.lessThanOrEqual;
+import static run.halo.app.extension.router.QueryParamBuildUtil.sortParameter;
 import static run.halo.app.extension.router.selector.SelectorUtil.labelAndFieldSelectorToListOptions;
 
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.fn.builders.operation.Builder;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
@@ -18,6 +22,7 @@ import org.springframework.web.server.ServerWebExchange;
 import run.halo.app.extension.ListOptions;
 import run.halo.app.extension.PageRequest;
 import run.halo.app.extension.PageRequestImpl;
+import run.halo.app.extension.router.IListRequest;
 import run.halo.app.extension.router.SortableRequest;
 import run.halo.app.extension.router.selector.FieldSelector;
 
@@ -141,4 +146,47 @@ public class MomentQuery extends SortableRequest {
     private Instant convertInstantOrNull(String timeStr) {
         return StringUtils.isBlank(timeStr) ? null : Instant.parse(timeStr);
     }
+
+    public static void buildParameters(Builder builder) {
+        IListRequest.buildParameters(builder);
+        builder.parameter(sortParameter())
+            .parameter(parameterBuilder()
+                .in(ParameterIn.QUERY)
+                .name("keyword")
+                .description("Moments filtered by keyword.")
+                .implementation(String.class)
+                .required(false))
+            .parameter(parameterBuilder()
+                .in(ParameterIn.QUERY)
+                .name("ownerName")
+                .description("Owner name.")
+                .implementation(String.class)
+                .required(false))
+            .parameter(parameterBuilder()
+                .in(ParameterIn.QUERY)
+                .name("tag")
+                .description("Moment tag.")
+                .implementation(String.class)
+                .required(false))
+            .parameter(parameterBuilder()
+                .in(ParameterIn.QUERY)
+                .name("visible")
+                .description("Moment visible.")
+                .implementation(Moment.MomentVisible.class)
+                .required(false))
+            .parameter(parameterBuilder()
+                .in(ParameterIn.QUERY)
+                .name("startDate")
+                .implementation(Instant.class)
+                .description("Moment start date.")
+                .required(false))
+            .parameter(parameterBuilder()
+                .in(ParameterIn.QUERY)
+                .name("endDate")
+                .implementation(Instant.class)
+                .description("Moment end date.")
+                .required(false))
+        ;
+    }
+
 }
