@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation platform('run.halo.tools.platform:plugin:2.15.0-SNAPSHOT')
+    implementation platform('run.halo.tools.platform:plugin:2.17.0-SNAPSHOT')
     compileOnly 'run.halo.app:api'
 
     testImplementation 'run.halo.app:api'

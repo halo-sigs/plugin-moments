@@ -10,4 +10,5 @@ public enum ModelConst {
     ;
     public static final String TEMPLATE_ID = "_templateId";
     public static final Integer DEFAULT_PAGE_SIZE = 10;
+    public static final Integer SEARCH_DEFAULT_PAGE_SIZE = 200;
 }
