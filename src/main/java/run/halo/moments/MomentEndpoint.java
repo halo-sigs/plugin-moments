@@ -48,6 +48,7 @@ public class MomentEndpoint implements CustomEndpoint {
                     .response(responseBuilder()
                         .implementation(ListResult.generateGenericClass(ListedMoment.class))
                     );
+                MomentQuery.buildParameters(builder);
             })
             .GET("moments/{name}", this::getMoment,
                 builder -> builder.operationId("GetMoment")

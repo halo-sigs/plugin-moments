@@ -58,11 +58,18 @@ public class UcMomentEndpoint implements CustomEndpoint {
                     .response(responseBuilder()
                         .implementation(ListResult.generateGenericClass(ListedMoment.class))
                     );
+                MomentQuery.buildParameters(builder);
             })
             .GET("moments/{name}", this::getMyMoment,
                 builder -> builder.operationId("GetMyMoment")
                     .description("Get a My Moment.")
                     .tag(tag)
+                    .parameter(parameterBuilder()
+                        .name("name")
+                        .in(ParameterIn.PATH)
+                        .required(true)
+                        .implementation(String.class)
+                    )
                     .response(responseBuilder()
                         .implementation(Moment.class))
             )
