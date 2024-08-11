@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { momentsUcApiClient } from "@/api";
-import { ListedMoment, Moment } from "@/api/generated";
+import type { ListedMoment, Moment } from "@/api/generated";
 import MomentPreview from "@/components/MomentPreview.vue";
 import { formatDatetime, relativeTimeTo } from "@/utils/date";
 import {

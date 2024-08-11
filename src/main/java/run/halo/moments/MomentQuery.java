@@ -10,15 +10,17 @@ import static run.halo.app.extension.index.query.QueryFactory.lessThanOrEqual;
 import static run.halo.app.extension.router.QueryParamBuildUtil.sortParameter;
 import static run.halo.app.extension.router.selector.SelectorUtil.labelAndFieldSelectorToListOptions;
 
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.fn.builders.operation.Builder;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
+
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import run.halo.app.extension.ListOptions;
 import run.halo.app.extension.PageRequest;
 import run.halo.app.extension.PageRequestImpl;
@@ -185,6 +187,12 @@ public class MomentQuery extends SortableRequest {
                 .name("endDate")
                 .implementation(Instant.class)
                 .description("Moment end date.")
+                .required(false))
+            .parameter(parameterBuilder()
+                .in(ParameterIn.QUERY)
+                .name("approved")
+                .description("Moment approved.")
+                .implementation(Boolean.class)
                 .required(false))
         ;
     }

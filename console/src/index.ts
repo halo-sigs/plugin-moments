@@ -7,7 +7,7 @@ import {
 } from "@halo-dev/console-shared";
 import { markRaw } from "vue";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
-import { Moment } from "./api/generated";
+import type { Moment } from "./api/generated";
 import "./styles/index.scss";
 import { formatDatetime } from "./utils/date";
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { momentsConsoleApiClient, momentsCoreApiClient } from "@/api";
-import { Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
+import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
 import MediaCard from "@/components/MediaCard.vue";
 import TextEditor from "@/components/TextEditor.vue";
 import { useConsoleTagQueryFetch } from "@/composables/use-tag";

@@ -169,10 +169,11 @@ export const UcApiMomentHaloRunV1alpha1MomentApiAxiosParamCreator = function (co
          * @param {ListMyMomentsVisibleEnum} [visible] Moment visible.
          * @param {string} [startDate] Moment start date.
          * @param {string} [endDate] Moment end date.
+         * @param {boolean} [approved] Moment approved.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listMyMoments: async (page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, keyword?: string, ownerName?: string, tag?: string, visible?: ListMyMomentsVisibleEnum, startDate?: string, endDate?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listMyMoments: async (page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, keyword?: string, ownerName?: string, tag?: string, visible?: ListMyMomentsVisibleEnum, startDate?: string, endDate?: string, approved?: boolean, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/apis/uc.api.moment.halo.run/v1alpha1/moments`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -239,6 +240,10 @@ export const UcApiMomentHaloRunV1alpha1MomentApiAxiosParamCreator = function (co
                 localVarQueryParameter['endDate'] = (endDate as any instanceof Date) ?
                     (endDate as any).toISOString() :
                     endDate;
+            }
+
+            if (approved !== undefined) {
+                localVarQueryParameter['approved'] = approved;
             }
 
 
@@ -400,11 +405,12 @@ export const UcApiMomentHaloRunV1alpha1MomentApiFp = function(configuration?: Co
          * @param {ListMyMomentsVisibleEnum} [visible] Moment visible.
          * @param {string} [startDate] Moment start date.
          * @param {string} [endDate] Moment end date.
+         * @param {boolean} [approved] Moment approved.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listMyMoments(page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, keyword?: string, ownerName?: string, tag?: string, visible?: ListMyMomentsVisibleEnum, startDate?: string, endDate?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListedMomentList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listMyMoments(page, size, labelSelector, fieldSelector, sort, keyword, ownerName, tag, visible, startDate, endDate, options);
+        async listMyMoments(page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, keyword?: string, ownerName?: string, tag?: string, visible?: ListMyMomentsVisibleEnum, startDate?: string, endDate?: string, approved?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListedMomentList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listMyMoments(page, size, labelSelector, fieldSelector, sort, keyword, ownerName, tag, visible, startDate, endDate, approved, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UcApiMomentHaloRunV1alpha1MomentApi.listMyMoments']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -478,7 +484,7 @@ export const UcApiMomentHaloRunV1alpha1MomentApiFactory = function (configuratio
          * @throws {RequiredError}
          */
         listMyMoments(requestParameters: UcApiMomentHaloRunV1alpha1MomentApiListMyMomentsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<ListedMomentList> {
-            return localVarFp.listMyMoments(requestParameters.page, requestParameters.size, requestParameters.labelSelector, requestParameters.fieldSelector, requestParameters.sort, requestParameters.keyword, requestParameters.ownerName, requestParameters.tag, requestParameters.visible, requestParameters.startDate, requestParameters.endDate, options).then((request) => request(axios, basePath));
+            return localVarFp.listMyMoments(requestParameters.page, requestParameters.size, requestParameters.labelSelector, requestParameters.fieldSelector, requestParameters.sort, requestParameters.keyword, requestParameters.ownerName, requestParameters.tag, requestParameters.visible, requestParameters.startDate, requestParameters.endDate, requestParameters.approved, options).then((request) => request(axios, basePath));
         },
         /**
          * List all moment tags.
@@ -625,6 +631,13 @@ export interface UcApiMomentHaloRunV1alpha1MomentApiListMyMomentsRequest {
      * @memberof UcApiMomentHaloRunV1alpha1MomentApiListMyMoments
      */
     readonly endDate?: string
+
+    /**
+     * Moment approved.
+     * @type {boolean}
+     * @memberof UcApiMomentHaloRunV1alpha1MomentApiListMyMoments
+     */
+    readonly approved?: boolean
 }
 
 /**
@@ -710,7 +723,7 @@ export class UcApiMomentHaloRunV1alpha1MomentApi extends BaseAPI {
      * @memberof UcApiMomentHaloRunV1alpha1MomentApi
      */
     public listMyMoments(requestParameters: UcApiMomentHaloRunV1alpha1MomentApiListMyMomentsRequest = {}, options?: RawAxiosRequestConfig) {
-        return UcApiMomentHaloRunV1alpha1MomentApiFp(this.configuration).listMyMoments(requestParameters.page, requestParameters.size, requestParameters.labelSelector, requestParameters.fieldSelector, requestParameters.sort, requestParameters.keyword, requestParameters.ownerName, requestParameters.tag, requestParameters.visible, requestParameters.startDate, requestParameters.endDate, options).then((request) => request(this.axios, this.basePath));
+        return UcApiMomentHaloRunV1alpha1MomentApiFp(this.configuration).listMyMoments(requestParameters.page, requestParameters.size, requestParameters.labelSelector, requestParameters.fieldSelector, requestParameters.sort, requestParameters.keyword, requestParameters.ownerName, requestParameters.tag, requestParameters.visible, requestParameters.startDate, requestParameters.endDate, requestParameters.approved, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

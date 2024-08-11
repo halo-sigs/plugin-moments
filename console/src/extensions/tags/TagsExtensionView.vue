@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ref, watch, type PropType } from "vue";
-import type { UseQueryReturnType } from "@tanstack/vue-query";
 import type { useTagQueryFetchProps } from "@/composables/use-tag";
+import type { UseQueryReturnType } from "@tanstack/vue-query";
+import { ref, watch, type PropType } from "vue";
 
 const props = defineProps({
   query: {
@@ -22,7 +22,7 @@ const props = defineProps({
 
 const selectedIndex = ref(0);
 
-const keyword = ref(props.query);
+const keyword = ref<string | undefined>(props.query);
 
 const inputIntervalTime = 100;
 const timeInterval = ref(-1);

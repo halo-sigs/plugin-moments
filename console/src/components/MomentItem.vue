@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { momentsCoreApiClient } from "@/api";
-import { ListedMoment, Moment } from "@/api/generated";
+import type { ListedMoment, Moment } from "@/api/generated";
 import { formatDatetime, relativeTimeTo } from "@/utils/date";
 import {
   Dialog,

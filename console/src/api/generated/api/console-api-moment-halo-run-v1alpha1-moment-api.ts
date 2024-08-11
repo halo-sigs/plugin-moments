@@ -130,10 +130,11 @@ export const ConsoleApiMomentHaloRunV1alpha1MomentApiAxiosParamCreator = functio
          * @param {ListMomentsVisibleEnum} [visible] Moment visible.
          * @param {string} [startDate] Moment start date.
          * @param {string} [endDate] Moment end date.
+         * @param {boolean} [approved] Moment approved.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listMoments: async (page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, keyword?: string, ownerName?: string, tag?: string, visible?: ListMomentsVisibleEnum, startDate?: string, endDate?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listMoments: async (page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, keyword?: string, ownerName?: string, tag?: string, visible?: ListMomentsVisibleEnum, startDate?: string, endDate?: string, approved?: boolean, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/apis/console.api.moment.halo.run/v1alpha1/moments`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -200,6 +201,10 @@ export const ConsoleApiMomentHaloRunV1alpha1MomentApiAxiosParamCreator = functio
                 localVarQueryParameter['endDate'] = (endDate as any instanceof Date) ?
                     (endDate as any).toISOString() :
                     endDate;
+            }
+
+            if (approved !== undefined) {
+                localVarQueryParameter['approved'] = approved;
             }
 
 
@@ -302,11 +307,12 @@ export const ConsoleApiMomentHaloRunV1alpha1MomentApiFp = function(configuration
          * @param {ListMomentsVisibleEnum} [visible] Moment visible.
          * @param {string} [startDate] Moment start date.
          * @param {string} [endDate] Moment end date.
+         * @param {boolean} [approved] Moment approved.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listMoments(page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, keyword?: string, ownerName?: string, tag?: string, visible?: ListMomentsVisibleEnum, startDate?: string, endDate?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListedMomentList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listMoments(page, size, labelSelector, fieldSelector, sort, keyword, ownerName, tag, visible, startDate, endDate, options);
+        async listMoments(page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, keyword?: string, ownerName?: string, tag?: string, visible?: ListMomentsVisibleEnum, startDate?: string, endDate?: string, approved?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListedMomentList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listMoments(page, size, labelSelector, fieldSelector, sort, keyword, ownerName, tag, visible, startDate, endDate, approved, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ConsoleApiMomentHaloRunV1alpha1MomentApi.listMoments']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -358,7 +364,7 @@ export const ConsoleApiMomentHaloRunV1alpha1MomentApiFactory = function (configu
          * @throws {RequiredError}
          */
         listMoments(requestParameters: ConsoleApiMomentHaloRunV1alpha1MomentApiListMomentsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<ListedMomentList> {
-            return localVarFp.listMoments(requestParameters.page, requestParameters.size, requestParameters.labelSelector, requestParameters.fieldSelector, requestParameters.sort, requestParameters.keyword, requestParameters.ownerName, requestParameters.tag, requestParameters.visible, requestParameters.startDate, requestParameters.endDate, options).then((request) => request(axios, basePath));
+            return localVarFp.listMoments(requestParameters.page, requestParameters.size, requestParameters.labelSelector, requestParameters.fieldSelector, requestParameters.sort, requestParameters.keyword, requestParameters.ownerName, requestParameters.tag, requestParameters.visible, requestParameters.startDate, requestParameters.endDate, requestParameters.approved, options).then((request) => request(axios, basePath));
         },
         /**
          * List all moment tags.
@@ -482,6 +488,13 @@ export interface ConsoleApiMomentHaloRunV1alpha1MomentApiListMomentsRequest {
      * @memberof ConsoleApiMomentHaloRunV1alpha1MomentApiListMoments
      */
     readonly endDate?: string
+
+    /**
+     * Moment approved.
+     * @type {boolean}
+     * @memberof ConsoleApiMomentHaloRunV1alpha1MomentApiListMoments
+     */
+    readonly approved?: boolean
 }
 
 /**
@@ -535,7 +548,7 @@ export class ConsoleApiMomentHaloRunV1alpha1MomentApi extends BaseAPI {
      * @memberof ConsoleApiMomentHaloRunV1alpha1MomentApi
      */
     public listMoments(requestParameters: ConsoleApiMomentHaloRunV1alpha1MomentApiListMomentsRequest = {}, options?: RawAxiosRequestConfig) {
-        return ConsoleApiMomentHaloRunV1alpha1MomentApiFp(this.configuration).listMoments(requestParameters.page, requestParameters.size, requestParameters.labelSelector, requestParameters.fieldSelector, requestParameters.sort, requestParameters.keyword, requestParameters.ownerName, requestParameters.tag, requestParameters.visible, requestParameters.startDate, requestParameters.endDate, options).then((request) => request(this.axios, this.basePath));
+        return ConsoleApiMomentHaloRunV1alpha1MomentApiFp(this.configuration).listMoments(requestParameters.page, requestParameters.size, requestParameters.labelSelector, requestParameters.fieldSelector, requestParameters.sort, requestParameters.keyword, requestParameters.ownerName, requestParameters.tag, requestParameters.visible, requestParameters.startDate, requestParameters.endDate, requestParameters.approved, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
