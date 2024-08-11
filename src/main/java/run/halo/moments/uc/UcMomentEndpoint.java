@@ -5,10 +5,9 @@ import static org.springdoc.core.fn.builders.content.Builder.contentBuilder;
 import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import java.time.Instant;
 import java.util.Set;
-import lombok.AllArgsConstructor;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.fn.builders.schema.Builder;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
@@ -22,6 +21,9 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.ResponseStatusException;
+
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import lombok.AllArgsConstructor;
 import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.endpoint.CustomEndpoint;
 import run.halo.app.extension.GroupVersion;
@@ -91,6 +93,12 @@ public class UcMomentEndpoint implements CustomEndpoint {
                 builder -> builder.operationId("UpdateMyMoment")
                     .description("Update a My Moment.")
                     .tag(tag)
+                    .parameter(parameterBuilder()
+                        .name("name")
+                        .in(ParameterIn.PATH)
+                        .required(true)
+                        .implementation(String.class)
+                    )
                     .requestBody(requestBodyBuilder()
                         .required(true)
                         .content(contentBuilder()
@@ -105,6 +113,12 @@ public class UcMomentEndpoint implements CustomEndpoint {
                 builder -> builder.operationId("DeleteMyMoment")
                     .description("Delete a My Moment.")
                     .tag(tag)
+                    .parameter(parameterBuilder()
+                        .name("name")
+                        .in(ParameterIn.PATH)
+                        .required(true)
+                        .implementation(String.class)
+                    )
                     .response(responseBuilder()
                         .implementation(Moment.class))
             )

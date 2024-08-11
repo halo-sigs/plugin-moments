@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import type { ListedMoment } from "@/types";
+import { momentsUcApiClient } from "@/api";
 import { toISODayEndOfTime } from "@/utils/date";
 import type { User } from "@halo-dev/api-client";
-import { axiosInstance } from "@halo-dev/api-client";
 import {
   VCard,
   VLoading,
@@ -62,7 +61,8 @@ const keyword = ref("");
 const momentsRangeTime = ref<Array<Date>>([]);
 
 const startDate = computed(() => {
-  return momentsRangeTime.value[0] || "";
+  const date = momentsRangeTime.value[0] || "";
+  return toISODayEndOfTime(date);
 });
 const endDate = computed(() => {
   let endTime: Date = momentsRangeTime.value[1] || "";
@@ -73,7 +73,7 @@ const {
   data: moments,
   isLoading,
   refetch,
-} = useQuery<ListedMoment[]>({
+} = useQuery({
   queryKey: [
     page,
     size,
@@ -92,35 +92,30 @@ const {
       contributors = [selectedContributor.value.metadata.name];
     }
 
-    const { data } = await axiosInstance.get(
-      "/apis/uc.api.moment.halo.run/v1alpha1/moments",
-      {
-        params: {
-          page: page.value,
-          size: size.value,
-          visible: selectedVisibleItem.value?.value,
-          sort: selectedSortItem.value?.sort,
-          sortOrder: selectedSortItem.value?.sortOrder,
-          keyword: keyword.value,
-          startDate: startDate.value,
-          endDate: endDate.value,
-          contributor: contributors,
-          tag: tag.value,
-        },
-      }
-    );
+    const { data } = await momentsUcApiClient.moment.listMyMoments({
+      page: page.value,
+      size: size.value,
+      visible: selectedVisibleItem.value?.value,
+      sort: [selectedSortItem.value?.sort].filter(Boolean) as string[],
+      sortOrder: selectedSortItem.value?.sortOrder,
+      keyword: keyword.value,
+      startDate: startDate.value,
+      endDate: endDate.value,
+      contributor: contributors,
+      tag: tag.value,
+    });
+
     total.value = data.total;
-    totalPages.value = data.value;
+    totalPages.value = data.totalPages;
     hasNext.value = data.hasNext;
     hasPrevious.value = data.hasPrevious;
     return data.items;
   },
   refetchInterval: (data) => {
-    const abnormalMoments = data?.filter((moment) => {
-      const { metadata } = moment.moment;
-      return metadata.deletionTimestamp;
+    const hasDeletingData = data?.some((moment) => {
+      return !!moment.moment.metadata.deletionTimestamp;
     });
-    return abnormalMoments?.length ? 500 : false;
+    return hasDeletingData ? 1000 : false;
   },
   refetchOnWindowFocus: false,
 });

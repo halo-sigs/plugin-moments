@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Moment } from "@/types";
+import { Moment } from "@/api/generated";
 import { IconArrowLeft, IconArrowRight } from "@halo-dev/components";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";

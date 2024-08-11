@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { MomentMedia } from "@/types";
-import { VModal, VButton, VSpace } from "@halo-dev/components";
+import { MomentMedia } from "@/api/generated";
+import { VButton, VModal, VSpace } from "@halo-dev/components";
 
 const props = withDefaults(
   defineProps<{

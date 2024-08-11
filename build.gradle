@@ -1,7 +1,7 @@
 plugins {
     id "com.github.node-gradle.node" version "5.0.0"
     id "io.freefair.lombok" version "8.0.0-rc2"
-    id "run.halo.plugin.devtools" version "0.0.7"
+    id "run.halo.plugin.devtools" version "0.1.1"
     id 'java'
 }
 
@@ -48,4 +48,27 @@ build {
 halo {
     version = '2.17.0'
     debug = true;
+}
+
+
+haloPlugin {
+    openApi {
+        outputDir = file("$rootDir/api-docs/openapi/v3_0")
+        groupingRules {
+            momentsApi {
+                displayName = 'Extension API for Moments Plugin'
+                pathsToMatch = [
+                    '/apis/moment.halo.run/v1alpha1/**',
+                    '/apis/console.api.moment.halo.run/v1alpha1/**',
+                    '/apis/uc.api.moment.halo.run/v1alpha1/**'
+                ]
+            }
+        }
+        groupedApiMappings = [
+                '/v3/api-docs/momentsApi': 'momentsApi.json'
+        ]
+        generator {
+            outputDir = file("${projectDir}/console/src/api/generated")
+        }
+    }
 }

@@ -1,26 +1,25 @@
 <script lang="ts" setup>
-import { computed, provide, ref, watch } from "vue";
-import {
-  VPageHeader,
-  VLoading,
-  VPagination,
-  VCard,
-  VButton,
-  IconExternalLinkLine,
-} from "@halo-dev/components";
-import MingcuteMomentsLine from "~icons/mingcute/moment-line";
-import type { ListedMoment } from "@/types";
-import { useQuery } from "@tanstack/vue-query";
-import { axiosInstance } from "@halo-dev/api-client";
+import { momentsConsoleApiClient } from "@/api";
+import FilterDropdown from "@/components/FilterDropdown.vue";
+import MomentEdit from "@/components/MomentEdit.vue";
 import MomentItem from "@/components/MomentItem.vue";
+import TagFilterDropdown from "@/components/TagFilterDropdown.vue";
+import { toISODayEndOfTime } from "@/utils/date";
+import {
+  IconExternalLinkLine,
+  VButton,
+  VCard,
+  VLoading,
+  VPageHeader,
+  VPagination,
+} from "@halo-dev/components";
+import { useQuery } from "@tanstack/vue-query";
+import { useRouteQuery } from "@vueuse/router";
+import { computed, provide, ref, watch } from "vue";
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn.es";
-import { toISODayEndOfTime } from "@/utils/date";
-import { useRouteQuery } from "@vueuse/router";
-import TagFilterDropdown from "@/components/TagFilterDropdown.vue";
-import MomentEdit from "@/components/MomentEdit.vue";
-import FilterDropdown from "@/components/FilterDropdown.vue";
+import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 
 const tag = useRouteQuery<string>("tag");
 const selectedApprovedStatus = useRouteQuery<
@@ -43,7 +42,8 @@ const keyword = ref("");
 const momentsRangeTime = ref<Array<Date>>([]);
 
 const startDate = computed(() => {
-  return momentsRangeTime.value[0] || "";
+  const date: Date = momentsRangeTime.value[0] || "";
+  return toISODayEndOfTime(date);
 });
 const endDate = computed(() => {
   let endTime: Date = momentsRangeTime.value[1] || "";
@@ -54,7 +54,7 @@ const {
   data: moments,
   isLoading,
   refetch,
-} = useQuery<ListedMoment[]>({
+} = useQuery({
   queryKey: [
     page,
     size,
@@ -65,32 +65,27 @@ const {
     tag,
   ],
   queryFn: async () => {
-    const { data } = await axiosInstance.get(
-      "/apis/console.api.moment.halo.run/v1alpha1/moments",
-      {
-        params: {
-          page: page.value,
-          size: size.value,
-          approved: selectedApprovedStatus.value,
-          keyword: keyword.value,
-          startDate: startDate.value,
-          endDate: endDate.value,
-          tag: tag.value,
-        },
-      }
-    );
+    const { data } = await momentsConsoleApiClient.moment.listMoments({
+      page: page.value,
+      size: size.value,
+      approved: selectedApprovedStatus.value,
+      keyword: keyword.value,
+      startDate: startDate.value,
+      endDate: endDate.value,
+      tag: tag.value,
+    });
+
     total.value = data.total;
-    totalPages.value = data.value;
+    totalPages.value = data.totalPages;
     hasNext.value = data.hasNext;
     hasPrevious.value = data.hasPrevious;
     return data.items;
   },
   refetchInterval: (data) => {
-    const abnormalMoments = data?.filter((moment) => {
-      const { metadata } = moment.moment;
-      return metadata.deletionTimestamp;
+    const hasDeletingData = data?.some((moment) => {
+      return !!moment.moment.metadata.deletionTimestamp;
     });
-    return abnormalMoments?.length ? 500 : false;
+    return hasDeletingData ? 1000 : false;
   },
   refetchOnWindowFocus: false,
 });

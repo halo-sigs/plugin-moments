@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { MomentMedia } from "@/types";
-import MingCloseCircle from "~icons/mingcute/close-circle-fill";
-import LucideFileVideo from "~icons/lucide/file-video";
+import { MomentMedia } from "@/api/generated";
 import LucideFileAudio from "~icons/lucide/file-audio";
+import LucideFileVideo from "~icons/lucide/file-video";
+import MingCloseCircle from "~icons/mingcute/close-circle-fill";
 
 const props = withDefaults(
   defineProps<{
