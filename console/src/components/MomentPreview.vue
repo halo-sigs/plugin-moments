@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Moment } from "@/types";
+import type { Moment, MomentMedia } from "@/types";
 import { IconArrowLeft, IconArrowRight } from "@halo-dev/components";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";
@@ -99,13 +99,24 @@ const getExtname = (type: string) => {
   }
   return "";
 };
+
+function getImageThumbnailUrl(media: MomentMedia) {
+  const { url } = media || {};
+
+  const origin = location.origin;
+
+  if (url.startsWith("/") || url.startsWith(origin)) {
+    return `/upload/thumbnails/w400?uri=${url}`;
+  }
+
+  return url;
+}
 </script>
 <template>
   <PreviewDetailModal
-    v-if="selectedMedia"
-    v-model:visible="detailVisible"
+    v-if="detailVisible && selectedMedia"
     :media="selectedMedia"
-    @close="(selectedMedia = undefined) && (selectedIndex = 0)"
+    @close="detailVisible = false"
   >
     <template #actions>
       <span
@@ -145,7 +156,7 @@ const getExtname = (type: string) => {
           <div class="aspect-square" @click="handleClickMedium(index)">
             <template v-if="media.type == 'PHOTO'">
               <img
-                :src="media.url"
+                :src="getImageThumbnailUrl(media)"
                 class="size-full object-cover"
                 loading="lazy"
               />

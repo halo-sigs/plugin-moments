@@ -3,6 +3,7 @@ import type { MomentMedia } from "@/types";
 import MingCloseCircle from "~icons/mingcute/close-circle-fill";
 import LucideFileVideo from "~icons/lucide/file-video";
 import LucideFileAudio from "~icons/lucide/file-audio";
+import { computed } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -40,26 +41,38 @@ const getExtname = (type: string) => {
   }
   return "";
 };
+
+const imageThumbnailUrl = computed(() => {
+  const { url } = props.media || {};
+
+  const origin = location.origin;
+
+  if (url.startsWith("/") || url.startsWith(origin)) {
+    return `/upload/thumbnails/w400?uri=${url}`;
+  }
+
+  return url;
+});
 </script>
 <template>
   <div class="relative overflow-hidden">
-    <template v-if="props.media.type == 'PHOTO'">
+    <template v-if="media.type == 'PHOTO'">
       <div class="aspect-square">
         <img
-          :src="props.media.url"
+          :src="imageThumbnailUrl"
           class="size-full object-cover"
           loading="lazy"
         />
       </div>
     </template>
-    <template v-else-if="props.media.type == 'VIDEO'">
+    <template v-else-if="media.type == 'VIDEO'">
       <div class="aspect-square">
         <video
-          v-if="canPlayType(props.media.originType)"
+          v-if="canPlayType(media.originType)"
           class="size-full object-cover"
           preload="metadata"
         >
-          <source :src="props.media.url" :type="props.media.originType" />
+          <source :src="media.url" :type="media.originType" />
         </video>
         <div
           v-else
@@ -67,19 +80,19 @@ const getExtname = (type: string) => {
         >
           <LucideFileVideo />
           <span class="text-xs text-gray-500 font-sans">
-            {{ getExtname(props.media.originType) }}
+            {{ getExtname(media.originType) }}
           </span>
         </div>
       </div>
     </template>
-    <template v-else-if="props.media.type == 'AUDIO'">
+    <template v-else-if="media.type == 'AUDIO'">
       <div class="aspect-square">
         <audio
-          v-if="audioType(props.media.originType)"
+          v-if="audioType(media.originType)"
           class="object-cover"
           preload="metadata"
         >
-          <source :src="props.media.url" :type="props.media.originType" />
+          <source :src="media.url" :type="media.originType" />
         </audio>
         <div
           v-else
@@ -87,7 +100,7 @@ const getExtname = (type: string) => {
         >
           <LucideFileAudio />
           <span class="text-xs text-gray-500 font-sans">
-            {{ getExtname(props.media.originType) }}
+            {{ getExtname(media.originType) }}
           </span>
         </div>
       </div>
