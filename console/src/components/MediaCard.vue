@@ -1,17 +1,15 @@
 <script lang="ts" setup>
 import type { MomentMedia } from "@/types";
-import MingCloseCircle from "~icons/mingcute/close-circle-fill";
-import LucideFileVideo from "~icons/lucide/file-video";
-import LucideFileAudio from "~icons/lucide/file-audio";
 import { computed } from "vue";
+import LucideFileAudio from "~icons/lucide/file-audio";
+import LucideFileVideo from "~icons/lucide/file-video";
+import MingCloseCircle from "~icons/mingcute/close-circle-fill";
 
 const props = withDefaults(
   defineProps<{
     media: MomentMedia;
   }>(),
-  {
-    media: undefined,
-  }
+  {}
 );
 
 const emit = defineEmits<{
@@ -44,7 +42,7 @@ const getExtname = (type: string) => {
 
 const imageThumbnailUrl = computed(() => {
   const { url } = props.media || {};
-  return `/upload/thumbnails/w400?uri=${url}`;
+  return `/thumbnails/-/via-uri?uri=${url}&width=w400`;
 });
 </script>
 <template>

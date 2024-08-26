@@ -102,7 +102,7 @@ const getExtname = (type: string) => {
 
 function getImageThumbnailUrl(media: MomentMedia) {
   const { url } = media || {};
-  return `/upload/thumbnails/w400?uri=${url}`;
+  return `/thumbnails/-/via-uri?uri=${url}&width=w400`;
 }
 </script>
 <template>
