@@ -102,14 +102,7 @@ const getExtname = (type: string) => {
 
 function getImageThumbnailUrl(media: MomentMedia) {
   const { url } = media || {};
-
-  const origin = location.origin;
-
-  if (url.startsWith("/") || url.startsWith(origin)) {
-    return `/upload/thumbnails/w400?uri=${url}`;
-  }
-
-  return url;
+  return `/upload/thumbnails/w400?uri=${url}`;
 }
 </script>
 <template>

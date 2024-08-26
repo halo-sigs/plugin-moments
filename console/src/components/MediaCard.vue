@@ -44,14 +44,7 @@ const getExtname = (type: string) => {
 
 const imageThumbnailUrl = computed(() => {
   const { url } = props.media || {};
-
-  const origin = location.origin;
-
-  if (url.startsWith("/") || url.startsWith(origin)) {
-    return `/upload/thumbnails/w400?uri=${url}`;
-  }
-
-  return url;
+  return `/upload/thumbnails/w400?uri=${url}`;
 });
 </script>
 <template>
