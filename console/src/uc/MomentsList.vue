@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { momentsUcApiClient } from "@/api";
 import { toISODayEndOfTime } from "@/utils/date";
-import type { User } from "@halo-dev/api-client";
 import {
   VCard,
   VLoading,
@@ -56,16 +55,15 @@ const hasNext = ref(false);
 
 const selectedVisibleItem = ref<VisibleItem>(VisibleItems[0]);
 const selectedSortItem = ref<SortItem>();
-const selectedContributor = ref<User>();
 const keyword = ref("");
 const momentsRangeTime = ref<Array<Date>>([]);
 
 const startDate = computed(() => {
-  const date = momentsRangeTime.value[0] || "";
+  const date = momentsRangeTime.value[0];
   return toISODayEndOfTime(date);
 });
 const endDate = computed(() => {
-  let endTime: Date = momentsRangeTime.value[1] || "";
+  let endTime: Date = momentsRangeTime.value[1];
   return toISODayEndOfTime(endTime);
 });
 
@@ -77,7 +75,6 @@ const {
   queryKey: [
     page,
     size,
-    selectedContributor,
     selectedVisibleItem,
     selectedSortItem,
     startDate,
@@ -86,22 +83,13 @@ const {
     tag,
   ],
   queryFn: async () => {
-    let contributors: string[] | undefined;
-
-    if (selectedContributor.value) {
-      contributors = [selectedContributor.value.metadata.name];
-    }
-
     const { data } = await momentsUcApiClient.moment.listMyMoments({
       page: page.value,
       size: size.value,
       visible: selectedVisibleItem.value?.value,
-      sort: [selectedSortItem.value?.sort].filter(Boolean) as string[],
-      sortOrder: selectedSortItem.value?.sortOrder,
       keyword: keyword.value,
       startDate: startDate.value,
       endDate: endDate.value,
-      contributor: contributors,
       tag: tag.value,
     });
 

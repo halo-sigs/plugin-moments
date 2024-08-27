@@ -42,11 +42,11 @@ const keyword = ref("");
 const momentsRangeTime = ref<Array<Date>>([]);
 
 const startDate = computed(() => {
-  const date: Date = momentsRangeTime.value[0] || "";
+  const date: Date = momentsRangeTime.value[0];
   return toISODayEndOfTime(date);
 });
 const endDate = computed(() => {
-  let endTime: Date = momentsRangeTime.value[1] || "";
+  let endTime: Date = momentsRangeTime.value[1];
   return toISODayEndOfTime(endTime);
 });
 
