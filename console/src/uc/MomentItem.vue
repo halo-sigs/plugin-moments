@@ -1,8 +1,8 @@
 <script lang="ts" setup>
+import { momentsUcApiClient } from "@/api";
+import type { ListedMoment, Moment } from "@/api/generated";
 import MomentPreview from "@/components/MomentPreview.vue";
-import type { ListedMoment, Moment } from "@/types";
 import { formatDatetime, relativeTimeTo } from "@/utils/date";
-import { axiosInstance } from "@halo-dev/api-client";
 import {
   Dialog,
   IconEyeOff,
@@ -30,7 +30,7 @@ const props = withDefaults(
 const emit = defineEmits<{
   (event: "save", moment: Moment): void;
   (event: "update", moment: Moment): void;
-  (event: "remove", name: string): void;
+  (event: "remove"): void;
 }>();
 
 const editing = ref(props.editing);
@@ -45,12 +45,12 @@ const deleteMoment = () => {
     confirmType: "danger",
     onConfirm: async () => {
       try {
-        const { data } = await axiosInstance.delete(
-          `/apis/uc.api.moment.halo.run/v1alpha1/moments/${previewMoment.value.metadata.name}`
-        );
+        await momentsUcApiClient.moment.deleteMyMoment({
+          name: previewMoment.value.metadata.name,
+        });
 
         Toast.success("删除成功");
-        emit("remove", data);
+        emit("remove");
       } catch (error) {
         console.error("Failed to delete comment", error);
       }

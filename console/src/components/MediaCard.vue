@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { MomentMedia } from "@/types";
-import MingCloseCircle from "~icons/mingcute/close-circle-fill";
-import LucideFileVideo from "~icons/lucide/file-video";
+import type { MomentMedia } from "@/api/generated";
 import LucideFileAudio from "~icons/lucide/file-audio";
+import LucideFileVideo from "~icons/lucide/file-video";
+import MingCloseCircle from "~icons/mingcute/close-circle-fill";
 
 const props = withDefaults(
   defineProps<{
@@ -21,16 +21,22 @@ const handleRemoveClick = () => {
   emit("remove", props.media);
 };
 
-const canPlayType = (type: string) => {
+const canPlayType = (type?: string) => {
+  if (!type) {
+    return false;
+  }
   let obj = document.createElement("video");
   return !!obj.canPlayType(type);
 };
-const audioType = (type: string) => {
+const audioType = (type?: string) => {
+  if (!type) {
+    return false;
+  }
   let obj = document.createElement("audio");
   return !!obj.canPlayType(type);
 };
 
-const getExtname = (type: string) => {
+const getExtname = (type?: string) => {
   if (!type) {
     return "";
   }

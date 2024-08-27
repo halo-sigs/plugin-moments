@@ -1,16 +1,15 @@
 <script lang="ts" setup>
-import { VButton, IconEye, IconEyeOff } from "@halo-dev/components";
-import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/types";
-import { Toast } from "@halo-dev/components";
-import type { AttachmentLike } from "@halo-dev/console-shared";
-import { computed, onMounted, ref, toRaw } from "vue";
+import { momentsUcApiClient } from "@/api";
+import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
 import MediaCard from "@/components/MediaCard.vue";
 import TextEditor from "@/components/TextEditor.vue";
-import SendMoment from "~icons/ic/sharp-send";
-import cloneDeep from "lodash.clonedeep";
-import TablerPhoto from "~icons/tabler/photo";
-import { axiosInstance } from "@halo-dev/api-client";
 import { useUCTagQueryFetch } from "@/composables/use-tag";
+import { IconEye, IconEyeOff, Toast, VButton } from "@halo-dev/components";
+import type { AttachmentLike } from "@halo-dev/console-shared";
+import { cloneDeep } from "lodash-es";
+import { computed, onMounted, ref, toRaw } from "vue";
+import SendMoment from "~icons/ic/sharp-send";
+import TablerPhoto from "~icons/tabler/photo";
 
 const props = withDefaults(
   defineProps<{
@@ -42,6 +41,7 @@ const initMoment: Moment = {
   },
   metadata: {
     generateName: "moment-",
+    name: "",
   },
   kind: "Moment",
   apiVersion: "moment.halo.run/v1alpha1",
@@ -83,24 +83,25 @@ const handlerCreateOrUpdateMoment = async () => {
 const handleSave = async (moment: Moment) => {
   moment.spec.releaseTime = new Date().toISOString();
   moment.spec.approved = true;
-  const { data } = await axiosInstance.post<Moment>(
-    `/apis/uc.api.moment.halo.run/v1alpha1/moments`,
-    moment
-  );
+
+  const { data } = await momentsUcApiClient.moment.createMyMoment({
+    moment: moment,
+  });
+
   emit("save", data);
   Toast.success("发布成功");
 };
 
 const handleUpdate = async (moment: Moment) => {
-  const { data } = await axiosInstance.get<Moment>(
-    `/apis/uc.api.moment.halo.run/v1alpha1/moments/${moment.metadata.name}`
-  );
+  const { data } = await momentsUcApiClient.moment.getMyMoment({
+    name: moment.metadata.name,
+  });
   // 更新当前需要提交的 moment spec 为最新
   data.spec = moment.spec;
-  const updated = await axiosInstance.put<Moment>(
-    `/apis/uc.api.moment.halo.run/v1alpha1/moments/${moment.metadata.name}`,
-    data
-  );
+  const updated = await momentsUcApiClient.moment.updateMyMoment({
+    name: moment.metadata.name,
+    moment: data,
+  });
   emit("update", updated.data);
   Toast.success("发布成功");
 };
@@ -109,7 +110,7 @@ const parse = new DOMParser();
 const queryEditorTags = function () {
   let tags: Set<string> = new Set();
   let document: Document = parse.parseFromString(
-    formState.value.spec.content.raw,
+    formState.value.spec.content.raw!,
     "text/html"
   );
   let nodeList: NodeList = document.querySelectorAll("a.tag");

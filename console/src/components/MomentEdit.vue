@@ -1,16 +1,15 @@
 <script lang="ts" setup>
-import { VButton, IconEye, IconEyeOff } from "@halo-dev/components";
-import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/types";
-import { Toast } from "@halo-dev/components";
-import type { AttachmentLike } from "@halo-dev/console-shared";
-import { computed, onMounted, ref, toRaw } from "vue";
+import { momentsConsoleApiClient, momentsCoreApiClient } from "@/api";
+import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
 import MediaCard from "@/components/MediaCard.vue";
 import TextEditor from "@/components/TextEditor.vue";
-import SendMoment from "~icons/ic/sharp-send";
-import cloneDeep from "lodash.clonedeep";
-import TablerPhoto from "~icons/tabler/photo";
-import { axiosInstance } from "@halo-dev/api-client";
 import { useConsoleTagQueryFetch } from "@/composables/use-tag";
+import { IconEye, IconEyeOff, Toast, VButton } from "@halo-dev/components";
+import type { AttachmentLike } from "@halo-dev/console-shared";
+import { cloneDeep } from "lodash-es";
+import { computed, onMounted, ref, toRaw } from "vue";
+import SendMoment from "~icons/ic/sharp-send";
+import TablerPhoto from "~icons/tabler/photo";
 
 const props = withDefaults(
   defineProps<{
@@ -42,6 +41,7 @@ const initMoment: Moment = {
   },
   metadata: {
     generateName: "moment-",
+    name: "",
   },
   kind: "Moment",
   apiVersion: "moment.halo.run/v1alpha1",
@@ -68,7 +68,7 @@ const handlerCreateOrUpdateMoment = async () => {
     saving.value = true;
     queryEditorTags();
     if (isUpdateMode.value) {
-      handleUpdate(formState.value);
+      handleUpdate();
     } else {
       handleSave(formState.value);
       handleReset();
@@ -83,25 +83,38 @@ const handlerCreateOrUpdateMoment = async () => {
 const handleSave = async (moment: Moment) => {
   moment.spec.releaseTime = new Date().toISOString();
   moment.spec.approved = true;
-  const { data } = await axiosInstance.post<Moment>(
-    `/apis/console.api.moment.halo.run/v1alpha1/moments`,
-    moment
-  );
+
+  const { data } = await momentsConsoleApiClient.moment.createMoment({
+    moment: moment,
+  });
+
   emit("save", data);
   Toast.success("发布成功");
 };
 
-const handleUpdate = async (moment: Moment) => {
-  const { data } = await axiosInstance.get<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${moment.metadata.name}`
-  );
-  // 更新当前需要提交的 moment spec 为最新
-  data.spec = moment.spec;
-  const updated = await axiosInstance.put<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${moment.metadata.name}`,
-    data
-  );
-  emit("update", updated.data);
+const handleUpdate = async () => {
+  const { data } = await momentsCoreApiClient.moment.patchMoment({
+    name: formState.value.metadata.name,
+    jsonPatchInner: [
+      {
+        op: "add",
+        path: "/spec/tags",
+        value: formState.value.spec.tags || [],
+      },
+      {
+        op: "add",
+        path: "/spec/content",
+        value: formState.value.spec.content,
+      },
+      {
+        op: "add",
+        path: "/spec/visible",
+        value: formState.value.spec.visible || false,
+      },
+    ],
+  });
+
+  emit("update", data);
   Toast.success("发布成功");
 };
 
@@ -109,7 +122,7 @@ const parse = new DOMParser();
 const queryEditorTags = function () {
   let tags: Set<string> = new Set();
   let document: Document = parse.parseFromString(
-    formState.value.spec.content.raw,
+    formState.value.spec.content.raw!,
     "text/html"
   );
   let nodeList: NodeList = document.querySelectorAll("a.tag");

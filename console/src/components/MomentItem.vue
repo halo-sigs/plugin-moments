@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { ListedMoment, Moment } from "@/types";
+import { momentsCoreApiClient } from "@/api";
+import type { ListedMoment, Moment } from "@/api/generated";
 import { formatDatetime, relativeTimeTo } from "@/utils/date";
-import { axiosInstance } from "@halo-dev/api-client";
 import {
   Dialog,
   IconEyeOff,
@@ -30,7 +30,7 @@ const props = withDefaults(
 const emit = defineEmits<{
   (event: "save", moment: Moment): void;
   (event: "update", moment: Moment): void;
-  (event: "remove", name: string): void;
+  (event: "remove"): void;
 }>();
 
 const editing = ref(props.editing);
@@ -45,12 +45,12 @@ const deleteMoment = () => {
     confirmType: "danger",
     onConfirm: async () => {
       try {
-        const { data } = await axiosInstance.delete(
-          `/apis/moment.halo.run/v1alpha1/moments/${previewMoment.value.metadata.name}`
-        );
+        await momentsCoreApiClient.moment.deleteMoment({
+          name: previewMoment.value.metadata.name,
+        });
 
         Toast.success("删除成功");
-        emit("remove", data);
+        emit("remove");
       } catch (error) {
         console.error("Failed to delete comment", error);
       }
@@ -65,15 +65,17 @@ const handleUpdate = (moment: Moment) => {
 };
 
 const handleApproved = async () => {
-  const { data } = await axiosInstance.get<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${editingMoment.value.metadata.name}`
-  );
-  // 更新当前需要提交的 moment spec 为最新
-  data.spec.approved = true;
-  await axiosInstance.put<Moment>(
-    `/apis/moment.halo.run/v1alpha1/moments/${editingMoment.value.metadata.name}`,
-    data
-  );
+  await momentsCoreApiClient.moment.patchMoment({
+    name: editingMoment.value.metadata.name,
+    jsonPatchInner: [
+      {
+        op: "add",
+        path: "/spec/approved",
+        value: true,
+      },
+    ],
+  });
+
   editingMoment.value.spec.approved = true;
   previewMoment.value.spec.approved = true;
 };

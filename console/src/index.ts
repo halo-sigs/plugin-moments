@@ -1,4 +1,3 @@
-import type { Moment } from "@/types";
 import UcMomentsList from "@/uc/MomentsList.vue";
 import MomentsList from "@/views/MomentsList.vue";
 import type { Extension } from "@halo-dev/api-client";
@@ -8,6 +7,7 @@ import {
 } from "@halo-dev/console-shared";
 import { markRaw } from "vue";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
+import type { Moment } from "./api/generated";
 import "./styles/index.scss";
 import { formatDatetime } from "./utils/date";
 
@@ -73,7 +73,7 @@ export default definePlugin({
 });
 
 const determineMomentTitle = (moment: Moment) => {
-  const pureContent = stripHtmlTags(moment.spec.content.raw);
+  const pureContent = stripHtmlTags(moment.spec.content.raw || "");
   const title = !pureContent?.trim()
     ? formatDatetime(new Date(moment.spec.releaseTime || ""))
     : pureContent;
