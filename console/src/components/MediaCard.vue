@@ -42,7 +42,7 @@ const getExtname = (type: string) => {
 
 const imageThumbnailUrl = computed(() => {
   const { url } = props.media || {};
-  return `/apis/api.storage.halo.run/thumbnails/-/via-uri?uri=${url}&width=w400`;
+  return `/apis/api.storage.halo.run/v1alpha1/thumbnails/-/via-uri?uri=${url}&width=w400`;
 });
 </script>
 <template>
