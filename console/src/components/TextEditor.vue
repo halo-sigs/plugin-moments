@@ -1,52 +1,52 @@
 <script lang="ts" setup>
+import type { useTagQueryFetchProps } from "@/composables/use-tag";
+import MomentExtensionImage from "@/extensions/images";
+import { TagsExtension } from "@/extensions/tags";
 import {
-  RichTextEditor,
+  ExtensionAudio,
   ExtensionBlockquote,
   ExtensionBold,
   ExtensionBulletList,
   ExtensionCode,
+  ExtensionCodeBlock,
+  ExtensionColor,
+  ExtensionColumn,
+  ExtensionColumns,
+  ExtensionCommands,
   ExtensionDocument,
+  ExtensionDraggable,
   ExtensionDropcursor,
+  ExtensionFontSize,
   ExtensionGapcursor,
   ExtensionHardBreak,
+  ExtensionHighlight,
   ExtensionHistory,
   ExtensionHorizontalRule,
+  ExtensionIframe,
+  ExtensionIndent,
   ExtensionItalic,
-  ExtensionOrderedList,
-  ExtensionStrike,
-  ExtensionText,
-  ExtensionTaskList,
   ExtensionLink,
-  ExtensionTextAlign,
-  ExtensionUnderline,
-  ExtensionTable,
+  ExtensionListKeymap,
+  ExtensionNodeSelected,
+  ExtensionOrderedList,
+  ExtensionParagraph,
+  ExtensionPlaceholder,
+  ExtensionStrike,
   ExtensionSubscript,
   ExtensionSuperscript,
-  ExtensionPlaceholder,
-  ExtensionHighlight,
-  ExtensionCommands,
-  ExtensionIframe,
-  ExtensionVideo,
-  ExtensionAudio,
-  ExtensionCodeBlock,
-  ExtensionFontSize,
-  ExtensionColor,
-  ExtensionIndent,
-  lowlight,
-  ExtensionDraggable,
-  ExtensionColumns,
-  ExtensionColumn,
-  ExtensionNodeSelected,
+  ExtensionTable,
+  ExtensionTaskList,
+  ExtensionText,
+  ExtensionTextAlign,
   ExtensionTrailingNode,
+  ExtensionUnderline,
+  ExtensionVideo,
+  lowlight,
+  RichTextEditor,
   useEditor,
-  ExtensionListKeymap,
-  ExtensionParagraph,
 } from "@halo-dev/richtext-editor";
-import { watch } from "vue";
-import { TagsExtension } from "@/extensions/tags";
-import type { useTagQueryFetchProps } from "@/composables/use-tag";
 import type { UseQueryReturnType } from "@tanstack/vue-query";
-import MomentExtensionImage from "@/extensions/images";
+import { watch } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -159,6 +159,6 @@ watch(
 </script>
 <template>
   <div v-if="editor" class="halo-moment-editor halo-rich-text-editor relative">
-    <RichTextEditor :editor="editor" locale="zh-CN "> </RichTextEditor>
+    <RichTextEditor :editor="editor" locale="zh-CN"> </RichTextEditor>
   </div>
 </template>

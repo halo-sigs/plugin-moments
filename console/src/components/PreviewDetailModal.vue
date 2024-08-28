@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { MomentMedia } from "@/types";
+import type { MomentMedia } from "@/api/generated";
 import { VButton, VModal } from "@halo-dev/components";
 import { ref } from "vue";
 

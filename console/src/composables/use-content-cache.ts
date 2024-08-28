@@ -1,12 +1,12 @@
-import { useLocalStorage } from "@vueuse/core";
 import { Toast } from "@halo-dev/components";
+import { useLocalStorage } from "@vueuse/core";
+import { debounce } from "lodash-es";
 import type { Ref } from "vue";
 
 interface ContentCache {
   name: string;
   content?: string;
 }
-import debounce from "lodash.debounce";
 
 interface useContentCacheReturn {
   handleResetCache: () => void;

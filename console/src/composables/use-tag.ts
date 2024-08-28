@@ -1,4 +1,4 @@
-import { axiosInstance } from "@halo-dev/api-client";
+import { momentsConsoleApiClient, momentsUcApiClient } from "@/api";
 import { useQuery } from "@tanstack/vue-query";
 import type { Ref } from "vue";
 
@@ -25,15 +25,21 @@ export function useTagQueryFetch(
   return useQuery<string[]>({
     queryKey: ["moments-tags", props.keyword],
     queryFn: async () => {
-      const { data } = await axiosInstance.get(
-        `/apis/${group}.api.moment.halo.run/v1alpha1/tags`,
-        {
-          params: {
-            name: props.keyword?.value,
-          },
-        }
-      );
-      return data;
+      if (group === "console") {
+        const { data } = await momentsConsoleApiClient.moment.listTags({
+          name: props.keyword?.value,
+        });
+        return data;
+      }
+
+      if (group === "uc") {
+        const { data } = await momentsUcApiClient.moment.listTags1({
+          name: props.keyword?.value,
+        });
+        return data;
+      }
+
+      throw new Error("Invalid group");
     },
   });
 }

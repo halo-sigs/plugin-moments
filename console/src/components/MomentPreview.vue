@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Moment, MomentMedia } from "@/types";
+import type { Moment, MomentMedia } from "@/api/generated";
 import { IconArrowLeft, IconArrowRight } from "@halo-dev/components";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";
@@ -89,7 +89,7 @@ const handleClickMedium = (index: number) => {
   detailVisible.value = true;
 };
 
-const getExtname = (type: string) => {
+const getExtname = (type?: string) => {
   if (!type) {
     return "";
   }
