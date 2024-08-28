@@ -102,7 +102,7 @@ const getExtname = (type?: string) => {
 
 function getImageThumbnailUrl(media: MomentMedia) {
   const { url } = media || {};
-  return `/apis/api.storage.halo.run/v1alpha1/thumbnails/-/via-uri?uri=${url}&width=w400`;
+  return `/apis/api.storage.halo.run/v1alpha1/thumbnails/-/via-uri?uri=${url}&size=s`;
 }
 </script>
 <template>
