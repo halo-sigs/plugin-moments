@@ -1,38 +1,31 @@
 <script setup lang="ts">
 import type { MomentMedia } from "@/api/generated";
-import { VButton, VModal, VSpace } from "@halo-dev/components";
+import { VButton, VModal } from "@halo-dev/components";
+import { ref } from "vue";
 
 const props = withDefaults(
   defineProps<{
-    visible: boolean;
     media: MomentMedia;
   }>(),
   {
-    visible: false,
     media: undefined,
   }
 );
 
 const emit = defineEmits<{
-  (event: "update:visible", visible: boolean): void;
   (event: "close"): void;
 }>();
 
-const onVisibleChange = (visible: boolean) => {
-  emit("update:visible", visible);
-  if (!visible) {
-    emit("close");
-  }
-};
+const modal = ref<InstanceType<typeof VModal> | null>(null);
 </script>
 <template>
   <VModal
+    ref="modal"
     title="预览"
-    :visible="visible"
     :width="1000"
     :layer-closable="true"
     height="80vh"
-    @update:visible="onVisibleChange"
+    @close="emit('close')"
   >
     <template #actions>
       <slot name="actions"></slot>
@@ -50,12 +43,7 @@ const onVisibleChange = (visible: boolean) => {
       </template>
     </div>
     <template #footer>
-      <VSpace>
-        <VButton type="default" @click="onVisibleChange(false)"
-          >关闭 Esc</VButton
-        >
-        <slot name="footer" />
-      </VSpace>
+      <VButton type="default" @click="modal?.close()">关闭 Esc</VButton>
     </template>
   </VModal>
 </template>
