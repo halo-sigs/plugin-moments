@@ -10,6 +10,9 @@ import { cloneDeep } from "lodash-es";
 import { computed, onMounted, ref, toRaw } from "vue";
 import SendMoment from "~icons/ic/sharp-send";
 import TablerPhoto from "~icons/tabler/photo";
+import DatePicker from "vue-datepicker-next";
+import "vue-datepicker-next/index.css";
+import "vue-datepicker-next/locale/zh-cn.es";
 
 const props = withDefaults(
   defineProps<{
@@ -25,6 +28,8 @@ const emit = defineEmits<{
   (event: "update", moment: Moment): void;
   (event: "cancel"): void;
 }>();
+
+const momentReleaseTime = ref(new Date());
 
 const initMoment: Moment = {
   spec: {
@@ -81,7 +86,7 @@ const handlerCreateOrUpdateMoment = async () => {
 };
 
 const handleSave = async (moment: Moment) => {
-  moment.spec.releaseTime = new Date().toISOString();
+  moment.spec.releaseTime = momentReleaseTime.value.toISOString();
   moment.spec.approved = true;
 
   const { data } = await momentsConsoleApiClient.moment.createMoment({
@@ -373,6 +378,16 @@ function handleKeydown(event: KeyboardEvent) {
             class="size-full text-base text-gray-600 group-hover:text-green-600"
           />
         </div>
+        
+        <DatePicker
+                v-if="!isUpdateMode"
+                v-model:value="momentReleaseTime"
+                input-class="mx-input"
+                class="date-picker range-time max-w-[13rem] cursor-pointer md:max-w-[15rem]"
+                :editable="true"
+                type="datetime"
+                placeholder="发布时间"
+              />
 
         <button
           v-if="isUpdateMode"
