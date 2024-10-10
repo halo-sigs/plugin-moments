@@ -73,6 +73,7 @@ const {
       startDate: startDate.value,
       endDate: endDate.value,
       tag: tag.value,
+      sort: ["spec.releaseTime,desc"]
     });
 
     total.value = data.total;
