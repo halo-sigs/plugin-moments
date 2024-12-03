@@ -16,6 +16,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.Counter;
 import run.halo.app.core.extension.User;
+import run.halo.app.extension.ExtensionUtil;
 import run.halo.app.extension.ListOptions;
 import run.halo.app.extension.ListResult;
 import run.halo.app.extension.PageRequest;
@@ -59,7 +60,7 @@ public class MomentFinderImpl implements MomentFinder {
         listOptions.setFieldSelector(
             FieldSelector.of(FIXED_QUERY));
         return client.listAll(Moment.class, listOptions, defaultSort())
-            .flatMap(this::getMomentVo);
+            .concatMap(this::getMomentVo);
     }
 
     @Override
@@ -69,7 +70,8 @@ public class MomentFinderImpl implements MomentFinder {
     }
 
     static Sort defaultSort() {
-        return Sort.by("spec.releaseTime").descending();
+        return Sort.by("spec.releaseTime").descending()
+            .and(ExtensionUtil.defaultSort());
     }
 
     @Override
@@ -78,7 +80,7 @@ public class MomentFinderImpl implements MomentFinder {
         var query = and(FIXED_QUERY, equal("spec.tags", tag));
         listOptions.setFieldSelector(FieldSelector.of(query));
         return client.listAll(Moment.class, listOptions, defaultSort())
-            .flatMap(this::getMomentVo);
+            .concatMap(this::getMomentVo);
     }
 
     @Override
@@ -104,7 +106,7 @@ public class MomentFinderImpl implements MomentFinder {
                     .toList();
             })
             .groupBy(MomentTagPair::tagName)
-            .flatMap(groupedFlux -> groupedFlux.count()
+            .concatMap(groupedFlux -> groupedFlux.count()
                 .defaultIfEmpty(0L)
                 .map(count -> MomentTagVo.builder()
                     .name(groupedFlux.key())

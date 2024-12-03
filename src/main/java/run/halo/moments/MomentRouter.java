@@ -4,15 +4,12 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static run.halo.app.theme.router.PageUrlUtils.totalPage;
 
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -20,16 +17,10 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
-import run.halo.app.extension.ConfigMap;
-import run.halo.app.extension.ReactiveExtensionClient;
-import run.halo.app.infra.ExternalUrlSupplier;
-import run.halo.app.infra.SystemSetting;
-import run.halo.app.infra.utils.JsonUtils;
 import run.halo.app.plugin.ReactiveSettingFetcher;
 import run.halo.app.theme.router.PageUrlUtils;
 import run.halo.app.theme.router.UrlContextListResult;
 import run.halo.moments.finders.MomentFinder;
-import run.halo.moments.util.RSS2;
 import run.halo.moments.vo.MomentVo;
 
 
@@ -51,68 +42,11 @@ public class MomentRouter {
 
     private final ReactiveSettingFetcher settingFetcher;
 
-    private final ReactiveExtensionClient client;
-
-    private final ExternalUrlSupplier externalUrlSupplier;
-
     @Bean
     RouterFunction<ServerResponse> momentRouterFunction() {
         return route(GET("/moments").or(GET("/moments/page/{page:\\d+}")), handlerFunction())
-            .andRoute(GET("/moments/rss.xml"), handlerRss())
             .andRoute(GET("/moments/{momentName:\\S+}"), handlerMomentDefault());
     }
-
-    private HandlerFunction<ServerResponse> handlerRss() {
-        return request -> ServerResponse.ok()
-            .contentType(MediaType.TEXT_XML)
-            .body(buildRss(request), String.class);
-    }
-
-    private Mono<String> buildRss(ServerRequest request) {
-        var externalUrl = externalUrlSupplier.get();
-        if (!externalUrl.isAbsolute()) {
-            externalUrl = request.exchange().getRequest().getURI().resolve(externalUrl);
-        }
-
-        final var hostAddress = externalUrl;
-        return getSystemBasicSetting()
-            .flatMap(basicSetting -> getMomentTitle()
-                .map(momentTitle -> RSS2.builder()
-                    .title(StringUtils.defaultString(basicSetting.getTitle()) + momentTitle)
-                    .link(StringUtils.removeEnd(hostAddress.toString(), "/"))
-                    .description(StringUtils.defaultString(basicSetting.getSubtitle()))
-                )
-            )
-            .flatMap(builder -> momentFinder.listAll()
-                .map(momentVo -> RSS2.Item.builder()
-                    .title(momentVo.getOwner().getDisplayName() + " published on "
-                        + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                        .withZone(ZoneId.systemDefault())
-                        .format(momentVo.getSpec().getReleaseTime()))
-                    .link(hostAddress.resolve("moments/" + momentVo.getMetadata().getName())
-                        .toString())
-                    .guid(hostAddress.resolve("moments/" + momentVo.getMetadata().getName())
-                        .toString())
-                    .description("""
-                        <![CDATA[%s]]>
-                        """.formatted(momentVo.getSpec().getContent().getHtml()))
-                    .pubDate(momentVo.getSpec().getReleaseTime()).build())
-                .collectList()
-                .map(builder::items)
-            )
-            .map(RSS2.RSS2Builder::build)
-            .map(RSS2::toXmlString);
-    }
-
-    private Mono<SystemSetting.Basic> getSystemBasicSetting() {
-        return client.get(ConfigMap.class, SystemSetting.SYSTEM_CONFIG)
-            .mapNotNull(ConfigMap::getData)
-            .map(map -> {
-                String basicSetting = map.getOrDefault(SystemSetting.Basic.GROUP, "{}");
-                return JsonUtils.jsonToObject(basicSetting, SystemSetting.Basic.class);
-            });
-    }
-
 
     private HandlerFunction<ServerResponse> handlerMomentDefault() {
         return request -> {

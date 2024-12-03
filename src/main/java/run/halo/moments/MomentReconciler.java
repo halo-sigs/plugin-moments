@@ -5,6 +5,7 @@ import static run.halo.app.extension.index.query.QueryFactory.equal;
 import java.time.Instant;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import run.halo.app.core.extension.notification.Subscription;
 import run.halo.app.extension.DefaultExtensionMatcher;
@@ -15,6 +16,8 @@ import run.halo.app.extension.controller.ControllerBuilder;
 import run.halo.app.extension.controller.Reconciler;
 import run.halo.app.extension.router.selector.FieldSelector;
 import run.halo.app.notification.NotificationCenter;
+import run.halo.moments.event.MomentDeletedEvent;
+import run.halo.moments.event.MomentUpdatedEvent;
 
 /**
  * {@link Reconciler} for {@link Moment}.
@@ -29,6 +32,7 @@ public class MomentReconciler implements Reconciler<Reconciler.Request> {
     private static final String FINALIZER = "moment-protection";
     private final ExtensionClient client;
     private final NotificationCenter notificationCenter;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public Result reconcile(Request request) {
@@ -36,6 +40,7 @@ public class MomentReconciler implements Reconciler<Reconciler.Request> {
             if (ExtensionUtil.isDeleted(moment)) {
                 if (ExtensionUtil.removeFinalizers(moment.getMetadata(), Set.of(FINALIZER))) {
                     client.update(moment);
+                    eventPublisher.publishEvent(new MomentDeletedEvent(this, request.name()));
                 }
                 return;
             }
@@ -57,6 +62,8 @@ public class MomentReconciler implements Reconciler<Reconciler.Request> {
                 moment.getSpec().setApprovedTime(Instant.now());
             }
             client.update(moment);
+
+            eventPublisher.publishEvent(new MomentUpdatedEvent(this, request.name()));
         });
         return Result.doNotRetry();
     }

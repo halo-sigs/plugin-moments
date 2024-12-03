@@ -1,7 +1,7 @@
 plugins {
     id "com.github.node-gradle.node" version "5.0.0"
     id "io.freefair.lombok" version "8.0.0-rc2"
-    id "run.halo.plugin.devtools" version "0.1.1"
+    id "run.halo.plugin.devtools" version "0.4.1"
     id 'java'
 }
 
@@ -11,12 +11,13 @@ sourceCompatibility = JavaVersion.VERSION_17
 repositories {
     mavenCentral()
     maven { url 'https://repo.spring.io/milestone' }
-    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/releases' }
 }
 
 dependencies {
-    implementation platform('run.halo.tools.platform:plugin:2.17.0-SNAPSHOT')
+    implementation platform('run.halo.tools.platform:plugin:2.20.11')
     compileOnly 'run.halo.app:api'
+    compileOnly "run.halo.feed:api:1.4.0"
 
     testImplementation 'run.halo.app:api'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -46,10 +47,9 @@ build {
 }
 
 halo {
-    version = '2.17.0'
+    version = '2.20.11'
     debug = true;
 }
-
 
 haloPlugin {
     openApi {
@@ -58,9 +58,9 @@ haloPlugin {
             momentsApi {
                 displayName = 'Extension API for Moments Plugin'
                 pathsToMatch = [
-                    '/apis/moment.halo.run/v1alpha1/**',
-                    '/apis/console.api.moment.halo.run/v1alpha1/**',
-                    '/apis/uc.api.moment.halo.run/v1alpha1/**'
+                        '/apis/moment.halo.run/v1alpha1/**',
+                        '/apis/console.api.moment.halo.run/v1alpha1/**',
+                        '/apis/uc.api.moment.halo.run/v1alpha1/**'
                 ]
             }
         }

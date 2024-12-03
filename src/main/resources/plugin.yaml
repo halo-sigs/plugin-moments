@@ -6,8 +6,7 @@ metadata:
     "store.halo.run/app-id": "app-SnwWD"
 spec:
   enabled: true
-  version: 1.0.1
-  requires: ">=2.19.0"
+  requires: ">=2.20.11"
   author:
     name: Halo
     website: https://github.com/halo-dev
@@ -19,6 +18,8 @@ spec:
   issues: https://github.com/halo-sigs/plugin-moments/issues
   displayName: "瞬间"
   description: "Halo 2.0 的瞬间管理插件，提供一个轻量级的内容发布功能，支持发布图文、视频、音频等内容。"
+  pluginDependencies:
+    "PluginFeed?": ">=1.4.0"
   license:
     - name: "GPL-3.0"
       url: "https://github.com/halo-sigs/plugin-moments/blob/main/LICENSE"
