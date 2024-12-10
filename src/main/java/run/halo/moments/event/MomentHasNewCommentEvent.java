@@ -1,4 +1,4 @@
-package run.halo.moments;
+package run.halo.moments.event;
 
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;

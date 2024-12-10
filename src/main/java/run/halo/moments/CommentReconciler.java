@@ -12,6 +12,7 @@ import run.halo.app.extension.Ref;
 import run.halo.app.extension.controller.Controller;
 import run.halo.app.extension.controller.ControllerBuilder;
 import run.halo.app.extension.controller.Reconciler;
+import run.halo.moments.event.MomentHasNewCommentEvent;
 
 /**
  * Reconciler for comment.

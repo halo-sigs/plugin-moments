@@ -24,6 +24,7 @@ import run.halo.app.infra.ExternalLinkProcessor;
 import run.halo.app.infra.utils.JsonUtils;
 import run.halo.app.notification.NotificationReasonEmitter;
 import run.halo.app.notification.UserIdentity;
+import run.halo.moments.event.MomentHasNewCommentEvent;
 
 /**
  * Notification reason publisher for {@link Comment}.

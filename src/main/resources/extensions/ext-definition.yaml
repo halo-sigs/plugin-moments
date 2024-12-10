@@ -1,0 +1,19 @@
+apiVersion: plugin.halo.run/v1alpha1
+kind: ExtensionDefinition
+metadata:
+  name: moment-rss-provider
+spec:
+  className: run.halo.moments.rss.MomentRssProvider
+  extensionPointName: feed-rss-route-item
+  displayName: "瞬间订阅"
+  description: "用于生成瞬间的 RSS 订阅源"
+---
+apiVersion: plugin.halo.run/v1alpha1
+kind: ExtensionDefinition
+metadata:
+  name: moment-old-rss-redirection-filter
+spec:
+  className: run.halo.moments.rss.OldRssRouteRedirectionFilter
+  extensionPointName: additional-webfilter
+  displayName: "瞬间旧 RSS 重定向"
+  description: "用于重定向旧的 RSS 订阅源到新的订阅路径"
