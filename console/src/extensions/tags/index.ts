@@ -63,7 +63,7 @@ export const TagsExtension = Mark.create<TagOptions>({
         default: null,
         renderHTML(attributes) {
           return {
-            href: `?tag=${encodeURI(attributes.tagText)}`,
+            href: `/moments?tag=${encodeURI(attributes.tagText)}`,
             "data-pjax": "",
           };
         },

@@ -5,6 +5,7 @@ import static run.halo.app.extension.index.query.QueryFactory.and;
 import static run.halo.app.extension.index.query.QueryFactory.equal;
 
 import jakarta.annotation.Nonnull;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.util.UriUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.Counter;
@@ -109,6 +111,8 @@ public class MomentFinderImpl implements MomentFinder {
                 .map(count -> MomentTagVo.builder()
                     .name(groupedFlux.key())
                     .momentCount(count.intValue())
+                    .permalink("/moments?tag=" + UriUtils.encode(groupedFlux.key(),
+                        StandardCharsets.UTF_8))
                     .build()
                 )
             );
