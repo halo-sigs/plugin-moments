@@ -5,6 +5,7 @@ import {
   IconArrowDown,
   IconClose,
   VEntityField,
+  VEntityContainer,
 } from "@halo-dev/components";
 import { computed, ref } from "vue";
 import { useUCTagQueryFetch } from "@/composables/use-tag";
@@ -79,23 +80,22 @@ const handleCloseTag = (event: Event) => {
           ></FormKit>
         </div>
         <div>
-          <ul class="box-border size-full divide-y divide-gray-100" role="list">
-            <li
+          <VEntityContainer>
+            <VEntity
               v-for="(tag, index) in searchResults"
               :key="index"
               @click="handleSelect(tag)"
+              :is-selected="modelValue === tag"
             >
-              <VEntity :is-selected="modelValue === tag">
-                <template #start>
-                  <VEntityField>
-                    <template #title>
-                      {{ tag }}
-                    </template>
-                  </VEntityField>
-                </template>
-              </VEntity>
-            </li>
-          </ul>
+              <template #start>
+                <VEntityField>
+                  <template #title>
+                    {{ tag }}
+                  </template>
+                </VEntityField>
+              </template>
+            </VEntity>
+          </VEntityContainer>
         </div>
       </div>
     </template>
