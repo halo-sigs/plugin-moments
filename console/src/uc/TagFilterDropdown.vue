@@ -51,27 +51,27 @@ const handleCloseTag = (event: Event) => {
 </script>
 
 <template>
-  <VDropdown ref="dropdown" :classes="['!p-0']" @show="refetch">
+  <VDropdown ref="dropdown" :classes="[':uno: !p-0']" @show="refetch">
     <div
-      class="group flex cursor-pointer select-none items-center border rounded-lg px-3 text-sm text-gray-700 leading-9 hover:text-black"
-      :class="{ 'font-semibold text-gray-700': modelValue !== undefined }"
+      class=":uno: group flex cursor-pointer select-none items-center border rounded-lg px-3 text-sm text-gray-700 leading-9 hover:text-black"
+      :class="{ ':uno: font-semibold text-gray-700': modelValue !== undefined }"
     >
-      <span v-if="!modelValue" class="mr-0.5">
+      <span v-if="!modelValue" class=":uno: mr-0.5">
         {{ label }}
       </span>
-      <span v-else class="mr-0.5"> {{ label }}：{{ modelValue }} </span>
-      <span class="text-base">
-        <IconArrowDown :class="{ 'group-hover:hidden': modelValue }" />
+      <span v-else class=":uno: mr-0.5"> {{ label }}：{{ modelValue }} </span>
+      <span class=":uno: text-base">
+        <IconArrowDown :class="{ ':uno: group-hover:hidden': modelValue }" />
         <IconClose
           v-if="modelValue"
-          class="hidden group-hover:block"
+          class=":uno: hidden group-hover:block"
           @click="handleCloseTag"
         />
       </span>
     </div>
     <template #popper>
-      <div class="h-96 w-80">
-        <div class="border-b border-b-gray-100 bg-white p-4">
+      <div class=":uno: h-96 w-80">
+        <div class=":uno: border-b border-b-gray-100 bg-white p-4">
           <FormKit
             id="tagFilterDropdownInput"
             v-model="keyword"

@@ -112,25 +112,25 @@ const handleJumpToFrontDesk = () => {
 <template>
   <VPageHeader title="瞬间">
     <template #icon>
-      <MingcuteMomentsLine class="mr-2 self-center" />
+      <MingcuteMomentsLine class=":uno: mr-2 self-center" />
     </template>
     <template #actions>
       <VButton @click="handleJumpToFrontDesk">
         <template #icon>
-          <IconExternalLinkLine class="size-full" />
+          <IconExternalLinkLine class=":uno: size-full" />
         </template>
         跳转到前台
       </VButton>
     </template>
   </VPageHeader>
-  <VCard class="m-0 flex-1 md:m-4">
-    <div class="mx-auto max-w-4xl px-4 md:px-8">
-      <div class="moments-content my-2 flex flex-col md:my-4 space-y-2">
+  <VCard class=":uno: m-0 flex-1 md:m-4">
+    <div class=":uno: mx-auto max-w-4xl px-4 md:px-8">
+      <div class=":uno: moments-content my-2 flex flex-col md:my-4 space-y-2">
         <MomentEdit @save="refetch()" />
 
-        <div class="moment-header pb-2 pt-8">
-          <div class="flex flex-col justify-between sm:flex-row space-x-2">
-            <div class="left-0 mb-2 mr-2 flex items-center sm:mb-0 space-x-2">
+        <div class=":uno: moment-header pb-2 pt-8">
+          <div class=":uno: flex flex-col justify-between sm:flex-row space-x-2">
+            <div class=":uno: left-0 mb-2 mr-2 flex items-center sm:mb-0 space-x-2">
               <TagFilterDropdown
                 v-model="tag"
                 :label="'标签'"
@@ -154,11 +154,11 @@ const handleJumpToFrontDesk = () => {
               />
             </div>
 
-            <div class="right-0 flex !ml-0">
+            <div class=":uno: right-0 flex !ml-0">
               <DatePicker
                 v-model:value="momentsRangeTime"
-                input-class="mx-input rounded"
-                class="date-picker range-time max-w-[13rem] cursor-pointer md:max-w-[15rem]"
+                input-class=":uno: mx-input rounded"
+                class=":uno: date-picker range-time max-w-[13rem] cursor-pointer md:max-w-[15rem]"
                 range
                 :editable="false"
                 placeholder="筛选日期范围"
@@ -172,7 +172,7 @@ const handleJumpToFrontDesk = () => {
         <Transition v-else appear name="fade">
           <ul
             v-if="moments && moments.length > 0"
-            class="box-border flex flex-col space-y-2"
+            class=":uno: box-border flex flex-col space-y-2"
             role="list"
           >
             <li v-for="moment in moments" :key="moment.moment.metadata.name">
@@ -184,17 +184,20 @@ const handleJumpToFrontDesk = () => {
             </li>
           </ul>
           <template v-else>
-            <div class="h-full flex items-center justify-center">
-              <span class="text-gray-500">暂无数据</span>
+            <div class=":uno: h-full flex items-center justify-center">
+              <span class=":uno: text-gray-500">暂无数据</span>
             </div>
           </template>
         </Transition>
 
-        <div v-if="hasPrevious || hasNext" s class="my-5 flex justify-center">
+        <div
+          v-if="hasPrevious || hasNext"
+          class=":uno: my-5 flex justify-center"
+        >
           <VPagination
             v-model:page="page"
             v-model:size="size"
-            class="!bg-transparent"
+            class=":uno: !bg-transparent"
             :total="total"
             :size-options="[20, 30, 50, 100]"
           />

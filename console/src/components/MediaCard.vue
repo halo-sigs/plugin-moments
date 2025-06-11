@@ -54,58 +54,58 @@ const imageThumbnailUrl = computed(() => {
 });
 </script>
 <template>
-  <div class="relative overflow-hidden">
+  <div class=":uno: relative overflow-hidden">
     <template v-if="media.type == 'PHOTO'">
-      <div class="aspect-square">
+      <div class=":uno: aspect-square">
         <img
           :src="imageThumbnailUrl"
-          class="size-full object-cover"
+          class=":uno: size-full object-cover"
           loading="lazy"
         />
       </div>
     </template>
     <template v-else-if="media.type == 'VIDEO'">
-      <div class="aspect-square">
+      <div class=":uno: aspect-square">
         <video
           v-if="canPlayType(media.originType)"
-          class="size-full object-cover"
+          class=":uno: size-full object-cover"
           preload="metadata"
         >
           <source :src="media.url" :type="media.originType" />
         </video>
         <div
           v-else
-          class="size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
+          class=":uno: size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
         >
           <LucideFileVideo />
-          <span class="text-xs text-gray-500 font-sans">
+          <span class=":uno: text-xs text-gray-500 font-sans">
             {{ getExtname(media.originType) }}
           </span>
         </div>
       </div>
     </template>
     <template v-else-if="media.type == 'AUDIO'">
-      <div class="aspect-square">
+      <div class=":uno: aspect-square">
         <audio
           v-if="audioType(media.originType)"
-          class="object-cover"
+          class=":uno: object-cover"
           preload="metadata"
         >
           <source :src="media.url" :type="media.originType" />
         </audio>
         <div
           v-else
-          class="size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
+          class=":uno: size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
         >
           <LucideFileAudio />
-          <span class="text-xs text-gray-500 font-sans">
+          <span class=":uno: text-xs text-gray-500 font-sans">
             {{ getExtname(media.originType) }}
           </span>
         </div>
       </div>
     </template>
-    <label class="absolute right-1 top-1 cursor-pointer">
-      <MingCloseCircle class="text-gray-700" @click="handleRemoveClick" />
+    <label class=":uno: absolute right-1 top-1 cursor-pointer">
+      <MingCloseCircle class=":uno: text-gray-700" @click="handleRemoveClick" />
     </label>
   </div>
 </template>

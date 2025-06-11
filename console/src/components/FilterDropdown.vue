@@ -52,22 +52,24 @@ const handleClear = (event: Event) => {
 <template>
   <VDropdown>
     <div
-      class="group flex cursor-pointer select-none items-center border rounded-lg px-3 text-sm text-gray-700 leading-9 hover:text-black"
+      class=":uno: group flex cursor-pointer select-none items-center border rounded-lg px-3 text-sm text-gray-700 leading-9 hover:text-black"
       :class="{
-        'font-semibold text-gray-700': modelValue !== undefined,
+        ':uno: font-semibold text-gray-700': modelValue !== undefined,
       }"
     >
-      <span v-if="!selectedItem" class="mr-0.5">
+      <span v-if="!selectedItem" class=":uno: mr-0.5">
         {{ label }}
       </span>
-      <span v-else class="mr-0.5"> {{ label }}：{{ selectedItem.label }} </span>
-      <span class="text-base">
+      <span v-else class=":uno: mr-0.5">
+        {{ label }}：{{ selectedItem.label }}
+      </span>
+      <span class=":uno: text-base">
         <IconArrowDown
-          :class="{ 'group-hover:hidden': modelValue !== undefined }"
+          :class="{ ':uno: group-hover:hidden': modelValue !== undefined }"
         />
         <IconClose
           v-if="modelValue !== undefined"
-          class="hidden group-hover:block"
+          class=":uno: hidden group-hover:block"
           @click="handleClear"
         />
       </span>

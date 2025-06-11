@@ -1,15 +1,15 @@
-import UcMomentsList from "@/uc/MomentsList.vue";
-import MomentsList from "@/views/MomentsList.vue";
 import type { Extension } from "@halo-dev/api-client";
 import {
   type CommentSubjectRefResult,
   definePlugin,
 } from "@halo-dev/console-shared";
-import { markRaw } from "vue";
+import { defineAsyncComponent, markRaw } from "vue";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { Moment } from "./api/generated";
+import "uno.css";
 import "./styles/index.scss";
 import { formatDatetime } from "./utils/date";
+import { VLoading } from "@halo-dev/components";
 
 export default definePlugin({
   components: {},
@@ -19,7 +19,10 @@ export default definePlugin({
       route: {
         path: "/moments",
         name: "Moments",
-        component: MomentsList,
+        component: defineAsyncComponent({
+          loader: () => import("@/views/MomentsList.vue"),
+          loadingComponent: VLoading,
+        }),
         meta: {
           permissions: ["plugin:moments:view"],
           menu: {
@@ -37,7 +40,10 @@ export default definePlugin({
       route: {
         path: "/moments",
         name: "Moments",
-        component: UcMomentsList,
+        component: defineAsyncComponent({
+          loader: () => import("@/uc/MomentsList.vue"),
+          loadingComponent: VLoading,
+        }),
         meta: {
           permissions: ["uc:plugin:moments:publish"],
           menu: {

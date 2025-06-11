@@ -26,22 +26,22 @@ defineProps({
     :tippy-options="{ duration: 100, arrow: roundArrow, maxWidth: '100%' }"
   >
     <div
-      class="flex items-center border rounded bg-white p-1 drop-shadow space-x-0.5"
+      class=":uno: flex items-center border rounded bg-white p-1 drop-shadow space-x-0.5"
     >
       <button
         v-for="(menuItem, index) in menuItems"
         :key="index"
         v-tooltip="menuItem.title"
-        :class="{ 'bg-gray-200 !text-black': menuItem?.isActive?.() }"
+        :class="{ ':uno: bg-gray-200 !text-black': menuItem?.isActive?.() }"
         :title="menuItem.title"
-        class="rounded-sm p-0.5 text-lg text-gray-600 hover:bg-gray-100"
+        class=":uno: rounded-sm p-0.5 text-lg text-gray-600 hover:bg-gray-100"
         @click="menuItem.action?.()"
       >
         <component :is="menuItem.icon" />
       </button>
 
-      <div class="px-1">
-        <div class="h-5 bg-gray-100" style="width: 1px"></div>
+      <div class=":uno: px-1">
+        <div class=":uno: h-5 bg-gray-100" style="width: 1px"></div>
       </div>
 
       <EditorLinkBubbleMenuItems :editor="editor" />

@@ -126,12 +126,12 @@ function getImageThumbnailUrl(media: MomentMedia) {
       </span>
     </template>
   </PreviewDetailModal>
-  <div class="relative overflow-hidden" @dblclick="handleSwitchEdit">
+  <div class=":uno: relative overflow-hidden" @dblclick="handleSwitchEdit">
     <div
       v-highlight
       v-lazy
       v-tag
-      class="markdown-body moment-preview-html"
+      class=":uno: markdown-body moment-preview-html"
       v-html="props.moment.spec.content.html"
     ></div>
 
@@ -140,38 +140,38 @@ function getImageThumbnailUrl(media: MomentMedia) {
         !!props.moment.spec.content.medium &&
         props.moment.spec.content.medium.length > 0
       "
-      class="img-box flex pt-2"
+      class=":uno: img-box flex pt-2"
     >
-      <ul class="grid grid-cols-3 w-full gap-1.5 sm:w-1/2 !pl-0" role="list">
+      <ul class=":uno: grid grid-cols-3 w-full gap-1.5 sm:w-1/2 !pl-0" role="list">
         <li
           v-for="(media, index) in props.moment.spec.content.medium"
           :key="index"
-          class="inline-block cursor-pointer overflow-hidden border rounded-md"
+          class=":uno: inline-block cursor-pointer overflow-hidden border rounded-md"
         >
-          <div class="aspect-square" @click="handleClickMedium(index)">
+          <div class=":uno: aspect-square" @click="handleClickMedium(index)">
             <template v-if="media.type == 'PHOTO'">
               <img
                 :src="getImageThumbnailUrl(media)"
-                class="size-full object-cover"
+                class=":uno: size-full object-cover"
                 loading="lazy"
               />
             </template>
             <template v-else-if="media.type == 'VIDEO'">
               <div
-                class="size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
+                class=":uno: size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
               >
                 <LucideFileVideo />
-                <span class="text-xs text-gray-500 font-sans">
+                <span class=":uno: text-xs text-gray-500 font-sans">
                   {{ getExtname(media.originType) }}
                 </span>
               </div>
             </template>
             <template v-else-if="media.type == 'AUDIO'">
               <div
-                class="size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
+                class=":uno: size-full flex flex-col items-center justify-center bg-gray-100 space-y-1"
               >
                 <LucideFileAudio />
-                <span class="text-xs text-gray-500 font-sans">
+                <span class=":uno: text-xs text-gray-500 font-sans">
                   {{ getExtname(media.originType) }}
                 </span>
               </div>
