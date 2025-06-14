@@ -1,0 +1,14 @@
+diff --git a/dist/index.js b/dist/index.js
+index 1f04899a2a7f76f7c53f7f1fe82ae43262e2a8b7..7a14eb120ce1d3d2146c1c208c5f909a2d529638 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -1,6 +1,6 @@
+-import { PluginKey, Plugin } from '@tiptap/pm/state';
+-import { DecorationSet, Decoration } from '@tiptap/pm/view';
+-import { escapeForRegEx } from '@tiptap/core';
++import { PluginKey, Plugin } from '@halo-dev/richtext-editor';
++import { DecorationSet, Decoration } from '@halo-dev/richtext-editor';
++import { escapeForRegEx } from '@halo-dev/richtext-editor';
+ 
+ function findSuggestionMatch(config) {
+     var _a;

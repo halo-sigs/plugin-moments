@@ -32,10 +32,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(dirname, "src"),
-      // TODO: Remove this to resolve editor extension
-      // "@tiptap/pm/state": "@halo-dev/richtext-editor",
-      // "@tiptap/core": "@halo-dev/richtext-editor",
-      // "@tiptap/pm/view": "@halo-dev/richtext-editor",
     },
     extensions: [".ts", ".js"],
   },
