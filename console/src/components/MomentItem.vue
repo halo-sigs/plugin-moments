@@ -83,19 +83,19 @@ const handleApproved = async () => {
 <template>
   <div>
     <div
-      class="card preview relative shrink border-t border-gray-100 bg-white py-6"
+      class=":uno: card preview relative shrink border-t border-gray-100 bg-white py-6"
     >
-      <div class="flex items-start gap-3">
+      <div class=":uno: flex items-start gap-3">
         <VAvatar
           :alt="owner?.displayName"
           :src="owner?.avatar"
           size="md"
           circle
-          class="flex-none"
+          class=":uno: flex-none"
         ></VAvatar>
-        <div class="min-w-0 flex-1 shrink">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
+        <div class=":uno: min-w-0 flex-1 shrink">
+          <div class=":uno: flex items-center justify-between">
+            <div class=":uno: flex items-center space-x-3">
               <div>
                 <b> {{ owner?.displayName }} </b>
               </div>
@@ -105,17 +105,17 @@ const handleApproved = async () => {
                   content: '私有访问',
                 }"
               >
-                <IconEyeOff class="text-xs text-gray-500" />
+                <IconEyeOff class=":uno: text-xs text-gray-500" />
               </div>
               <div>
                 <VStatusDot
                   v-show="previewMoment.spec.approved === false"
-                  class="mr-2 cursor-default"
+                  class=":uno: mr-2 cursor-default"
                   state="success"
                   animate
                 >
                   <template #text>
-                    <span class="text-xs text-gray-500">
+                    <span class=":uno: text-xs text-gray-500">
                       {{ `待审核` }}
                     </span>
                   </template>
@@ -123,8 +123,8 @@ const handleApproved = async () => {
               </div>
             </div>
 
-            <div class="flex items-center">
-              <div class="mr-2 cursor-default text-xs text-gray-500">
+            <div class=":uno: flex items-center">
+              <div class=":uno: mr-2 cursor-default text-xs text-gray-500">
                 <span
                   v-tooltip="{
                     content: formatDatetime(previewMoment.spec.releaseTime),
@@ -138,10 +138,10 @@ const handleApproved = async () => {
                 compute-transform-origin
               >
                 <div
-                  class="group flex cursor-pointer items-center justify-center rounded-full p-2 hover:bg-sky-600/10"
+                  class=":uno: group flex cursor-pointer items-center justify-center rounded-full p-2 hover:bg-sky-600/10"
                 >
                   <LucideMoreHorizontal
-                    class="size-full cursor-pointer text-base text-gray-600 group-hover:text-sky-600"
+                    class=":uno: size-full cursor-pointer text-base text-gray-600 group-hover:text-sky-600"
                   />
                 </div>
                 <template #popper>
@@ -160,7 +160,7 @@ const handleApproved = async () => {
             </div>
           </div>
 
-          <div class="mt-3">
+          <div class=":uno: mt-3">
             <MomentEdit
               v-if="editing"
               :moment="editingMoment"

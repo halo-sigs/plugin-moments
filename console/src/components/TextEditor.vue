@@ -158,7 +158,10 @@ watch(
 );
 </script>
 <template>
-  <div v-if="editor" class="halo-moment-editor halo-rich-text-editor relative">
+  <div
+    v-if="editor"
+    class=":uno: halo-moment-editor halo-rich-text-editor relative"
+  >
     <RichTextEditor :editor="editor" locale="zh-CN"> </RichTextEditor>
   </div>
 </template>

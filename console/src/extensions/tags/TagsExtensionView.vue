@@ -100,8 +100,10 @@ const scrollToSelected = () => {
   if (selected) {
     selected.scrollIntoView({
       behavior: "smooth",
+      // @unocss-skip-start
       block: "nearest",
       inline: "start",
+      // @unocss-skip-end
     });
   }
 };
@@ -115,18 +117,18 @@ defineExpose({
   <div>
     <ul
       v-if="tags?.length"
-      class="relative max-h-72 w-52 overflow-y-auto overflow-y-auto rounded-md bg-white p-1 drop-shadow"
+      class=":uno: relative max-h-72 w-52 overflow-y-auto overflow-y-auto rounded-md bg-white p-1 drop-shadow"
     >
       <li
         v-for="(tag, index) in tags"
         :id="`command-tag-item-${index}`"
         :key="index"
         :class="{ 'is-selected': index === selectedIndex }"
-        class="group flex flex-row items-center gap-4 rounded p-1 hover:bg-gray-100"
+        class=":uno: group flex flex-row items-center gap-4 rounded p-1 hover:bg-gray-100"
         @click="handleSelectItem(index)"
       >
         <span
-          class="post-text text-xs text-gray-600 group-hover:text-gray-900 group-hover:font-medium"
+          class=":uno: post-text text-xs text-gray-600 group-hover:text-gray-900 group-hover:font-medium"
         >
           {{ tag }}
         </span>
@@ -134,7 +136,7 @@ defineExpose({
     </ul>
   </div>
 </template>
-<style>
+<style lang="scss">
 .group.is-selected {
   background-color: rgb(243 244 246);
 }

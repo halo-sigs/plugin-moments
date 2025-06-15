@@ -2,14 +2,24 @@
 import { momentsConsoleApiClient, momentsCoreApiClient } from "@/api";
 import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
 import MediaCard from "@/components/MediaCard.vue";
-import TextEditor from "@/components/TextEditor.vue";
 import { useConsoleTagQueryFetch } from "@/composables/use-tag";
-import { IconEye, IconEyeOff, Toast, VButton } from "@halo-dev/components";
+import {
+  IconEye,
+  IconEyeOff,
+  Toast,
+  VButton,
+  VLoading,
+} from "@halo-dev/components";
 import type { AttachmentLike } from "@halo-dev/console-shared";
 import { cloneDeep } from "lodash-es";
-import { computed, onMounted, ref, toRaw } from "vue";
+import { computed, defineAsyncComponent, onMounted, ref, toRaw } from "vue";
 import SendMoment from "~icons/ic/sharp-send";
 import TablerPhoto from "~icons/tabler/photo";
+
+const TextEditor = defineAsyncComponent({
+  loader: () => import("@/components/TextEditor.vue"),
+  loadingComponent: VLoading,
+});
 
 const props = withDefaults(
   defineProps<{
@@ -35,7 +45,9 @@ const initMoment: Moment = {
     },
     releaseTime: new Date().toISOString(),
     owner: "",
+    // @unocss-skip-start
     visible: "PUBLIC",
+    // @unocss-skip-end
     tags: [],
     approved: true,
   },
@@ -292,7 +304,9 @@ const addMediumVerify = (media?: {
 };
 
 function handleToggleVisible() {
+  // @unocss-skip-start
   const { visible: currentVisible } = formState.value.spec;
+  // @unocss-skip-end
   formState.value.spec.visible =
     currentVisible === "PUBLIC" ? "PRIVATE" : "PUBLIC";
 }
@@ -306,7 +320,7 @@ function handleKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <div class="card shrink overflow-hidden border rounded-md bg-white">
+  <div class=":uno: card shrink overflow-hidden border rounded-md bg-white">
     <AttachmentSelectorModal
       v-model:visible="attachmentSelectorModal"
       v-permission="['system:attachments:view']"
@@ -320,73 +334,71 @@ function handleKeydown(event: KeyboardEvent) {
       v-model:html="formState.spec.content.html"
       v-model:isEmpty="isEditorEmpty"
       :tag-query-fetch="useConsoleTagQueryFetch"
-      class="min-h-[9rem] p-3.5"
+      class=":uno: min-h-[9rem] p-3.5"
       tabindex="-1"
       @keydown="handleKeydown"
     />
     <div
       v-if="formState.spec.content.medium?.length"
-      class="img-box flex px-3.5 py-2"
+      class=":uno: img-box flex px-3.5 py-2"
     >
-      <ul class="grid grid-cols-3 w-full gap-1.5 sm:w-1/2" role="list">
+      <ul class=":uno: grid grid-cols-3 w-full gap-1.5 sm:w-1/2" role="list">
         <li
           v-for="(media, index) in formState.spec.content.medium"
           :key="index"
-          class="inline-block overflow-hidden border rounded-md"
+          class=":uno: inline-block overflow-hidden border rounded-md"
         >
           <MediaCard :media="media" @remove="removeMedium"></MediaCard>
         </li>
       </ul>
     </div>
-    <div class="flex justify-between bg-white px-3.5 py-2">
-      <div class="h-fit">
+    <div class=":uno: flex justify-between bg-white px-3.5 py-2">
+      <div class=":uno: h-fit">
         <div
-          class="group flex cursor-pointer items-center justify-center rounded-full p-2 hover:bg-sky-600/10"
+          class=":uno: group flex cursor-pointer items-center justify-center rounded-full p-2 hover:bg-sky-600/10"
         >
           <TablerPhoto
-            class="size-full text-base text-gray-600 group-hover:text-sky-600"
+            class=":uno: size-full text-base text-gray-600 group-hover:text-sky-600"
             @click="addMediumVerify() && (attachmentSelectorModal = true)"
           />
         </div>
       </div>
 
-      <div class="flex items-center space-x-2.5">
+      <div class=":uno: flex items-center space-x-2.5">
         <div
           v-tooltip="{
             content:
               formState.spec.visible === 'PRIVATE' ? `私有访问` : '公开访问',
           }"
-          class="group flex cursor-pointer items-center justify-center rounded-full p-2"
+          class=":uno: group flex cursor-pointer items-center justify-center rounded-full p-2"
           :class="
             formState.spec.visible === 'PRIVATE'
-              ? 'hover:bg-red-600/10'
-              : 'hover:bg-green-600/10'
+              ? ':uno: hover:bg-red-600/10'
+              : ':uno: hover:bg-green-600/10'
           "
           @click="handleToggleVisible()"
         >
           <IconEyeOff
             v-if="formState.spec.visible === 'PRIVATE'"
-            class="size-full text-base text-gray-600 group-hover:text-red-600"
+            class=":uno: size-full text-base text-gray-600 group-hover:text-red-600"
           />
           <IconEye
             v-else
-            class="size-full text-base text-gray-600 group-hover:text-green-600"
+            class=":uno: size-full text-base text-gray-600 group-hover:text-green-600"
           />
         </div>
 
         <button
           v-if="isUpdateMode"
-          class="h-7 inline-flex cursor-pointer items-center rounded px-3 text-gray-600 hover:bg-sky-600/10 hover:text-sky-600"
+          class=":uno: h-7 inline-flex cursor-pointer items-center rounded px-3 text-gray-600 hover:bg-sky-600/10 hover:text-sky-600"
           @click="handlerCancel"
         >
-          <span class="text-xs"> 取消 </span>
+          <span class=":uno: text-xs"> 取消 </span>
         </button>
 
         <div
-          v-permission="
-            ['plugin:moments:manage'] || ['uc:plugin:moments:publish']
-          "
-          class="h-fit"
+          v-permission="['plugin:moments:manage', 'uc:plugin:moments:publish']"
+          class=":uno: h-fit"
         >
           <VButton
             v-model:disabled="saveDisable"
@@ -396,7 +408,7 @@ function handleKeydown(event: KeyboardEvent) {
             @click="handlerCreateOrUpdateMoment"
           >
             <template #icon>
-              <SendMoment class="size-full scale-[1.35]" />
+              <SendMoment class=":uno: size-full scale-[1.35]" />
             </template>
           </VButton>
         </div>
