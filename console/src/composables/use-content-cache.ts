@@ -1,6 +1,6 @@
 import { Toast } from "@halo-dev/components";
 import { useLocalStorage } from "@vueuse/core";
-import { debounce } from "lodash-es";
+import { debounce } from "es-toolkit";
 import type { Ref } from "vue";
 
 interface ContentCache {
@@ -23,17 +23,13 @@ export function useContentCache(
 
   const handleResetCache = () => {
     if (name) {
-      const cache = content_caches.value.find(
-        (c: ContentCache) => c.name === name
-      );
+      const cache = content_caches.value.find((c: ContentCache) => c.name === name);
       if (cache) {
         Toast.info("已从缓存中恢复未保存的内容");
         raw.value = cache.content;
       }
     } else {
-      const cache = content_caches.value.find(
-        (c: ContentCache) => c.name === "" && c.content
-      );
+      const cache = content_caches.value.find((c: ContentCache) => c.name === "" && c.content);
       if (cache) {
         Toast.info("已从缓存中恢复未保存的内容");
         raw.value = cache.content;
@@ -43,9 +39,7 @@ export function useContentCache(
 
   const handleSetContentCache = debounce(() => {
     if (name) {
-      const cache = content_caches.value.find(
-        (c: ContentCache) => c.name === name
-      );
+      const cache = content_caches.value.find((c: ContentCache) => c.name === name);
       if (cache) {
         cache.content = raw?.value;
       } else {
@@ -55,9 +49,7 @@ export function useContentCache(
         });
       }
     } else {
-      const cache = content_caches.value.find(
-        (c: ContentCache) => c.name === ""
-      );
+      const cache = content_caches.value.find((c: ContentCache) => c.name === "");
       if (cache) {
         cache.content = raw?.value;
       } else {
@@ -71,14 +63,10 @@ export function useContentCache(
 
   const handleClearCache = (name: string) => {
     if (name) {
-      const index = content_caches.value.findIndex(
-        (c: ContentCache) => c.name === name
-      );
+      const index = content_caches.value.findIndex((c: ContentCache) => c.name === name);
       index > -1 && content_caches.value.splice(index, 1);
     } else {
-      const index = content_caches.value.findIndex(
-        (c: ContentCache) => c.name === ""
-      );
+      const index = content_caches.value.findIndex((c: ContentCache) => c.name === "");
       index > -1 && content_caches.value.splice(index, 1);
     }
   };

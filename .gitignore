@@ -10,7 +10,10 @@ logs/
 !gradle/wrapper/gradle-wrapper.jar
 bin/
 
-### STS ###
+### Node
+node_modules/
+
+### STS
 .apt_generated
 .classpath
 .factorypath
@@ -19,14 +22,14 @@ bin/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
+### IntelliJ IDEA
 .idea
 *.iws
 *.iml
 *.ipr
 log/
 
-### NetBeans ###
+### NetBeans
 nbproject/private/
 build/
 nbbuild/
@@ -38,21 +41,26 @@ nbdist/
 .DS_Store
 */.DS_Store
 
-### VS Code ###
+### VSCode
 *.project
 *.factorypath
+.vscode
+!.vscode/extensions.json
 
 ### Compiled class file
 *.class
 
 ### Log file
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 ### BlueJ files
 *.ctxt
-
-### Mobile Tools for Java (J2ME)
-.mtj.tmp/
 
 ### Package Files
 *.war
@@ -62,12 +70,12 @@ nbdist/
 *.tar.gz
 *.rar
 
-### VSCode
-.vscode
-
 ### Local file
 application-local.yml
 application-local.yaml
 application-local.properties
+
+/console/build/
 /workplace/
 /src/main/resources/console/
+/src/main/resources/templates/
