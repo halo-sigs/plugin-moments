@@ -11,7 +11,7 @@ import {
   VLoading,
 } from "@halo-dev/components";
 import type { AttachmentLike } from "@halo-dev/console-shared";
-import { cloneDeep } from "lodash-es";
+import { cloneDeep } from "es-toolkit";
 import { computed, defineAsyncComponent, onMounted, ref, toRaw } from "vue";
 import SendMoment from "~icons/ic/sharp-send";
 import TablerPhoto from "~icons/tabler/photo";
