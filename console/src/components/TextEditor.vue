@@ -76,7 +76,7 @@ const emit = defineEmits<{
 
 const editor = shallowRef<Editor>();
 
-const supportedPluginNames = ["editor-hyperlink-card"];
+const supportedPluginNames = ["editor-hyperlink-card", "editor-hyperlink-card"];
 
 const presetExtensions = [
   ExtensionParagraph,
