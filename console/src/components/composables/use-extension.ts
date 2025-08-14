@@ -16,9 +16,7 @@ export function useExtension() {
     const map = new Map<string, AnyExtension>();
     resolvedExtensions.forEach((extension) => {
       if (!extension.name) {
-        console.warn(
-          `Extension name is missing for Extension, type: ${extension.type}.`,
-        );
+        console.warn(`Extension name is missing for Extension, type: ${extension.type}.`);
         const key = randomUUID().toString();
         map.set(key, extension);
         return;
@@ -26,7 +24,7 @@ export function useExtension() {
       const key = `${extension.type}-${extension.name}`;
       if (map.has(key)) {
         console.warn(
-          `Duplicate found for Extension, type: ${extension.type}, name: ${extension.name}. Keeping the later one.`,
+          `Duplicate found for Extension, type: ${extension.type}, name: ${extension.name}. Keeping the later one.`
         );
       }
       map.set(key, extension);
@@ -43,12 +41,8 @@ export function useExtension() {
     const defaultPriority = 100;
 
     return extensions.sort((a, b) => {
-      const priorityA =
-        getExtensionField<AnyConfig["priority"]>(a, "priority") ||
-        defaultPriority;
-      const priorityB =
-        getExtensionField<AnyConfig["priority"]>(b, "priority") ||
-        defaultPriority;
+      const priorityA = getExtensionField<AnyConfig["priority"]>(a, "priority") || defaultPriority;
+      const priorityB = getExtensionField<AnyConfig["priority"]>(b, "priority") || defaultPriority;
 
       if (priorityA > priorityB) {
         return -1;

@@ -6,15 +6,11 @@ export interface useTagQueryFetchProps {
   keyword?: Ref<string | undefined>;
 }
 
-export function useConsoleTagQueryFetch(
-  props: useTagQueryFetchProps
-): ReturnType<typeof useQuery> {
+export function useConsoleTagQueryFetch(props: useTagQueryFetchProps): ReturnType<typeof useQuery> {
   return useTagQueryFetch("console", props);
 }
 
-export function useUCTagQueryFetch(
-  props: useTagQueryFetchProps
-): ReturnType<typeof useQuery> {
+export function useUCTagQueryFetch(props: useTagQueryFetchProps): ReturnType<typeof useQuery> {
   return useTagQueryFetch("uc", props);
 }
 

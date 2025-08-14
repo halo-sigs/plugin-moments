@@ -25,9 +25,7 @@ defineProps({
     :editor="editor"
     :tippy-options="{ duration: 100, arrow: roundArrow, maxWidth: '100%' }"
   >
-    <div
-      class=":uno: flex items-center border rounded bg-white p-1 drop-shadow space-x-0.5"
-    >
+    <div class=":uno: flex items-center border rounded bg-white p-1 drop-shadow space-x-0.5">
       <button
         v-for="(menuItem, index) in menuItems"
         :key="index"

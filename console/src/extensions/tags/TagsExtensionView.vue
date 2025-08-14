@@ -45,10 +45,7 @@ const inputFilter = (newValue: string | undefined) => {
 
 watch(props, (newValue) => {
   clearInterval(timeInterval.value);
-  timeInterval.value = setInterval(
-    () => inputFilter(newValue.query),
-    inputIntervalTime
-  );
+  timeInterval.value = setInterval(() => inputFilter(newValue.query), inputIntervalTime);
 });
 
 // TODO: 滚动条会跟随外部滚动条一起移动，需要处理
@@ -70,8 +67,7 @@ const onKeyDown = ({ event }: { event: KeyboardEvent }) => {
 
 const handleKeyUp = () => {
   if (!tags.value) return;
-  selectedIndex.value =
-    (selectedIndex.value + tags.value.length - 1) % tags.value.length;
+  selectedIndex.value = (selectedIndex.value + tags.value.length - 1) % tags.value.length;
   scrollToSelected();
 };
 
@@ -94,9 +90,7 @@ const handleSelectItem = (index: number) => {
 };
 
 const scrollToSelected = () => {
-  const selected = document.getElementById(
-    `command-tag-item-${selectedIndex.value}`
-  );
+  const selected = document.getElementById(`command-tag-item-${selectedIndex.value}`);
   if (selected) {
     selected.scrollIntoView({
       behavior: "smooth",
@@ -123,7 +117,7 @@ defineExpose({
         v-for="(tag, index) in tags"
         :id="`command-tag-item-${index}`"
         :key="index"
-        :class="{ 'is-selected': index === selectedIndex }"
+        :class="{ ':uno: is-selected': index === selectedIndex }"
         class=":uno: group flex flex-row items-center gap-4 rounded p-1 hover:bg-gray-100"
         @click="handleSelectItem(index)"
       >

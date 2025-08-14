@@ -57,11 +57,7 @@ const imageThumbnailUrl = computed(() => {
   <div class=":uno: relative overflow-hidden">
     <template v-if="media.type == 'PHOTO'">
       <div class=":uno: aspect-square">
-        <img
-          :src="imageThumbnailUrl"
-          class=":uno: size-full object-cover"
-          loading="lazy"
-        />
+        <img :src="imageThumbnailUrl" class=":uno: size-full object-cover" loading="lazy" />
       </div>
     </template>
     <template v-else-if="media.type == 'VIDEO'">
@@ -86,11 +82,7 @@ const imageThumbnailUrl = computed(() => {
     </template>
     <template v-else-if="media.type == 'AUDIO'">
       <div class=":uno: aspect-square">
-        <audio
-          v-if="audioType(media.originType)"
-          class=":uno: object-cover"
-          preload="metadata"
-        >
+        <audio v-if="audioType(media.originType)" class=":uno: object-cover" preload="metadata">
           <source :src="media.url" :type="media.originType" />
         </audio>
         <div

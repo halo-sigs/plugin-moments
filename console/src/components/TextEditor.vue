@@ -56,9 +56,7 @@ const props = withDefaults(
     html: string;
     raw: string;
     isEmpty: boolean;
-    tagQueryFetch: (
-      props: useTagQueryFetchProps
-    ) => UseQueryReturnType<unknown, unknown>;
+    tagQueryFetch: (props: useTagQueryFetchProps) => UseQueryReturnType<unknown, unknown>;
   }>(),
   {
     html: "",
@@ -163,8 +161,7 @@ onMounted(async () => {
   const extensionsFromPlugins: Extensions = [];
 
   for (const pluginModule of enabledPluginModules) {
-    const callbackFunction =
-      pluginModule?.extensionPoints?.["default:editor:extension:create"];
+    const callbackFunction = pluginModule?.extensionPoints?.["default:editor:extension:create"];
 
     if (typeof callbackFunction !== "function") {
       continue;
@@ -175,10 +172,7 @@ onMounted(async () => {
     extensionsFromPlugins.push(...extensions);
   }
 
-  const extensions = filterDuplicateExtensions([
-    ...presetExtensions,
-    ...extensionsFromPlugins,
-  ]);
+  const extensions = filterDuplicateExtensions([...presetExtensions, ...extensionsFromPlugins]);
 
   editor.value = new Editor({
     content: props.raw,
@@ -203,10 +197,7 @@ watch(
 );
 </script>
 <template>
-  <div
-    v-if="editor"
-    class=":uno: halo-moment-editor halo-rich-text-editor relative"
-  >
+  <div v-if="editor" class=":uno: halo-moment-editor halo-rich-text-editor relative">
     <RichTextEditor :editor="editor" locale="zh-CN"> </RichTextEditor>
   </div>
 </template>

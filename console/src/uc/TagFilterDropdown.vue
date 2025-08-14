@@ -84,8 +84,8 @@ const handleCloseTag = (event: Event) => {
             <VEntity
               v-for="(tag, index) in searchResults"
               :key="index"
-              @click="handleSelect(tag)"
               :is-selected="modelValue === tag"
+              @click="handleSelect(tag)"
             >
               <template #start>
                 <VEntityField>
