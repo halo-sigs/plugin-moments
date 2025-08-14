@@ -10,11 +10,7 @@ const momentsCoreApiClient = {
 };
 
 const momentsConsoleApiClient = {
-  moment: new ConsoleApiMomentHaloRunV1alpha1MomentApi(
-    undefined,
-    "",
-    axiosInstance
-  ),
+  moment: new ConsoleApiMomentHaloRunV1alpha1MomentApi(undefined, "", axiosInstance),
 };
 
 const momentsUcApiClient = {

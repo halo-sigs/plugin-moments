@@ -30,16 +30,12 @@ const modal = ref<InstanceType<typeof VModal> | null>(null);
     <template #actions>
       <slot name="actions"></slot>
     </template>
-    <div
-      class=":uno: h-full flex items-center justify-center overflow-hidden bg-white"
-    >
+    <div class=":uno: h-full flex items-center justify-center overflow-hidden bg-white">
       <template v-if="props.media.type === 'PHOTO'">
         <img :src="media?.url" class=":uno: h-full w-auto" />
       </template>
       <template v-else-if="props.media.type === 'VIDEO'">
-        <video controls muted :src="media?.url">
-          当前浏览器不支持该视频播放
-        </video>
+        <video controls muted :src="media?.url">当前浏览器不支持该视频播放</video>
       </template>
     </div>
     <template #footer>

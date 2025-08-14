@@ -15,5 +15,6 @@ module.exports = {
   },
   rules: {
     "vue/no-v-html": "off",
+    "@unocss/enforce-class-compile": 1,
   },
 };

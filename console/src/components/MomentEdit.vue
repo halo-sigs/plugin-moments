@@ -90,7 +90,7 @@ const handleSave = async (moment: Moment) => {
   moment.spec.releaseTime = new Date().toISOString();
   moment.spec.approved = true;
 
-   await momentsConsoleApiClient.moment.createMoment({
+  await momentsConsoleApiClient.moment.createMoment({
     moment: moment,
   });
 
@@ -100,7 +100,7 @@ const handleSave = async (moment: Moment) => {
 };
 
 const handleUpdate = async () => {
-   await momentsCoreApiClient.moment.patchMoment({
+  await momentsCoreApiClient.moment.patchMoment({
     name: formState.value.metadata.name,
     jsonPatchInner: [
       {

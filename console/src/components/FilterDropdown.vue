@@ -1,10 +1,5 @@
 <script lang="ts" setup>
-import {
-  IconArrowDown,
-  IconClose,
-  VDropdown,
-  VDropdownItem,
-} from "@halo-dev/components";
+import { IconArrowDown, IconClose, VDropdown, VDropdownItem } from "@halo-dev/components";
 import { computed } from "vue";
 
 const props = withDefaults(
@@ -22,20 +17,14 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (
-    event: "update:modelValue",
-    modelValue: string | boolean | number | undefined
-  ): void;
+  (event: "update:modelValue", modelValue: string | boolean | number | undefined): void;
 }>();
 
 const selectedItem = computed(() => {
   return props.items.find((item) => item.value === props.modelValue);
 });
 
-function handleSelect(item: {
-  label: string;
-  value?: string | boolean | number;
-}) {
+function handleSelect(item: { label: string; value?: string | boolean | number }) {
   if (item.value === props.modelValue) {
     emit("update:modelValue", undefined);
     return;
@@ -60,13 +49,9 @@ const handleClear = (event: Event) => {
       <span v-if="!selectedItem" class=":uno: mr-0.5">
         {{ label }}
       </span>
-      <span v-else class=":uno: mr-0.5">
-        {{ label }}：{{ selectedItem.label }}
-      </span>
+      <span v-else class=":uno: mr-0.5"> {{ label }}：{{ selectedItem.label }} </span>
       <span class=":uno: text-base">
-        <IconArrowDown
-          :class="{ ':uno: group-hover:hidden': modelValue !== undefined }"
-        />
+        <IconArrowDown :class="{ ':uno: group-hover:hidden': modelValue !== undefined }" />
         <IconClose
           v-if="modelValue !== undefined"
           class=":uno: hidden group-hover:block"

@@ -11,10 +11,7 @@ dayjs.extend(relativeTime);
 
 dayjs.locale("zh-cn");
 
-export function formatDatetime(
-  date: string | Date | undefined | null,
-  tz?: string
-): string {
+export function formatDatetime(date: string | Date | undefined | null, tz?: string): string {
   if (!date) {
     return "";
   }
@@ -28,10 +25,7 @@ export function toISOString(date: string | Date | undefined | null): string {
   return dayjs(date).utc(false).toISOString();
 }
 
-export function toDatetimeLocal(
-  date: string | Date | undefined | null,
-  tz?: string
-): string {
+export function toDatetimeLocal(date: string | Date | undefined | null, tz?: string): string {
   if (!date) {
     return "";
   }
@@ -39,9 +33,7 @@ export function toDatetimeLocal(
   return dayjs(date).tz(tz).format("YYYY-MM-DDTHH:mm");
 }
 
-export function toISODayEndOfTime(
-  date: string | Date | undefined | null
-): string {
+export function toISODayEndOfTime(date: string | Date | undefined | null): string {
   if (!date) {
     return "";
   }

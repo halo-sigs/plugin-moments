@@ -211,17 +211,17 @@ function handleOpenCommentList() {
       </ul>
     </div>
 
-    <div class="mt-4 flex items-center gap-3">
-      <div class="inline-flex items-center gap-1 text-gray-600 hover:text-gray-900">
+    <div class=":uno: mt-4 flex items-center gap-3">
+      <div class=":uno: inline-flex items-center gap-1 text-gray-600 hover:text-gray-900">
         <RiHeart3Line />
-        <span class="text-sm">{{ moment.stats.upvote }}</span>
+        <span class=":uno: text-sm">{{ moment.stats.upvote }}</span>
       </div>
       <div
-        class="inline-flex items-center gap-1 text-gray-600 hover:text-gray-900 cursor-pointer group"
+        class=":uno: group inline-flex cursor-pointer items-center gap-1 text-gray-600 hover:text-gray-900"
         @click="handleOpenCommentList"
       >
         <IconMessage />
-        <span class="group-hover:underline text-sm">{{ commentText }}</span>
+        <span class=":uno: text-sm group-hover:underline">{{ commentText }}</span>
       </div>
     </div>
 

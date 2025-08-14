@@ -17,9 +17,7 @@ import type { UseQueryReturnType } from "@tanstack/vue-query";
 
 export interface TagOptions {
   HTMLAttributes: Record<string, any>;
-  tagQueryFetch: (
-    props: useTagQueryFetchProps
-  ) => UseQueryReturnType<unknown, unknown>;
+  tagQueryFetch: (props: useTagQueryFetchProps) => UseQueryReturnType<unknown, unknown>;
 }
 
 declare module "@halo-dev/richtext-editor" {
@@ -80,11 +78,7 @@ export const TagsExtension = Mark.create<TagOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return [
-      "a",
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-      0,
-    ];
+    return ["a", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
   },
 
   addCommands() {
@@ -196,15 +190,7 @@ export const TagsExtension = Mark.create<TagOptions>({
             },
           };
         },
-        command: ({
-          editor,
-          range,
-          props,
-        }: {
-          editor: Editor;
-          range: Range;
-          props: string;
-        }) => {
+        command: ({ editor, range, props }: { editor: Editor; range: Range; props: string }) => {
           editor.chain().focus().deleteRange(range).setTag(props).run();
         },
       }),

@@ -1,8 +1,4 @@
-import {
-  type Editor,
-  ExtensionImage,
-  type Range,
-} from "@halo-dev/richtext-editor";
+import { type Editor, ExtensionImage, type Range } from "@halo-dev/richtext-editor";
 import type { ExtensionOptions } from "@halo-dev/richtext-editor/dist/types";
 import { markRaw } from "vue";
 import MdiFileImageBox from "~icons/mdi/file-image-box";
@@ -13,9 +9,7 @@ export interface ImageOptions {
   HTMLAttributes: Record<string, unknown>;
 }
 
-const MomentExtensionImage = ExtensionImage.extend<
-  ExtensionOptions & ImageOptions
->({
+const MomentExtensionImage = ExtensionImage.extend<ExtensionOptions & ImageOptions>({
   addOptions() {
     return {
       ...this.parent?.(),

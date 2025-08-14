@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { momentsUcApiClient } from "@/api";
-import { ListMomentsVisibleEnum, type ListedMoment, type Moment } from "@/api/generated";
+import { type ListedMoment } from "@/api/generated";
 import MomentPreview from "@/components/MomentPreview.vue";
 import { formatDatetime, relativeTimeTo } from "@/utils/date";
 import {
@@ -12,7 +12,7 @@ import {
   VDropdownItem,
   VStatusDot,
 } from "@halo-dev/components";
-import { computed, ref, toRaw } from "vue";
+import { computed, ref } from "vue";
 import LucideMoreHorizontal from "~icons/lucide/more-horizontal";
 import MomentEdit from "./MomentEdit.vue";
 import { useQueryClient } from "@tanstack/vue-query";
