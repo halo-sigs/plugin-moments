@@ -1,12 +1,7 @@
 <script lang="ts" setup>
 import { momentsUcApiClient } from "@/api";
 import { toISODayEndOfTime } from "@/utils/date";
-import {
-  VCard,
-  VLoading,
-  VPageHeader,
-  VPagination,
-} from "@halo-dev/components";
+import { VCard, VLoading, VPageHeader, VPagination } from "@halo-dev/components";
 import { useQuery } from "@tanstack/vue-query";
 import { useRouteQuery } from "@vueuse/router";
 import { computed, provide, ref, watch } from "vue";
@@ -73,6 +68,7 @@ const {
   refetch,
 } = useQuery({
   queryKey: [
+    "plugin:moments:list",
     page,
     size,
     selectedVisibleItem,
@@ -134,17 +130,12 @@ watch([tag, momentsRangeTime], () => {
   <VCard class=":uno: m-0 flex-1 md:m-4">
     <div class=":uno: mx-auto max-w-4xl px-4 md:px-8">
       <div class=":uno: moments-content my-2 flex flex-col md:my-4 space-y-2">
-        <MomentEdit @save="refetch()" />
+        <MomentEdit />
 
         <div class=":uno: moment-header pb-2 pt-8">
-          <div
-            class=":uno: flex flex-col justify-between sm:flex-row space-x-2"
-          >
+          <div class=":uno: flex flex-col justify-between sm:flex-row space-x-2">
             <div class=":uno: left-0 mb-2 mr-2 flex items-center sm:mb-0">
-              <TagFilterDropdown
-                v-model="tag"
-                :label="'标签'"
-              ></TagFilterDropdown>
+              <TagFilterDropdown v-model="tag" :label="'标签'"></TagFilterDropdown>
             </div>
 
             <div class=":uno: right-0 flex !ml-0">
@@ -183,10 +174,7 @@ watch([tag, momentsRangeTime], () => {
           </template>
         </Transition>
 
-        <div
-          v-if="hasPrevious || hasNext"
-          class=":uno: my-5 flex justify-center"
-        >
+        <div v-if="hasPrevious || hasNext" class=":uno: my-5 flex justify-center">
           <VPagination
             v-model:page="page"
             v-model:size="size"

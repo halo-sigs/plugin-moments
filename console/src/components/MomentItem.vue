@@ -11,10 +11,11 @@ import {
   VDropdownItem,
   VStatusDot,
 } from "@halo-dev/components";
-import { computed, ref, toRaw } from "vue";
+import { computed, ref } from "vue";
 import LucideMoreHorizontal from "~icons/lucide/more-horizontal";
 import MomentEdit from "./MomentEdit.vue";
 import MomentPreview from "./MomentPreview.vue";
+import { useQueryClient } from "@tanstack/vue-query";
 
 const props = withDefaults(
   defineProps<{
@@ -22,7 +23,6 @@ const props = withDefaults(
     editing: boolean;
   }>(),
   {
-    listedMoment: undefined,
     editing: false,
   }
 );
@@ -33,9 +33,9 @@ const emit = defineEmits<{
   (event: "remove"): void;
 }>();
 
+const queryClient = useQueryClient();
+
 const editing = ref(props.editing);
-const editingMoment = ref<Moment>(toRaw(props.listedMoment?.moment));
-const previewMoment = ref<Moment>(toRaw(props.listedMoment?.moment));
 const owner = computed(() => props.listedMoment?.owner);
 
 const deleteMoment = () => {
@@ -46,7 +46,7 @@ const deleteMoment = () => {
     onConfirm: async () => {
       try {
         await momentsCoreApiClient.moment.deleteMoment({
-          name: previewMoment.value.metadata.name,
+          name: props.listedMoment.moment.metadata.name,
         });
 
         Toast.success("删除成功");
@@ -58,15 +58,13 @@ const deleteMoment = () => {
   });
 };
 
-const handleUpdate = (moment: Moment) => {
-  editingMoment.value = toRaw(moment);
-  previewMoment.value = toRaw(moment);
+const onUpdated = () => {
   editing.value = false;
 };
 
 const handleApproved = async () => {
   await momentsCoreApiClient.moment.patchMoment({
-    name: editingMoment.value.metadata.name,
+    name: props.listedMoment.moment.metadata.name,
     jsonPatchInner: [
       {
         op: "add",
@@ -76,15 +74,12 @@ const handleApproved = async () => {
     ],
   });
 
-  editingMoment.value.spec.approved = true;
-  previewMoment.value.spec.approved = true;
+  queryClient.invalidateQueries({ queryKey: ["plugin:moments:list"] });
 };
 </script>
 <template>
   <div>
-    <div
-      class=":uno: card preview relative shrink border-t border-gray-100 bg-white py-6"
-    >
+    <div class=":uno: card preview relative shrink border-t border-gray-100 bg-white py-6">
       <div class=":uno: flex items-start gap-3">
         <VAvatar
           :alt="owner?.displayName"
@@ -100,7 +95,7 @@ const handleApproved = async () => {
                 <b> {{ owner?.displayName }} </b>
               </div>
               <div
-                v-if="previewMoment.spec.visible == 'PRIVATE'"
+                v-if="listedMoment?.moment.spec.visible == 'PRIVATE'"
                 v-tooltip="{
                   content: '私有访问',
                 }"
@@ -109,7 +104,7 @@ const handleApproved = async () => {
               </div>
               <div>
                 <VStatusDot
-                  v-show="previewMoment.spec.approved === false"
+                  v-show="listedMoment?.moment.spec.approved === false"
                   class=":uno: mr-2 cursor-default"
                   state="success"
                   animate
@@ -127,16 +122,13 @@ const handleApproved = async () => {
               <div class=":uno: mr-2 cursor-default text-xs text-gray-500">
                 <span
                   v-tooltip="{
-                    content: formatDatetime(previewMoment.spec.releaseTime),
+                    content: formatDatetime(listedMoment?.moment.spec.releaseTime),
                   }"
                 >
-                  {{ relativeTimeTo(previewMoment.spec.releaseTime) }}
+                  {{ relativeTimeTo(listedMoment?.moment.spec.releaseTime) }}
                 </span>
               </div>
-              <VDropdown
-                v-permission="['plugin:moments:manage']"
-                compute-transform-origin
-              >
+              <VDropdown v-permission="['plugin:moments:manage']" compute-transform-origin>
                 <div
                   class=":uno: group flex cursor-pointer items-center justify-center rounded-full p-2 hover:bg-sky-600/10"
                 >
@@ -145,16 +137,11 @@ const handleApproved = async () => {
                   />
                 </div>
                 <template #popper>
-                  <VDropdownItem
-                    v-if="previewMoment.spec.approved == false"
-                    @click="handleApproved"
-                  >
+                  <VDropdownItem v-if="!listedMoment?.moment.spec.approved" @click="handleApproved">
                     审核通过
                   </VDropdownItem>
                   <VDropdownItem @click="editing = true"> 编辑 </VDropdownItem>
-                  <VDropdownItem type="danger" @click="deleteMoment">
-                    删除
-                  </VDropdownItem>
+                  <VDropdownItem type="danger" @click="deleteMoment"> 删除 </VDropdownItem>
                 </template>
               </VDropdown>
             </div>
@@ -163,13 +150,14 @@ const handleApproved = async () => {
           <div class=":uno: mt-3">
             <MomentEdit
               v-if="editing"
-              :moment="editingMoment"
-              @update="handleUpdate"
+              :moment="listedMoment?.moment"
+              @update="onUpdated"
               @cancel="editing = false"
             ></MomentEdit>
             <MomentPreview
               v-else
-              :moment="previewMoment"
+              :uc="false"
+              :moment="listedMoment"
               @switch-edit-mode="editing = true"
             />
           </div>

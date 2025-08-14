@@ -22,14 +22,15 @@ import "vue-datepicker-next/locale/zh-cn.es";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 
 const tag = useRouteQuery<string>("tag");
-const selectedApprovedStatus = useRouteQuery<
-  string | undefined,
-  boolean | undefined
->("approved", undefined, {
-  transform: (value) => {
-    return value ? value === "true" : undefined;
-  },
-});
+const selectedApprovedStatus = useRouteQuery<string | undefined, boolean | undefined>(
+  "approved",
+  undefined,
+  {
+    transform: (value) => {
+      return value ? value === "true" : undefined;
+    },
+  }
+);
 
 const page = ref(1);
 const size = ref(20);
@@ -56,6 +57,7 @@ const {
   refetch,
 } = useQuery({
   queryKey: [
+    "plugin:moments:list",
     page,
     size,
     selectedApprovedStatus,
@@ -126,15 +128,12 @@ const handleJumpToFrontDesk = () => {
   <VCard class=":uno: m-0 flex-1 md:m-4">
     <div class=":uno: mx-auto max-w-4xl px-4 md:px-8">
       <div class=":uno: moments-content my-2 flex flex-col md:my-4 space-y-2">
-        <MomentEdit @save="refetch()" />
+        <MomentEdit />
 
         <div class=":uno: moment-header pb-2 pt-8">
           <div class=":uno: flex flex-col justify-between sm:flex-row space-x-2">
             <div class=":uno: left-0 mb-2 mr-2 flex items-center sm:mb-0 space-x-2">
-              <TagFilterDropdown
-                v-model="tag"
-                :label="'标签'"
-              ></TagFilterDropdown>
+              <TagFilterDropdown v-model="tag" :label="'标签'"></TagFilterDropdown>
               <FilterDropdown
                 v-model="selectedApprovedStatus"
                 label="状态"
@@ -190,10 +189,7 @@ const handleJumpToFrontDesk = () => {
           </template>
         </Transition>
 
-        <div
-          v-if="hasPrevious || hasNext"
-          class=":uno: my-5 flex justify-center"
-        >
+        <div v-if="hasPrevious || hasNext" class=":uno: my-5 flex justify-center">
           <VPagination
             v-model:page="page"
             v-model:size="size"

@@ -1,17 +1,20 @@
 <script lang="ts" setup>
-import type { Moment, MomentMedia } from "@/api/generated";
-import { IconArrowLeft, IconArrowRight } from "@halo-dev/components";
+import type { ListedMoment, Moment, MomentMedia } from "@/api/generated";
+import { IconArrowLeft, IconArrowRight, IconMessage } from "@halo-dev/components";
 import hljs from "highlight.js/lib/common";
 import xml from "highlight.js/lib/languages/xml";
 import { computed, inject, ref } from "vue";
 import LucideFileAudio from "~icons/lucide/file-audio";
 import LucideFileVideo from "~icons/lucide/file-video";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
+import RiHeart3Line from "~icons/ri/heart-3-line";
+import { useQueryClient } from "@tanstack/vue-query";
 
 hljs.registerLanguage("xml", xml);
 
 const props = defineProps<{
-  moment: Moment;
+  moment: ListedMoment;
+  uc: boolean;
 }>();
 
 const { updateTagQuery } = inject("tag") as {
@@ -22,6 +25,8 @@ const { updateTagQuery } = inject("tag") as {
 const emit = defineEmits<{
   (event: "switchEditMode"): void;
 }>();
+
+const queryClient = useQueryClient();
 
 const vHighlight = {
   mounted: (el: HTMLElement) => {
@@ -70,7 +75,7 @@ const vTag = {
   },
 };
 
-const mediums = ref(props.moment.spec.content.medium || []);
+const mediums = ref(props.moment.moment.spec.content.medium || []);
 const detailVisible = ref<boolean>(false);
 const selectedIndex = ref<number>(0);
 const selectedMedia = computed(() => {
@@ -106,6 +111,38 @@ function getImageThumbnailUrl(media: MomentMedia) {
     url || ""
   )}&size=s`;
 }
+
+const commentText = computed(() => {
+  const { totalComment, approvedComment } = props.moment.stats || {};
+
+  let text = totalComment || "0";
+
+  const pendingComments = (totalComment || 0) - (approvedComment || 0);
+
+  if (pendingComments > 0) {
+    text += `（${pendingComments} 条待审核）`;
+  }
+  return text;
+});
+
+const commentListVisible = ref(false);
+const commentSubjectRefKey = `moment.halo.run/Moment/${props.moment.moment.metadata.name}`;
+
+function onCommentListClose() {
+  commentListVisible.value = false;
+
+  queryClient.invalidateQueries({
+    queryKey: ["plugin:moments:list"],
+  });
+}
+
+function handleOpenCommentList() {
+  if (props.uc) {
+    window.open(`/moments/${props.moment.moment.metadata.name}`, "_blank");
+    return;
+  }
+  commentListVisible.value = true;
+}
 </script>
 <template>
   <PreviewDetailModal
@@ -114,11 +151,7 @@ function getImageThumbnailUrl(media: MomentMedia) {
     @close="detailVisible = false"
   >
     <template #actions>
-      <span
-        @click="
-          selectedIndex = (selectedIndex + mediums.length - 1) % mediums.length
-        "
-      >
+      <span @click="selectedIndex = (selectedIndex + mediums.length - 1) % mediums.length">
         <IconArrowLeft />
       </span>
       <span @click="selectedIndex = (selectedIndex + 1) % mediums.length">
@@ -132,19 +165,16 @@ function getImageThumbnailUrl(media: MomentMedia) {
       v-lazy
       v-tag
       class=":uno: markdown-body moment-preview-html"
-      v-html="props.moment.spec.content.html"
+      v-html="moment.moment.spec.content.html"
     ></div>
 
     <div
-      v-if="
-        !!props.moment.spec.content.medium &&
-        props.moment.spec.content.medium.length > 0
-      "
+      v-if="!!moment.moment.spec.content.medium && moment.moment.spec.content.medium.length > 0"
       class=":uno: img-box flex pt-2"
     >
       <ul class=":uno: grid grid-cols-3 w-full gap-1.5 sm:w-1/2 !pl-0" role="list">
         <li
-          v-for="(media, index) in props.moment.spec.content.medium"
+          v-for="(media, index) in moment.moment.spec.content.medium"
           :key="index"
           class=":uno: inline-block cursor-pointer overflow-hidden border rounded-md"
         >
@@ -180,5 +210,25 @@ function getImageThumbnailUrl(media: MomentMedia) {
         </li>
       </ul>
     </div>
+
+    <div class="mt-4 flex items-center gap-3">
+      <div class="inline-flex items-center gap-1 text-gray-600 hover:text-gray-900">
+        <RiHeart3Line />
+        <span class="text-sm">{{ moment.stats.upvote }}</span>
+      </div>
+      <div
+        class="inline-flex items-center gap-1 text-gray-600 hover:text-gray-900 cursor-pointer group"
+        @click="handleOpenCommentList"
+      >
+        <IconMessage />
+        <span class="group-hover:underline text-sm">{{ commentText }}</span>
+      </div>
+    </div>
+
+    <SubjectQueryCommentListModal
+      v-if="commentListVisible && !uc"
+      :subject-ref-key="commentSubjectRefKey"
+      @close="onCommentListClose"
+    />
   </div>
 </template>

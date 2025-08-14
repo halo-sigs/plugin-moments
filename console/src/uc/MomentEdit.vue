@@ -3,14 +3,9 @@ import { momentsUcApiClient } from "@/api";
 import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
 import MediaCard from "@/components/MediaCard.vue";
 import { useUCTagQueryFetch } from "@/composables/use-tag";
-import {
-  IconEye,
-  IconEyeOff,
-  Toast,
-  VButton,
-  VLoading,
-} from "@halo-dev/components";
+import { IconEye, IconEyeOff, Toast, VButton, VLoading } from "@halo-dev/components";
 import type { AttachmentLike } from "@halo-dev/console-shared";
+import { useQueryClient } from "@tanstack/vue-query";
 import { cloneDeep } from "es-toolkit";
 import { computed, defineAsyncComponent, onMounted, ref, toRaw } from "vue";
 import SendMoment from "~icons/ic/sharp-send";
@@ -31,10 +26,11 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: "save", moment: Moment): void;
-  (event: "update", moment: Moment): void;
+  (event: "update"): void;
   (event: "cancel"): void;
 }>();
+
+const queryClient = useQueryClient();
 
 const initMoment: Moment = {
   spec: {
@@ -68,9 +64,7 @@ onMounted(() => {
 const formState = ref<Moment>(cloneDeep(initMoment));
 const saving = ref<boolean>(false);
 const attachmentSelectorModal = ref(false);
-const isUpdateMode = computed(
-  () => !!formState.value.metadata.creationTimestamp
-);
+const isUpdateMode = computed(() => !!formState.value.metadata.creationTimestamp);
 const isEditorEmpty = ref<boolean>(true);
 const handlerCreateOrUpdateMoment = async () => {
   if (saveDisable.value) {
@@ -96,11 +90,12 @@ const handleSave = async (moment: Moment) => {
   moment.spec.releaseTime = new Date().toISOString();
   moment.spec.approved = true;
 
-  const { data } = await momentsUcApiClient.moment.createMyMoment({
+  await momentsUcApiClient.moment.createMyMoment({
     moment: moment,
   });
 
-  emit("save", data);
+  queryClient.invalidateQueries(["plugin:moments:list"]);
+
   Toast.success("发布成功");
 };
 
@@ -108,23 +103,25 @@ const handleUpdate = async (moment: Moment) => {
   const { data } = await momentsUcApiClient.moment.getMyMoment({
     name: moment.metadata.name,
   });
-  // 更新当前需要提交的 moment spec 为最新
+
   data.spec = moment.spec;
-  const updated = await momentsUcApiClient.moment.updateMyMoment({
+
+  await momentsUcApiClient.moment.updateMyMoment({
     name: moment.metadata.name,
     moment: data,
   });
-  emit("update", updated.data);
+
+  emit("update");
+
+  queryClient.invalidateQueries(["plugin:moments:list"]);
+
   Toast.success("发布成功");
 };
 
 const parse = new DOMParser();
 const queryEditorTags = function () {
   let tags: Set<string> = new Set();
-  let document: Document = parse.parseFromString(
-    formState.value.spec.content.raw!,
-    "text/html"
-  );
+  let document: Document = parse.parseFromString(formState.value.spec.content.raw!, "text/html");
   let nodeList: NodeList = document.querySelectorAll("a.tag");
   if (nodeList) {
     for (let tagNode of nodeList) {
@@ -159,11 +156,7 @@ const supportVideoTypes: string[] = ["video/*"];
 
 const supportAudioTypes: string[] = ["audio/*"];
 
-const accepts = [
-  ...supportImageTypes,
-  ...supportVideoTypes,
-  ...supportAudioTypes,
-];
+const accepts = [...supportImageTypes, ...supportVideoTypes, ...supportAudioTypes];
 
 const mediumWhitelist: Map<string, MomentMediaTypeEnum> = new Map([
   ["image", "PHOTO"],
@@ -278,11 +271,7 @@ const addMediumVerify = (media?: {
   }
 
   if (media) {
-    if (
-      formState.value.spec.content.medium?.filter(
-        (item) => item.url == media.url
-      ).length != 0
-    ) {
+    if (formState.value.spec.content.medium?.filter((item) => item.url == media.url).length != 0) {
       Toast.warning("已过滤重复添加的附件");
       return false;
     }
@@ -295,8 +284,7 @@ function handleToggleVisible() {
   // @unocss-skip-start
   const { visible: currentVisible } = formState.value.spec;
   // @unocss-skip-end
-  formState.value.spec.visible =
-    currentVisible === "PUBLIC" ? "PRIVATE" : "PUBLIC";
+  formState.value.spec.visible = currentVisible === "PUBLIC" ? "PRIVATE" : "PUBLIC";
 }
 
 function handleKeydown(event: KeyboardEvent) {
@@ -326,10 +314,7 @@ function handleKeydown(event: KeyboardEvent) {
       tabindex="-1"
       @keydown="handleKeydown"
     />
-    <div
-      v-if="formState.spec.content.medium?.length"
-      class=":uno: img-box flex px-3.5 py-2"
-    >
+    <div v-if="formState.spec.content.medium?.length" class=":uno: img-box flex px-3.5 py-2">
       <ul class=":uno: grid grid-cols-3 w-full gap-1.5 sm:w-1/2" role="list">
         <li
           v-for="(media, index) in formState.spec.content.medium"
@@ -355,8 +340,7 @@ function handleKeydown(event: KeyboardEvent) {
       <div class=":uno: flex items-center space-x-2.5">
         <div
           v-tooltip="{
-            content:
-              formState.spec.visible === 'PRIVATE' ? `私有访问` : '公开访问',
+            content: formState.spec.visible === 'PRIVATE' ? `私有访问` : '公开访问',
           }"
           class=":uno: group flex cursor-pointer items-center justify-center rounded-full p-2"
           :class="
