@@ -62,7 +62,7 @@ spec:
             </div>
             <div>以下是评论的具体内容：</div>
           </div>
-          <pre class="content" th:text="${content}"></pre>
+          <div class="content" th:utext="${content}"></div>
         </div>
         <div></div>
       </div>
