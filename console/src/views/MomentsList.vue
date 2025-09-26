@@ -4,6 +4,7 @@ import FilterDropdown from "@/components/FilterDropdown.vue";
 import MomentEdit from "@/components/MomentEdit.vue";
 import MomentItem from "@/components/MomentItem.vue";
 import TagFilterDropdown from "@/components/TagFilterDropdown.vue";
+import { usePluginShikiScriptLoader } from "@/plugin-supports/shiki/use-plugin-shiki-script-loader";
 import { toISODayEndOfTime } from "@/utils/date";
 import {
   IconExternalLinkLine,
@@ -110,6 +111,8 @@ watch([tag, selectedApprovedStatus, momentsRangeTime], () => {
 const handleJumpToFrontDesk = () => {
   window.open("/moments", "_blank");
 };
+
+usePluginShikiScriptLoader();
 </script>
 <template>
   <VPageHeader title="瞬间">

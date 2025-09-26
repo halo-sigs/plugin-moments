@@ -12,6 +12,7 @@ import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import MomentEdit from "./MomentEdit.vue";
 import MomentItem from "./MomentItem.vue";
 import TagFilterDropdown from "./TagFilterDropdown.vue";
+import { usePluginShikiScriptLoader } from "@/plugin-supports/shiki/use-plugin-shiki-script-loader";
 
 interface VisibleItem {
   label: string;
@@ -120,6 +121,8 @@ watch([tag, momentsRangeTime], () => {
   size.value = 20;
   refetch();
 });
+
+usePluginShikiScriptLoader();
 </script>
 <template>
   <VPageHeader title="瞬间">

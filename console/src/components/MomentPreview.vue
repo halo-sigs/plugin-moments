@@ -7,6 +7,7 @@ import LucideFileVideo from "~icons/lucide/file-video";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import RiHeart3Line from "~icons/ri/heart-3-line";
 import { useQueryClient } from "@tanstack/vue-query";
+import ShikiDirective from "@/plugin-supports/shiki/directive";
 
 const props = defineProps<{
   moment: ListedMoment;
@@ -129,6 +130,12 @@ function handleOpenCommentList() {
   }
   commentListVisible.value = true;
 }
+
+defineOptions({
+  directives: {
+    shiki: ShikiDirective,
+  },
+});
 </script>
 <template>
   <PreviewDetailModal
@@ -149,6 +156,7 @@ function handleOpenCommentList() {
     <div
       v-lazy
       v-tag
+      v-shiki
       class=":uno: markdown-body moment-preview-html"
       v-html="moment.moment.spec.content.html"
     ></div>
