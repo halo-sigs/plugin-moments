@@ -8,8 +8,6 @@ import PreviewDetailModal from "./PreviewDetailModal.vue";
 import RiHeart3Line from "~icons/ri/heart-3-line";
 import { useQueryClient } from "@tanstack/vue-query";
 
-hljs.registerLanguage("xml", xml);
-
 const props = defineProps<{
   moment: ListedMoment;
   uc: boolean;
