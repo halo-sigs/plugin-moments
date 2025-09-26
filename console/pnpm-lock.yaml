@@ -49,9 +49,6 @@ importers:
       floating-vue:
         specifier: 2.0.0-beta.20
         version: 2.0.0-beta.20(vue@3.4.37(typescript@5.5.4))
-      highlight.js:
-        specifier: ^11.10.0
-        version: 11.10.0
       tippy.js:
         specifier: ^6.3.7
         version: 6.3.7
@@ -1841,10 +1838,6 @@ packages:
   he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
-
-  highlight.js@11.10.0:
-    resolution: {integrity: sha512-SYVnVFswQER+zu1laSya563s+F8VDGt7o35d4utbamowvUNLLMovFqwCLSocpZTz3MgaSRA1IbqRWZv97dtErQ==}
-    engines: {node: '>=12.0.0'}
 
   highlight.js@11.8.0:
     resolution: {integrity: sha512-MedQhoqVdr0U6SSnWPzfiadUcDHfN/Wzq25AkXiQv9oiOO/sG0S7XkvpFIqWBl9Yq1UYyYOOVORs5UW2XlPyzg==}
@@ -4690,8 +4683,6 @@ snapshots:
       function-bind: 1.1.2
 
   he@1.2.0: {}
-
-  highlight.js@11.10.0: {}
 
   highlight.js@11.8.0: {}
 
