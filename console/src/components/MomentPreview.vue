@@ -1,16 +1,12 @@
 <script lang="ts" setup>
 import type { ListedMoment, Moment, MomentMedia } from "@/api/generated";
 import { IconArrowLeft, IconArrowRight, IconMessage } from "@halo-dev/components";
-import hljs from "highlight.js/lib/common";
-import xml from "highlight.js/lib/languages/xml";
 import { computed, inject, ref } from "vue";
 import LucideFileAudio from "~icons/lucide/file-audio";
 import LucideFileVideo from "~icons/lucide/file-video";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 import RiHeart3Line from "~icons/ri/heart-3-line";
 import { useQueryClient } from "@tanstack/vue-query";
-
-hljs.registerLanguage("xml", xml);
 
 const props = defineProps<{
   moment: ListedMoment;
@@ -27,16 +23,6 @@ const emit = defineEmits<{
 }>();
 
 const queryClient = useQueryClient();
-
-const vHighlight = {
-  mounted: (el: HTMLElement) => {
-    const blocks = el.querySelectorAll("pre code");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    blocks.forEach((block: any) => {
-      hljs.highlightBlock(block);
-    });
-  },
-};
 
 const vLazy = {
   mounted: (el: HTMLElement) => {
@@ -161,7 +147,6 @@ function handleOpenCommentList() {
   </PreviewDetailModal>
   <div class=":uno: relative overflow-hidden" @dblclick="handleSwitchEdit">
     <div
-      v-highlight
       v-lazy
       v-tag
       class=":uno: markdown-body moment-preview-html"

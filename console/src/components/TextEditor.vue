@@ -43,7 +43,6 @@ import {
   ExtensionTrailingNode,
   ExtensionUnderline,
   ExtensionVideo,
-  lowlight,
   RichTextEditor,
   type Extensions,
 } from "@halo-dev/richtext-editor";
@@ -119,9 +118,7 @@ const presetExtensions = [
   ExtensionSuperscript,
   ExtensionHighlight,
   ExtensionCommands,
-  ExtensionCodeBlock.configure({
-    lowlight,
-  }),
+  ExtensionCodeBlock,
   ExtensionIframe,
   ExtensionVideo,
   ExtensionAudio,
