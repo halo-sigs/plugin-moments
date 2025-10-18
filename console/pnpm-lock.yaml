@@ -14,8 +14,8 @@ importers:
   .:
     dependencies:
       '@halo-dev/api-client':
-        specifier: ^2.18.0
-        version: 2.18.0(axios@1.7.3)
+        specifier: ^2.21.0
+        version: 2.21.1(axios@1.7.3)
       '@halo-dev/components':
         specifier: https://pkg.pr.new/@halo-dev/components@7383
         version: https://pkg.pr.new/@halo-dev/components@7383(vue-router@4.4.3(vue@3.4.37(typescript@5.5.4)))(vue@3.4.37(typescript@5.5.4))

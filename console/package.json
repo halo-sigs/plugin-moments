@@ -8,7 +8,7 @@
     "prettier": "prettier --write src/"
   },
   "dependencies": {
-    "@halo-dev/api-client": "^2.18.0",
+    "@halo-dev/api-client": "^2.21.0",
     "@halo-dev/components": "https://pkg.pr.new/@halo-dev/components@7383",
     "@halo-dev/console-shared": "^2.18.0",
     "@halo-dev/richtext-editor": "^2.18.0",
