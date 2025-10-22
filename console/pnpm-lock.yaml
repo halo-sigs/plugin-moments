@@ -20,8 +20,8 @@ importers:
         specifier: https://pkg.pr.new/@halo-dev/components@7383
         version: https://pkg.pr.new/@halo-dev/components@7383(vue-router@4.4.3(vue@3.4.37(typescript@5.5.4)))(vue@3.4.37(typescript@5.5.4))
       '@halo-dev/console-shared':
-        specifier: ^2.18.0
-        version: 2.18.0(axios@1.7.3)(vue-router@4.4.3(vue@3.4.37(typescript@5.5.4)))(vue@3.4.37(typescript@5.5.4))
+        specifier: https://pkg.pr.new/@halo-dev/console-shared@7847
+        version: https://pkg.pr.new/@halo-dev/console-shared@7847(axios@1.7.3)(vue-router@4.4.3(vue@3.4.37(typescript@5.5.4)))(vue@3.4.37(typescript@5.5.4))
       '@halo-dev/richtext-editor':
         specifier: ^2.18.0
         version: 2.18.0(vue@3.4.37(typescript@5.5.4))
@@ -351,13 +351,14 @@ packages:
   '@floating-ui/utils@0.1.6':
     resolution: {integrity: sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==}
 
-  '@halo-dev/api-client@2.18.0':
-    resolution: {integrity: sha512-A7dyC4CstFU8B1XkgnrCaWu15XyICYMnynUPyGzfr1ljwdIxfGwN7xtNt4CSxJ7Ky2b20dZrN8QR7RB5j1qmHg==}
+  '@halo-dev/api-client@2.21.1':
+    resolution: {integrity: sha512-4sfpSui4YO2u7W73r3ECoegK+/kVzLHv/a16pT23gZUqazK+5ZAqpDqVYHhbpyBVbs/fmsUuMgI8TXVLo6kZjg==}
     peerDependencies:
       axios: ^1.7.x
 
-  '@halo-dev/api-client@2.21.1':
-    resolution: {integrity: sha512-4sfpSui4YO2u7W73r3ECoegK+/kVzLHv/a16pT23gZUqazK+5ZAqpDqVYHhbpyBVbs/fmsUuMgI8TXVLo6kZjg==}
+  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@ebfb657':
+    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@ebfb657}
+    version: 2.21.1
     peerDependencies:
       axios: ^1.7.x
 
@@ -368,11 +369,12 @@ packages:
       vue: ^3.5.13
       vue-router: ^4.3.2
 
-  '@halo-dev/console-shared@2.18.0':
-    resolution: {integrity: sha512-PjqXCpEeJD5rAdycQYCCTRzeDhE67v6xjgPMDovy5duZrHt7V7mvEPP0XVRMPsHAAU4C1lGAfqKHdl8RsdwJow==}
+  '@halo-dev/console-shared@https://pkg.pr.new/@halo-dev/console-shared@7847':
+    resolution: {tarball: https://pkg.pr.new/@halo-dev/console-shared@7847}
+    version: 2.21.0
     peerDependencies:
-      vue: ^3.4.27
-      vue-router: ^4.3.2
+      vue: ^3.5.16
+      vue-router: ^4.5.1
 
   '@halo-dev/richtext-editor@2.18.0':
     resolution: {integrity: sha512-kCLzSwYmosQ73KWR/hAIePgAEZgLv0YTVCiuhTM8RIDA+wRxZuglbB+7ZHI9ccDzyjsdC0TxtnDKoTRn5RDS1A==}
@@ -2981,11 +2983,12 @@ snapshots:
 
   '@floating-ui/utils@0.1.6': {}
 
-  '@halo-dev/api-client@2.18.0(axios@1.7.3)':
+  '@halo-dev/api-client@2.21.1(axios@1.7.3)':
     dependencies:
       axios: 1.7.3
+      qs: 6.13.0
 
-  '@halo-dev/api-client@2.21.1(axios@1.7.3)':
+  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@ebfb657(axios@1.7.3)':
     dependencies:
       axios: 1.7.3
       qs: 6.13.0
@@ -2998,9 +3001,9 @@ snapshots:
     transitivePeerDependencies:
       - '@nuxt/kit'
 
-  '@halo-dev/console-shared@2.18.0(axios@1.7.3)(vue-router@4.4.3(vue@3.4.37(typescript@5.5.4)))(vue@3.4.37(typescript@5.5.4))':
+  '@halo-dev/console-shared@https://pkg.pr.new/@halo-dev/console-shared@7847(axios@1.7.3)(vue-router@4.4.3(vue@3.4.37(typescript@5.5.4)))(vue@3.4.37(typescript@5.5.4))':
     dependencies:
-      '@halo-dev/api-client': 2.18.0(axios@1.7.3)
+      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@ebfb657(axios@1.7.3)
       vue: 3.4.37(typescript@5.5.4)
       vue-router: 4.4.3(vue@3.4.37(typescript@5.5.4))
     transitivePeerDependencies:

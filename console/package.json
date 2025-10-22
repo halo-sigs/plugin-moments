@@ -10,7 +10,7 @@
   "dependencies": {
     "@halo-dev/api-client": "^2.21.0",
     "@halo-dev/components": "https://pkg.pr.new/@halo-dev/components@7383",
-    "@halo-dev/console-shared": "^2.18.0",
+    "@halo-dev/console-shared": "https://pkg.pr.new/@halo-dev/console-shared@7847",
     "@halo-dev/richtext-editor": "^2.18.0",
     "@tanstack/vue-query": "^4.37.1",
     "@tiptap/suggestion": "2.11.2",

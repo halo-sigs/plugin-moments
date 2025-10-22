@@ -8,8 +8,7 @@ import PreviewDetailModal from "./PreviewDetailModal.vue";
 import RiHeart3Line from "~icons/ri/heart-3-line";
 import { useQueryClient } from "@tanstack/vue-query";
 import ShikiDirective from "@/plugin-supports/shiki/directive";
-import { generateThumbnailUrl } from "@/utils/thumbnail";
-import { ThumbnailSpecSizeEnum } from "@halo-dev/api-client";
+import { utils } from "@halo-dev/console-shared";
 
 const props = defineProps<{
   moment: ListedMoment;
@@ -169,7 +168,7 @@ defineOptions({
           <div class=":uno: aspect-square" @click="handleClickMedium(index)">
             <template v-if="media.type == 'PHOTO'">
               <img
-                :src="generateThumbnailUrl(media.url, ThumbnailSpecSizeEnum.S)"
+                :src="utils.attachment.getThumbnailUrl(media.url!, 'S')"
                 class=":uno: size-full object-cover"
                 loading="lazy"
               />
