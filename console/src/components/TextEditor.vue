@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { useTagQueryFetchProps } from "@/composables/use-tag";
-import MomentExtensionImage from "@/extensions/images";
 import { TagsExtension } from "@/extensions/tags";
 import type { PluginModule } from "@halo-dev/console-shared";
 import {
@@ -95,13 +94,6 @@ const presetExtensions = [
   ExtensionOrderedList,
   ExtensionStrike,
   ExtensionText,
-  MomentExtensionImage.configure({
-    inline: true,
-    allowBase64: false,
-    HTMLAttributes: {
-      loading: "lazy",
-    },
-  }),
   ExtensionTaskList,
   ExtensionLink.configure({
     autolink: false,

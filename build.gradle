@@ -47,7 +47,8 @@ build {
 }
 
 halo {
-    version = '2.21.0-beta.2'
+    imageName = "halohub/halo-dev"
+    version = 'main'
     debug = true;
 }
 

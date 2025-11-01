@@ -14,7 +14,7 @@ export function useExtension() {
     }
     const resolvedExtensions = sort(extensions);
     const map = new Map<string, AnyExtension>();
-    resolvedExtensions.forEach((extension) => {
+    resolvedExtensions.filter(Boolean).forEach((extension) => {
       if (!extension.name) {
         console.warn(`Extension name is missing for Extension, type: ${extension.type}.`);
         const key = randomUUID().toString();
