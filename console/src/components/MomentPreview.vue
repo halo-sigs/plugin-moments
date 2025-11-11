@@ -8,7 +8,7 @@ import PreviewDetailModal from "./PreviewDetailModal.vue";
 import RiHeart3Line from "~icons/ri/heart-3-line";
 import { useQueryClient } from "@tanstack/vue-query";
 import ShikiDirective from "@/plugin-supports/shiki/directive";
-import { utils } from "@halo-dev/console-shared";
+import { utils } from "@halo-dev/ui-shared";
 
 const props = defineProps<{
   moment: ListedMoment;

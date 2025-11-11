@@ -4,7 +4,7 @@ import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
 import MediaCard from "@/components/MediaCard.vue";
 import { useUCTagQueryFetch } from "@/composables/use-tag";
 import { IconEye, IconEyeOff, Toast, VButton, VLoading } from "@halo-dev/components";
-import type { AttachmentLike } from "@halo-dev/console-shared";
+import type { AttachmentLike } from "@halo-dev/ui-shared";
 import { useQueryClient } from "@tanstack/vue-query";
 import { cloneDeep } from "es-toolkit";
 import { computed, defineAsyncComponent, onMounted, ref, toRaw } from "vue";

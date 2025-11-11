@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { useTagQueryFetchProps } from "@/composables/use-tag";
 import { TagsExtension } from "@/extensions/tags";
-import type { PluginModule } from "@halo-dev/console-shared";
+import type { PluginModule } from "@halo-dev/ui-shared";
 import {
   Editor,
   ExtensionAudio,
