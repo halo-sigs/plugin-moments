@@ -127,7 +127,7 @@ usePluginShikiScriptLoader();
 <template>
   <VPageHeader title="瞬间">
     <template #icon>
-      <MingcuteMomentsLine class=":uno: mr-2 self-center" />
+      <MingcuteMomentsLine />
     </template>
   </VPageHeader>
   <VCard class=":uno: m-0 flex-1 md:m-4">

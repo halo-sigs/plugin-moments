@@ -117,7 +117,7 @@ usePluginShikiScriptLoader();
 <template>
   <VPageHeader title="瞬间">
     <template #icon>
-      <MingcuteMomentsLine class=":uno: mr-2 self-center" />
+      <MingcuteMomentsLine />
     </template>
     <template #actions>
       <VButton @click="handleJumpToFrontDesk">
