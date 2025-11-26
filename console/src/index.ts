@@ -1,11 +1,10 @@
 import type { Extension } from "@halo-dev/api-client";
-import { type CommentSubjectRefResult, definePlugin } from "@halo-dev/ui-shared";
+import { type CommentSubjectRefResult, definePlugin, utils } from "@halo-dev/ui-shared";
 import "uno.css";
 import { markRaw } from "vue";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { Moment } from "./api/generated";
 import "./styles/index.scss";
-import { formatDatetime } from "./utils/date";
 
 export default definePlugin({
   components: {},
@@ -71,7 +70,7 @@ export default definePlugin({
 const determineMomentTitle = (moment: Moment) => {
   const pureContent = stripHtmlTags(moment.spec.content.raw || "");
   const title = !pureContent?.trim()
-    ? formatDatetime(new Date(moment.spec.releaseTime || ""))
+    ? utils.date.format(new Date(moment.spec.releaseTime || ""))
     : pureContent;
   return title?.substring(0, 100);
 };

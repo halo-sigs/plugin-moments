@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { momentsCoreApiClient } from "@/api";
 import type { ListedMoment, Moment } from "@/api/generated";
-import { formatDatetime, relativeTimeTo } from "@/utils/date";
 import {
   Dialog,
   IconEyeOff,
@@ -11,6 +10,7 @@ import {
   VDropdownItem,
   VStatusDot,
 } from "@halo-dev/components";
+import { utils } from "@halo-dev/ui-shared";
 import { useQueryClient } from "@tanstack/vue-query";
 import { computed, ref } from "vue";
 import LucideMoreHorizontal from "~icons/lucide/more-horizontal";
@@ -122,10 +122,10 @@ const handleApproved = async () => {
               <div class=":uno: mr-2 cursor-default text-xs text-gray-500">
                 <span
                   v-tooltip="{
-                    content: formatDatetime(listedMoment?.moment.spec.releaseTime),
+                    content: utils.date.format(listedMoment?.moment.spec.releaseTime),
                   }"
                 >
-                  {{ relativeTimeTo(listedMoment?.moment.spec.releaseTime) }}
+                  {{ utils.date.timeAgo(listedMoment?.moment.spec.releaseTime) }}
                 </span>
               </div>
               <VDropdown v-permission="['plugin:moments:manage']" compute-transform-origin>

@@ -5,7 +5,6 @@ import MomentEdit from "@/components/MomentEdit.vue";
 import MomentItem from "@/components/MomentItem.vue";
 import TagFilterDropdown from "@/components/TagFilterDropdown.vue";
 import { usePluginShikiScriptLoader } from "@/plugin-supports/shiki/use-plugin-shiki-script-loader";
-import { toISODayEndOfTime } from "@/utils/date";
 import {
   IconExternalLinkLine,
   VButton,
@@ -14,6 +13,7 @@ import {
   VPageHeader,
   VPagination,
 } from "@halo-dev/components";
+import { utils } from "@halo-dev/ui-shared";
 import { useQuery } from "@tanstack/vue-query";
 import { useRouteQuery } from "@vueuse/router";
 import { computed, provide, ref, watch } from "vue";
@@ -45,11 +45,11 @@ const momentsRangeTime = ref<Array<Date>>([]);
 
 const startDate = computed(() => {
   const date: Date = momentsRangeTime.value[0];
-  return toISODayEndOfTime(date);
+  return utils.date.dayjs(date).endOf("day").toISOString();
 });
 const endDate = computed(() => {
   let endTime: Date = momentsRangeTime.value[1];
-  return toISODayEndOfTime(endTime);
+  return utils.date.dayjs(endTime).endOf("day").toISOString();
 });
 
 const {
