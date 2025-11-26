@@ -1,9 +1,9 @@
 //TODO 后续期望 Console 在 shared 包中提供统一的日期时间方法。
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
+import relativeTime from "dayjs/plugin/relativeTime";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(timezone);
 dayjs.extend(utc);

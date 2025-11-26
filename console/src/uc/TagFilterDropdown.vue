@@ -1,14 +1,14 @@
 <script lang="ts" setup>
+import { useUCTagQueryFetch } from "@/composables/use-tag";
 import {
-  VEntity,
-  VDropdown,
   IconArrowDown,
   IconClose,
-  VEntityField,
+  VDropdown,
+  VEntity,
   VEntityContainer,
+  VEntityField,
 } from "@halo-dev/components";
 import { computed, ref } from "vue";
-import { useUCTagQueryFetch } from "@/composables/use-tag";
 
 const props = withDefaults(
   defineProps<{

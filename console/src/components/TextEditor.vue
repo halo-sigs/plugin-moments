@@ -1,53 +1,17 @@
 <script lang="ts" setup>
 import type { useTagQueryFetchProps } from "@/composables/use-tag";
 import { TagsExtension } from "@/extensions/tags";
-import type { PluginModule } from "@halo-dev/ui-shared";
+import { VLoading } from "@halo-dev/components";
 import {
-  Editor,
-  ExtensionAudio,
-  ExtensionBlockquote,
-  ExtensionBold,
-  ExtensionBulletList,
-  ExtensionCode,
-  ExtensionCodeBlock,
-  ExtensionColor,
-  ExtensionColumn,
-  ExtensionColumns,
-  ExtensionCommands,
-  ExtensionDocument,
-  ExtensionDraggable,
-  ExtensionDropcursor,
-  ExtensionFontSize,
-  ExtensionGapcursor,
-  ExtensionHardBreak,
-  ExtensionHighlight,
-  ExtensionHistory,
-  ExtensionHorizontalRule,
-  ExtensionIframe,
-  ExtensionIndent,
-  ExtensionItalic,
-  ExtensionLink,
-  ExtensionListKeymap,
-  ExtensionNodeSelected,
-  ExtensionOrderedList,
-  ExtensionParagraph,
-  ExtensionPlaceholder,
-  ExtensionStrike,
-  ExtensionSubscript,
-  ExtensionSuperscript,
-  ExtensionTable,
-  ExtensionTaskList,
-  ExtensionText,
-  ExtensionTextAlign,
-  ExtensionTrailingNode,
-  ExtensionUnderline,
-  ExtensionVideo,
+  AllExtensions,
+  filterDuplicateExtensions,
   RichTextEditor,
+  VueEditor,
   type Extensions,
 } from "@halo-dev/richtext-editor";
+import type { PluginModule } from "@halo-dev/ui-shared";
 import type { UseQueryReturnType } from "@tanstack/vue-query";
-import { onMounted, shallowRef, watch } from "vue";
-import { useExtension } from "./composables/use-extension";
+import { onMounted, ref, shallowRef, watch } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -70,69 +34,17 @@ const emit = defineEmits<{
   (event: "update:isEmpty", value: boolean | undefined): void;
 }>();
 
-const editor = shallowRef<Editor>();
+const editor = shallowRef<VueEditor>();
 
 const supportedPluginNames = ["editor-hyperlink-card", "hybrid-edit-block", "shiki"];
 
-const presetExtensions = [
-  ExtensionParagraph,
-  ExtensionBlockquote,
-  ExtensionBold,
-  ExtensionBulletList,
-  ExtensionCode,
-  ExtensionDocument,
-  ExtensionDropcursor.configure({
-    width: 2,
-    class: "dropcursor",
-    color: "skyblue",
-  }),
-  ExtensionGapcursor,
-  ExtensionHardBreak,
-  ExtensionHistory,
-  ExtensionHorizontalRule,
-  ExtensionItalic,
-  ExtensionOrderedList,
-  ExtensionStrike,
-  ExtensionText,
-  ExtensionTaskList,
-  ExtensionLink.configure({
-    autolink: false,
-    openOnClick: false,
-  }),
-  ExtensionTextAlign.configure({
-    types: ["heading", "paragraph"],
-  }),
-  ExtensionUnderline,
-  ExtensionTable.configure({
-    resizable: true,
-  }),
-  ExtensionSubscript,
-  ExtensionSuperscript,
-  ExtensionHighlight,
-  ExtensionCommands,
-  ExtensionCodeBlock,
-  ExtensionIframe,
-  ExtensionVideo,
-  ExtensionAudio,
-  ExtensionFontSize,
-  ExtensionColor,
-  ExtensionIndent,
-  ExtensionDraggable,
-  ExtensionColumns,
-  ExtensionColumn,
-  ExtensionNodeSelected,
-  ExtensionTrailingNode,
-  ExtensionPlaceholder.configure({
-    placeholder: "有什么想说的吗...",
-  }),
-  ExtensionHighlight,
-  ExtensionListKeymap,
+const customExtensions = [
   TagsExtension.configure({
     tagQueryFetch: props.tagQueryFetch,
   }),
 ];
 
-const { filterDuplicateExtensions } = useExtension();
+const isInitialized = ref(false);
 
 onMounted(async () => {
   const enabledPlugins = window.enabledPlugins.filter((plugin) =>
@@ -161,9 +73,17 @@ onMounted(async () => {
     extensionsFromPlugins.push(...extensions);
   }
 
-  const extensions = filterDuplicateExtensions([...presetExtensions, ...extensionsFromPlugins]);
+  const extensions = filterDuplicateExtensions([
+    AllExtensions.configure({
+      placeholder: {
+        placeholder: "有什么想说的吗...",
+      },
+    }),
+    ...customExtensions,
+    ...extensionsFromPlugins,
+  ]);
 
-  editor.value = new Editor({
+  editor.value = new VueEditor({
     content: props.raw,
     extensions,
     autofocus: "end",
@@ -172,6 +92,9 @@ onMounted(async () => {
       emit("update:html", editor.value?.getHTML() + "");
       emit("update:isEmpty", editor.value?.isEmpty);
       emit("update", editor.value?.getHTML() + "");
+    },
+    onCreate: () => {
+      isInitialized.value = true;
     },
   });
 });
@@ -186,7 +109,8 @@ watch(
 );
 </script>
 <template>
-  <div v-if="editor" class=":uno: halo-moment-editor halo-rich-text-editor relative">
-    <RichTextEditor :editor="editor" locale="zh-CN"> </RichTextEditor>
+  <div class=":uno: halo-moment-editor halo-rich-text-editor relative">
+    <VLoading v-if="!isInitialized" />
+    <RichTextEditor v-else-if="editor" :editor="editor" locale="zh-CN"> </RichTextEditor>
   </div>
 </template>

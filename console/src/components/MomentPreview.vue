@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import type { ListedMoment, Moment, MomentMedia } from "@/api/generated";
+import type { ListedMoment } from "@/api/generated";
+import ShikiDirective from "@/plugin-supports/shiki/directive";
 import { IconArrowLeft, IconArrowRight, IconMessage } from "@halo-dev/components";
+import { utils } from "@halo-dev/ui-shared";
+import { useQueryClient } from "@tanstack/vue-query";
 import { computed, inject, ref } from "vue";
 import LucideFileAudio from "~icons/lucide/file-audio";
 import LucideFileVideo from "~icons/lucide/file-video";
-import PreviewDetailModal from "./PreviewDetailModal.vue";
 import RiHeart3Line from "~icons/ri/heart-3-line";
-import { useQueryClient } from "@tanstack/vue-query";
-import ShikiDirective from "@/plugin-supports/shiki/directive";
-import { utils } from "@halo-dev/ui-shared";
+import PreviewDetailModal from "./PreviewDetailModal.vue";
 
 const props = defineProps<{
   moment: ListedMoment;

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { momentsUcApiClient } from "@/api";
+import { usePluginShikiScriptLoader } from "@/plugin-supports/shiki/use-plugin-shiki-script-loader";
 import { toISODayEndOfTime } from "@/utils/date";
 import { VCard, VLoading, VPageHeader, VPagination } from "@halo-dev/components";
 import { useQuery } from "@tanstack/vue-query";
@@ -12,7 +13,6 @@ import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import MomentEdit from "./MomentEdit.vue";
 import MomentItem from "./MomentItem.vue";
 import TagFilterDropdown from "./TagFilterDropdown.vue";
-import { usePluginShikiScriptLoader } from "@/plugin-supports/shiki/use-plugin-shiki-script-loader";
 
 interface VisibleItem {
   label: string;
