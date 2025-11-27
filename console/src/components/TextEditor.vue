@@ -3,8 +3,7 @@ import type { useTagQueryFetchProps } from "@/composables/use-tag";
 import { TagsExtension } from "@/extensions/tags";
 import { VLoading } from "@halo-dev/components";
 import {
-  AllExtensions,
-  filterDuplicateExtensions,
+  ExtensionsKit,
   RichTextEditor,
   VueEditor,
   type Extensions,
@@ -73,19 +72,16 @@ onMounted(async () => {
     extensionsFromPlugins.push(...extensions);
   }
 
-  const extensions = filterDuplicateExtensions([
-    AllExtensions.configure({
-      placeholder: {
-        placeholder: "有什么想说的吗...",
-      },
-    }),
-    ...customExtensions,
-    ...extensionsFromPlugins,
-  ]);
-
   editor.value = new VueEditor({
     content: props.raw,
-    extensions,
+    extensions: [
+      ExtensionsKit.configure({
+        placeholder: {
+          placeholder: "有什么想说的吗...",
+        },
+        customExtensions: [...customExtensions, ...extensionsFromPlugins],
+      }),
+    ],
     autofocus: "end",
     onUpdate: () => {
       emit("update:raw", editor.value?.getHTML() + "");
