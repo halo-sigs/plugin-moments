@@ -43,9 +43,6 @@ importers:
       es-toolkit:
         specifier: ^1.42.0
         version: 1.42.0
-      floating-vue:
-        specifier: 2.0.0-beta.20
-        version: 2.0.0-beta.20(vue@3.5.25(typescript@5.5.4))
       pinia:
         specifier: ^3.0.4
         version: 3.0.4(typescript@5.5.4)(vue@3.5.25(typescript@5.5.4))
@@ -350,17 +347,11 @@ packages:
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@floating-ui/core@0.3.1':
-    resolution: {integrity: sha512-ensKY7Ub59u16qsVIFEo2hwTCqZ/r9oZZFh51ivcLGHfUwTn8l1Xzng8RJUe91H/UP8PeqeBronAGx0qmzwk2g==}
-
   '@floating-ui/core@1.5.1':
     resolution: {integrity: sha512-QgcKYwzcc8vvZ4n/5uklchy8KVdjJwcOeI+HnnTNclJjs2nYsy23DOCf+sSV1kBwD9yDAoVKCkv/gEPzgQU3Pw==}
 
   '@floating-ui/core@1.7.3':
     resolution: {integrity: sha512-sGnvb5dmrJaKEZ+LDIpguvdX3bDlEllmv4/ClQ9awcmCZrlx5jQyyMWFM5kBI+EyNOCDDiKk8il0zeuX3Zlg/w==}
-
-  '@floating-ui/dom@0.1.10':
-    resolution: {integrity: sha512-4kAVoogvQm2N0XE0G6APQJuCNuErjOfPW8Ux7DFxh8+AfugWflwVJ5LDlHOwrwut7z/30NUvdtHzQ3zSip4EzQ==}
 
   '@floating-ui/dom@1.1.1':
     resolution: {integrity: sha512-TpIO93+DIujg3g7SykEAGZMDtbJRrmnYRCNYSjJlvIbGhBjRSNTLVbNeDQBrzy9qDgUbiWdc7KA0uZHZ2tJmiw==}
@@ -1893,11 +1884,6 @@ packages:
   flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
 
-  floating-vue@2.0.0-beta.20:
-    resolution: {integrity: sha512-N68otcpp6WwcYC7zP8GeJqNZVdfvS7tEY88lwmuAHeqRgnfWx1Un8enzLxROyVnBDZ3TwUoUdj5IFg+bUT7JeA==}
-    peerDependencies:
-      vue: ^3.2.0
-
   floating-vue@5.2.2:
     resolution: {integrity: sha512-afW+h2CFafo+7Y9Lvw/xsqjaQlKLdJV7h1fCHfcYQ1C4SVMlu7OAekqWgu5d4SgvkBVU0pVpLlVsrSTBURFRkg==}
     peerDependencies:
@@ -3220,8 +3206,6 @@ snapshots:
 
   '@eslint/js@8.57.1': {}
 
-  '@floating-ui/core@0.3.1': {}
-
   '@floating-ui/core@1.5.1':
     dependencies:
       '@floating-ui/utils': 0.1.6
@@ -3229,10 +3213,6 @@ snapshots:
   '@floating-ui/core@1.7.3':
     dependencies:
       '@floating-ui/utils': 0.2.10
-
-  '@floating-ui/dom@0.1.10':
-    dependencies:
-      '@floating-ui/core': 0.3.1
 
   '@floating-ui/dom@1.1.1':
     dependencies:
@@ -4983,12 +4963,6 @@ snapshots:
       rimraf: 3.0.2
 
   flatted@3.2.7: {}
-
-  floating-vue@2.0.0-beta.20(vue@3.5.25(typescript@5.5.4)):
-    dependencies:
-      '@floating-ui/dom': 0.1.10
-      vue: 3.5.25(typescript@5.5.4)
-      vue-resize: 2.0.0-alpha.1(vue@3.5.25(typescript@5.5.4))
 
   floating-vue@5.2.2(vue@3.5.25(typescript@5.5.4)):
     dependencies:
