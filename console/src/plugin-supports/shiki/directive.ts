@@ -15,12 +15,15 @@ function renderShikiCode(el: HTMLElement) {
     return;
   }
 
-  const blocks = el.querySelectorAll("pre>code");
-  blocks.forEach((block) => {
-    const preElement = block.parentElement;
+  const preElements = el.querySelectorAll<HTMLPreElement>("pre:has(code)");
+  for (const preElement of preElements) {
+    const parent = preElement.parentElement;
+    if (!parent) {
+      continue;
+    }
 
-    if (!preElement) {
-      return;
+    if (preElement.parentElement.tagName === "SHIKI-CODE") {
+      continue;
     }
 
     preElement.style.padding = "1rem";
@@ -28,13 +31,10 @@ function renderShikiCode(el: HTMLElement) {
 
     const shikiElement = document.createElement("shiki-code");
     shikiElement.style.padding = "0 1px";
-    const parent = preElement?.parentElement;
-    if (!parent) {
-      return;
-    }
+
     parent.insertBefore(shikiElement, preElement);
     shikiElement.appendChild(preElement);
-  });
+  }
 }
 
 export default ShikiDirective;
