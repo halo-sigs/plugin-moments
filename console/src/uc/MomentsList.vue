@@ -56,10 +56,16 @@ const momentsRangeTime = ref<Array<Date>>([]);
 
 const startDate = computed(() => {
   const date = momentsRangeTime.value[0];
+  if (!date) {
+    return;
+  }
   return utils.date.dayjs(date).endOf("day").toISOString();
 });
 const endDate = computed(() => {
   let endTime: Date = momentsRangeTime.value[1];
+  if (!endTime) {
+    return;
+  }
   return utils.date.dayjs(endTime).endOf("day").toISOString();
 });
 
