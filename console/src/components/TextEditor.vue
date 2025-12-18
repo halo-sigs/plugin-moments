@@ -105,8 +105,17 @@ watch(
 );
 </script>
 <template>
-  <div class=":uno: halo-moment-editor halo-rich-text-editor relative">
+  <div class=":uno: halo-moment-editor relative">
     <VLoading v-if="!isInitialized" />
     <RichTextEditor v-else-if="editor" :editor="editor" locale="zh-CN"> </RichTextEditor>
   </div>
 </template>
+
+<style lang="scss">
+.halo-moment-editor {
+  .ProseMirror {
+    padding-bottom: 2rem !important;
+    padding-top: 2rem !important;
+  }
+}
+</style>

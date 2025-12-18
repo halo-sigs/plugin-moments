@@ -310,7 +310,7 @@ function handleKeydown(event: KeyboardEvent) {
       v-model:html="formState.spec.content.html"
       v-model:isEmpty="isEditorEmpty"
       :tag-query-fetch="useUCTagQueryFetch"
-      class=":uno: min-h-[9rem] p-3.5"
+      class=":uno: min-h-[9rem]"
       tabindex="-1"
       @keydown="handleKeydown"
     />
