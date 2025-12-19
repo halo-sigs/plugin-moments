@@ -14,17 +14,17 @@ importers:
   .:
     dependencies:
       '@halo-dev/api-client':
-        specifier: ^2.21.1
-        version: 2.21.1(axios@1.13.2)
+        specifier: https://pkg.pr.new/@halo-dev/api-client@6e46373
+        version: https://pkg.pr.new/@halo-dev/api-client@6e46373(axios@1.13.2)
       '@halo-dev/components':
-        specifier: https://pkg.pr.new/@halo-dev/components@7383
-        version: https://pkg.pr.new/@halo-dev/components@7383(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
+        specifier: https://pkg.pr.new/@halo-dev/components@6e46373
+        version: https://pkg.pr.new/@halo-dev/components@6e46373(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
       '@halo-dev/richtext-editor':
-        specifier: https://pkg.pr.new/@halo-dev/richtext-editor@6ad165a
-        version: https://pkg.pr.new/@halo-dev/richtext-editor@6ad165a(@tiptap/extension-drag-handle@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)))(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
+        specifier: https://pkg.pr.new/@halo-dev/richtext-editor@6e46373
+        version: https://pkg.pr.new/@halo-dev/richtext-editor@6e46373(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
       '@halo-dev/ui-shared':
-        specifier: https://pkg.pr.new/@halo-dev/ui-shared@ac88ee7
-        version: https://pkg.pr.new/@halo-dev/ui-shared@ac88ee7(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
+        specifier: https://pkg.pr.new/@halo-dev/ui-shared@6e46373
+        version: https://pkg.pr.new/@halo-dev/ui-shared@6e46373(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
       '@tanstack/vue-query':
         specifier: ^4.41.0
         version: 4.41.0(vue@3.5.25(typescript@5.5.4))
@@ -60,8 +60,8 @@ importers:
         version: 4.6.3(vue@3.5.25(typescript@5.5.4))
     devDependencies:
       '@halo-dev/ui-plugin-bundler-kit':
-        specifier: https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@3e4accf
-        version: https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@3e4accf(@rsbuild/core@1.6.9)(@rsbuild/plugin-vue@1.1.0(@rsbuild/core@1.6.9)(@vue/compiler-sfc@3.5.25)(vue@3.5.25(typescript@5.5.4)))(@vitejs/plugin-vue@6.0.0(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))(vue@3.5.25(typescript@5.5.4)))(axios@1.13.2)(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))
+        specifier: https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@6e46373
+        version: https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@6e46373(@rsbuild/core@1.6.9)(@rsbuild/plugin-vue@1.1.0(@rsbuild/core@1.6.9)(@vue/compiler-sfc@3.5.25)(vue@3.5.25(typescript@5.5.4)))(@vitejs/plugin-vue@6.0.0(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))(vue@3.5.25(typescript@5.5.4)))(axios@1.13.2)(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))
       '@iconify/json':
         specifier: ^2.2.410
         version: 2.2.410
@@ -171,16 +171,6 @@ packages:
 
   '@bufbuild/protobuf@2.5.2':
     resolution: {integrity: sha512-foZ7qr0IsUBjzWIq+SuBLfdQCpJ1j8cTuNNT4owngTHoN5KsJb8L9t65fzz7SCeSWzescoOil/0ldqiL041ABg==}
-
-  '@ckpack/vue-color@1.5.0':
-    resolution: {integrity: sha512-dj1zXVyay2m4LdlLJCQSdIS2FYwUl77BZqyKmUXiehyqjCP0bGYnPcL38lrShzYUc2FdkYQX8ANZZjRahd4PQw==}
-    engines: {node: '>=12'}
-    peerDependencies:
-      vue: ^3.2.0
-
-  '@ctrl/tinycolor@3.6.1':
-    resolution: {integrity: sha512-SITSV6aIXsuVNV3f3O0f2n/cgyEDWoSqtZMYiAmcsYHydcKrOz3gUxB/iXd/Qf08+IZX4KpgNbvUdMBmWz+kcA==}
-    engines: {node: '>=10'}
 
   '@emnapi/core@1.7.1':
     resolution: {integrity: sha512-o1uhUASyo921r2XtHYOHy7gdkGLge8ghBEQHMWmyJFoXlpU58kIrhhN3w26lpQb6dspetweapMn2CSNwQ8I4wg==}
@@ -365,51 +355,40 @@ packages:
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
 
-  '@halo-dev/api-client@2.21.1':
-    resolution: {integrity: sha512-4sfpSui4YO2u7W73r3ECoegK+/kVzLHv/a16pT23gZUqazK+5ZAqpDqVYHhbpyBVbs/fmsUuMgI8TXVLo6kZjg==}
-    peerDependencies:
-      axios: ^1.7.x
-
-  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@3e4accf':
-    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@3e4accf}
+  '@halo-dev/api-client@https://pkg.pr.new/@halo-dev/api-client@6e46373':
+    resolution: {tarball: https://pkg.pr.new/@halo-dev/api-client@6e46373}
     version: 2.21.1
     peerDependencies:
       axios: ^1.12.*
 
-  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6ad165a':
-    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6ad165a}
+  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373':
+    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373}
     version: 2.21.1
     peerDependencies:
       axios: ^1.12.*
 
-  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@ac88ee7':
-    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@ac88ee7}
-    version: 2.21.1
-    peerDependencies:
-      axios: ^1.12.*
-
-  '@halo-dev/components@https://pkg.pr.new/@halo-dev/components@7383':
-    resolution: {tarball: https://pkg.pr.new/@halo-dev/components@7383}
-    version: 2.21.0
-    peerDependencies:
-      vue: ^3.5.13
-      vue-router: ^4.3.2
-
-  '@halo-dev/components@https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6ad165a':
-    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6ad165a}
+  '@halo-dev/components@https://pkg.pr.new/@halo-dev/components@6e46373':
+    resolution: {tarball: https://pkg.pr.new/@halo-dev/components@6e46373}
     version: 2.21.0
     peerDependencies:
       vue: ^3.5.x
       vue-router: ^4.6.x
 
-  '@halo-dev/richtext-editor@https://pkg.pr.new/@halo-dev/richtext-editor@6ad165a':
-    resolution: {tarball: https://pkg.pr.new/@halo-dev/richtext-editor@6ad165a}
+  '@halo-dev/components@https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6e46373':
+    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6e46373}
+    version: 2.21.0
+    peerDependencies:
+      vue: ^3.5.x
+      vue-router: ^4.6.x
+
+  '@halo-dev/richtext-editor@https://pkg.pr.new/@halo-dev/richtext-editor@6e46373':
+    resolution: {tarball: https://pkg.pr.new/@halo-dev/richtext-editor@6e46373}
     version: 2.21.0
     peerDependencies:
       vue: ^3.5.x
 
-  '@halo-dev/ui-plugin-bundler-kit@https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@3e4accf':
-    resolution: {tarball: https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@3e4accf}
+  '@halo-dev/ui-plugin-bundler-kit@https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@6e46373':
+    resolution: {tarball: https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@6e46373}
     version: 2.21.2
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
@@ -418,15 +397,15 @@ packages:
       '@vitejs/plugin-vue': ^5.0.0 || ^6.0.0
       vite: ^5.0.0 || ^6.0.0 || ^7.0.0
 
-  '@halo-dev/ui-shared@https://pkg.pr.new/@halo-dev/ui-shared@ac88ee7':
-    resolution: {tarball: https://pkg.pr.new/@halo-dev/ui-shared@ac88ee7}
+  '@halo-dev/ui-shared@https://pkg.pr.new/@halo-dev/ui-shared@6e46373':
+    resolution: {tarball: https://pkg.pr.new/@halo-dev/ui-shared@6e46373}
     version: 2.21.0
     peerDependencies:
-      vue: ^3.5.16
-      vue-router: ^4.5.1
+      vue: ^3.5.x
+      vue-router: ^4.6.x
 
-  '@halo-dev/ui-shared@https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6ad165a':
-    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6ad165a}
+  '@halo-dev/ui-shared@https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6e46373':
+    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6e46373}
     version: 2.21.0
     peerDependencies:
       vue: ^3.5.x
@@ -867,14 +846,14 @@ packages:
       '@tiptap/vue-3': ^3.11.0
       vue: ^3.0.0
 
-  '@tiptap/extension-drag-handle@3.10.1':
-    resolution: {integrity: sha512-gY2H2oWgQNzlknCRnMtZTEk+DmU1wENIGfTAMe+n66j3aqrtI2h1j7VNdVpzRC3Xpaw5nd0X7tGeDVVBOzxCew==}
+  '@tiptap/extension-drag-handle@3.13.0':
+    resolution: {integrity: sha512-q5Xxzc6owLXTSEsKoLCmHn6XR+Upyv7yb57c+XSWmTsITZr8gGgGGPppPDmaeQta3i6UlWNKsQmo1JuZg69ePw==}
     peerDependencies:
-      '@tiptap/core': ^3.10.1
-      '@tiptap/extension-collaboration': ^3.10.1
-      '@tiptap/extension-node-range': ^3.10.1
-      '@tiptap/pm': ^3.10.1
-      '@tiptap/y-tiptap': ^3.0.0-beta.3
+      '@tiptap/core': ^3.13.0
+      '@tiptap/extension-collaboration': ^3.13.0
+      '@tiptap/extension-node-range': ^3.13.0
+      '@tiptap/pm': ^3.13.0
+      '@tiptap/y-tiptap': ^3.0.0
 
   '@tiptap/extension-floating-menu@3.11.0':
     resolution: {integrity: sha512-nEHdWZHEJYX1II1oJQ4aeZ8O/Kss4BRbYFXQFGIvPelCfCYEATpUJh3aq3767ARSq40bOWyu+Dcd4SCW0We6Sw==}
@@ -2070,6 +2049,10 @@ packages:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
 
+  js-yaml@4.1.1:
+    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
+    hasBin: true
+
   jsesc@3.1.0:
     resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
     engines: {node: '>=6'}
@@ -2142,9 +2125,6 @@ packages:
   markdown-it@14.1.0:
     resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
     hasBin: true
-
-  material-colors@1.2.6:
-    resolution: {integrity: sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==}
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -3090,14 +3070,6 @@ snapshots:
 
   '@bufbuild/protobuf@2.5.2': {}
 
-  '@ckpack/vue-color@1.5.0(vue@3.5.25(typescript@5.5.4))':
-    dependencies:
-      '@ctrl/tinycolor': 3.6.1
-      material-colors: 1.2.6
-      vue: 3.5.25(typescript@5.5.4)
-
-  '@ctrl/tinycolor@3.6.1': {}
-
   '@emnapi/core@1.7.1':
     dependencies:
       '@emnapi/wasi-threads': 1.1.0
@@ -3227,27 +3199,17 @@ snapshots:
 
   '@floating-ui/utils@0.2.10': {}
 
-  '@halo-dev/api-client@2.21.1(axios@1.13.2)':
+  '@halo-dev/api-client@https://pkg.pr.new/@halo-dev/api-client@6e46373(axios@1.13.2)':
     dependencies:
       axios: 1.13.2
       qs: 6.14.0
 
-  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@3e4accf(axios@1.13.2)':
+  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373(axios@1.13.2)':
     dependencies:
       axios: 1.13.2
       qs: 6.14.0
 
-  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6ad165a(axios@1.13.2)':
-    dependencies:
-      axios: 1.13.2
-      qs: 6.14.0
-
-  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@ac88ee7(axios@1.13.2)':
-    dependencies:
-      axios: 1.13.2
-      qs: 6.14.0
-
-  '@halo-dev/components@https://pkg.pr.new/@halo-dev/components@7383(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
+  '@halo-dev/components@https://pkg.pr.new/@halo-dev/components@6e46373(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
     dependencies:
       floating-vue: 5.2.2(vue@3.5.25(typescript@5.5.4))
       vue: 3.5.25(typescript@5.5.4)
@@ -3255,7 +3217,7 @@ snapshots:
     transitivePeerDependencies:
       - '@nuxt/kit'
 
-  '@halo-dev/components@https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6ad165a(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
+  '@halo-dev/components@https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6e46373(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
     dependencies:
       floating-vue: 5.2.2(vue@3.5.25(typescript@5.5.4))
       vue: 3.5.25(typescript@5.5.4)
@@ -3263,13 +3225,12 @@ snapshots:
     transitivePeerDependencies:
       - '@nuxt/kit'
 
-  '@halo-dev/richtext-editor@https://pkg.pr.new/@halo-dev/richtext-editor@6ad165a(@tiptap/extension-drag-handle@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)))(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
+  '@halo-dev/richtext-editor@https://pkg.pr.new/@halo-dev/richtext-editor@6e46373(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
     dependencies:
-      '@ckpack/vue-color': 1.5.0(vue@3.5.25(typescript@5.5.4))
       '@floating-ui/dom': 1.7.4
-      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6ad165a(axios@1.13.2)
-      '@halo-dev/components': https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6ad165a(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
-      '@halo-dev/ui-shared': https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6ad165a(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
+      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373(axios@1.13.2)
+      '@halo-dev/components': https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6e46373(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
+      '@halo-dev/ui-shared': https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6e46373(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
       '@tiptap/core': 3.11.0(@tiptap/pm@3.11.0)
       '@tiptap/extension-blockquote': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))
       '@tiptap/extension-bold': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))
@@ -3278,7 +3239,8 @@ snapshots:
       '@tiptap/extension-color': 3.11.0(@tiptap/extension-text-style@3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0)))
       '@tiptap/extension-details': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-text-style@3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0)))(@tiptap/pm@3.11.0)
       '@tiptap/extension-document': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))
-      '@tiptap/extension-drag-handle-vue-3': 3.11.0(@tiptap/extension-drag-handle@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)))(@tiptap/pm@3.11.0)(@tiptap/vue-3@3.11.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
+      '@tiptap/extension-drag-handle': 3.13.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))
+      '@tiptap/extension-drag-handle-vue-3': 3.11.0(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)))(@tiptap/pm@3.11.0)(@tiptap/vue-3@3.11.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
       '@tiptap/extension-hard-break': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))
       '@tiptap/extension-heading': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))
       '@tiptap/extension-highlight': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))
@@ -3300,40 +3262,41 @@ snapshots:
       '@tiptap/pm': 3.11.0
       '@tiptap/suggestion': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)
       '@tiptap/vue-3': 3.11.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(vue@3.5.25(typescript@5.5.4))
-      floating-vue: 5.2.2(vue@3.5.25(typescript@5.5.4))
       github-markdown-css: 5.4.0
       linkifyjs: 4.3.2
       scroll-into-view-if-needed: 3.1.0
       vue: 3.5.25(typescript@5.5.4)
     transitivePeerDependencies:
       - '@nuxt/kit'
-      - '@tiptap/extension-drag-handle'
+      - '@tiptap/extension-collaboration'
+      - '@tiptap/extension-node-range'
+      - '@tiptap/y-tiptap'
       - axios
       - vue-router
 
-  '@halo-dev/ui-plugin-bundler-kit@https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@3e4accf(@rsbuild/core@1.6.9)(@rsbuild/plugin-vue@1.1.0(@rsbuild/core@1.6.9)(@vue/compiler-sfc@3.5.25)(vue@3.5.25(typescript@5.5.4)))(@vitejs/plugin-vue@6.0.0(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))(vue@3.5.25(typescript@5.5.4)))(axios@1.13.2)(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))':
+  '@halo-dev/ui-plugin-bundler-kit@https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@6e46373(@rsbuild/core@1.6.9)(@rsbuild/plugin-vue@1.1.0(@rsbuild/core@1.6.9)(@vue/compiler-sfc@3.5.25)(vue@3.5.25(typescript@5.5.4)))(@vitejs/plugin-vue@6.0.0(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))(vue@3.5.25(typescript@5.5.4)))(axios@1.13.2)(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))':
     dependencies:
-      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@3e4accf(axios@1.13.2)
+      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373(axios@1.13.2)
       '@rsbuild/core': 1.6.9
       '@rsbuild/plugin-vue': 1.1.0(@rsbuild/core@1.6.9)(@vue/compiler-sfc@3.5.25)(vue@3.5.25(typescript@5.5.4))
       '@vitejs/plugin-vue': 6.0.0(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))(vue@3.5.25(typescript@5.5.4))
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       vite: 5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0)
     transitivePeerDependencies:
       - axios
 
-  '@halo-dev/ui-shared@https://pkg.pr.new/@halo-dev/ui-shared@ac88ee7(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
+  '@halo-dev/ui-shared@https://pkg.pr.new/@halo-dev/ui-shared@6e46373(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
     dependencies:
-      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@ac88ee7(axios@1.13.2)
+      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373(axios@1.13.2)
       mitt: 3.0.1
       vue: 3.5.25(typescript@5.5.4)
       vue-router: 4.6.3(vue@3.5.25(typescript@5.5.4))
     transitivePeerDependencies:
       - axios
 
-  '@halo-dev/ui-shared@https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6ad165a(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
+  '@halo-dev/ui-shared@https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6e46373(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
     dependencies:
-      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6ad165a(axios@1.13.2)
+      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373(axios@1.13.2)
       mitt: 3.0.1
       vue: 3.5.25(typescript@5.5.4)
       vue-router: 4.6.3(vue@3.5.25(typescript@5.5.4))
@@ -3732,14 +3695,14 @@ snapshots:
     dependencies:
       '@tiptap/core': 3.11.0(@tiptap/pm@3.11.0)
 
-  '@tiptap/extension-drag-handle-vue-3@3.11.0(@tiptap/extension-drag-handle@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)))(@tiptap/pm@3.11.0)(@tiptap/vue-3@3.11.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
+  '@tiptap/extension-drag-handle-vue-3@3.11.0(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)))(@tiptap/pm@3.11.0)(@tiptap/vue-3@3.11.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
     dependencies:
-      '@tiptap/extension-drag-handle': 3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))
+      '@tiptap/extension-drag-handle': 3.13.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))
       '@tiptap/pm': 3.11.0
       '@tiptap/vue-3': 3.11.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(vue@3.5.25(typescript@5.5.4))
       vue: 3.5.25(typescript@5.5.4)
 
-  '@tiptap/extension-drag-handle@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))':
+  '@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))':
     dependencies:
       '@floating-ui/dom': 1.7.4
       '@tiptap/core': 3.11.0(@tiptap/pm@3.11.0)
@@ -5125,6 +5088,10 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
+  js-yaml@4.1.1:
+    dependencies:
+      argparse: 2.0.1
+
   jsesc@3.1.0: {}
 
   json-parse-even-better-errors@2.3.1: {}
@@ -5192,8 +5159,6 @@ snapshots:
       mdurl: 2.0.0
       punycode.js: 2.3.1
       uc.micro: 2.1.0
-
-  material-colors@1.2.6: {}
 
   math-intrinsics@1.1.0: {}
 
