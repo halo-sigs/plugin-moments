@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { useTagQueryFetchProps } from "@/composables/use-tag";
 import { TagsExtension } from "@/extensions/tags";
+import { ucApiClient } from "@halo-dev/api-client";
 import { VLoading } from "@halo-dev/components";
 import {
   ExtensionsKit,
@@ -8,8 +9,9 @@ import {
   VueEditor,
   type Extensions,
 } from "@halo-dev/richtext-editor";
-import type { PluginModule } from "@halo-dev/ui-shared";
+import { utils, type PluginModule } from "@halo-dev/ui-shared";
 import type { UseQueryReturnType } from "@tanstack/vue-query";
+import type { AxiosRequestConfig } from "axios";
 import { onMounted, ref, shallowRef, watch } from "vue";
 
 const props = withDefaults(
@@ -79,6 +81,18 @@ onMounted(async () => {
         placeholder: {
           placeholder: "有什么想说的吗...",
         },
+        image: {
+          uploadImage: handleUpload,
+        },
+        video: {
+          uploadVideo: handleUpload,
+        },
+        audio: {
+          uploadAudio: handleUpload,
+        },
+        gallery: {
+          uploadImage: handleUpload,
+        },
         customExtensions: [...customExtensions, ...extensionsFromPlugins],
       }),
     ],
@@ -94,6 +108,19 @@ onMounted(async () => {
     },
   });
 });
+
+async function handleUpload(file: File, options?: AxiosRequestConfig) {
+  if (!utils.permission.has(["uc:attachments:manage"])) {
+    throw new Error("Permission denied");
+  }
+  const { data } = await ucApiClient.storage.attachment.uploadUcAttachment(
+    {
+      file,
+    },
+    options
+  );
+  return data;
+}
 
 watch(
   () => props.raw,
