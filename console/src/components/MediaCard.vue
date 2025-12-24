@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { MomentMedia } from "@/api/generated";
-import { computed } from "vue";
+import { utils } from "@halo-dev/ui-shared";
 import LucideFileAudio from "~icons/lucide/file-audio";
 import LucideFileVideo from "~icons/lucide/file-video";
 import MingCloseCircle from "~icons/mingcute/close-circle-fill";
@@ -45,19 +45,16 @@ const getExtname = (type?: string) => {
   }
   return "";
 };
-
-const imageThumbnailUrl = computed(() => {
-  const { url } = props.media || {};
-  return `/apis/api.storage.halo.run/v1alpha1/thumbnails/-/via-uri?uri=${encodeURI(
-    url || ""
-  )}&size=s`;
-});
 </script>
 <template>
   <div class=":uno: relative overflow-hidden">
     <template v-if="media.type == 'PHOTO'">
       <div class=":uno: aspect-square">
-        <img :src="imageThumbnailUrl" class=":uno: size-full object-cover" loading="lazy" />
+        <img
+          :src="utils.attachment.getThumbnailUrl(media.url!, 'S')"
+          class=":uno: size-full object-cover"
+          loading="lazy"
+        />
       </div>
     </template>
     <template v-else-if="media.type == 'VIDEO'">

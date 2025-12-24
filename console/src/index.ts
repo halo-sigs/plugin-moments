@@ -1,12 +1,10 @@
 import type { Extension } from "@halo-dev/api-client";
-import { type CommentSubjectRefResult, definePlugin } from "@halo-dev/console-shared";
-import { defineAsyncComponent, markRaw } from "vue";
+import { type CommentSubjectRefResult, definePlugin, utils } from "@halo-dev/ui-shared";
+import "uno.css";
+import { markRaw } from "vue";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { Moment } from "./api/generated";
-import "uno.css";
 import "./styles/index.scss";
-import { formatDatetime } from "./utils/date";
-import { VLoading } from "@halo-dev/components";
 
 export default definePlugin({
   components: {},
@@ -16,10 +14,7 @@ export default definePlugin({
       route: {
         path: "/moments",
         name: "Moments",
-        component: defineAsyncComponent({
-          loader: () => import("@/views/MomentsList.vue"),
-          loadingComponent: VLoading,
-        }),
+        component: () => import("@/views/MomentsList.vue"),
         meta: {
           permissions: ["plugin:moments:view"],
           menu: {
@@ -37,10 +32,7 @@ export default definePlugin({
       route: {
         path: "/moments",
         name: "Moments",
-        component: defineAsyncComponent({
-          loader: () => import("@/uc/MomentsList.vue"),
-          loadingComponent: VLoading,
-        }),
+        component: () => import("@/uc/MomentsList.vue"),
         meta: {
           permissions: ["uc:plugin:moments:publish"],
           menu: {
@@ -78,7 +70,7 @@ export default definePlugin({
 const determineMomentTitle = (moment: Moment) => {
   const pureContent = stripHtmlTags(moment.spec.content.raw || "");
   const title = !pureContent?.trim()
-    ? formatDatetime(new Date(moment.spec.releaseTime || ""))
+    ? utils.date.format(new Date(moment.spec.releaseTime || ""))
     : pureContent;
   return title?.substring(0, 100);
 };

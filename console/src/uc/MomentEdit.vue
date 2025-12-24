@@ -4,7 +4,7 @@ import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
 import MediaCard from "@/components/MediaCard.vue";
 import { useUCTagQueryFetch } from "@/composables/use-tag";
 import { IconEye, IconEyeOff, Toast, VButton, VLoading } from "@halo-dev/components";
-import type { AttachmentLike } from "@halo-dev/console-shared";
+import type { AttachmentLike } from "@halo-dev/ui-shared";
 import { useQueryClient } from "@tanstack/vue-query";
 import { cloneDeep } from "es-toolkit";
 import { computed, defineAsyncComponent, onMounted, ref, toRaw } from "vue";
@@ -310,7 +310,7 @@ function handleKeydown(event: KeyboardEvent) {
       v-model:html="formState.spec.content.html"
       v-model:isEmpty="isEditorEmpty"
       :tag-query-fetch="useUCTagQueryFetch"
-      class=":uno: min-h-[9rem] p-3.5"
+      class=":uno: min-h-[9rem]"
       tabindex="-1"
       @keydown="handleKeydown"
     />

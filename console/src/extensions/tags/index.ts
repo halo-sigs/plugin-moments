@@ -1,19 +1,19 @@
+import type { useTagQueryFetchProps } from "@/composables/use-tag";
 import {
-  type Editor,
   Mark,
+  PluginKey,
   VueRenderer,
   markInputRule,
   markPasteRule,
   mergeAttributes,
+  type Editor,
   type Range,
 } from "@halo-dev/richtext-editor";
-import type { Instance } from "tippy.js";
-import TagsExtensionView from "./TagsExtensionView.vue";
-import tippy from "tippy.js";
-import Suggestion from "@tiptap/suggestion";
-import { PluginKey } from "@halo-dev/richtext-editor";
-import type { useTagQueryFetchProps } from "@/composables/use-tag";
 import type { UseQueryReturnType } from "@tanstack/vue-query";
+import Suggestion from "@tiptap/suggestion";
+import type { Instance } from "tippy.js";
+import tippy from "tippy.js";
+import TagsExtensionView from "./TagsExtensionView.vue";
 
 export interface TagOptions {
   HTMLAttributes: Record<string, any>;

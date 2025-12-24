@@ -1,13 +1,14 @@
 <script lang="ts" setup>
-import type { ListedMoment, Moment, MomentMedia } from "@/api/generated";
+import type { ListedMoment } from "@/api/generated";
+import ShikiDirective from "@/plugin-supports/shiki/directive";
 import { IconArrowLeft, IconArrowRight, IconMessage } from "@halo-dev/components";
+import { utils } from "@halo-dev/ui-shared";
+import { useQueryClient } from "@tanstack/vue-query";
 import { computed, inject, ref } from "vue";
 import LucideFileAudio from "~icons/lucide/file-audio";
 import LucideFileVideo from "~icons/lucide/file-video";
-import PreviewDetailModal from "./PreviewDetailModal.vue";
 import RiHeart3Line from "~icons/ri/heart-3-line";
-import { useQueryClient } from "@tanstack/vue-query";
-import ShikiDirective from "@/plugin-supports/shiki/directive";
+import PreviewDetailModal from "./PreviewDetailModal.vue";
 
 const props = defineProps<{
   moment: ListedMoment;
@@ -92,13 +93,6 @@ const getExtname = (type?: string) => {
   return "";
 };
 
-function getImageThumbnailUrl(media: MomentMedia) {
-  const { url } = media || {};
-  return `/apis/api.storage.halo.run/v1alpha1/thumbnails/-/via-uri?uri=${encodeURI(
-    url || ""
-  )}&size=s`;
-}
-
 const commentText = computed(() => {
   const { totalComment, approvedComment } = props.moment.stats || {};
 
@@ -174,7 +168,7 @@ defineOptions({
           <div class=":uno: aspect-square" @click="handleClickMedium(index)">
             <template v-if="media.type == 'PHOTO'">
               <img
-                :src="getImageThumbnailUrl(media)"
+                :src="utils.attachment.getThumbnailUrl(media.url!, 'S')"
                 class=":uno: size-full object-cover"
                 loading="lazy"
               />
