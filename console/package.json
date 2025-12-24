@@ -8,10 +8,10 @@
     "prettier": "prettier --write src/"
   },
   "dependencies": {
-    "@halo-dev/api-client": "https://pkg.pr.new/@halo-dev/api-client@6e46373",
-    "@halo-dev/components": "https://pkg.pr.new/@halo-dev/components@6e46373",
-    "@halo-dev/richtext-editor": "https://pkg.pr.new/@halo-dev/richtext-editor@6e46373",
-    "@halo-dev/ui-shared": "https://pkg.pr.new/@halo-dev/ui-shared@6e46373",
+    "@halo-dev/api-client": "^2.22.0",
+    "@halo-dev/components": "^2.22.0",
+    "@halo-dev/richtext-editor": "^2.22.0",
+    "@halo-dev/ui-shared": "^2.22.0",
     "@tanstack/vue-query": "^4.41.0",
     "@tiptap/suggestion": "2.11.2",
     "@vueuse/core": "^9.13.0",
@@ -36,7 +36,7 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
-    "@halo-dev/ui-plugin-bundler-kit": "https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@6e46373",
+    "@halo-dev/ui-plugin-bundler-kit": "^2.22.0",
     "@iconify/json": "^2.2.410",
     "@rsbuild/core": "^1.6.9",
     "@rsbuild/plugin-sass": "^1.4.0",

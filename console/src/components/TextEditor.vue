@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { useTagQueryFetchProps } from "@/composables/use-tag";
 import { TagsExtension } from "@/extensions/tags";
-import { ucApiClient } from "@halo-dev/api-client";
+import { consoleApiClient, ucApiClient } from "@halo-dev/api-client";
 import { VLoading } from "@halo-dev/components";
 import {
   ExtensionsKit,
@@ -110,16 +110,25 @@ onMounted(async () => {
 });
 
 async function handleUpload(file: File, options?: AxiosRequestConfig) {
-  if (!utils.permission.has(["uc:attachments:manage"])) {
+  if (utils.permission.has(["system:attachments:manage"])) {
+    const { data } = await consoleApiClient.storage.attachment.uploadAttachmentForConsole(
+      {
+        file,
+      },
+      options
+    );
+    return data;
+  } else if (utils.permission.has(["uc:attachments:manage"])) {
+    const { data } = await ucApiClient.storage.attachment.uploadAttachmentForUc(
+      {
+        file,
+      },
+      options
+    );
+    return data;
+  } else {
     throw new Error("Permission denied");
   }
-  const { data } = await ucApiClient.storage.attachment.uploadUcAttachment(
-    {
-      file,
-    },
-    options
-  );
-  return data;
 }
 
 watch(

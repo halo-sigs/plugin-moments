@@ -14,17 +14,17 @@ importers:
   .:
     dependencies:
       '@halo-dev/api-client':
-        specifier: https://pkg.pr.new/@halo-dev/api-client@6e46373
-        version: https://pkg.pr.new/@halo-dev/api-client@6e46373(axios@1.13.2)
+        specifier: ^2.22.0
+        version: 2.22.0(axios@1.13.2)
       '@halo-dev/components':
-        specifier: https://pkg.pr.new/@halo-dev/components@6e46373
-        version: https://pkg.pr.new/@halo-dev/components@6e46373(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
+        specifier: ^2.22.0
+        version: 2.22.0(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
       '@halo-dev/richtext-editor':
-        specifier: https://pkg.pr.new/@halo-dev/richtext-editor@6e46373
-        version: https://pkg.pr.new/@halo-dev/richtext-editor@6e46373(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
+        specifier: ^2.22.0
+        version: 2.22.0(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
       '@halo-dev/ui-shared':
-        specifier: https://pkg.pr.new/@halo-dev/ui-shared@6e46373
-        version: https://pkg.pr.new/@halo-dev/ui-shared@6e46373(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
+        specifier: ^2.22.0
+        version: 2.22.0(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
       '@tanstack/vue-query':
         specifier: ^4.41.0
         version: 4.41.0(vue@3.5.25(typescript@5.5.4))
@@ -60,8 +60,8 @@ importers:
         version: 4.6.3(vue@3.5.25(typescript@5.5.4))
     devDependencies:
       '@halo-dev/ui-plugin-bundler-kit':
-        specifier: https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@6e46373
-        version: https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@6e46373(@rsbuild/core@1.6.9)(@rsbuild/plugin-vue@1.1.0(@rsbuild/core@1.6.9)(@vue/compiler-sfc@3.5.25)(vue@3.5.25(typescript@5.5.4)))(@vitejs/plugin-vue@6.0.0(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))(vue@3.5.25(typescript@5.5.4)))(axios@1.13.2)(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))
+        specifier: ^2.22.0
+        version: 2.22.0(@rsbuild/core@1.6.9)(@rsbuild/plugin-vue@1.1.0(@rsbuild/core@1.6.9)(@vue/compiler-sfc@3.5.25)(vue@3.5.25(typescript@5.5.4)))(@vitejs/plugin-vue@6.0.0(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))(vue@3.5.25(typescript@5.5.4)))(axios@1.13.2)(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))
       '@iconify/json':
         specifier: ^2.2.410
         version: 2.2.410
@@ -337,9 +337,6 @@ packages:
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@floating-ui/core@1.5.1':
-    resolution: {integrity: sha512-QgcKYwzcc8vvZ4n/5uklchy8KVdjJwcOeI+HnnTNclJjs2nYsy23DOCf+sSV1kBwD9yDAoVKCkv/gEPzgQU3Pw==}
-
   '@floating-ui/core@1.7.3':
     resolution: {integrity: sha512-sGnvb5dmrJaKEZ+LDIpguvdX3bDlEllmv4/ClQ9awcmCZrlx5jQyyMWFM5kBI+EyNOCDDiKk8il0zeuX3Zlg/w==}
 
@@ -349,47 +346,27 @@ packages:
   '@floating-ui/dom@1.7.4':
     resolution: {integrity: sha512-OOchDgh4F2CchOX94cRVqhvy7b3AFb+/rQXyswmzmGakRfkMgoWVjfnLWkRirfLEfuD4ysVW16eXzwt3jHIzKA==}
 
-  '@floating-ui/utils@0.1.6':
-    resolution: {integrity: sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==}
-
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
 
-  '@halo-dev/api-client@https://pkg.pr.new/@halo-dev/api-client@6e46373':
-    resolution: {tarball: https://pkg.pr.new/@halo-dev/api-client@6e46373}
-    version: 2.21.1
+  '@halo-dev/api-client@2.22.0':
+    resolution: {integrity: sha512-gJKJWQxG2nzcANrRddED9P0pefmdanWm0+kV3cgGrtqnF6ULnckB4KIKUPmMOwdCBg1QEPQ30Txc9AfYwlu4kQ==}
     peerDependencies:
       axios: ^1.12.*
 
-  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373':
-    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373}
-    version: 2.21.1
-    peerDependencies:
-      axios: ^1.12.*
-
-  '@halo-dev/components@https://pkg.pr.new/@halo-dev/components@6e46373':
-    resolution: {tarball: https://pkg.pr.new/@halo-dev/components@6e46373}
-    version: 2.21.0
+  '@halo-dev/components@2.22.0':
+    resolution: {integrity: sha512-IwFmrqnlfeTZwpEhT+w20rljK0kUqIKxWNW1pFOAfcCC3TN3KbybatGX3Mv81wNWCkaJ9cvu5tSkAJO8UJSNRg==}
     peerDependencies:
       vue: ^3.5.x
       vue-router: ^4.6.x
 
-  '@halo-dev/components@https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6e46373':
-    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6e46373}
-    version: 2.21.0
-    peerDependencies:
-      vue: ^3.5.x
-      vue-router: ^4.6.x
-
-  '@halo-dev/richtext-editor@https://pkg.pr.new/@halo-dev/richtext-editor@6e46373':
-    resolution: {tarball: https://pkg.pr.new/@halo-dev/richtext-editor@6e46373}
-    version: 2.21.0
+  '@halo-dev/richtext-editor@2.22.0':
+    resolution: {integrity: sha512-MwBuzC+MRnycpadLF+V2MRrp+9UAGWLK142e2od077bbhZn5PS94NsnYtG5ifuwTaf4AFwrNtGxbEF/8xG6/xg==}
     peerDependencies:
       vue: ^3.5.x
 
-  '@halo-dev/ui-plugin-bundler-kit@https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@6e46373':
-    resolution: {tarball: https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@6e46373}
-    version: 2.21.2
+  '@halo-dev/ui-plugin-bundler-kit@2.22.0':
+    resolution: {integrity: sha512-3R6AJGA10owZ1j2WxqyPvXbg8JBuQCVMqM/DBZzvXO/2pSLHFqnCi2n7qW66kN0B621PmHr+q3hGSAsBIS4Oeg==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
       '@rsbuild/core': ^1.0.0
@@ -397,16 +374,8 @@ packages:
       '@vitejs/plugin-vue': ^5.0.0 || ^6.0.0
       vite: ^5.0.0 || ^6.0.0 || ^7.0.0
 
-  '@halo-dev/ui-shared@https://pkg.pr.new/@halo-dev/ui-shared@6e46373':
-    resolution: {tarball: https://pkg.pr.new/@halo-dev/ui-shared@6e46373}
-    version: 2.21.0
-    peerDependencies:
-      vue: ^3.5.x
-      vue-router: ^4.6.x
-
-  '@halo-dev/ui-shared@https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6e46373':
-    resolution: {tarball: https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6e46373}
-    version: 2.21.0
+  '@halo-dev/ui-shared@2.22.0':
+    resolution: {integrity: sha512-l3/lLtnshucsurKCTrJ71l1uDRt/oaBnuuAg8973tOHVCXzFXUDaOcGsaXUalEA/wHGkyc5oCZ7w6uVzDq/8nw==}
     peerDependencies:
       vue: ^3.5.x
       vue-router: ^4.6.x
@@ -2331,9 +2300,6 @@ packages:
   prosemirror-collab@1.3.1:
     resolution: {integrity: sha512-4SnynYR9TTYaQVXd/ieUvsVV4PDMBzrq2xPUWutHivDuOshZXqQ5rGbZM84HEaXKbLdItse7weMGOUdDVcLKEQ==}
 
-  prosemirror-commands@1.5.2:
-    resolution: {integrity: sha512-hgLcPaakxH8tu6YvVAaILV2tXYsW3rAdDR8WNkeKGcgeMVQg3/TMhPdVoh7iAmfgVjZGtcOSjKiQaoeKjzd2mQ==}
-
   prosemirror-commands@1.7.1:
     resolution: {integrity: sha512-rT7qZnQtx5c0/y/KlYaGvtG411S97UaL6gdp6RIZ23DLHanMYLyfGBV5DtSnZdthQql7W+lEVbpSfwtO8T+L2w==}
 
@@ -2357,9 +2323,6 @@ packages:
 
   prosemirror-menu@1.2.4:
     resolution: {integrity: sha512-S/bXlc0ODQup6aiBbWVsX/eM+xJgCTAfMq/nLqaO5ID/am4wS0tTCIkzwytmao7ypEtjj39i7YbJjAgO20mIqA==}
-
-  prosemirror-model@1.22.3:
-    resolution: {integrity: sha512-V4XCysitErI+i0rKFILGt/xClnFJaohe/wrrlT2NSZ+zk8ggQfDH4x2wNK7Gm0Hp4CIoWizvXFP7L9KMaCuI0Q==}
 
   prosemirror-model@1.25.4:
     resolution: {integrity: sha512-PIM7E43PBxKce8OQeezAs9j4TP+5yDpZVbuurd1h5phUxEKIu+G2a+EUZzIC5nS1mJktDJWzbqS23n1tsAf5QA==}
@@ -2385,12 +2348,6 @@ packages:
 
   prosemirror-transform@1.10.4:
     resolution: {integrity: sha512-pwDy22nAnGqNR1feOQKHxoFkkUtepoFAd3r2hbEDsnf4wp57kKA36hXsB3njA9FtONBEwSDnDeCiJe+ItD+ykw==}
-
-  prosemirror-transform@1.9.0:
-    resolution: {integrity: sha512-5UXkr1LIRx3jmpXXNKDhv8OyAOeLTGuXNwdVfg8x27uASna/wQkr9p6fD3eupGOi4PLJfbezxTyi/7fSJypXHg==}
-
-  prosemirror-view@1.33.9:
-    resolution: {integrity: sha512-xV1A0Vz9cIcEnwmMhKKFAOkfIp8XmJRnaZoPqNXrPS7EK5n11Ov8V76KhR0RsfQd/SIzmWY+bg+M44A2Lx/Nnw==}
 
   prosemirror-view@1.41.3:
     resolution: {integrity: sha512-SqMiYMUQNNBP9kfPhLO8WXEk/fon47vc52FQsUiJzTBuyjKgEcoAwMyF04eQ4WZ2ArMn7+ReypYL60aKngbACQ==}
@@ -3178,38 +3135,27 @@ snapshots:
 
   '@eslint/js@8.57.1': {}
 
-  '@floating-ui/core@1.5.1':
-    dependencies:
-      '@floating-ui/utils': 0.1.6
-
   '@floating-ui/core@1.7.3':
     dependencies:
       '@floating-ui/utils': 0.2.10
 
   '@floating-ui/dom@1.1.1':
     dependencies:
-      '@floating-ui/core': 1.5.1
+      '@floating-ui/core': 1.7.3
 
   '@floating-ui/dom@1.7.4':
     dependencies:
       '@floating-ui/core': 1.7.3
       '@floating-ui/utils': 0.2.10
 
-  '@floating-ui/utils@0.1.6': {}
-
   '@floating-ui/utils@0.2.10': {}
 
-  '@halo-dev/api-client@https://pkg.pr.new/@halo-dev/api-client@6e46373(axios@1.13.2)':
+  '@halo-dev/api-client@2.22.0(axios@1.13.2)':
     dependencies:
       axios: 1.13.2
       qs: 6.14.0
 
-  '@halo-dev/api-client@https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373(axios@1.13.2)':
-    dependencies:
-      axios: 1.13.2
-      qs: 6.14.0
-
-  '@halo-dev/components@https://pkg.pr.new/@halo-dev/components@6e46373(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
+  '@halo-dev/components@2.22.0(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
     dependencies:
       floating-vue: 5.2.2(vue@3.5.25(typescript@5.5.4))
       vue: 3.5.25(typescript@5.5.4)
@@ -3217,20 +3163,12 @@ snapshots:
     transitivePeerDependencies:
       - '@nuxt/kit'
 
-  '@halo-dev/components@https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6e46373(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
-    dependencies:
-      floating-vue: 5.2.2(vue@3.5.25(typescript@5.5.4))
-      vue: 3.5.25(typescript@5.5.4)
-      vue-router: 4.6.3(vue@3.5.25(typescript@5.5.4))
-    transitivePeerDependencies:
-      - '@nuxt/kit'
-
-  '@halo-dev/richtext-editor@https://pkg.pr.new/@halo-dev/richtext-editor@6e46373(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
+  '@halo-dev/richtext-editor@2.22.0(@tiptap/extension-collaboration@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0)(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(yjs@13.6.27))(@tiptap/extension-node-range@3.10.1(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/y-tiptap@3.0.0(prosemirror-model@1.25.4)(prosemirror-state@1.4.3)(prosemirror-view@1.41.3)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
     dependencies:
       '@floating-ui/dom': 1.7.4
-      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373(axios@1.13.2)
-      '@halo-dev/components': https://pkg.pr.new/halo-dev/halo/@halo-dev/components@6e46373(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
-      '@halo-dev/ui-shared': https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6e46373(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
+      '@halo-dev/api-client': 2.22.0(axios@1.13.2)
+      '@halo-dev/components': 2.22.0(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
+      '@halo-dev/ui-shared': 2.22.0(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))
       '@tiptap/core': 3.11.0(@tiptap/pm@3.11.0)
       '@tiptap/extension-blockquote': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))
       '@tiptap/extension-bold': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))
@@ -3274,9 +3212,9 @@ snapshots:
       - axios
       - vue-router
 
-  '@halo-dev/ui-plugin-bundler-kit@https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@6e46373(@rsbuild/core@1.6.9)(@rsbuild/plugin-vue@1.1.0(@rsbuild/core@1.6.9)(@vue/compiler-sfc@3.5.25)(vue@3.5.25(typescript@5.5.4)))(@vitejs/plugin-vue@6.0.0(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))(vue@3.5.25(typescript@5.5.4)))(axios@1.13.2)(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))':
+  '@halo-dev/ui-plugin-bundler-kit@2.22.0(@rsbuild/core@1.6.9)(@rsbuild/plugin-vue@1.1.0(@rsbuild/core@1.6.9)(@vue/compiler-sfc@3.5.25)(vue@3.5.25(typescript@5.5.4)))(@vitejs/plugin-vue@6.0.0(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))(vue@3.5.25(typescript@5.5.4)))(axios@1.13.2)(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))':
     dependencies:
-      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373(axios@1.13.2)
+      '@halo-dev/api-client': 2.22.0(axios@1.13.2)
       '@rsbuild/core': 1.6.9
       '@rsbuild/plugin-vue': 1.1.0(@rsbuild/core@1.6.9)(@vue/compiler-sfc@3.5.25)(vue@3.5.25(typescript@5.5.4))
       '@vitejs/plugin-vue': 6.0.0(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))(vue@3.5.25(typescript@5.5.4))
@@ -3285,18 +3223,9 @@ snapshots:
     transitivePeerDependencies:
       - axios
 
-  '@halo-dev/ui-shared@https://pkg.pr.new/@halo-dev/ui-shared@6e46373(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
+  '@halo-dev/ui-shared@2.22.0(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
     dependencies:
-      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373(axios@1.13.2)
-      mitt: 3.0.1
-      vue: 3.5.25(typescript@5.5.4)
-      vue-router: 4.6.3(vue@3.5.25(typescript@5.5.4))
-    transitivePeerDependencies:
-      - axios
-
-  '@halo-dev/ui-shared@https://pkg.pr.new/halo-dev/halo/@halo-dev/ui-shared@6e46373(axios@1.13.2)(vue-router@4.6.3(vue@3.5.25(typescript@5.5.4)))(vue@3.5.25(typescript@5.5.4))':
-    dependencies:
-      '@halo-dev/api-client': https://pkg.pr.new/halo-dev/halo/@halo-dev/api-client@6e46373(axios@1.13.2)
+      '@halo-dev/api-client': 2.22.0(axios@1.13.2)
       mitt: 3.0.1
       vue: 3.5.25(typescript@5.5.4)
       vue-router: 4.6.3(vue@3.5.25(typescript@5.5.4))
@@ -5337,12 +5266,6 @@ snapshots:
     dependencies:
       prosemirror-state: 1.4.3
 
-  prosemirror-commands@1.5.2:
-    dependencies:
-      prosemirror-model: 1.22.3
-      prosemirror-state: 1.4.3
-      prosemirror-transform: 1.9.0
-
   prosemirror-commands@1.7.1:
     dependencies:
       prosemirror-model: 1.25.4
@@ -5352,27 +5275,27 @@ snapshots:
   prosemirror-dropcursor@1.8.1:
     dependencies:
       prosemirror-state: 1.4.3
-      prosemirror-transform: 1.9.0
-      prosemirror-view: 1.33.9
+      prosemirror-transform: 1.10.4
+      prosemirror-view: 1.41.3
 
   prosemirror-gapcursor@1.3.2:
     dependencies:
       prosemirror-keymap: 1.2.2
-      prosemirror-model: 1.22.3
+      prosemirror-model: 1.25.4
       prosemirror-state: 1.4.3
-      prosemirror-view: 1.33.9
+      prosemirror-view: 1.41.3
 
   prosemirror-history@1.4.1:
     dependencies:
       prosemirror-state: 1.4.3
-      prosemirror-transform: 1.9.0
-      prosemirror-view: 1.33.9
+      prosemirror-transform: 1.10.4
+      prosemirror-view: 1.41.3
       rope-sequence: 1.3.3
 
   prosemirror-inputrules@1.4.0:
     dependencies:
       prosemirror-state: 1.4.3
-      prosemirror-transform: 1.9.0
+      prosemirror-transform: 1.10.4
 
   prosemirror-keymap@1.2.2:
     dependencies:
@@ -5388,13 +5311,9 @@ snapshots:
   prosemirror-menu@1.2.4:
     dependencies:
       crelt: 1.0.5
-      prosemirror-commands: 1.5.2
+      prosemirror-commands: 1.7.1
       prosemirror-history: 1.4.1
       prosemirror-state: 1.4.3
-
-  prosemirror-model@1.22.3:
-    dependencies:
-      orderedmap: 2.1.0
 
   prosemirror-model@1.25.4:
     dependencies:
@@ -5402,7 +5321,7 @@ snapshots:
 
   prosemirror-schema-basic@1.2.3:
     dependencies:
-      prosemirror-model: 1.22.3
+      prosemirror-model: 1.25.4
 
   prosemirror-schema-list@1.5.1:
     dependencies:
@@ -5412,9 +5331,9 @@ snapshots:
 
   prosemirror-state@1.4.3:
     dependencies:
-      prosemirror-model: 1.22.3
-      prosemirror-transform: 1.9.0
-      prosemirror-view: 1.33.9
+      prosemirror-model: 1.25.4
+      prosemirror-transform: 1.10.4
+      prosemirror-view: 1.41.3
 
   prosemirror-tables@1.8.1:
     dependencies:
@@ -5435,16 +5354,6 @@ snapshots:
   prosemirror-transform@1.10.4:
     dependencies:
       prosemirror-model: 1.25.4
-
-  prosemirror-transform@1.9.0:
-    dependencies:
-      prosemirror-model: 1.22.3
-
-  prosemirror-view@1.33.9:
-    dependencies:
-      prosemirror-model: 1.22.3
-      prosemirror-state: 1.4.3
-      prosemirror-transform: 1.9.0
 
   prosemirror-view@1.41.3:
     dependencies:
