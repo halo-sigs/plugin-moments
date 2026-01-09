@@ -123,4 +123,12 @@ public class Moment extends AbstractExtension {
             return null;
         }
     }
+
+    public boolean isApproved() {
+        return Boolean.TRUE.equals(this.getSpec().getApproved());
+    }
+
+    public boolean isPubliclyVisible() {
+        return MomentVisible.PUBLIC.equals(this.getSpec().getVisible());
+    }
 }

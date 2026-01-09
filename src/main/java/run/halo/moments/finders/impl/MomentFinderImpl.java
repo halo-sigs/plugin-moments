@@ -3,16 +3,20 @@ package run.halo.moments.finders.impl;
 import static run.halo.app.extension.index.query.QueryFactory.all;
 import static run.halo.app.extension.index.query.QueryFactory.and;
 import static run.halo.app.extension.index.query.QueryFactory.equal;
+import static run.halo.app.extension.index.query.QueryFactory.isNull;
+import static run.halo.app.extension.index.query.QueryFactory.or;
 
 import jakarta.annotation.Nonnull;
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.util.UriUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,8 +28,8 @@ import run.halo.app.extension.ListResult;
 import run.halo.app.extension.PageRequest;
 import run.halo.app.extension.PageRequestImpl;
 import run.halo.app.extension.ReactiveExtensionClient;
-import run.halo.app.extension.index.query.Query;
 import run.halo.app.extension.router.selector.FieldSelector;
+import run.halo.app.infra.AnonymousUserConst;
 import run.halo.app.theme.finders.Finder;
 import run.halo.moments.Moment;
 import run.halo.moments.Stats;
@@ -44,25 +48,13 @@ import run.halo.moments.vo.MomentVo;
 @Finder("momentFinder")
 @RequiredArgsConstructor
 public class MomentFinderImpl implements MomentFinder {
-
-    public static final Predicate<Moment> FIXED_PREDICATE = moment -> Objects.equals(
-        moment.getSpec().getVisible(), Moment.MomentVisible.PUBLIC)
-        && moment.getSpec().getApproved() == Boolean.TRUE;
-
-    public static final Query FIXED_QUERY = and(
-        equal("spec.visible", Moment.MomentVisible.PUBLIC.name()),
-        equal("spec.approved", Boolean.TRUE.toString())
-    );
-
     private final ReactiveExtensionClient client;
 
     @Override
     public Flux<MomentVo> listAll() {
-        var listOptions = new ListOptions();
-        listOptions.setFieldSelector(
-            FieldSelector.of(FIXED_QUERY));
-        return client.listAll(Moment.class, listOptions, defaultSort())
-            .concatMap(this::getMomentVo);
+        return getListOptions()
+            .flatMapMany(listOptions -> client.listAll(Moment.class, listOptions, defaultSort())
+                .concatMap(this::getMomentVo));
     }
 
     @Override
@@ -78,46 +70,57 @@ public class MomentFinderImpl implements MomentFinder {
 
     @Override
     public Flux<MomentVo> listBy(String tag) {
-        var listOptions = new ListOptions();
-        var query = and(FIXED_QUERY, equal("spec.tags", tag));
-        listOptions.setFieldSelector(FieldSelector.of(query));
-        return client.listAll(Moment.class, listOptions, defaultSort())
-            .concatMap(this::getMomentVo);
+        return getListOptions()
+            .map(options -> {
+                options.setFieldSelector(
+                    options.getFieldSelector()
+                        .andQuery(equal("spec.tags", tag))
+                );
+                return options;
+            })
+            .flatMapMany(listOptions -> client.listAll(Moment.class, listOptions, defaultSort())
+                .concatMap(this::getMomentVo));
     }
 
     @Override
     public Mono<MomentVo> get(String momentName) {
-        return client.get(Moment.class, momentName)
-            .filter(FIXED_PREDICATE)
+        return getPredicate()
+            .flatMap(predicate -> client.get(Moment.class, momentName).filter(predicate))
             .flatMap(this::getMomentVo);
     }
 
     @Override
     public Flux<MomentTagVo> listAllTags() {
-        var listOptions = new ListOptions();
-        var query = and(all("spec.tags"), FIXED_QUERY);
-        listOptions.setFieldSelector(FieldSelector.of(query));
-        return client.listAll(Moment.class, listOptions, defaultSort())
-            .flatMapIterable(moment -> {
-                var tags = moment.getSpec().getTags();
-                if (tags == null) {
-                    return List.of();
-                }
-                return tags.stream()
-                    .map(tag -> new MomentTagPair(tag, moment.getMetadata().getName()))
-                    .toList();
+        return getListOptions()
+            .map(options -> {
+                options.setFieldSelector(
+                    options.getFieldSelector().andQuery(
+                        all("spec.tags")
+                    )
+                );
+                return options;
             })
-            .groupBy(MomentTagPair::tagName)
-            .concatMap(groupedFlux -> groupedFlux.count()
-                .defaultIfEmpty(0L)
-                .map(count -> MomentTagVo.builder()
-                    .name(groupedFlux.key())
-                    .momentCount(count.intValue())
-                    .permalink("/moments?tag=" + UriUtils.encode(groupedFlux.key(),
-                        StandardCharsets.UTF_8))
-                    .build()
-                )
-            );
+            .flatMapMany(listOptions -> client.listAll(Moment.class, listOptions, defaultSort())
+                .flatMapIterable(moment -> {
+                    var tags = moment.getSpec().getTags();
+                    if (tags == null) {
+                        return List.of();
+                    }
+                    return tags.stream()
+                        .map(tag -> new MomentTagPair(tag, moment.getMetadata().getName()))
+                        .toList();
+                })
+                .groupBy(MomentTagPair::tagName)
+                .concatMap(groupedFlux -> groupedFlux.count()
+                    .defaultIfEmpty(0L)
+                    .map(count -> MomentTagVo.builder()
+                        .name(groupedFlux.key())
+                        .momentCount(count.intValue())
+                        .permalink("/moments?tag=" + UriUtils.encode(groupedFlux.key(),
+                            StandardCharsets.UTF_8))
+                        .build()
+                    )
+                ));
     }
 
     record MomentTagPair(String tagName, String momentName) {
@@ -135,22 +138,27 @@ public class MomentFinderImpl implements MomentFinder {
     }
 
     private Mono<ListResult<MomentVo>> pageMoment(FieldSelector fieldSelector, PageRequest page) {
-        var listOptions = new ListOptions();
-        var query = FIXED_QUERY;
-        if (fieldSelector != null) {
-            query = and(query, fieldSelector.query());
-        }
-        listOptions.setFieldSelector(FieldSelector.of(query));
-        return client.listBy(Moment.class, listOptions, page)
-            .flatMap(list -> Flux.fromStream(list.get())
-                .concatMap(this::getMomentVo)
-                .collectList()
-                .map(momentVos -> new ListResult<>(list.getPage(), list.getSize(),
-                    list.getTotal(), momentVos)
+        return getListOptions()
+            .map(options -> {
+                if (fieldSelector != null) {
+                    options.setFieldSelector(
+                        options.getFieldSelector().andQuery(fieldSelector.query())
+                    );
+                }
+                return options;
+            })
+            .flatMap(listOptions -> client.listBy(Moment.class, listOptions, page)
+                .flatMap(list -> Flux.fromStream(list.get())
+                    .concatMap(this::getMomentVo)
+                    .collectList()
+                    .map(momentVos -> new ListResult<>(list.getPage(), list.getSize(),
+                        list.getTotal(), momentVos)
+                    )
                 )
-            )
-            .defaultIfEmpty(
-                new ListResult<>(page.getPageNumber(), page.getPageSize(), 0L, List.of()));
+                .defaultIfEmpty(
+                    new ListResult<>(page.getPageNumber(), page.getPageSize(), 0L, List.of())
+                )
+            );
     }
 
     private Mono<MomentVo> getMomentVo(@Nonnull Moment moment) {
@@ -187,5 +195,42 @@ public class MomentFinderImpl implements MomentFinder {
 
     int sizeNullSafe(Integer size) {
         return ObjectUtils.defaultIfNull(size, 10);
+    }
+
+
+    public Mono<Predicate<Moment>> getPredicate() {
+        Predicate<Moment> predicate = moment -> moment.isApproved()
+            && !ExtensionUtil.isDeleted(moment);
+        Predicate<Moment> visiblePredicate = Moment::isPubliclyVisible;
+        return currentUserName()
+            .map(username -> predicate.and(
+                visiblePredicate.or(moment -> username.equals(moment.getSpec().getOwner())))
+            )
+            .defaultIfEmpty(predicate.and(visiblePredicate));
+    }
+
+    public Mono<ListOptions> getListOptions() {
+        var listOptions = new ListOptions();
+        var fieldQuery = and(
+            isNull("metadata.deletionTimestamp"),
+            equal("spec.approved", Boolean.TRUE.toString())
+        );
+        var visibleQuery = equal("spec.visible", Moment.MomentVisible.PUBLIC.name());
+        return currentUserName()
+            .map(username -> and(fieldQuery,
+                or(visibleQuery, equal("spec.owner", username)))
+            )
+            .defaultIfEmpty(and(fieldQuery, visibleQuery))
+            .map(query -> {
+                listOptions.setFieldSelector(FieldSelector.of(query));
+                return listOptions;
+            });
+    }
+
+    Mono<String> currentUserName() {
+        return ReactiveSecurityContextHolder.getContext()
+            .map(SecurityContext::getAuthentication)
+            .map(Principal::getName)
+            .filter(name -> !AnonymousUserConst.isAnonymousUser(name));
     }
 }
