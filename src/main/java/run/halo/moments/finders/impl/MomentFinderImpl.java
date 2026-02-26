@@ -3,25 +3,19 @@ package run.halo.moments.finders.impl;
 import static run.halo.app.extension.index.query.QueryFactory.all;
 import static run.halo.app.extension.index.query.QueryFactory.and;
 import static run.halo.app.extension.index.query.QueryFactory.equal;
-import static run.halo.app.extension.index.query.QueryFactory.isNull;
-import static run.halo.app.extension.index.query.QueryFactory.or;
 
-import jakarta.annotation.Nonnull;
 import java.nio.charset.StandardCharsets;
-import java.security.Principal;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Map;
+import java.util.Optional;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.util.UriUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import run.halo.app.core.extension.Counter;
-import run.halo.app.core.extension.User;
 import run.halo.app.extension.ExtensionUtil;
 import run.halo.app.extension.ListOptions;
 import run.halo.app.extension.ListResult;
@@ -29,13 +23,13 @@ import run.halo.app.extension.PageRequest;
 import run.halo.app.extension.PageRequestImpl;
 import run.halo.app.extension.ReactiveExtensionClient;
 import run.halo.app.extension.router.selector.FieldSelector;
-import run.halo.app.infra.AnonymousUserConst;
+import run.halo.app.infra.utils.JsonUtils;
 import run.halo.app.theme.finders.Finder;
 import run.halo.moments.Moment;
-import run.halo.moments.Stats;
+import run.halo.moments.ReactiveQueryMomentPredicateResolver;
 import run.halo.moments.finders.MomentFinder;
-import run.halo.moments.util.MeterUtils;
-import run.halo.moments.vo.ContributorVo;
+import run.halo.moments.finders.MomentPublicQueryService;
+import run.halo.moments.util.SortUtils;
 import run.halo.moments.vo.MomentTagVo;
 import run.halo.moments.vo.MomentVo;
 
@@ -50,17 +44,31 @@ import run.halo.moments.vo.MomentVo;
 public class MomentFinderImpl implements MomentFinder {
     private final ReactiveExtensionClient client;
 
+    private final MomentPublicQueryService momentPublicQueryService;
+
+    private final ReactiveQueryMomentPredicateResolver momentPredicateResolver;
+
     @Override
     public Flux<MomentVo> listAll() {
-        return getListOptions()
+        return momentPredicateResolver.getListOptions()
             .flatMapMany(listOptions -> client.listAll(Moment.class, listOptions, defaultSort())
-                .concatMap(this::getMomentVo));
+                .concatMap(momentPublicQueryService::getMomentVo));
     }
 
     @Override
     public Mono<ListResult<MomentVo>> list(Integer page, Integer size) {
+        var listOptions = ListOptions.builder()
+            .build();
         var pageRequest = PageRequestImpl.of(pageNullSafe(page), sizeNullSafe(size), defaultSort());
-        return pageMoment(null, pageRequest);
+        return momentPublicQueryService.list(listOptions, pageRequest);
+    }
+
+    @Override
+    public Mono<ListResult<MomentVo>> list(Map<String, Object> params) {
+        var query = Optional.ofNullable(params)
+            .map(map -> JsonUtils.mapToObject(map, MomentQuery.class))
+            .orElseGet(MomentQuery::new);
+        return momentPublicQueryService.list(query.toListOptions(), query.toPageRequest());
     }
 
     static Sort defaultSort() {
@@ -70,7 +78,7 @@ public class MomentFinderImpl implements MomentFinder {
 
     @Override
     public Flux<MomentVo> listBy(String tag) {
-        return getListOptions()
+        return momentPredicateResolver.getListOptions()
             .map(options -> {
                 options.setFieldSelector(
                     options.getFieldSelector()
@@ -79,19 +87,19 @@ public class MomentFinderImpl implements MomentFinder {
                 return options;
             })
             .flatMapMany(listOptions -> client.listAll(Moment.class, listOptions, defaultSort())
-                .concatMap(this::getMomentVo));
+                .concatMap(momentPublicQueryService::getMomentVo));
     }
 
     @Override
     public Mono<MomentVo> get(String momentName) {
-        return getPredicate()
+        return momentPredicateResolver.getPredicate()
             .flatMap(predicate -> client.get(Moment.class, momentName).filter(predicate))
-            .flatMap(this::getMomentVo);
+            .flatMap(momentPublicQueryService::getMomentVo);
     }
 
     @Override
     public Flux<MomentTagVo> listAllTags() {
-        return getListOptions()
+        return momentPredicateResolver.getListOptions()
             .map(options -> {
                 options.setFieldSelector(
                     options.getFieldSelector().andQuery(
@@ -128,109 +136,47 @@ public class MomentFinderImpl implements MomentFinder {
 
     @Override
     public Mono<ListResult<MomentVo>> listByTag(int pageNum, Integer pageSize, String tagName) {
+        var listOptions = new ListOptions();
         var query = all();
         if (StringUtils.isNoneBlank(tagName)) {
             query = and(query, equal("spec.tags", tagName));
         }
+        listOptions.setFieldSelector(FieldSelector.of(query));
         var pageRequest =
             PageRequestImpl.of(pageNullSafe(pageNum), sizeNullSafe(pageSize), defaultSort());
-        return pageMoment(FieldSelector.of(query), pageRequest);
+        return momentPublicQueryService.list(listOptions, pageRequest);
     }
 
-    private Mono<ListResult<MomentVo>> pageMoment(FieldSelector fieldSelector, PageRequest page) {
-        return getListOptions()
-            .map(options -> {
-                if (fieldSelector != null) {
-                    options.setFieldSelector(
-                        options.getFieldSelector().andQuery(fieldSelector.query())
-                    );
-                }
-                return options;
-            })
-            .flatMap(listOptions -> client.listBy(Moment.class, listOptions, page)
-                .flatMap(list -> Flux.fromStream(list.get())
-                    .concatMap(this::getMomentVo)
-                    .collectList()
-                    .map(momentVos -> new ListResult<>(list.getPage(), list.getSize(),
-                        list.getTotal(), momentVos)
-                    )
-                )
-                .defaultIfEmpty(
-                    new ListResult<>(page.getPageNumber(), page.getPageSize(), 0L, List.of())
-                )
-            );
-    }
-
-    private Mono<MomentVo> getMomentVo(@Nonnull Moment moment) {
-        MomentVo momentVo = MomentVo.from(moment);
-        return Mono.just(momentVo)
-            .flatMap(mv -> populateStats(momentVo)
-                .doOnNext(mv::setStats)
-                .thenReturn(mv)
-            )
-            .flatMap(mv -> {
-                String owner = mv.getSpec().getOwner();
-                return client.fetch(User.class, owner)
-                    .map(ContributorVo::from)
-                    .doOnNext(mv::setOwner)
-                    .thenReturn(mv);
-            })
-            .defaultIfEmpty(momentVo);
-    }
-
-    private Mono<Stats> populateStats(MomentVo momentVo) {
-        String name = momentVo.getMetadata().getName();
-        return client.fetch(Counter.class, MeterUtils.nameOf(Moment.class, name))
-            .map(counter -> Stats.builder()
-                .upvote(counter.getUpvote())
-                .totalComment(counter.getTotalComment())
-                .approvedComment(counter.getApprovedComment())
-                .build())
-            .defaultIfEmpty(Stats.empty());
-    }
-
-    int pageNullSafe(Integer page) {
+    static int pageNullSafe(Integer page) {
         return ObjectUtils.defaultIfNull(page, 1);
     }
 
-    int sizeNullSafe(Integer size) {
+    static int sizeNullSafe(Integer size) {
         return ObjectUtils.defaultIfNull(size, 10);
     }
 
+    @Data
+    public static class MomentQuery {
+        private Integer page;
+        private Integer size;
+        private String tagName;
+        private String owner;
+        private List<String> sort;
 
-    public Mono<Predicate<Moment>> getPredicate() {
-        Predicate<Moment> predicate = moment -> moment.isApproved()
-            && !ExtensionUtil.isDeleted(moment);
-        Predicate<Moment> visiblePredicate = Moment::isPubliclyVisible;
-        return currentUserName()
-            .map(username -> predicate.and(
-                visiblePredicate.or(moment -> username.equals(moment.getSpec().getOwner())))
-            )
-            .defaultIfEmpty(predicate.and(visiblePredicate));
-    }
+        public ListOptions toListOptions() {
+            var builder = ListOptions.builder();
+            if (StringUtils.isNotBlank(tagName)) {
+                builder.andQuery(equal("spec.tags", tagName));
+            }
+            if (StringUtils.isNotBlank(owner)) {
+                builder.andQuery(equal("spec.owner", owner));
+            }
+            return builder.build();
+        }
 
-    public Mono<ListOptions> getListOptions() {
-        var listOptions = new ListOptions();
-        var fieldQuery = and(
-            isNull("metadata.deletionTimestamp"),
-            equal("spec.approved", Boolean.TRUE.toString())
-        );
-        var visibleQuery = equal("spec.visible", Moment.MomentVisible.PUBLIC.name());
-        return currentUserName()
-            .map(username -> and(fieldQuery,
-                or(visibleQuery, equal("spec.owner", username)))
-            )
-            .defaultIfEmpty(and(fieldQuery, visibleQuery))
-            .map(query -> {
-                listOptions.setFieldSelector(FieldSelector.of(query));
-                return listOptions;
-            });
-    }
-
-    Mono<String> currentUserName() {
-        return ReactiveSecurityContextHolder.getContext()
-            .map(SecurityContext::getAuthentication)
-            .map(Principal::getName)
-            .filter(name -> !AnonymousUserConst.isAnonymousUser(name));
+        public PageRequest toPageRequest() {
+            return PageRequestImpl.of(pageNullSafe(getPage()),
+                sizeNullSafe(getSize()), SortUtils.resolve(sort).and(defaultSort()));
+        }
     }
 }

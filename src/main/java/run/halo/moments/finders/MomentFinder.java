@@ -3,8 +3,10 @@ package run.halo.moments.finders;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.extension.ListResult;
+import run.halo.moments.finders.impl.MomentFinderImpl.MomentQuery;
 import run.halo.moments.vo.MomentTagVo;
 import run.halo.moments.vo.MomentVo;
+import java.util.Map;
 
 
 /**
@@ -30,6 +32,13 @@ public interface MomentFinder {
      * @return a mono of list result.
      */
     Mono<ListResult<MomentVo>> list(Integer page, Integer size);
+
+    /**
+     * Lists moments by query params.
+     *
+     * @param params query params see {@link MomentQuery}
+     */
+    Mono<ListResult<MomentVo>> list(Map<String, Object> params);
 
     /**
      * List moments by tag.

@@ -88,6 +88,34 @@ halo:
 
 最后重启 Halo 项目即可。
 
+## 公开 API
+
+### 查询瞬间列表
+
+`/apis/api.moment.halo.run/v1alpha1/moments`
+
+**参数**：
+
+1. page: int - 分页页码，从 1 开始
+2. size: int - 分页条数
+3. tag:string - 标签
+4. ownerName:string - 创建者用户名 name
+5. startDate:string - 开始时间 通过时间区间筛选发布时间
+6. endDate:string - 结束时间
+7. sort:string[] - 排序字段，格式为 字段名,排序方式，排序方式可选值为 asc 或 desc，如 spec.releaseTime,desc，
+
+**返回值类型**：[ListResult\<MomentVo>](#listresult-momentvo)
+
+### 查询瞬间详情
+
+`/apis/api.moment.halo.run/v1alpha1/moments/{name}`
+
+**参数**：
+
+1. name:string - 瞬间的唯一标识 name
+
+**返回值类型**：[#MomentVo](#momentvo)
+
 ## 主题适配
 
 目前此插件为主题端提供了 `/moments` 路由，模板为 `moments.html`，也提供了 [Finder API](https://docs.halo.run/developer-guide/theme/finder-apis)，可以将瞬间列表渲染到任何地方。
@@ -199,6 +227,56 @@ halo:
         </th:block>
     </li>
 </ul>
+```
+
+#### list({...})
+
+```html
+momentFinder.list({
+  page: 1,
+  size: 10,
+  tagName: 'fake-tag',
+  owner: 'fake-owner',
+  sort: {'spec.releaseTime,desc', 'metadata.creationTimestamp,asc'}
+})
+```
+
+统一参数的瞬间列表查询方法，支持分页、标签、创建者、排序等参数，且均为可选参数。
+
+**参数**：
+
+1. page: int - 分页页码，从 1 开始
+2. size: int - 分页条数
+3. tagName:string - 标签
+4. owner:string - 创建者用户名 name
+5. sort:string[] - 排序字段，格式为 字段名,排序方式，排序方式可选值为 asc 或 desc，如 spec.releaseTime,desc，传递时需要使用 {} 形式并用逗号分隔表示数组。
+
+**返回值类型**：[ListResult\<MomentVo>](#listresult-momentvo)
+
+**示例**：
+
+```html
+<th:block th:with="moments = ${momentFinder.list({
+  page: 1,
+  size: 10,
+  tagName: 'fake-tag',
+  owner: 'fake-owner',
+  sort: {'spec.releaseTime,desc', 'metadata.creationTimestamp,asc'}
+})}">
+    <ul>
+        <li th:each="moment : ${moments.items}" th:with="content = ${moment.spec.content}">
+            <div th:if="${not #strings.isEmpty(content.html)}" th:utext="${content.html}"></div>
+            <th:block th:if="${not #lists.isEmpty(content.medium)}" th:each="momentItem : ${content.medium}">
+                <img th:if="${momentItem.type.name == 'PHOTO'}" th:src="${momentItem.url}" />
+                <video th:if="${momentItem.type.name == 'VIDEO'}" th:src="${momentItem.url}"></video>
+                <audio th:if="${momentItem.type.name == 'AUDIO'}" th:src="${momentItem.url}" controls="true"></audio>
+            </th:block>
+        </li>
+    </ul>
+    <div>
+        <span th:text="${moments.page}"></span>
+    </div>
+</th:block>
 ```
 
 #### list(page, size)
