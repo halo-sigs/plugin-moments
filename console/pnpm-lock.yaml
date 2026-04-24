@@ -62,9 +62,21 @@ importers:
       '@halo-dev/ui-plugin-bundler-kit':
         specifier: ^2.22.0
         version: 2.22.0(@rsbuild/core@1.6.9)(@rsbuild/plugin-vue@1.1.0(@rsbuild/core@1.6.9)(@vue/compiler-sfc@3.5.25)(vue@3.5.25(typescript@5.5.4)))(@vitejs/plugin-vue@6.0.0(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))(vue@3.5.25(typescript@5.5.4)))(axios@1.13.2)(vite@5.4.0(@types/node@20.19.25)(sass-embedded@1.93.3)(sass@1.93.3)(terser@5.42.0))
-      '@iconify/json':
-        specifier: ^2.2.410
-        version: 2.2.410
+      '@iconify-json/ic':
+        specifier: ^1.2.4
+        version: 1.2.4
+      '@iconify-json/lucide':
+        specifier: ^1.2.102
+        version: 1.2.102
+      '@iconify-json/mingcute':
+        specifier: ^1.2.7
+        version: 1.2.7
+      '@iconify-json/ri':
+        specifier: ^1.2.10
+        version: 1.2.10
+      '@iconify-json/tabler':
+        specifier: ^1.2.33
+        version: 1.2.33
       '@rsbuild/core':
         specifier: ^1.6.9
         version: 1.6.9
@@ -393,8 +405,20 @@ packages:
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
     deprecated: Use @eslint/object-schema instead
 
-  '@iconify/json@2.2.410':
-    resolution: {integrity: sha512-0IhW9Sfudf3cPQHoCwr2gJMMUUkLW01WIkGoP9PbwVKXl1I/KTRHtM9IchLufT8M86QHBWRcinApzkL60TH9vA==}
+  '@iconify-json/ic@1.2.4':
+    resolution: {integrity: sha512-pzPMmrZrBQuwT7nmtrYdkttun8KalRGgZPIL1Ny9KpF2zjRGIUPN+npTfuD3lrgO/OnSwAoJWuekQwBpt/Cqrw==}
+
+  '@iconify-json/lucide@1.2.102':
+    resolution: {integrity: sha512-Dm3EEqu5NrmzyDMB2U1+8yroEj2/dB9V4KlH0m/szwwF/ofSf0cPaGTZqkd1aExXjCor+vU53ttRMCGuXf+/cg==}
+
+  '@iconify-json/mingcute@1.2.7':
+    resolution: {integrity: sha512-bp4z6F53KAQp99aSL7qPCHL7HWUNGMNKIhfo/dx9pwVHiad/WusUbTOFXEZfpA44syJPzSOxa3O6Pwiq7qZz1g==}
+
+  '@iconify-json/ri@1.2.10':
+    resolution: {integrity: sha512-WWMhoncVVM+Xmu9T5fgu2lhYRrKTEWhKk3Com0KiM111EeEsRLiASjpsFKnC/SrB6covhUp95r2mH8tGxhgd5Q==}
+
+  '@iconify-json/tabler@1.2.33':
+    resolution: {integrity: sha512-q9nUQfE/cjIrGh5bAKHTphitAZpT0kX9SxDgZo3Sx8ofeDTsaHVdRwrn+CfKiJ5vQ1b1btqVwizXzIgz9KEPjA==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -3244,10 +3268,25 @@ snapshots:
 
   '@humanwhocodes/object-schema@2.0.3': {}
 
-  '@iconify/json@2.2.410':
+  '@iconify-json/ic@1.2.4':
     dependencies:
       '@iconify/types': 2.0.0
-      pathe: 2.0.3
+
+  '@iconify-json/lucide@1.2.102':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/mingcute@1.2.7':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/ri@1.2.10':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/tabler@1.2.33':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/types@2.0.0': {}
 
