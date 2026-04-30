@@ -1,8 +1,9 @@
 package run.halo.moments.finders.impl;
 
-import static run.halo.app.extension.index.query.QueryFactory.all;
-import static run.halo.app.extension.index.query.QueryFactory.and;
-import static run.halo.app.extension.index.query.QueryFactory.equal;
+import static run.halo.app.extension.index.query.Queries.all;
+import static run.halo.app.extension.index.query.Queries.and;
+import static run.halo.app.extension.index.query.Queries.empty;
+import static run.halo.app.extension.index.query.Queries.equal;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -137,7 +138,7 @@ public class MomentFinderImpl implements MomentFinder {
     @Override
     public Mono<ListResult<MomentVo>> listByTag(int pageNum, Integer pageSize, String tagName) {
         var listOptions = new ListOptions();
-        var query = all();
+        var query = empty();
         if (StringUtils.isNoneBlank(tagName)) {
             query = and(query, equal("spec.tags", tagName));
         }

@@ -11,7 +11,7 @@ import run.halo.app.extension.ListResult;
 import run.halo.app.extension.PageRequest;
 import run.halo.app.extension.PageRequestImpl;
 import run.halo.app.extension.ReactiveExtensionClient;
-import run.halo.app.extension.index.query.QueryFactory;
+import run.halo.app.extension.index.query.Queries;
 import run.halo.app.extension.router.selector.FieldSelector;
 import run.halo.app.search.HaloDocument;
 import run.halo.app.search.HaloDocumentsProvider;
@@ -33,8 +33,8 @@ public class MomentHaloDocumentsProvider implements HaloDocumentsProvider {
     @Override
     public Flux<HaloDocument> fetchAll() {
         var options = new ListOptions();
-        var notDeleted = QueryFactory.isNull("metadata.deletionTimestamp");
-        var approved = QueryFactory.equal("spec.approved", "true");
+        var notDeleted = Queries.isNull("metadata.deletionTimestamp");
+        var approved = Queries.equal("spec.approved", Boolean.TRUE);
         options.setFieldSelector(FieldSelector.of(notDeleted).andQuery(approved));
         var pageRequest = createPageRequest();
         // make sure the moments are approved and not deleted.

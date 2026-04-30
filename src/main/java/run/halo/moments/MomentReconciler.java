@@ -1,6 +1,6 @@
 package run.halo.moments;
 
-import static run.halo.app.extension.index.query.QueryFactory.equal;
+import static run.halo.app.extension.index.query.Queries.equal;
 
 import java.time.Instant;
 import java.util.Set;
