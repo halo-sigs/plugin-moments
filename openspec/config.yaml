@@ -1,0 +1,35 @@
+schema: spec-driven
+
+# Project context
+context: |
+  Tech stack:
+    - Backend: Java 17, Spring WebFlux (reactive), Gradle 8.9, Lombok
+    - Frontend: Vue 3, TypeScript, Rsbuild, UnoCSS, Pinia, Vue Query, Tiptap editor
+    - Package manager: pnpm 10.23.0
+    - Plugin framework: Halo 2.0 Plugin API (requires Halo >= 2.22.0)
+
+  Architecture:
+    - Backend follows Halo's extension-based model. Moment extends AbstractExtension with @GVK annotations.
+    - Uses reconciler pattern (MomentReconciler) for lifecycle management.
+    - Custom endpoints use SpringdocRouteBuilder for reactive routing (Mono/Flux).
+    - Three API layers: Console (admin), UC (user center), and Public (theme-facing).
+    - Finder API provides Thymeleaf template variables for themes.
+    - Database indexes defined in plugin startup on spec.tags, spec.owner, spec.releaseTime, spec.visible, spec.approved.
+
+  Frontend:
+    - Plugin entry uses @halo-dev/ui-shared definePlugin() to register routes and extension points.
+    - API client is auto-generated from OpenAPI spec into console/src/api/generated/. Do not edit by hand.
+    - Icons from unplugin-icons with Iconify sets (Mingcute, Lucide, Tabler, etc.).
+    - Rich text editor: @halo-dev/richtext-editor (Tiptap-based).
+
+  Code style:
+    - Java: 4-space indent, 100-character line length, single imports (no star imports), end_of_line braces.
+    - Frontend: 2-space indent, 100-character line length, LF line endings.
+    - JSON/YAML: 2-space indent.
+    - Prettier: printWidth 100, singleQuote false, trailingComma es5, arrowParens always.
+
+  Development workflow:
+    - Build: ./gradlew build (builds frontend then backend)
+    - Dev server: ./gradlew haloServer (requires Docker)
+    - Frontend only: cd console && pnpm dev (watch mode)
+    - Lint/format: cd console && pnpm lint / pnpm prettier / pnpm type-check
