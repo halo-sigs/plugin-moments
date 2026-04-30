@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
-import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import run.halo.app.core.extension.endpoint.CustomEndpoint;
@@ -29,7 +28,7 @@ public class CustomEndpointsBuilder {
     public RouterFunction<ServerResponse> build() {
         SpringdocRouteBuilder routeBuilder = SpringdocRouteBuilder.route();
         routerFunctionsMap.forEach((gv, routerFunctions) -> {
-            routeBuilder.nest(RequestPredicates.path("/apis/" + gv),
+            routeBuilder.path("/apis/" + gv,
                 () -> routerFunctions.stream().reduce(RouterFunction::and).orElse(null),
                 builder -> builder.operationId("CustomEndpoints")
                     .description("Custom Endpoint")

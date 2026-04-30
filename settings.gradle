@@ -5,3 +5,4 @@ pluginManagement {
     }
 }
 rootProject.name = 'plugin-moments'
+include 'console'
