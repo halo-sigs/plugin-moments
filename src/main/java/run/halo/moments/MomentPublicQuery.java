@@ -1,11 +1,11 @@
 package run.halo.moments;
 
 import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
-import static run.halo.app.extension.index.query.QueryFactory.all;
-import static run.halo.app.extension.index.query.QueryFactory.and;
-import static run.halo.app.extension.index.query.QueryFactory.equal;
-import static run.halo.app.extension.index.query.QueryFactory.greaterThanOrEqual;
-import static run.halo.app.extension.index.query.QueryFactory.lessThanOrEqual;
+import static run.halo.app.extension.index.query.Queries.and;
+import static run.halo.app.extension.index.query.Queries.empty;
+import static run.halo.app.extension.index.query.Queries.equal;
+import static run.halo.app.extension.index.query.Queries.greaterThan;
+import static run.halo.app.extension.index.query.Queries.lessThan;
 import static run.halo.app.extension.router.QueryParamBuildUtil.sortParameter;
 import static run.halo.app.extension.router.selector.SelectorUtil.labelAndFieldSelectorToListOptions;
 
@@ -22,6 +22,7 @@ import run.halo.app.extension.PageRequest;
 import run.halo.app.extension.PageRequestImpl;
 import run.halo.app.extension.router.IListRequest;
 import run.halo.app.extension.router.SortableRequest;
+import run.halo.app.extension.index.query.Condition;
 import run.halo.app.extension.router.selector.FieldSelector;
 
 /**
@@ -67,7 +68,7 @@ public class MomentPublicQuery extends SortableRequest {
     public ListOptions toListOptions() {
         var listOptions =
             labelAndFieldSelectorToListOptions(getLabelSelector(), getFieldSelector());
-        var query = all();
+        Condition query = empty();
         if (StringUtils.isNotBlank(getOwnerName())) {
             query = and(query, equal("spec.owner", getOwnerName()));
         }
@@ -76,14 +77,14 @@ public class MomentPublicQuery extends SortableRequest {
         }
 
         if (getStartDate() != null) {
-            query = and(query, greaterThanOrEqual("spec.releaseTime", getStartDate().toString()));
+            query = and(query, greaterThan("spec.releaseTime", getStartDate().toString(), true));
         }
         if (getEndDate() != null) {
-            query = and(query, lessThanOrEqual("spec.releaseTime", getEndDate().toString()));
+            query = and(query, lessThan("spec.releaseTime", getEndDate().toString(), true));
         }
 
         if (listOptions.getFieldSelector() != null) {
-            query = and(query, listOptions.getFieldSelector().query());
+            query = and(query, (Condition) listOptions.getFieldSelector().query());
         }
         listOptions.setFieldSelector(FieldSelector.of(query));
         return listOptions;

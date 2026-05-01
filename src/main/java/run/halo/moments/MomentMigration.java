@@ -1,7 +1,7 @@
 package run.halo.moments;
 
-import static run.halo.app.extension.index.query.QueryFactory.and;
-import static run.halo.app.extension.index.query.QueryFactory.isNull;
+import static run.halo.app.extension.index.query.Queries.and;
+import static run.halo.app.extension.index.query.Queries.isNull;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
