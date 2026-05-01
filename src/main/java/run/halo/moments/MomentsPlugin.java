@@ -26,6 +26,7 @@ public class MomentsPlugin extends BasePlugin {
 
     @Override
     public void start() {
+        schemeManager.unregister(Scheme.buildFromType(Moment.class));
         schemeManager.register(Moment.class, indexSpecs -> {
             indexSpecs.add(IndexSpecs.<Moment, String>multi("spec.tags", String.class)
                 .indexFunc(moment -> {
