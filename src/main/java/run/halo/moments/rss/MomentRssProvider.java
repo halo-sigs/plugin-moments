@@ -13,7 +13,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import run.halo.app.core.attachment.ThumbnailSize;
 import run.halo.app.extension.ReactiveExtensionClient;
 import run.halo.app.infra.ExternalLinkProcessor;
 import run.halo.app.infra.ExternalUrlSupplier;
@@ -120,18 +119,10 @@ public class MomentRssProvider implements RssRouteItem {
         var images = document.select("img[src]");
         for (Element image : images) {
             String src = image.attr("src");
-            var thumb = genThumbUrl(src, ThumbnailSize.M);
-            var absoluteUrl = externalLinkProcessor.processLink(thumb);
+            var absoluteUrl = externalLinkProcessor.processLink(src);
             image.attr("src", absoluteUrl);
         }
         return document.body().html();
-    }
-
-    private String genThumbUrl(String url, ThumbnailSize size) {
-        return externalLinkProcessor.processLink(
-            "/apis/api.storage.halo.run/v1alpha1/thumbnails/-/via-uri?uri=" + url + "&size="
-                + size.name().toLowerCase()
-        );
     }
 
     private String generateMediaHtmlList(List<Moment.MomentMedia> medium) {
@@ -158,22 +149,10 @@ public class MomentRssProvider implements RssRouteItem {
     }
 
     private String generatePhotoHtml(Moment.MomentMedia media) {
-        // the best practice is to use the thumbnail for src
-        var mSrc = genThumbUrl(media.getUrl(), ThumbnailSize.M);
-        // If the reader does not support srcset, then only src,
-        var srcSet = """
-            %s 400w,
-            %s 800w,
-            %s 1200w,
-            """.formatted(
-            genThumbUrl(media.getUrl(), ThumbnailSize.S),
-            mSrc,
-            genThumbUrl(media.getUrl(), ThumbnailSize.L)
-        );
+        var url = externalLinkProcessor.processLink(media.getUrl());
         return String.format(
-            "<img src=\"%s\"%s alt=\"moment photo\" />",
-            mSrc,
-            srcSet
+            "<img src=\"%s\" alt=\"moment photo\" />",
+            url
         );
     }
 
