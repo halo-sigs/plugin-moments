@@ -43,7 +43,7 @@ public class DefaultQueryMomentPredicateResolver implements ReactiveQueryMomentP
         var listOptions = new ListOptions();
         var fieldQuery = and(
             isNull("metadata.deletionTimestamp"),
-            equal("spec.approved", Boolean.TRUE.toString())
+            equal("spec.approved", Boolean.TRUE)
         );
         var visibleQuery = equal("spec.visible", Moment.MomentVisible.PUBLIC.name());
         return currentUserName()

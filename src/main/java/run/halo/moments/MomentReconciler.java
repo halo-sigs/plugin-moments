@@ -86,7 +86,7 @@ public class MomentReconciler implements Reconciler<Reconciler.Request> {
             .workerCount(5)
             .onAddMatcher(DefaultExtensionMatcher.builder(client, moment.groupVersionKind())
                 .fieldSelector(
-                    FieldSelector.of(equal(Moment.REQUIRE_SYNC_ON_STARTUP_INDEX_NAME, "true"))
+                    FieldSelector.of(equal(Moment.REQUIRE_SYNC_ON_STARTUP_INDEX_NAME, Boolean.TRUE))
                 )
                 .build()
             )

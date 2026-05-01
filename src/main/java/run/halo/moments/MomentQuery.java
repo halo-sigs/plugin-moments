@@ -109,7 +109,7 @@ public class MomentQuery extends SortableRequest {
         }
 
         if (getApproved() != null) {
-            query = and(query, equal("spec.approved", Boolean.toString(getApproved())));
+            query = and(query, equal("spec.approved", getApproved()));
         }
 
         if (getStartDate() != null) {
