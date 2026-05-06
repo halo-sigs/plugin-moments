@@ -1,11 +1,10 @@
 package run.halo.moments.search;
 
-import static run.halo.moments.ModelConst.SEARCH_DEFAULT_PAGE_SIZE;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import run.halo.app.extension.ListOptions;
 import run.halo.app.extension.ListResult;
 import run.halo.app.extension.PageRequest;
@@ -26,6 +25,8 @@ public class MomentHaloDocumentsProvider implements HaloDocumentsProvider {
 
     public static final String MOMENT_DOCUMENT_TYPE = "moment.moment.halo.run";
 
+    private static final int PAGE_SIZE = 200;
+
     private final ReactiveExtensionClient client;
 
     private final DocumentConverter converter;
@@ -39,8 +40,10 @@ public class MomentHaloDocumentsProvider implements HaloDocumentsProvider {
         var pageRequest = createPageRequest();
         // make sure the moments are approved and not deleted.
         return client.listBy(Moment.class, options, pageRequest)
-            .map(ListResult::getItems)
-            .flatMapMany(Flux::fromIterable)
+            .expand(result -> result.hasNext()
+                ? client.listBy(Moment.class, options, nextPage(result, pageRequest.getSort()))
+                : Mono.empty())
+            .flatMap(result -> Flux.fromIterable(result.getItems()))
             .flatMap(converter::convert);
     }
 
@@ -50,7 +53,11 @@ public class MomentHaloDocumentsProvider implements HaloDocumentsProvider {
     }
 
     private PageRequest createPageRequest() {
-        return PageRequestImpl.of(1, SEARCH_DEFAULT_PAGE_SIZE,
+        return PageRequestImpl.of(1, PAGE_SIZE,
             Sort.by("metadata.creationTimestamp", "metadata.name"));
+    }
+
+    private static PageRequest nextPage(ListResult<Moment> result, Sort sort) {
+        return PageRequestImpl.of(result.getPage() + 1, result.getSize(), sort);
     }
 }
