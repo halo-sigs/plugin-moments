@@ -298,12 +298,13 @@ function handleKeydown(event: KeyboardEvent) {
 <template>
   <div class=":uno: card shrink overflow-hidden border rounded-md bg-white">
     <AttachmentSelectorModal
-      v-model:visible="attachmentSelectorModal"
+      v-if="attachmentSelectorModal"
       v-permission="['system:attachments:view']"
       :min="1"
       :max="9"
       :accepts="accepts"
       @select="onAttachmentsSelect"
+      @close="attachmentSelectorModal = false"
     />
     <TextEditor
       v-model:raw="formState.spec.content.raw"
@@ -327,14 +328,13 @@ function handleKeydown(event: KeyboardEvent) {
     </div>
     <div class=":uno: flex justify-between bg-white px-3.5 py-2">
       <div class=":uno: h-fit">
-        <div
+        <button
+          type="button"
           class=":uno: group flex cursor-pointer items-center justify-center rounded-full p-2 hover:bg-sky-600/10"
+          @click="addMediumVerify() && (attachmentSelectorModal = true)"
         >
-          <TablerPhoto
-            class=":uno: size-full text-base text-gray-600 group-hover:text-sky-600"
-            @click="addMediumVerify() && (attachmentSelectorModal = true)"
-          />
-        </div>
+          <TablerPhoto class=":uno: size-full text-base text-gray-600 group-hover:text-sky-600" />
+        </button>
       </div>
 
       <div class=":uno: flex items-center space-x-2.5">
