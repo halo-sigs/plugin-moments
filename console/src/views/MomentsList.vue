@@ -130,9 +130,9 @@ usePluginShikiScriptLoader();
       <MingcuteMomentsLine />
     </template>
     <template #actions>
-      <VButton @click="handleJumpToFrontDesk">
+      <VButton @click="handleJumpToFrontDesk" size="sm" ghost>
         <template #icon>
-          <IconExternalLinkLine class=":uno: size-full" />
+          <IconExternalLinkLine />
         </template>
         跳转到前台
       </VButton>
