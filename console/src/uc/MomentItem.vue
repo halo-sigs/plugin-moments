@@ -20,7 +20,7 @@ import MomentEdit from "./MomentEdit.vue";
 const props = withDefaults(
   defineProps<{
     listedMoment: ListedMoment;
-    editing: boolean;
+    editing?: boolean;
   }>(),
   {
     editing: false,

@@ -20,7 +20,7 @@ import MomentPreview from "./MomentPreview.vue";
 const props = withDefaults(
   defineProps<{
     listedMoment: ListedMoment;
-    editing: boolean;
+    editing?: boolean;
   }>(),
   {
     editing: false,

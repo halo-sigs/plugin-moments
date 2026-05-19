@@ -151,6 +151,7 @@ export const TagsExtension = Mark.create<TagOptions>({
                 return;
               }
 
+              // @ts-ignore
               popup = tippy("body", {
                 getReferenceClientRect: props.clientRect,
                 appendTo: () => document.body,

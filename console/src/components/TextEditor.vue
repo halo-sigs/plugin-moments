@@ -16,9 +16,9 @@ import { onMounted, ref, shallowRef, watch } from "vue";
 
 const props = withDefaults(
   defineProps<{
-    html: string;
-    raw: string;
-    isEmpty: boolean;
+    html?: string;
+    raw?: string;
+    isEmpty?: boolean;
     tagQueryFetch: (props: useTagQueryFetchProps) => UseQueryReturnType<unknown, unknown>;
   }>(),
   {
