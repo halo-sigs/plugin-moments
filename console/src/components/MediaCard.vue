@@ -24,14 +24,14 @@ const canPlayType = (type?: string) => {
   if (!type) {
     return false;
   }
-  let obj = document.createElement("video");
+  const obj = document.createElement("video");
   return !!obj.canPlayType(type);
 };
 const audioType = (type?: string) => {
   if (!type) {
     return false;
   }
-  let obj = document.createElement("audio");
+  const obj = document.createElement("audio");
   return !!obj.canPlayType(type);
 };
 

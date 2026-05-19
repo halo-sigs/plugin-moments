@@ -62,7 +62,7 @@ const startDate = computed(() => {
   return utils.date.dayjs(date).endOf("day").toISOString();
 });
 const endDate = computed(() => {
-  let endTime: Date = momentsRangeTime.value[1];
+  const endTime: Date = momentsRangeTime.value[1];
   if (!endTime) {
     return;
   }

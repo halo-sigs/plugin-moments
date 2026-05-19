@@ -64,10 +64,14 @@ export function useContentCache(
   const handleClearCache = (name: string) => {
     if (name) {
       const index = content_caches.value.findIndex((c: ContentCache) => c.name === name);
-      index > -1 && content_caches.value.splice(index, 1);
+      if(index > -1){
+        content_caches.value.splice(index, 1)
+      }
     } else {
       const index = content_caches.value.findIndex((c: ContentCache) => c.name === "");
-      index > -1 && content_caches.value.splice(index, 1);
+      if(index > -1){
+        content_caches.value.splice(index, 1)
+      }
     }
   };
 

@@ -120,11 +120,11 @@ const handleUpdate = async (moment: Moment) => {
 
 const parse = new DOMParser();
 const queryEditorTags = function () {
-  let tags: Set<string> = new Set();
-  let document: Document = parse.parseFromString(formState.value.spec.content.raw!, "text/html");
-  let nodeList: NodeList = document.querySelectorAll("a.tag");
+  const tags: Set<string> = new Set();
+  const document: Document = parse.parseFromString(formState.value.spec.content.raw!, "text/html");
+  const nodeList: NodeList = document.querySelectorAll("a.tag");
   if (nodeList) {
-    for (let tagNode of nodeList) {
+    for (const tagNode of nodeList) {
       if (tagNode.textContent) {
         tags.add(tagNode.textContent);
       }
@@ -209,7 +209,7 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
     if (!media.type) {
       return false;
     }
-    let fileType = media.type.split("/")[0];
+    const fileType = media.type.split("/")[0];
     formState.value.spec.content.medium?.push({
       type: mediumWhitelist.get(fileType),
       url: media.url,
@@ -219,7 +219,7 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
 };
 
 const saveDisable = computed(() => {
-  let medium = formState.value.spec.content.medium;
+  const medium = formState.value.spec.content.medium;
   if (medium !== undefined && medium.length > 0 && medium.length <= 9) {
     return false;
   }
@@ -228,7 +228,7 @@ const saveDisable = computed(() => {
   }
 
   if (isUpdateMode.value) {
-    let oldVisible = props.moment?.spec.visible;
+    const oldVisible = props.moment?.spec.visible;
     if (oldVisible != formState.value.spec.visible) {
       return false;
     }
@@ -238,11 +238,11 @@ const saveDisable = computed(() => {
 });
 
 const removeMedium = (media: MomentMedia) => {
-  let formMedium = formState.value.spec.content.medium;
+  const formMedium = formState.value.spec.content.medium;
   if (!formMedium) {
     return;
   }
-  let index: number = formMedium.indexOf(media);
+  const index: number = formMedium.indexOf(media);
   if (index > -1) {
     formMedium.splice(index, 1);
   }
@@ -260,7 +260,7 @@ const addMediumVerify = (media?: {
   displayName?: string;
   type?: string;
 }) => {
-  let formMedium = formState.value.spec.content.medium;
+  const formMedium = formState.value.spec.content.medium;
   if (!formMedium || formMedium.length == 0) {
     return true;
   }

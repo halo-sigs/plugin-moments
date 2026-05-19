@@ -29,10 +29,9 @@ const queryClient = useQueryClient();
 const vLazy = {
   mounted: (el: HTMLElement) => {
     // iframe
-    const iframes = el.querySelectorAll<any>("iframe");
-    iframes.forEach((iframe: any) => {
+    const iframes = el.querySelectorAll("iframe");
+    iframes.forEach((iframe) => {
       iframe.loading = "lazy";
-      iframe.importance = "low";
     });
     // 图片
     const imgs = el.querySelectorAll<HTMLImageElement>("img,image");
@@ -51,10 +50,10 @@ const vLazy = {
 const vTag = {
   mounted: (el: HTMLElement) => {
     const tagNodes = el.querySelectorAll("a.tag");
-    for (let node of tagNodes) {
+    for (const node of tagNodes) {
       node.addEventListener("click", (event) => {
         event.preventDefault();
-        let tagName = node.textContent;
+        const tagName = node.textContent;
         if (tagName) {
           updateTagQuery(node.textContent || "");
         }

@@ -16,7 +16,7 @@ import tippy from "tippy.js";
 import TagsExtensionView from "./TagsExtensionView.vue";
 
 export interface TagOptions {
-  HTMLAttributes: Record<string, any>;
+  HTMLAttributes: Record<string, unknown>;
   tagQueryFetch: (props: useTagQueryFetchProps) => UseQueryReturnType<unknown, unknown>;
 }
 
@@ -151,6 +151,7 @@ export const TagsExtension = Mark.create<TagOptions>({
                 return;
               }
 
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               popup = tippy("body", {
                 getReferenceClientRect: props.clientRect,
@@ -162,6 +163,7 @@ export const TagsExtension = Mark.create<TagOptions>({
                 placement: "bottom-start",
               });
             },
+
 
             onUpdate(props: Record<string, any>) {
               component.updateProps(props);
