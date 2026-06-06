@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `plugin-moments` is a Halo 2.0 CMS plugin that provides lightweight microblogging ("moments") functionality supporting text, images, video, and audio. It consists of a Java/Spring WebFlux backend and a Vue 3 TypeScript frontend.
 
-**Prerequisites:** Java 17, Node 18, pnpm 8+, Docker (for dev server).
+**Prerequisites:** Java 21, Node 24, pnpm 10+, Docker (for dev server).
 
 ## Common Commands
 
@@ -31,7 +31,13 @@ Starts a Halo Docker container with the plugin auto-loaded. Requires Docker. Thi
 ```bash
 ./gradlew test
 ```
-Note: the project currently has no test files.
+
+### Regenerate API Client
+After changing backend Endpoints, DTOs, or Extension fields:
+```bash
+./gradlew generateApiClient
+```
+Generated files go to `console/src/api/generated/` — do not hand-edit.
 
 ### Frontend Lint / Format / Type Check
 ```bash
@@ -79,7 +85,7 @@ The frontend lives in `console/` and is bundled with **Rsbuild** using `@halo-de
 
 **Plugin Registration:** The entry point (`src/index.ts`) uses `definePlugin()` from `@halo-dev/ui-shared` to register routes (admin Console and User Center) and extension points (e.g., `comment:subject-ref:create`).
 
-**API Client:** TypeScript API types and clients are auto-generated from the backend OpenAPI spec by the Gradle plugin. The generated code is written to `console/src/api/generated/` and should not be hand-edited. Regenerate by rebuilding the backend / running the OpenAPI generator task.
+**API Client:** TypeScript API types and clients are auto-generated from the backend OpenAPI spec. Run `./gradlew generateApiClient` to regenerate after backend changes. Generated code lives in `console/src/api/generated/` — do not hand-edit.
 
 **State & Data:** Uses **Pinia** for local state and **Vue Query** (`@tanstack/vue-query`) for server state.
 

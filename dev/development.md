@@ -13,10 +13,10 @@ git clone git@github.com:{your_github_id}/plugin-moments.git
 
 所需环境依赖：
 
-1. Java 17
+1. Java 21
 2. Docker
-3. Node.js 18
-4. pnpm 8
+3. Node.js 24
+4. pnpm 10
 
 ```bash
 # macOS / Linux
