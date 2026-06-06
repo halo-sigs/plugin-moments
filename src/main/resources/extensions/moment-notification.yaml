@@ -2,6 +2,9 @@ apiVersion: notification.halo.run/v1alpha1
 kind: ReasonType
 metadata:
   name: new-comment-on-moment
+  annotations:
+    rbac.authorization.halo.run/ui-permissions: |
+      [ "uc:plugin:moments:publish" ]
 spec:
   displayName: "我发布的瞬间收到新评论"
   description: "当你发布的瞬间收到新评论时，你将会收到一条通知，告诉你有新的评论。"
