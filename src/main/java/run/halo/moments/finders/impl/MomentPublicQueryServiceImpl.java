@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.Counter;
-import run.halo.app.core.extension.User;
+import run.halo.app.core.user.service.UserService;
 import run.halo.app.extension.ListOptions;
 import run.halo.app.extension.ListResult;
 import run.halo.app.extension.PageRequest;
@@ -25,6 +25,8 @@ import java.util.List;
 public class MomentPublicQueryServiceImpl implements MomentPublicQueryService {
 
     private final ReactiveExtensionClient client;
+
+    private final UserService userService;
 
     private final ReactiveQueryMomentPredicateResolver momentPredicateResolver;
 
@@ -67,7 +69,7 @@ public class MomentPublicQueryServiceImpl implements MomentPublicQueryService {
             )
             .flatMap(mv -> {
                 String owner = mv.getSpec().getOwner();
-                return client.fetch(User.class, owner)
+                return userService.getUserOrGhost(owner)
                     .map(ContributorVo::from)
                     .doOnNext(mv::setOwner)
                     .thenReturn(mv);
