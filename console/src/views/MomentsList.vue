@@ -28,7 +28,8 @@ const selectedApprovedStatus = useRouteQuery<string | undefined, boolean | undef
   undefined,
   {
     transform: (value) => {
-      return value ? value === "true" : undefined;
+      if (value === undefined || value === null) return undefined;
+      return typeof value === "string" ? value === "true" : value;
     },
   }
 );
@@ -115,7 +116,6 @@ provide("tag", {
 watch([tag, selectedApprovedStatus, momentsRangeTime], () => {
   page.value = 1;
   size.value = 20;
-  refetch();
 });
 
 const handleJumpToFrontDesk = () => {
