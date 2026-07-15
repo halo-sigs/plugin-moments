@@ -125,7 +125,6 @@ provide("tag", {
 watch([tag, momentsRangeTime], () => {
   page.value = 1;
   size.value = 20;
-  refetch();
 });
 
 usePluginShikiScriptLoader();
