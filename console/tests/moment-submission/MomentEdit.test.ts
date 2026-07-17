@@ -1,7 +1,7 @@
 import type { Moment } from "@/api/generated";
 import { Toast } from "@halo-dev/components";
+import { beforeEach, describe, expect, rs, test } from "@rstest/core";
 import { flushPromises } from "@vue/test-utils";
-import { beforeEach, describe, expect, test, vi } from "vitest";
 import {
   createDeferred,
   createTestAdapter,
@@ -34,10 +34,10 @@ function existingMoment(): Moment {
 
 describe("Moment submission workbench", () => {
   beforeEach(() => {
-    vi.spyOn(Toast, "success").mockImplementation(() => undefined);
-    vi.spyOn(Toast, "error").mockImplementation(() => undefined);
-    vi.spyOn(Toast, "warning").mockImplementation(() => undefined);
-    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    rs.spyOn(Toast, "success").mockImplementation(() => undefined);
+    rs.spyOn(Toast, "error").mockImplementation(() => undefined);
+    rs.spyOn(Toast, "warning").mockImplementation(() => undefined);
+    rs.spyOn(console, "error").mockImplementation(() => undefined);
   });
 
   test("retains the draft and allows only one submission while persistence is pending", async () => {
@@ -100,7 +100,7 @@ describe("Moment submission workbench", () => {
 
   test("retains a failed draft and allows retry", async () => {
     const adapter = createTestAdapter(
-      vi
+      rs
         .fn()
         .mockRejectedValueOnce(new Error("Submission failed"))
         .mockResolvedValueOnce({ name: "moment-retry", status: "published" })
@@ -220,7 +220,7 @@ describe("Moment submission workbench", () => {
       status: "published",
     }));
     const { queryClient, wrapper } = mountWorkbench({ adapter });
-    vi.spyOn(queryClient, "invalidateQueries").mockRejectedValue(new Error("Cache failed"));
+    rs.spyOn(queryClient, "invalidateQueries").mockRejectedValue(new Error("Cache failed"));
 
     await wrapper.get("[data-testid='moment-editor']").setValue("<p>Cache</p>");
     await wrapper.get("[data-testid='submit']").trigger("click");

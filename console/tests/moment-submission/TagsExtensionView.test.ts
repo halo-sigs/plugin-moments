@@ -1,14 +1,14 @@
 import TagsExtensionView from "@/extensions/tags/TagsExtensionView.vue";
+import { expect, rs, test } from "@rstest/core";
 import { flushPromises, mount } from "@vue/test-utils";
-import { expect, test, vi } from "vitest";
 
 test("loads tag suggestions without depending on the host Vue Query context", async () => {
-  const fetchTags = vi.fn(async (keyword?: string) =>
+  const fetchTags = rs.fn(async (keyword?: string) =>
     keyword === "ha" ? ["halo", "happy"] : []
   );
   const wrapper = mount(TagsExtensionView, {
     props: {
-      command: vi.fn(),
+      command: rs.fn(),
       query: "ha",
       tagQueryFetch: fetchTags,
     } as never,

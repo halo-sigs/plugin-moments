@@ -106,7 +106,7 @@ mode unchanged, shows failure feedback, and permits retry.
 
 ### Test through the shared module interface
 
-Add Vitest, Vue Test Utils, and happy-dom. Behavioral tests mount the shared
+Add Rstest, Vue Test Utils, and happy-dom. Behavioral tests mount the shared
 workbench with an in-memory adapter, drive user-visible interactions, await
 asynchronous work, and assert rendered state and emitted outcomes. Tests do not
 reach into private composables or rely on full-component snapshots.

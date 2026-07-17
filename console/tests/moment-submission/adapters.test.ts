@@ -5,7 +5,7 @@ import {
   userCenterMomentSubmissionAdapter,
 } from "@/features/moment-submission/adapters";
 import type { MomentSubmissionIntent } from "@/features/moment-submission/types";
-import { beforeEach, describe, expect, test, vi } from "vitest";
+import { beforeEach, describe, expect, rs, test } from "@rstest/core";
 
 const payload = {
   content: {
@@ -40,11 +40,11 @@ function persistedMoment(overrides: Partial<Moment["spec"]> = {}): Moment {
 
 describe("Console Moment submission adapter", () => {
   beforeEach(() => {
-    vi.restoreAllMocks();
+    rs.restoreAllMocks();
   });
 
   test("maps create intent and owns Console-managed publication fields", async () => {
-    const create = vi
+    const create = rs
       .spyOn(momentsConsoleApiClient.moment, "createMoment")
       .mockResolvedValue({ data: persistedMoment() } as never);
 
@@ -72,7 +72,7 @@ describe("Console Moment submission adapter", () => {
   });
 
   test("patches only editable fields for update", async () => {
-    const patch = vi
+    const patch = rs
       .spyOn(momentsCoreApiClient.moment, "patchMoment")
       .mockResolvedValue({ data: persistedMoment() } as never);
     const intent: MomentSubmissionIntent = {
@@ -96,11 +96,11 @@ describe("Console Moment submission adapter", () => {
 
 describe("User Center Moment submission adapter", () => {
   beforeEach(() => {
-    vi.restoreAllMocks();
+    rs.restoreAllMocks();
   });
 
   test("leaves approval and release time to the server on create", async () => {
-    const create = vi
+    const create = rs
       .spyOn(momentsUcApiClient.moment, "createMyMoment")
       .mockResolvedValue({ data: persistedMoment({ approved: false }) } as never);
 
@@ -121,10 +121,10 @@ describe("User Center Moment submission adapter", () => {
 
   test("preserves server-managed fields while replacing editable fields on update", async () => {
     const current = persistedMoment();
-    vi.spyOn(momentsUcApiClient.moment, "getMyMoment").mockResolvedValue({
+    rs.spyOn(momentsUcApiClient.moment, "getMyMoment").mockResolvedValue({
       data: current,
     } as never);
-    const update = vi
+    const update = rs
       .spyOn(momentsUcApiClient.moment, "updateMyMoment")
       .mockResolvedValue({ data: persistedMoment({ approved: false }) } as never);
 

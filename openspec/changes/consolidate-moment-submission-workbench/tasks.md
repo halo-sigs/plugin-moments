@@ -1,6 +1,6 @@
 ## 1. Test Foundation
 
-- [x] 1.1 Add Vitest, Vue Test Utils, happy-dom, Vue SFC test configuration, and a real `test:unit` script to the Console workspace
+- [x] 1.1 Add Rstest, Vue Test Utils, happy-dom, Vue SFC test configuration, and a real `test:unit` script to the Console workspace
 - [x] 1.2 Add a reusable workbench mount harness that stubs Halo editor and attachment UI through their public inputs and events
 - [x] 1.3 Add failing black-box tests for awaited persistence, retained drafts while pending, single-flight submission, success completion, and failure retry
 

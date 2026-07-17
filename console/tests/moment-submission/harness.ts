@@ -6,14 +6,14 @@ import type {
   MomentSubmissionResult,
 } from "@/features/moment-submission/types";
 import { QueryClient, VueQueryPlugin } from "@tanstack/vue-query";
+import { rs } from "@rstest/core";
 import { mount, type VueWrapper } from "@vue/test-utils";
 import { defineComponent } from "vue";
-import { vi } from "vitest";
 
 export type TestSubmissionResult = MomentSubmissionResult;
 export type TestSubmissionAdapter = MomentSubmissionAdapter & {
   submit: ReturnType<
-    typeof vi.fn<(intent: MomentSubmissionIntent) => Promise<MomentSubmissionResult>>
+    typeof rs.fn<(intent: MomentSubmissionIntent) => Promise<MomentSubmissionResult>>
   >;
 };
 
@@ -95,7 +95,7 @@ export function createTestAdapter(
   implementation: (intent: MomentSubmissionIntent) => Promise<TestSubmissionResult>
 ): TestSubmissionAdapter {
   return {
-    submit: vi.fn(implementation),
+    submit: rs.fn(implementation),
   };
 }
 
@@ -120,7 +120,7 @@ export function mountWorkbench(options: MountWorkbenchOptions): {
     props: {
       adapter: options.adapter,
       moment: options.moment,
-      tagQueryFetch: vi.fn(),
+      tagQueryFetch: rs.fn(),
     } as never,
     global: {
       directives: {
