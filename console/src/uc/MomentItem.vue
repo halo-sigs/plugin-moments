@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { momentsUcApiClient } from "@/api";
 import { type ListedMoment } from "@/api/generated";
+import MomentEdit from "@/components/MomentEdit.vue";
 import MomentPreview from "@/components/MomentPreview.vue";
+import { fetchUserCenterTags } from "@/composables/use-tag";
+import { userCenterMomentSubmissionAdapter } from "@/features/moment-submission/adapters";
 import {
   Dialog,
   IconEyeOff,
@@ -15,7 +18,6 @@ import { utils } from "@halo-dev/ui-shared";
 import { useQueryClient } from "@tanstack/vue-query";
 import { computed, ref } from "vue";
 import LucideMoreHorizontal from "~icons/lucide/more-horizontal";
-import MomentEdit from "./MomentEdit.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -133,12 +135,15 @@ const onUpdated = () => {
           </div>
 
           <div class=":uno: mt-3">
-            <MomentEdit
-              v-if="editing"
-              :moment="listedMoment.moment"
-              @update="onUpdated"
-              @cancel="editing = false"
-            ></MomentEdit>
+            <HasPermission v-if="editing" :permissions="['uc:plugin:moments:publish']">
+              <MomentEdit
+                :adapter="userCenterMomentSubmissionAdapter"
+                :moment="listedMoment.moment"
+                :tag-query-fetch="fetchUserCenterTags"
+                @update="onUpdated"
+                @cancel="editing = false"
+              ></MomentEdit>
+            </HasPermission>
             <MomentPreview v-else uc :moment="listedMoment" @switch-edit-mode="editing = true" />
           </div>
         </div>

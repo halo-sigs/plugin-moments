@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import type { useTagQueryFetchProps } from "@/composables/use-tag";
-import type { UseQueryReturnType } from "@tanstack/vue-query";
-import { ref, watch, type PropType } from "vue";
+import type { TagQueryFetch } from "@/composables/use-tag";
+import { onBeforeUnmount, ref, watch, type PropType } from "vue";
 
 const props = defineProps({
   query: {
@@ -13,40 +12,39 @@ const props = defineProps({
     required: true,
   },
   tagQueryFetch: {
-    type: Function as PropType<
-      (props: useTagQueryFetchProps) => UseQueryReturnType<string[], unknown>
-    >,
+    type: Function as PropType<TagQueryFetch>,
     required: true,
   },
 });
 
 const selectedIndex = ref(0);
+const tags = ref<string[]>([]);
+let debounceTimer: ReturnType<typeof setTimeout> | undefined;
+let requestId = 0;
 
-const keyword = ref<string | undefined>(props.query);
-
-const inputIntervalTime = 100;
-const timeInterval = ref(-1);
-const inputTimestamp = ref<number>(0);
-
-const { data: tags } = props.tagQueryFetch({
-  keyword,
-});
-
-const inputFilter = (newValue: string | undefined) => {
-  if (Date.now() - inputTimestamp.value < inputIntervalTime) {
-    inputTimestamp.value = Date.now();
-    return;
-  } else {
-    inputTimestamp.value = Date.now();
-    clearInterval(timeInterval.value);
-    keyword.value = newValue;
+const loadTags = async (keyword: string) => {
+  const currentRequestId = ++requestId;
+  const result = await props.tagQueryFetch(keyword);
+  if (currentRequestId === requestId) {
+    tags.value = result;
+    selectedIndex.value = 0;
   }
 };
 
-watch(props, (newValue) => {
-  clearInterval(timeInterval.value);
-  timeInterval.value = setInterval(() => inputFilter(newValue.query), inputIntervalTime);
-});
+watch(
+  () => props.query,
+  (query, previousQuery) => {
+    clearTimeout(debounceTimer);
+    if (previousQuery === undefined) {
+      void loadTags(query);
+      return;
+    }
+    debounceTimer = setTimeout(() => void loadTags(query), 100);
+  },
+  { immediate: true }
+);
+
+onBeforeUnmount(() => clearTimeout(debounceTimer));
 
 // TODO: 滚动条会跟随外部滚动条一起移动，需要处理
 const onKeyDown = ({ event }: { event: KeyboardEvent }) => {
@@ -66,13 +64,13 @@ const onKeyDown = ({ event }: { event: KeyboardEvent }) => {
 };
 
 const handleKeyUp = () => {
-  if (!tags.value) return;
+  if (!tags.value.length) return;
   selectedIndex.value = (selectedIndex.value + tags.value.length - 1) % tags.value.length;
   scrollToSelected();
 };
 
 const handleKeyDown = () => {
-  if (!tags.value) return;
+  if (!tags.value.length) return;
   selectedIndex.value = (selectedIndex.value + 1) % tags.value.length;
   scrollToSelected();
 };
@@ -82,7 +80,7 @@ const handleKeyEnter = () => {
 };
 
 const handleSelectItem = (index: number) => {
-  if (!tags.value) return;
+  if (!tags.value.length) return;
   const item = tags.value[index];
   if (item) {
     props.command(item);

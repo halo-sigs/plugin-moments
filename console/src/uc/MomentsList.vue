@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { momentsUcApiClient } from "@/api";
+import MomentEdit from "@/components/MomentEdit.vue";
+import { fetchUserCenterTags } from "@/composables/use-tag";
+import { userCenterMomentSubmissionAdapter } from "@/features/moment-submission/adapters";
 import { usePluginShikiScriptLoader } from "@/plugin-supports/shiki/use-plugin-shiki-script-loader";
 import { VCard, VLoading, VPageHeader, VPagination } from "@halo-dev/components";
 import { utils } from "@halo-dev/ui-shared";
@@ -10,7 +13,6 @@ import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/zh-cn.es";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
-import MomentEdit from "./MomentEdit.vue";
 import MomentItem from "./MomentItem.vue";
 import TagFilterDropdown from "./TagFilterDropdown.vue";
 
@@ -138,7 +140,12 @@ usePluginShikiScriptLoader();
   <VCard class=":uno: m-0 flex-1 md:m-4">
     <div class=":uno: mx-auto max-w-4xl px-4 md:px-8">
       <div class=":uno: moments-content my-2 flex flex-col md:my-4 space-y-2">
-        <MomentEdit />
+        <div v-permission="['uc:plugin:moments:publish']">
+          <MomentEdit
+            :adapter="userCenterMomentSubmissionAdapter"
+            :tag-query-fetch="fetchUserCenterTags"
+          />
+        </div>
 
         <div class=":uno: moment-header pb-2 pt-8">
           <div class=":uno: flex flex-col justify-between sm:flex-row space-x-2">
