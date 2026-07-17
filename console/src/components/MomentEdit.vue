@@ -1,13 +1,18 @@
 <script lang="ts" setup>
-import { momentsConsoleApiClient, momentsCoreApiClient } from "@/api";
 import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
 import MediaCard from "@/components/MediaCard.vue";
-import { useConsoleTagQueryFetch } from "@/composables/use-tag";
+import type { TagQueryFetch } from "@/composables/use-tag";
+import type {
+  MomentDraft,
+  MomentSubmissionAdapter,
+  MomentSubmissionPayload,
+} from "@/features/moment-submission/types";
 import { IconEye, IconEyeOff, Toast, VButton, VLoading } from "@halo-dev/components";
 import type { AttachmentLike } from "@halo-dev/ui-shared";
 import { useQueryClient } from "@tanstack/vue-query";
+import { isAxiosError } from "axios";
 import { cloneDeep } from "es-toolkit";
-import { computed, defineAsyncComponent, onMounted, ref, toRaw } from "vue";
+import { computed, defineAsyncComponent, ref } from "vue";
 import SendMoment from "~icons/ic/sharp-send";
 import TablerPhoto from "~icons/tabler/photo";
 
@@ -18,7 +23,9 @@ const TextEditor = defineAsyncComponent({
 
 const props = withDefaults(
   defineProps<{
+    adapter: MomentSubmissionAdapter;
     moment?: Moment;
+    tagQueryFetch: TagQueryFetch;
   }>(),
   {
     moment: undefined,
@@ -32,119 +39,90 @@ const emit = defineEmits<{
 
 const queryClient = useQueryClient();
 
-const initMoment: Moment = {
-  spec: {
+function createDraft(moment?: Moment): MomentDraft {
+  if (moment) {
+    return {
+      content: cloneDeep(moment.spec.content),
+      visible: moment.spec.visible ?? "PUBLIC",
+    };
+  }
+  return {
     content: {
       raw: "",
       html: "",
       medium: [],
     },
-    releaseTime: new Date().toISOString(),
-    owner: "",
-    // @unocss-skip-start
     visible: "PUBLIC",
-    // @unocss-skip-end
-    tags: [],
-    approved: true,
-  },
-  metadata: {
-    generateName: "moment-",
-    name: "",
-  },
-  kind: "Moment",
-  apiVersion: "moment.halo.run/v1alpha1",
-};
+  };
+}
 
-onMounted(() => {
-  if (props.moment) {
-    formState.value = cloneDeep(props.moment);
-  }
-});
-
-const formState = ref<Moment>(cloneDeep(initMoment));
-const saving = ref<boolean>(false);
+const draft = ref<MomentDraft>(createDraft(props.moment));
+const submitting = ref(false);
 const attachmentSelectorModal = ref(false);
-const isUpdateMode = computed(() => !!formState.value.metadata.creationTimestamp);
-const isEditorEmpty = ref<boolean>(true);
+const isUpdateMode = computed(() => !!props.moment);
+const isEditorEmpty = ref(!(draft.value.content.raw || draft.value.content.medium?.length));
+
 const handlerCreateOrUpdateMoment = async () => {
-  if (saveDisable.value) {
+  if (saveDisable.value || submitting.value) {
     return;
   }
+
+  submitting.value = true;
   try {
-    saving.value = true;
-    queryEditorTags();
-    if (isUpdateMode.value) {
-      handleUpdate();
+    const payload: MomentSubmissionPayload = {
+      content: cloneDeep(draft.value.content),
+      tags: queryEditorTags(draft.value.content.raw),
+      visible: draft.value.visible,
+    };
+    const result = await props.adapter.submit(
+      props.moment
+        ? {
+            type: "update",
+            name: props.moment.metadata.name,
+            payload,
+          }
+        : {
+            type: "create",
+            payload,
+          }
+    );
+
+    void queryClient
+      .invalidateQueries({ queryKey: ["plugin:moments:list"] })
+      .catch((error) => console.error(error));
+
+    Toast.success(result.status === "pending-review" ? "提交成功，等待审核" : "发布成功");
+
+    if (props.moment) {
+      emit("update");
     } else {
-      handleSave(formState.value);
       handleReset();
     }
   } catch (error) {
     console.error(error);
+    if (!isAxiosError(error)) {
+      Toast.error(error instanceof Error ? error.message : "提交失败");
+    }
   } finally {
-    saving.value = false;
+    submitting.value = false;
   }
-};
-
-const handleSave = async (moment: Moment) => {
-  moment.spec.releaseTime = new Date().toISOString();
-  moment.spec.approved = true;
-
-  await momentsConsoleApiClient.moment.createMoment({
-    moment: moment,
-  });
-
-  queryClient.invalidateQueries({ queryKey: ["plugin:moments:list"] });
-
-  Toast.success("发布成功");
-};
-
-const handleUpdate = async () => {
-  await momentsCoreApiClient.moment.patchMoment({
-    name: formState.value.metadata.name,
-    jsonPatchInner: [
-      {
-        op: "add",
-        path: "/spec/tags",
-        value: formState.value.spec.tags || [],
-      },
-      {
-        op: "add",
-        path: "/spec/content",
-        value: formState.value.spec.content,
-      },
-      {
-        op: "add",
-        path: "/spec/visible",
-        value: formState.value.spec.visible || false,
-      },
-    ],
-  });
-
-  emit("update");
-
-  queryClient.invalidateQueries({ queryKey: ["plugin:moments:list"] });
-
-  Toast.success("发布成功");
 };
 
 const parse = new DOMParser();
-const queryEditorTags = function () {
+const queryEditorTags = (raw = "") => {
   const tags: Set<string> = new Set();
-  const document: Document = parse.parseFromString(formState.value.spec.content.raw!, "text/html");
+  const document: Document = parse.parseFromString(raw, "text/html");
   const nodeList: NodeList = document.querySelectorAll("a.tag");
-  if (nodeList) {
-    for (const tagNode of nodeList) {
-      if (tagNode.textContent) {
-        tags.add(tagNode.textContent);
-      }
+  for (const tagNode of nodeList) {
+    if (tagNode.textContent) {
+      tags.add(tagNode.textContent);
     }
   }
-  formState.value.spec.tags = Array.from(tags);
+  return Array.from(tags);
 };
 
 const handleReset = () => {
-  formState.value = toRaw(cloneDeep(initMoment));
+  draft.value = createDraft();
   isEditorEmpty.value = true;
 };
 
@@ -209,8 +187,8 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
     displayName?: string;
     type?: string;
   }[];
-  if (!formState.value.spec.content.medium) {
-    formState.value.spec.content.medium = [];
+  if (!draft.value.content.medium) {
+    draft.value.content.medium = [];
   }
   medias.forEach((media) => {
     if (!addMediumVerify(media)) {
@@ -220,7 +198,7 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
       return false;
     }
     const fileType = media.type.split("/")[0];
-    formState.value.spec.content.medium?.push({
+    draft.value.content.medium?.push({
       type: mediumWhitelist.get(fileType),
       url: media.url,
       originType: media.type,
@@ -229,7 +207,7 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
 };
 
 const saveDisable = computed(() => {
-  const medium = formState.value.spec.content.medium;
+  const medium = draft.value.content.medium;
   if (medium !== undefined && medium.length > 0 && medium.length <= 9) {
     return false;
   }
@@ -239,7 +217,7 @@ const saveDisable = computed(() => {
 
   if (isUpdateMode.value) {
     const oldVisible = props.moment?.spec.visible;
-    if (oldVisible != formState.value.spec.visible) {
+    if (oldVisible != draft.value.visible) {
       return false;
     }
   }
@@ -248,7 +226,7 @@ const saveDisable = computed(() => {
 });
 
 const removeMedium = (media: MomentMedia) => {
-  const formMedium = formState.value.spec.content.medium;
+  const formMedium = draft.value.content.medium;
   if (!formMedium) {
     return;
   }
@@ -270,7 +248,7 @@ const addMediumVerify = (media?: {
   displayName?: string;
   type?: string;
 }) => {
-  const formMedium = formState.value.spec.content.medium;
+  const formMedium = draft.value.content.medium;
   if (!formMedium || formMedium.length == 0) {
     return true;
   }
@@ -281,7 +259,7 @@ const addMediumVerify = (media?: {
   }
 
   if (media) {
-    if (formState.value.spec.content.medium?.filter((item) => item.url == media.url).length != 0) {
+    if (draft.value.content.medium?.filter((item) => item.url == media.url).length != 0) {
       Toast.warning("已过滤重复添加的附件");
       return false;
     }
@@ -291,10 +269,7 @@ const addMediumVerify = (media?: {
 };
 
 function handleToggleVisible() {
-  // @unocss-skip-start
-  const { visible: currentVisible } = formState.value.spec;
-  // @unocss-skip-end
-  formState.value.spec.visible = currentVisible === "PUBLIC" ? "PRIVATE" : "PUBLIC";
+  draft.value.visible = draft.value.visible === "PUBLIC" ? "PRIVATE" : "PUBLIC";
 }
 
 function handleKeydown(event: KeyboardEvent) {
@@ -317,18 +292,18 @@ function handleKeydown(event: KeyboardEvent) {
       @close="attachmentSelectorModal = false"
     />
     <TextEditor
-      v-model:raw="formState.spec.content.raw"
-      v-model:html="formState.spec.content.html"
+      v-model:raw="draft.content.raw"
+      v-model:html="draft.content.html"
       v-model:isEmpty="isEditorEmpty"
-      :tag-query-fetch="useConsoleTagQueryFetch"
+      :tag-query-fetch="tagQueryFetch"
       class=":uno: min-h-[9rem]"
       tabindex="-1"
       @keydown="handleKeydown"
     />
-    <div v-if="formState.spec.content.medium?.length" class=":uno: img-box flex px-3.5 py-2">
+    <div v-if="draft.content.medium?.length" class=":uno: img-box flex px-3.5 py-2">
       <ul class=":uno: grid grid-cols-3 w-full gap-1.5 sm:w-1/2" role="list">
         <li
-          v-for="(media, index) in formState.spec.content.medium"
+          v-for="(media, index) in draft.content.medium"
           :key="index"
           class=":uno: inline-block overflow-hidden border rounded-md"
         >
@@ -339,6 +314,7 @@ function handleKeydown(event: KeyboardEvent) {
     <div class=":uno: flex justify-between bg-white px-3.5 py-2">
       <div class=":uno: h-fit">
         <button
+          data-testid="attachment-trigger"
           type="button"
           class=":uno: group flex cursor-pointer items-center justify-center rounded-full p-2 hover:bg-sky-600/10"
           @click="addMediumVerify() && (attachmentSelectorModal = true)"
@@ -350,18 +326,18 @@ function handleKeydown(event: KeyboardEvent) {
       <div class=":uno: flex items-center space-x-2.5">
         <div
           v-tooltip="{
-            content: formState.spec.visible === 'PRIVATE' ? `私有访问` : '公开访问',
+            content: draft.visible === 'PRIVATE' ? `私有访问` : '公开访问',
           }"
           class=":uno: group flex cursor-pointer items-center justify-center rounded-full p-2"
           :class="
-            formState.spec.visible === 'PRIVATE'
+            draft.visible === 'PRIVATE'
               ? ':uno: hover:bg-red-600/10'
               : ':uno: hover:bg-green-600/10'
           "
           @click="handleToggleVisible()"
         >
           <IconEyeOff
-            v-if="formState.spec.visible === 'PRIVATE'"
+            v-if="draft.visible === 'PRIVATE'"
             class=":uno: size-full text-base text-gray-600 group-hover:text-red-600"
           />
           <IconEye
@@ -378,13 +354,11 @@ function handleKeydown(event: KeyboardEvent) {
           <span class=":uno: text-xs"> 取消 </span>
         </button>
 
-        <div
-          v-permission="['plugin:moments:manage', 'uc:plugin:moments:publish']"
-          class=":uno: h-fit"
-        >
+        <div class=":uno: h-fit">
           <VButton
-            v-model:disabled="saveDisable"
-            :loading="saving"
+            data-testid="submit"
+            :disabled="saveDisable || submitting"
+            :loading="submitting"
             size="sm"
             type="primary"
             @click="handlerCreateOrUpdateMoment"

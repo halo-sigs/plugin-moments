@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { momentsCoreApiClient } from "@/api";
 import type { ListedMoment, Moment } from "@/api/generated";
+import { fetchConsoleTags } from "@/composables/use-tag";
+import { consoleMomentSubmissionAdapter } from "@/features/moment-submission/adapters";
 import {
   Dialog,
   IconEyeOff,
@@ -148,12 +150,15 @@ const handleApproved = async () => {
           </div>
 
           <div class=":uno: mt-3">
-            <MomentEdit
-              v-if="editing"
-              :moment="listedMoment?.moment"
-              @update="onUpdated"
-              @cancel="editing = false"
-            ></MomentEdit>
+            <div v-if="editing" v-permission="['plugin:moments:manage']">
+              <MomentEdit
+                :adapter="consoleMomentSubmissionAdapter"
+                :moment="listedMoment?.moment"
+                :tag-query-fetch="fetchConsoleTags"
+                @update="onUpdated"
+                @cancel="editing = false"
+              ></MomentEdit>
+            </div>
             <MomentPreview
               v-else
               :uc="false"

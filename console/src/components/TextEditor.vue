@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { useTagQueryFetchProps } from "@/composables/use-tag";
+import type { TagQueryFetch } from "@/composables/use-tag";
 import { TagsExtension } from "@/extensions/tags";
 import { consoleApiClient, ucApiClient } from "@halo-dev/api-client";
 import { VLoading } from "@halo-dev/components";
@@ -10,7 +10,6 @@ import {
   type Extensions,
 } from "@halo-dev/richtext-editor";
 import { utils, type PluginModule } from "@halo-dev/ui-shared";
-import type { UseQueryReturnType } from "@tanstack/vue-query";
 import type { AxiosRequestConfig } from "axios";
 import { onMounted, ref, shallowRef, watch } from "vue";
 
@@ -19,7 +18,7 @@ const props = withDefaults(
     html?: string;
     raw?: string;
     isEmpty?: boolean;
-    tagQueryFetch: (props: useTagQueryFetchProps) => UseQueryReturnType<unknown, unknown>;
+    tagQueryFetch: TagQueryFetch;
   }>(),
   {
     html: "",

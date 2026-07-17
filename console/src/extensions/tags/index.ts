@@ -1,4 +1,4 @@
-import type { useTagQueryFetchProps } from "@/composables/use-tag";
+import type { TagQueryFetch } from "@/composables/use-tag";
 import {
   Mark,
   PluginKey,
@@ -9,7 +9,6 @@ import {
   type Editor,
   type Range,
 } from "@halo-dev/richtext-editor";
-import type { UseQueryReturnType } from "@tanstack/vue-query";
 import Suggestion from "@tiptap/suggestion";
 import type { Instance } from "tippy.js";
 import tippy from "tippy.js";
@@ -17,7 +16,7 @@ import TagsExtensionView from "./TagsExtensionView.vue";
 
 export interface TagOptions {
   HTMLAttributes: Record<string, unknown>;
-  tagQueryFetch: (props: useTagQueryFetchProps) => UseQueryReturnType<unknown, unknown>;
+  tagQueryFetch: TagQueryFetch;
 }
 
 declare module "@halo-dev/richtext-editor" {
@@ -141,7 +140,7 @@ export const TagsExtension = Mark.create<TagOptions>({
           let popup: Instance[];
 
           return {
-            onStart: (props: Record<string, any>) => {
+            onStart: (props) => {
               component = new VueRenderer(TagsExtensionView, {
                 props: { ...props, tagQueryFetch: this.options.tagQueryFetch },
                 editor: props.editor,
@@ -154,7 +153,7 @@ export const TagsExtension = Mark.create<TagOptions>({
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               popup = tippy("body", {
-                getReferenceClientRect: props.clientRect,
+                getReferenceClientRect: () => props.clientRect?.() ?? new DOMRect(),
                 appendTo: () => document.body,
                 content: component.element,
                 showOnCreate: true,
@@ -163,9 +162,7 @@ export const TagsExtension = Mark.create<TagOptions>({
                 placement: "bottom-start",
               });
             },
-
-
-            onUpdate(props: Record<string, any>) {
+            onUpdate(props) {
               component.updateProps(props);
 
               if (!props.clientRect) {
@@ -173,11 +170,11 @@ export const TagsExtension = Mark.create<TagOptions>({
               }
 
               popup[0].setProps({
-                getReferenceClientRect: props.clientRect,
+                getReferenceClientRect: () => props.clientRect?.() ?? new DOMRect(),
               });
             },
 
-            onKeyDown(props: Record<string, any>) {
+            onKeyDown(props) {
               if (props.event.key === "Escape") {
                 popup[0].hide();
 
