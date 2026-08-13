@@ -50,7 +50,7 @@ tasks.named('generatePluginComponentsIdx') {
 }
 
 halo {
-    version = '2.24.0'
+    version = '2.26.0-beta.2'
     debug = true;
 }
 

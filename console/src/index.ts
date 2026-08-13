@@ -1,6 +1,5 @@
 import type { Extension } from "@halo-dev/api-client";
 import { type CommentSubjectRefResult, definePlugin, utils } from "@halo-dev/ui-shared";
-import "uno.css";
 import { markRaw } from "vue";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import type { Moment } from "./api/generated";

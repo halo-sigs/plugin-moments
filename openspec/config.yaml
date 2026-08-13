@@ -4,7 +4,7 @@ schema: spec-driven
 context: |
   Tech stack:
     - Backend: Java 17, Spring WebFlux (reactive), Gradle 8.9, Lombok
-    - Frontend: Vue 3, TypeScript, Rsbuild, UnoCSS, Pinia, Vue Query, Tiptap editor
+    - Frontend: Vue 3, TypeScript, Vite, UnoCSS, Pinia, Vue Query, Tiptap editor
     - Package manager: pnpm 10.23.0
     - Plugin framework: Halo 2.0 Plugin API (requires Halo >= 2.22.0)
 

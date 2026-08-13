@@ -1,7 +1,8 @@
-import { defineConfig, presetWind3, transformerCompileClass } from "unocss";
+import presetWind3 from "@unocss/preset-wind3";
+import transformerCompileClass from "@unocss/transformer-compile-class";
 
-export default defineConfig({
+export default {
   presets: [presetWind3()],
   transformers: [transformerCompileClass()],
   blocklist: ["transform", "inline"],
-});
+};
