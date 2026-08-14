@@ -1,5 +1,5 @@
-import presetWind3 from "@unocss/preset-wind3";
-import transformerCompileClass from "@unocss/transformer-compile-class";
+import { presetWind3 } from "unocss";
+import { transformerCompileClass } from "unocss";
 
 export default {
   presets: [presetWind3()],

@@ -1,8 +1,8 @@
 onlyBuiltDependencies:
-  - '@parcel/watcher'
+  - "@parcel/watcher"
   - core-js
   - esbuild
   - vue-demi
 
 patchedDependencies:
-  '@tiptap/suggestion@2.11.2': patches/@tiptap__suggestion@2.11.2.patch
+  "@tiptap/suggestion@2.11.2": patches/@tiptap__suggestion@2.11.2.patch
