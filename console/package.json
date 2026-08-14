@@ -9,10 +9,10 @@
     "test:unit": "echo 'No unit tests yet'"
   },
   "dependencies": {
-    "@halo-dev/api-client": "^2.24.0",
-    "@halo-dev/components": "^2.24.0",
-    "@halo-dev/richtext-editor": "^2.24.0",
-    "@halo-dev/ui-shared": "^2.24.0",
+    "@halo-dev/api-client": "^2.26.0",
+    "@halo-dev/components": "^2.26.0",
+    "@halo-dev/richtext-editor": "^2.26.0",
+    "@halo-dev/ui-shared": "^2.26.0",
     "@tanstack/vue-query": "^4.44.0",
     "@tiptap/suggestion": "2.11.2",
     "@vueuse/core": "^9.13.0",
@@ -37,7 +37,7 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
-    "@halo-dev/ui-plugin-bundler-kit": "https://pkg.pr.new/@halo-dev/ui-plugin-bundler-kit@10232",
+    "@halo-dev/ui-plugin-bundler-kit": "^2.26.0",
     "@iconify-json/ic": "^1.2.4",
     "@iconify-json/lucide": "^1.2.105",
     "@iconify-json/mingcute": "^1.2.7",
