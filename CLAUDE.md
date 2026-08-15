@@ -14,7 +14,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 ./gradlew build
 ```
-Compiles both frontend (Vue/Rsbuild) and backend (Java). The frontend is built first and output to `src/main/resources/console/`.
+Compiles both frontend (Vue/Vite) and backend (Java). The frontend is built first and output to `src/main/resources/console/`.
 
 ### Development Server
 ```bash
@@ -81,7 +81,7 @@ The backend follows the **Halo 2.0 Plugin API** and uses **reactive programming*
 
 ### Frontend (Vue 3 / TypeScript)
 
-The frontend lives in `console/` and is bundled with **Rsbuild** using `@halo-dev/ui-plugin-bundler-kit`.
+The frontend lives in `console/` and is bundled with **Vite** using `@halo-dev/ui-plugin-bundler-kit`.
 
 **Plugin Registration:** The entry point (`src/index.ts`) uses `definePlugin()` from `@halo-dev/ui-shared` to register routes (admin Console and User Center) and extension points (e.g., `comment:subject-ref:create`).
 
@@ -89,7 +89,7 @@ The frontend lives in `console/` and is bundled with **Rsbuild** using `@halo-de
 
 **State & Data:** Uses **Pinia** for local state and **Vue Query** (`@tanstack/vue-query`) for server state.
 
-**Styling:** **UnoCSS** (`uno.config.ts`) with `presetWind3` and `transformerCompileClass`. Icons come from `unplugin-icons` with Iconify sets (Mingcute, Lucide, Tabler, etc.). SCSS is supported via `@rsbuild/plugin-sass`.
+**Styling:** **UnoCSS** (`uno.config.ts`) with `presetWind3` and `transformerCompileClass`. Icons come from `unplugin-icons` with Iconify sets (Mingcute, Lucide, Tabler, etc.). SCSS is compiled by Vite using `sass-embedded`.
 
 **Path Alias:** `@/` maps to `console/src/`.
 

@@ -164,7 +164,6 @@ export const TagsExtension = Mark.create<TagOptions>({
               });
             },
 
-
             onUpdate(props: Record<string, any>) {
               component.updateProps(props);
 
