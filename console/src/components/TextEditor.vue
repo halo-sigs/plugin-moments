@@ -47,22 +47,48 @@ const customExtensions = [
 
 const isInitialized = ref(false);
 
-onMounted(async () => {
-  const enabledPlugins = window.enabledPlugins.filter((plugin) =>
-    supportedPluginNames.includes(plugin.name)
-  );
-  const enabledPluginNames = enabledPlugins.map((plugin) => plugin.name);
-  const enabledPluginModules: PluginModule[] = enabledPluginNames
-    .map((name) => {
-      if (window[name as keyof Window]) {
-        return window[name as keyof Window];
+/**
+ * Halo may need to expose all active plugin modules. This is a temporary workaround.
+ */
+async function fetchPluginModules() {
+  try {
+    const { data } = await consoleApiClient.uiPlugin.fetchUiPluginProviders();
+
+    const result: PluginModule[] = [];
+
+    for (const element of data.providers) {
+      if (!supportedPluginNames.includes(element.name)) {
+        continue;
       }
-    })
-    .filter(Boolean);
+
+      if (element.kind === "legacy") {
+        const pluginModule = window[element.name as keyof Window];
+        if (pluginModule) {
+          result.push(pluginModule as PluginModule);
+        }
+      }
+      if (element.kind === "esm" && element.entry) {
+        try {
+          const { default: pluginModule } = await import(element.entry);
+          result.push(pluginModule as PluginModule);
+        } catch (error) {
+          console.error(`Failed to load plugin module from ${element.entry}`, error);
+        }
+      }
+    }
+    return result;
+  } catch (error) {
+    console.error("Failed to fetch plugin modules", error);
+    return [];
+  }
+}
+
+onMounted(async () => {
+  const pluginModules = await fetchPluginModules();
 
   const extensionsFromPlugins: Extensions = [];
 
-  for (const pluginModule of enabledPluginModules) {
+  for (const pluginModule of pluginModules) {
     const callbackFunction = pluginModule?.extensionPoints?.["default:editor:extension:create"];
 
     if (typeof callbackFunction !== "function") {
