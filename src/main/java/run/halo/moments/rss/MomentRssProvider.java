@@ -80,6 +80,7 @@ public class MomentRssProvider implements RssRouteItem {
             .subscribeOn(Schedulers.boundedElastic());
 
         var rssItemMono = momentFinder.listAll()
+            .filter(moment -> Moment.MomentVisible.PUBLIC.equals(moment.getSpec().getVisible()))
             .map(moment -> {
                 var permalink = getMomentPermalink(moment);
                 var medium = moment.getSpec().getContent().getMedium();
