@@ -18,6 +18,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 import run.halo.app.plugin.ReactiveSettingFetcher;
+import run.halo.app.theme.TemplateNameResolver;
 import run.halo.app.theme.router.PageUrlUtils;
 import run.halo.app.theme.router.UrlContextListResult;
 import run.halo.moments.finders.MomentFinder;
@@ -42,6 +43,8 @@ public class MomentRouter {
 
     private final ReactiveSettingFetcher settingFetcher;
 
+    private final TemplateNameResolver templateNameResolver;
+
     @Bean
     RouterFunction<ServerResponse> momentRouterFunction() {
         return route(GET("/moments").or(GET("/moments/page/{page:\\d+}")), handlerFunction())
@@ -51,22 +54,23 @@ public class MomentRouter {
     private HandlerFunction<ServerResponse> handlerMomentDefault() {
         return request -> {
             String momentName = request.pathVariable("momentName");
-            return ServerResponse.ok().render("moment",
-                Map.of("moment", momentFinder.get(momentName),
-                    ModelConst.TEMPLATE_ID, "moment",
-                    "title", getMomentTitle())
-            );
+            var model = Map.of("moment", momentFinder.get(momentName),
+                ModelConst.TEMPLATE_ID, "moment",
+                "title", getMomentTitle());
+            return templateNameResolver.resolveTemplateNameOrDefault(request.exchange(), "moment")
+                .flatMap(templateName -> ServerResponse.ok().render(templateName, model));
         };
     }
 
     private HandlerFunction<ServerResponse> handlerFunction() {
-        return request -> ServerResponse.ok().render("moments",
-            Map.of("moments", momentList(request),
+        return request -> {
+            var model = Map.of("moments", momentList(request),
                 ModelConst.TEMPLATE_ID, "moments",
                 "tags", momentFinder.listAllTags(),
-                "title", getMomentTitle()
-            )
-        );
+                "title", getMomentTitle());
+            return templateNameResolver.resolveTemplateNameOrDefault(request.exchange(), "moments")
+                .flatMap(templateName -> ServerResponse.ok().render(templateName, model));
+        };
     }
 
     Mono<String> getMomentTitle() {
