@@ -67,6 +67,15 @@
         </div>
       </article>
 
+      <section class="moment-comments" th:if="${haloCommentEnabled}">
+        <h2>评论</h2>
+        <halo:comment
+          group="moment.halo.run"
+          kind="Moment"
+          th:attr="name=${moment.metadata.name}"
+        />
+      </section>
+
       <a th:href="@{/moments}">返回瞬间列表</a>
     </section>
   </th:block>
