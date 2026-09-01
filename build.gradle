@@ -14,10 +14,13 @@ dependencies {
     implementation platform('run.halo.tools.platform:plugin:2.24.0')
     compileOnly 'run.halo.app:api'
     compileOnly "run.halo.feed:api:1.4.0"
+    compileOnly "run.halo.mcpserver:api:1.0.0"
 
     testImplementation 'run.halo.app:api'
     testImplementation 'run.halo.feed:api:1.4.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly "run.halo.mcpserver:api:1.0.0"
+    testRuntimeOnly "run.halo.mcpserver:api:1.0.0"
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
