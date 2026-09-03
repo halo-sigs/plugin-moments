@@ -42,9 +42,9 @@ class MomentMcpToolProviderTest {
     }
 
     @Test
-    void shouldExposeThreeLocalTools() {
+    void shouldExposeFourLocalTools() {
         assertThat(provider.tools().map(McpToolDefinition::name).collectList().block())
-            .containsExactly("list_moments", "get_moment", "create_moment");
+            .containsExactly("list_moments", "get_moment", "create_moment", "delete_moment");
     }
 
     @Test
@@ -53,6 +53,10 @@ class MomentMcpToolProviderTest {
         assertOutputSchema("get_moment", "moment", "owner", "stats");
         assertOutputSchema(
             "create_moment",
+            "name", "content", "media", "tags", "visible", "owner", "approved",
+            "releaseTime", "permalink");
+        assertOutputSchema(
+            "delete_moment",
             "name", "content", "media", "tags", "visible", "owner", "approved",
             "releaseTime", "permalink");
 
@@ -68,6 +72,41 @@ class MomentMcpToolProviderTest {
             "upvote", "totalComment", "approvedComment");
 
         assertMomentSchema(tool("create_moment").outputSchema());
+        assertMomentSchema(tool("delete_moment").outputSchema());
+    }
+
+    @Test
+    void shouldMarkDeleteAsDestructiveAndRequireConfirmation() {
+        var tool = tool("delete_moment");
+
+        assertThat(tool.annotations().destructiveHint()).isTrue();
+        assertThat(tool.description()).contains("MUST obtain the user's explicit confirmation");
+    }
+
+    @Test
+    void shouldDeleteMomentByName() {
+        var moment = new Moment();
+        when(client.fetch(Moment.class, "moment-1")).thenReturn(Mono.just(moment));
+        when(momentService.deleteBy(moment)).thenReturn(Mono.just(moment));
+
+        var result = tool("delete_moment").handler()
+            .execute(new McpToolInvocation("delete_moment", Map.of("name", "moment-1")))
+            .block();
+
+        verify(momentService).deleteBy(moment);
+        assertThat(result.error()).isFalse();
+        assertThat(result.textContent()).isEqualTo("Moment deleted");
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenDeletingMissingMoment() {
+        when(client.fetch(Moment.class, "missing")).thenReturn(Mono.empty());
+
+        assertThatThrownBy(() -> tool("delete_moment").handler()
+            .execute(new McpToolInvocation("delete_moment", Map.of("name", "missing")))
+            .block())
+            .isInstanceOfSatisfying(McpToolException.class,
+                error -> assertThat(error.code()).isEqualTo("NOT_FOUND"));
     }
 
     @Test

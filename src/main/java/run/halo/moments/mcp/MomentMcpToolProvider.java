@@ -57,7 +57,7 @@ public class MomentMcpToolProvider implements McpToolProvider {
 
     @Override
     public Flux<McpToolDefinition> tools() {
-        return Flux.just(listMoments(), getMoment(), createMoment());
+        return Flux.just(listMoments(), getMoment(), createMoment(), deleteMoment());
     }
 
     private McpToolDefinition listMoments() {
@@ -159,6 +159,28 @@ public class MomentMcpToolProvider implements McpToolProvider {
             .build();
     }
 
+    private McpToolDefinition deleteMoment() {
+        return McpToolDefinition.builder()
+            .name("delete_moment")
+            .title("Delete a moment")
+            .description("Permanently delete a Halo moment by metadata name. You MUST obtain "
+                + "the user's explicit confirmation immediately before calling this tool.")
+            .displayTitle("删除瞬间")
+            .displayDescription("按资源名称永久删除瞬间，调用前必须获得用户明确确认。")
+            .inputSchema(objectSchema(
+                Map.of("name", Map.of(
+                    "type", "string",
+                    "minLength", 1,
+                    "description", "Metadata name of the moment to delete.")),
+                List.of("name")))
+            .outputSchema(MOMENT_OUTPUT_SCHEMA)
+            .annotations(new McpToolAnnotations(
+                false, true, true, false, "Delete a moment"))
+            .permission(ignored -> Mono.just(true))
+            .handler(this::deleteMoment)
+            .build();
+    }
+
     private Mono<McpToolResult> listMoments(McpToolInvocation invocation) {
         return Mono.defer(() -> {
             var arguments = invocation.arguments();
@@ -214,6 +236,16 @@ public class MomentMcpToolProvider implements McpToolProvider {
         return Mono.defer(() -> momentService.create(toMoment(invocation.arguments()))
             .map(moment -> McpToolResult.success(
                 momentPayload(moment), "Moment created")));
+    }
+
+    private Mono<McpToolResult> deleteMoment(McpToolInvocation invocation) {
+        return Mono.defer(() -> client.fetch(
+                Moment.class, requiredString(invocation.arguments(), "name"))
+            .switchIfEmpty(Mono.error(new McpToolException(
+                "NOT_FOUND", "Moment not found")))
+            .flatMap(momentService::deleteBy)
+            .map(moment -> McpToolResult.success(
+                momentPayload(moment), "Moment deleted")));
     }
 
     private Moment toMoment(Map<String, Object> arguments) {
