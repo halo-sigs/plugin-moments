@@ -12,7 +12,7 @@ Halo 2.0 的瞬间管理插件，提供一个轻量级的内容发布功能，�
 - 提供匿名可访问的公共 REST API，方便前端框架构建客户端渲染瞬间列表
 - RSS 订阅支持，路由为 `/moments/rss.xml`
 - 支持将瞬间数据同步至 Halo 搜索系统
-- 支持通过 MCP Server 查询、获取和发布瞬间
+- 支持通过 MCP Server 查询、获取、发布和删除瞬间
 
 ## 安装使用
 
@@ -34,6 +34,7 @@ Halo 2.0 的瞬间管理插件，提供一个轻量级的内容发布功能，�
 | `PluginMoments__list_moments` | 分页查询瞬间，支持按作者、标签、可见性、审核状态和发布时间筛选 |
 | `PluginMoments__get_moment` | 按资源名称获取瞬间详情、作者和统计信息 |
 | `PluginMoments__create_moment` | 以当前 MCP 访问密钥所有者的身份发布图文瞬间 |
+| `PluginMoments__delete_moment` | 按资源名称永久删除瞬间，调用前必须获得用户明确确认 |
 
 需要在 MCP Server 的访问密钥设置中选择需要开放的工具。未安装 MCP Server 时，不影响瞬间插件的其他功能。
 
