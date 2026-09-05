@@ -8,6 +8,9 @@ import type { AttachmentLike } from "@halo-dev/ui-shared";
 import { useQueryClient } from "@tanstack/vue-query";
 import { cloneDeep } from "es-toolkit";
 import { computed, defineAsyncComponent, onMounted, ref, toRaw } from "vue";
+import DatePicker from "vue-datepicker-next";
+import "vue-datepicker-next/index.css";
+import "vue-datepicker-next/locale/zh-cn.es";
 import SendMoment from "~icons/ic/sharp-send";
 import TablerPhoto from "~icons/tabler/photo";
 
@@ -58,8 +61,26 @@ const initMoment: Moment = {
 onMounted(() => {
   if (props.moment) {
     formState.value = cloneDeep(props.moment);
+    if (props.moment.spec.releaseTime) {
+      releaseTime.value = new Date(props.moment.spec.releaseTime);
+    }
   }
 });
+
+// 用户选择的发布时间，null 表示未设置（发布时自动填充当前时间）
+const releaseTime = ref<Date | null>(null);
+
+const releaseTimeChanged = computed(() => {
+  if (!releaseTime.value) {
+    return false;
+  }
+  const origin = props.moment?.spec.releaseTime;
+  return !origin || new Date(origin).getTime() !== releaseTime.value.getTime();
+});
+
+const disabledFutureTime = (date: Date) => date.getTime() > Date.now();
+
+const releaseTimeShortcuts = [{ text: "恢复当前时间", onClick: () => new Date() }];
 
 const formState = ref<Moment>(cloneDeep(initMoment));
 const saving = ref<boolean>(false);
@@ -87,7 +108,7 @@ const handlerCreateOrUpdateMoment = async () => {
 };
 
 const handleSave = async (moment: Moment) => {
-  moment.spec.releaseTime = new Date().toISOString();
+  moment.spec.releaseTime = releaseTime.value?.toISOString() ?? new Date().toISOString();
   moment.spec.approved = true;
 
   await momentsUcApiClient.moment.createMyMoment({
@@ -100,6 +121,10 @@ const handleSave = async (moment: Moment) => {
 };
 
 const handleUpdate = async (moment: Moment) => {
+  if (releaseTimeChanged.value && releaseTime.value) {
+    moment.spec.releaseTime = releaseTime.value.toISOString();
+  }
+
   const { data } = await momentsUcApiClient.moment.getMyMoment({
     name: moment.metadata.name,
   });
@@ -135,6 +160,7 @@ const queryEditorTags = function () {
 
 const handleReset = () => {
   formState.value = toRaw(cloneDeep(initMoment));
+  releaseTime.value = null;
   isEditorEmpty.value = true;
 };
 
@@ -230,6 +256,9 @@ const saveDisable = computed(() => {
   if (isUpdateMode.value) {
     const oldVisible = props.moment?.spec.visible;
     if (oldVisible != formState.value.spec.visible) {
+      return false;
+    }
+    if (releaseTimeChanged.value) {
       return false;
     }
   }
@@ -338,6 +367,23 @@ function handleKeydown(event: KeyboardEvent) {
       </div>
 
       <div class=":uno: flex items-center space-x-2.5">
+        <div v-tooltip="{ content: '发布时间，默认为当前时间' }" class=":uno: h-fit">
+          <DatePicker
+            v-model:value="releaseTime"
+            type="datetime"
+            value-type="date"
+            format="YYYY-MM-DD HH:mm"
+            :editable="false"
+            :clearable="false"
+            :disabled-date="disabledFutureTime"
+            :disabled-time="disabledFutureTime"
+            :shortcuts="releaseTimeShortcuts"
+            placeholder="发布时间"
+            input-class=":uno: mx-input rounded text-xs"
+            class=":uno: w-36"
+          />
+        </div>
+
         <div
           v-tooltip="{
             content: formState.spec.visible === 'PRIVATE' ? `私有访问` : '公开访问',
