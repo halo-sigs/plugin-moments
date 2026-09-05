@@ -156,7 +156,6 @@ public class UcMomentEndpoint implements CustomEndpoint {
                     .doOnNext(newMoment -> {
                         Moment.MomentSpec newSpec = newMoment.getSpec();
                         newSpec.setOwner(oldSpec.getOwner());
-                        newSpec.setReleaseTime(oldSpec.getReleaseTime());
                         // Every update needs to be re-reviewed.
                         newSpec.setApproved(false);
                     })
