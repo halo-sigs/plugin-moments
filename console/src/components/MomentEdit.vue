@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { momentsConsoleApiClient, momentsCoreApiClient } from "@/api";
-import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
+import type { JsonPatchInner, Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
 import MediaCard from "@/components/MediaCard.vue";
+import ReleaseTimePicker from "@/components/ReleaseTimePicker.vue";
 import { useConsoleTagQueryFetch } from "@/composables/use-tag";
 import { IconEye, IconEyeOff, Toast, VButton, VLoading } from "@halo-dev/components";
 import type { AttachmentLike } from "@halo-dev/ui-shared";
@@ -58,7 +59,21 @@ const initMoment: Moment = {
 onMounted(() => {
   if (props.moment) {
     formState.value = cloneDeep(props.moment);
+    if (props.moment.spec.releaseTime) {
+      releaseTime.value = new Date(props.moment.spec.releaseTime);
+    }
   }
+});
+
+// 用户选择的发布时间，null 表示未设置（发布时自动填充当前时间）
+const releaseTime = ref<Date | null>(null);
+
+const releaseTimeChanged = computed(() => {
+  if (!releaseTime.value) {
+    return false;
+  }
+  const origin = props.moment?.spec.releaseTime;
+  return !origin || new Date(origin).getTime() !== releaseTime.value.getTime();
 });
 
 const formState = ref<Moment>(cloneDeep(initMoment));
@@ -87,7 +102,7 @@ const handlerCreateOrUpdateMoment = async () => {
 };
 
 const handleSave = async (moment: Moment) => {
-  moment.spec.releaseTime = new Date().toISOString();
+  moment.spec.releaseTime = releaseTime.value?.toISOString() ?? new Date().toISOString();
   moment.spec.approved = true;
 
   await momentsConsoleApiClient.moment.createMoment({
@@ -100,25 +115,35 @@ const handleSave = async (moment: Moment) => {
 };
 
 const handleUpdate = async () => {
+  const jsonPatchInner: JsonPatchInner[] = [
+    {
+      op: "add",
+      path: "/spec/tags",
+      value: formState.value.spec.tags || [],
+    },
+    {
+      op: "add",
+      path: "/spec/content",
+      value: formState.value.spec.content,
+    },
+    {
+      op: "add",
+      path: "/spec/visible",
+      value: formState.value.spec.visible || false,
+    },
+  ];
+
+  if (releaseTimeChanged.value && releaseTime.value) {
+    jsonPatchInner.push({
+      op: "add",
+      path: "/spec/releaseTime",
+      value: releaseTime.value.toISOString(),
+    });
+  }
+
   await momentsCoreApiClient.moment.patchMoment({
     name: formState.value.metadata.name,
-    jsonPatchInner: [
-      {
-        op: "add",
-        path: "/spec/tags",
-        value: formState.value.spec.tags || [],
-      },
-      {
-        op: "add",
-        path: "/spec/content",
-        value: formState.value.spec.content,
-      },
-      {
-        op: "add",
-        path: "/spec/visible",
-        value: formState.value.spec.visible || false,
-      },
-    ],
+    jsonPatchInner,
   });
 
   emit("update");
@@ -145,6 +170,7 @@ const queryEditorTags = function () {
 
 const handleReset = () => {
   formState.value = toRaw(cloneDeep(initMoment));
+  releaseTime.value = null;
   isEditorEmpty.value = true;
 };
 
@@ -242,6 +268,9 @@ const saveDisable = computed(() => {
     if (oldVisible != formState.value.spec.visible) {
       return false;
     }
+    if (releaseTimeChanged.value) {
+      return false;
+    }
   }
 
   return true;
@@ -336,7 +365,7 @@ function handleKeydown(event: KeyboardEvent) {
         </li>
       </ul>
     </div>
-    <div class=":uno: flex justify-between bg-white px-3.5 py-2">
+    <div class=":uno: flex flex-wrap justify-between gap-2 bg-white px-3.5 py-2">
       <div class=":uno: h-fit">
         <button
           type="button"
@@ -347,7 +376,9 @@ function handleKeydown(event: KeyboardEvent) {
         </button>
       </div>
 
-      <div class=":uno: flex items-center space-x-2.5">
+      <div class=":uno: flex flex-wrap items-center justify-end gap-2">
+        <ReleaseTimePicker v-model="releaseTime" />
+
         <div
           v-tooltip="{
             content: formState.spec.visible === 'PRIVATE' ? `私有访问` : '公开访问',

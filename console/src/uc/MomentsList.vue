@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import { momentsUcApiClient } from "@/api";
+import DateRangeFilter from "@/components/DateRangeFilter.vue";
 import { usePluginShikiScriptLoader } from "@/plugin-supports/shiki/use-plugin-shiki-script-loader";
 import { VCard, VLoading, VPageHeader, VPagination } from "@halo-dev/components";
 import { utils } from "@halo-dev/ui-shared";
 import { useQuery } from "@tanstack/vue-query";
 import { useRouteQuery } from "@vueuse/router";
 import { computed, provide, ref, watch } from "vue";
-import DatePicker from "vue-datepicker-next";
-import "vue-datepicker-next/index.css";
-import "vue-datepicker-next/locale/zh-cn.es";
 import MingcuteMomentsLine from "~icons/mingcute/moment-line";
 import MomentEdit from "./MomentEdit.vue";
 import MomentItem from "./MomentItem.vue";
@@ -59,7 +57,7 @@ const startDate = computed(() => {
   if (!date) {
     return;
   }
-  return utils.date.dayjs(date).endOf("day").toISOString();
+  return utils.date.dayjs(date).startOf("day").toISOString();
 });
 const endDate = computed(() => {
   const endTime: Date = momentsRangeTime.value[1];
@@ -147,14 +145,7 @@ usePluginShikiScriptLoader();
             </div>
 
             <div class=":uno: right-0 flex !ml-0">
-              <DatePicker
-                v-model:value="momentsRangeTime"
-                input-class=":uno: mx-input rounded"
-                class=":uno: date-picker range-time max-w-[13rem] cursor-pointer md:max-w-[15rem]"
-                range
-                :editable="false"
-                placeholder="筛选日期范围"
-              />
+              <DateRangeFilter v-model="momentsRangeTime" />
             </div>
           </div>
         </div>
@@ -195,10 +186,3 @@ usePluginShikiScriptLoader();
     </div>
   </VCard>
 </template>
-<style lang="scss">
-.date-picker {
-  & input {
-    border-radius: 0.375rem;
-  }
-}
-</style>
