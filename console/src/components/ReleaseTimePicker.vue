@@ -7,6 +7,7 @@ import {
   toCalendarDateTime,
   type DateValue,
 } from "@internationalized/date";
+import { useIntervalFn } from "@vueuse/core";
 import {
   DatePickerCalendar,
   DatePickerCell,
@@ -26,7 +27,7 @@ import {
   DatePickerRoot,
   DatePickerTrigger,
 } from "reka-ui";
-import { computed, ref, shallowRef } from "vue";
+import { computed, ref, shallowRef, watch } from "vue";
 import ChevronLeft from "~icons/tabler/chevron-left";
 import ChevronRight from "~icons/tabler/chevron-right";
 import Clock from "~icons/tabler/clock";
@@ -36,6 +37,14 @@ const zone = getLocalTimeZone();
 const open = ref(false);
 const draft = shallowRef<DateValue>();
 const maximum = shallowRef(toCalendarDateTime(fromDate(new Date(), zone)));
+const { pause, resume } = useIntervalFn(
+  () => {
+    maximum.value = toCalendarDateTime(fromDate(new Date(), zone));
+  },
+  1000,
+  { immediate: false }
+);
+watch(open, (value) => (value ? resume() : pause()));
 const valid = computed(() => !!draft.value && draft.value.compare(maximum.value) <= 0);
 const label = computed(() => {
   if (!model.value) return "发布时间，默认为当前时间";

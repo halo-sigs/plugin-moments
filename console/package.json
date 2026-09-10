@@ -6,7 +6,7 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --fix",
     "prettier": "prettier --write src/",
-    "test:unit": "echo 'No unit tests yet'"
+    "test:unit": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@halo-dev/api-client": "^2.26.0",

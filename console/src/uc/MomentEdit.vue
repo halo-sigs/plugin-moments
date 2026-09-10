@@ -115,15 +115,15 @@ const handleSave = async (moment: Moment) => {
 };
 
 const handleUpdate = async (moment: Moment) => {
-  if (releaseTimeChanged.value && releaseTime.value) {
-    moment.spec.releaseTime = releaseTime.value.toISOString();
-  }
-
   const { data } = await momentsUcApiClient.moment.getMyMoment({
     name: moment.metadata.name,
   });
 
-  data.spec = moment.spec;
+  data.spec = {
+    ...moment.spec,
+    // Omit unchanged times so the server preserves the latest value.
+    releaseTime: releaseTimeChanged.value ? releaseTime.value?.toISOString() : undefined,
+  };
 
   await momentsUcApiClient.moment.updateMyMoment({
     name: moment.metadata.name,
