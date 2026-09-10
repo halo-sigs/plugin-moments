@@ -97,36 +97,6 @@
     }
   }
 
-  .range-time {
-    height: 2.25rem;
-
-    .mx-input {
-      padding-top: 0;
-      padding-bottom: 0;
-      padding-left: 0.75rem;
-      padding-right: 2rem;
-      height: 100%;
-      border: 1px solid rgb(209 213 219);
-      box-shadow: none;
-      font-size: 0.875rem;
-      line-height: 1.25rem;
-      color: black;
-      cursor: pointer;
-
-      &:focus {
-        border-color: #4ccba0;
-      }
-
-      &:hover {
-        border: 1px solid rgb(209 213 219);
-      }
-    }
-
-    .mx-input-wrapper {
-      height: 100%;
-    }
-  }
-
   .v-popper--theme-editor-block-dropdown {
     .v-popper__arrow-container {
       display: none;

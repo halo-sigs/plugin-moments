@@ -2,15 +2,13 @@
 import { momentsUcApiClient } from "@/api";
 import type { Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
 import MediaCard from "@/components/MediaCard.vue";
+import ReleaseTimePicker from "@/components/ReleaseTimePicker.vue";
 import { useUCTagQueryFetch } from "@/composables/use-tag";
 import { IconEye, IconEyeOff, Toast, VButton, VLoading } from "@halo-dev/components";
 import type { AttachmentLike } from "@halo-dev/ui-shared";
 import { useQueryClient } from "@tanstack/vue-query";
 import { cloneDeep } from "es-toolkit";
 import { computed, defineAsyncComponent, onMounted, ref, toRaw } from "vue";
-import DatePicker from "vue-datepicker-next";
-import "vue-datepicker-next/index.css";
-import "vue-datepicker-next/locale/zh-cn.es";
 import SendMoment from "~icons/ic/sharp-send";
 import TablerPhoto from "~icons/tabler/photo";
 
@@ -77,10 +75,6 @@ const releaseTimeChanged = computed(() => {
   const origin = props.moment?.spec.releaseTime;
   return !origin || new Date(origin).getTime() !== releaseTime.value.getTime();
 });
-
-const disabledFutureTime = (date: Date) => date.getTime() > Date.now();
-
-const releaseTimeShortcuts = [{ text: "恢复当前时间", onClick: () => new Date() }];
 
 const formState = ref<Moment>(cloneDeep(initMoment));
 const saving = ref<boolean>(false);
@@ -355,7 +349,7 @@ function handleKeydown(event: KeyboardEvent) {
         </li>
       </ul>
     </div>
-    <div class=":uno: flex justify-between bg-white px-3.5 py-2">
+    <div class=":uno: flex flex-wrap justify-between gap-2 bg-white px-3.5 py-2">
       <div class=":uno: h-fit">
         <button
           type="button"
@@ -366,23 +360,8 @@ function handleKeydown(event: KeyboardEvent) {
         </button>
       </div>
 
-      <div class=":uno: flex items-center space-x-2.5">
-        <div v-tooltip="{ content: '发布时间，默认为当前时间' }" class=":uno: h-fit">
-          <DatePicker
-            v-model:value="releaseTime"
-            type="datetime"
-            value-type="date"
-            format="YYYY-MM-DD HH:mm"
-            :editable="false"
-            :clearable="false"
-            :disabled-date="disabledFutureTime"
-            :disabled-time="disabledFutureTime"
-            :shortcuts="releaseTimeShortcuts"
-            placeholder="发布时间"
-            input-class=":uno: mx-input rounded text-xs"
-            class=":uno: w-36"
-          />
-        </div>
+      <div class=":uno: flex flex-wrap items-center justify-end gap-2">
+        <ReleaseTimePicker v-model="releaseTime" />
 
         <div
           v-tooltip="{

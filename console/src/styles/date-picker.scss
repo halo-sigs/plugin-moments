@@ -1,0 +1,127 @@
+.moments-date-popover {
+  z-index: 1000;
+  max-width: calc(100vw - 16px);
+  max-height: var(--reka-popper-available-height);
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid #eaecf0;
+  border-radius: 6px;
+  background: white;
+  color: #374151;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  font-size: 14px;
+}
+.moments-calendar-header,
+.moments-date-actions,
+.moments-date-field-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.moments-calendar-header {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.moments-calendar-months {
+  display: flex;
+  gap: 16px;
+}
+.moments-calendar-grid {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.moments-calendar-weekday {
+  height: 32px;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 400;
+}
+.moments-calendar-cell {
+  padding: 0;
+  text-align: center;
+}
+.moments-calendar-day,
+.moments-calendar-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  &:hover {
+    background: #f3f4f6;
+  }
+  &:focus-visible {
+    outline: 2px solid #4ccba0;
+    outline-offset: -2px;
+  }
+  &[data-disabled] {
+    opacity: 0.3;
+    cursor: default;
+  }
+}
+.moments-calendar-day {
+  &[data-outside-view] {
+    color: #9ca3af;
+  }
+  &[data-today] {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  &[data-selected],
+  &[data-highlighted] {
+    background: #e9f8f2;
+    color: #0e1731;
+  }
+  &[data-selection-start],
+  &[data-selection-end],
+  &.moments-calendar-single-day[data-selected] {
+    background: #4ccba0;
+    color: #0e1731;
+  }
+}
+.moments-date-field-row,
+.moments-date-actions {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #f3f4f6;
+}
+.moments-date-field {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 6px;
+  font-size: 12px;
+}
+.moments-date-segment {
+  border-radius: 2px;
+  padding: 0 1px;
+  font-variant-numeric: tabular-nums;
+  &:focus {
+    background: #e9f8f2;
+    outline: 1px solid #4ccba0;
+  }
+}
+.moments-date-text-button {
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-size: 12px;
+  cursor: pointer;
+  &:hover {
+    background: #f3f4f6;
+  }
+  &:focus-visible {
+    outline: 2px solid #4ccba0;
+  }
+}
+.moments-date-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 12px;
+}
