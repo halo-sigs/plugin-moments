@@ -16,6 +16,12 @@
 // May contain unused imports in some cases
 // @ts-ignore
 import type { MomentContent } from './moment-content';
+// May contain unused imports in some cases
+// @ts-ignore
+import type { MomentEmotion } from './moment-emotion';
+// May contain unused imports in some cases
+// @ts-ignore
+import type { MomentFollowUp } from './moment-follow-up';
 
 /**
  * 
@@ -41,6 +47,18 @@ export interface MomentSpec {
      * @memberof MomentSpec
      */
     'content': MomentContent;
+    /**
+     *
+     * @type {MomentEmotion}
+     * @memberof MomentSpec
+     */
+    'emotionalAttachment'?: MomentEmotion;
+    /**
+     * Later reflections, in append order
+     * @type {Array<MomentFollowUp>}
+     * @memberof MomentSpec
+     */
+    'followUps'?: Array<MomentFollowUp>;
     /**
      * Owner of the moment
      * @type {string}

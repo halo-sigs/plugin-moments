@@ -45,10 +45,49 @@ public class Moment extends AbstractExtension {
         @Schema(description = "Tags of the moment")
         private Set<String> tags;
 
+        @Schema(description = "Optional mood, weather and location captured with the moment")
+        private MomentEmotion emotionalAttachment;
+
+        @ArraySchema(arraySchema = @Schema(description = "Later reflections, in append order"),
+            maxItems = 100)
+        private List<MomentFollowUp> followUps;
+
         @Schema(defaultValue = "false")
         private Boolean approved;
 
         private Instant approvedTime;
+    }
+
+    @Data
+    public static class MomentFollowUp {
+
+        @Schema(requiredMode = REQUIRED, description = "Server-generated identifier")
+        private String id;
+
+        @Schema(requiredMode = REQUIRED, description = "Plain-text reflection", maxLength = 1000)
+        private String content;
+
+        @Schema(requiredMode = REQUIRED, description = "Server-recorded time of the reflection")
+        private Instant createdAt;
+    }
+
+    @Data
+    public static class MomentEmotion {
+
+        @Schema(description = "Selected mood, including its emoji", maxLength = 32)
+        private String mood;
+
+        @Schema(description = "City or locality name. Exact coordinates are not stored",
+            maxLength = 100)
+        private String location;
+
+        @Schema(description = "Weather snapshot, including temperature when available",
+            maxLength = 64)
+        private String weather;
+
+        @Schema(description = "Attribution for automatically retrieved weather",
+            allowableValues = {"open-meteo"})
+        private String weatherSource;
     }
 
     @Data

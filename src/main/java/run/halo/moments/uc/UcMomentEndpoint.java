@@ -21,6 +21,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.ServerWebInputException;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,8 @@ import run.halo.app.extension.ListResult;
 import run.halo.moments.ListedMoment;
 import run.halo.moments.Moment;
 import run.halo.moments.MomentQuery;
+import run.halo.moments.followup.FollowUpRequest;
+import run.halo.moments.followup.MomentFollowUpService;
 import run.halo.moments.service.MomentService;
 import run.halo.moments.service.RoleService;
 import run.halo.moments.util.AuthorityUtils;
@@ -49,10 +52,21 @@ public class UcMomentEndpoint implements CustomEndpoint {
 
     private final RoleService roleService;
 
+    private final MomentFollowUpService followUpService;
+
     @Override
     public RouterFunction<ServerResponse> endpoint() {
         final var tag = groupVersion() + "/moment";
         return SpringdocRouteBuilder.route()
+            .POST("moments/{name}/follow-ups", this::appendMyFollowUp,
+                builder -> builder.operationId("AppendMyMomentFollowUp")
+                    .description("Append a later reflection to the current user's moment.")
+                    .tag(tag)
+                    .parameter(parameterBuilder().name("name").in(ParameterIn.PATH)
+                        .required(true).implementation(String.class))
+                    .requestBody(requestBodyBuilder().required(true)
+                        .implementation(FollowUpRequest.class))
+                    .response(responseBuilder().implementation(Moment.class)))
             .GET("moments", this::listMyMoment, builder -> {
                 builder.operationId("ListMyMoments")
                     .description("List My moments.")
@@ -139,6 +153,20 @@ public class UcMomentEndpoint implements CustomEndpoint {
             .build();
     }
 
+    private Mono<ServerResponse> appendMyFollowUp(ServerRequest request) {
+        return getCurrentUser()
+            .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED)))
+            .flatMap(user -> request.bodyToMono(FollowUpRequest.class)
+                .switchIfEmpty(Mono.error(new ServerWebInputException("请输入后续内容")))
+                .flatMap(body -> roleService.joint(
+                        AuthorityUtils.authoritiesToRoles(user.getAuthorities()),
+                        Set.of(AuthorityUtils.MOMENT_PUBLISH_APPROVAL_ROLE_NAME,
+                            AuthorityUtils.SUPER_ROLE_NAME))
+                    .flatMap(approved -> followUpService.append(request.pathVariable("name"),
+                        body.content(), user.getName(), !approved))))
+            .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
+    }
+
     private Mono<ServerResponse> deleteMyMoment(ServerRequest request) {
         var name = request.pathVariable("name");
         return getMyMoment(name)
@@ -156,6 +184,8 @@ public class UcMomentEndpoint implements CustomEndpoint {
                     .doOnNext(newMoment -> {
                         Moment.MomentSpec newSpec = newMoment.getSpec();
                         newSpec.setOwner(oldSpec.getOwner());
+                        // Reflections can only be appended through their dedicated endpoint.
+                        newSpec.setFollowUps(oldSpec.getFollowUps());
                         if (newSpec.getReleaseTime() == null) {
                             newSpec.setReleaseTime(oldSpec.getReleaseTime());
                         }

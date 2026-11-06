@@ -37,6 +37,9 @@ rules:
   - apiGroups: ["console.api.moment.halo.run"]
     resources: ["moments", "tags"]
     verbs: ["create", "patch", "update", "delete", "deletecollection"]
+  - apiGroups: ["console.api.moment.halo.run"]
+    resources: ["moments/follow-ups"]
+    verbs: ["create"]
 ---
 apiVersion: v1alpha1
 kind: Role
@@ -53,6 +56,9 @@ rules:
   - apiGroups: ["uc.api.moment.halo.run"]
     resources: ["moments", "tags"]
     verbs: ["get", "list", "create", "update"]
+  - apiGroups: ["uc.api.moment.halo.run"]
+    resources: ["moments/follow-ups"]
+    verbs: ["create"]
 ---
 apiVersion: v1alpha1
 kind: Role

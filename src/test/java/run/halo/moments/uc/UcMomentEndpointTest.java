@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -17,6 +18,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 import run.halo.app.extension.Metadata;
 import run.halo.moments.Moment;
+import run.halo.moments.followup.MomentFollowUpService;
 import run.halo.moments.service.MomentService;
 import run.halo.moments.service.RoleService;
 
@@ -32,10 +34,15 @@ class UcMomentEndpointTest {
         original.getSpec().setOwner("alice");
         var latestReleaseTime = Instant.parse("2026-09-01T00:00:00Z");
         original.getSpec().setReleaseTime(latestReleaseTime);
+        var later = new Moment.MomentFollowUp();
+        later.setId("latest-follow-up");
+        later.setContent("最新的后续不能被旧编辑器覆盖");
+        original.getSpec().setFollowUps(java.util.List.of(later));
         when(service.getByUsername("moment-test", "alice")).thenReturn(Mono.just(original));
         when(service.updateBy(any())).thenAnswer(invocation -> Mono.just(invocation.getArgument(0)));
 
-        var endpoint = new UcMomentEndpoint(service, mock(RoleService.class));
+        var endpoint = new UcMomentEndpoint(service, mock(RoleService.class),
+            mock(MomentFollowUpService.class));
         var client = WebTestClient.bindToRouterFunction(endpoint.endpoint())
             .webFilter((exchange, chain) -> chain.filter(exchange).contextWrite(
                 ReactiveSecurityContextHolder.withAuthentication(
@@ -50,6 +57,13 @@ class UcMomentEndpointTest {
         update.getSpec().setOwner("other-user");
         update.getSpec().setApproved(true);
         update.getSpec().setReleaseTime(releaseTime == null ? null : Instant.parse(releaseTime));
+        var emotion = new Moment.MomentEmotion();
+        emotion.setMood("😌 平静");
+        emotion.setLocation("杭州市");
+        emotion.setWeather("晴 · 22°C");
+        emotion.setWeatherSource("open-meteo");
+        update.getSpec().setEmotionalAttachment(emotion);
+        update.getSpec().setFollowUps(java.util.List.of());
 
         client.put().uri("/moments/moment-test").bodyValue(update).exchange()
             .expectStatus().isOk();
@@ -58,6 +72,41 @@ class UcMomentEndpointTest {
         verify(service).updateBy(saved.capture());
         assertThat(saved.getValue().getSpec().getReleaseTime())
             .isEqualTo(releaseTime == null ? latestReleaseTime : Instant.parse(releaseTime));
+        assertThat(saved.getValue().getSpec().getOwner()).isEqualTo("alice");
+        assertThat(saved.getValue().getSpec().getApproved()).isFalse();
+        assertThat(saved.getValue().getSpec().getEmotionalAttachment()).isEqualTo(emotion);
+        assertThat(saved.getValue().getSpec().getFollowUps()).containsExactly(later);
+    }
+
+    @Test
+    void shouldRemoveEmotionWithoutChangingOwnershipOrApprovalRules() {
+        var service = mock(MomentService.class);
+        var original = new Moment();
+        original.setSpec(new Moment.MomentSpec());
+        original.getSpec().setOwner("alice");
+        original.getSpec().setEmotionalAttachment(new Moment.MomentEmotion());
+        when(service.getByUsername("moment-test", "alice")).thenReturn(Mono.just(original));
+        when(service.updateBy(any())).thenAnswer(invocation -> Mono.just(invocation.getArgument(0)));
+        var endpoint = new UcMomentEndpoint(service, mock(RoleService.class),
+            mock(MomentFollowUpService.class));
+        var client = WebTestClient.bindToRouterFunction(endpoint.endpoint())
+            .webFilter((exchange, chain) -> chain.filter(exchange).contextWrite(
+                ReactiveSecurityContextHolder.withAuthentication(
+                    new UsernamePasswordAuthenticationToken("alice", ""))))
+            .build();
+
+        client.put().uri("/moments/moment-test")
+            .header("Content-Type", "application/json")
+            .bodyValue("""
+                {"apiVersion":"moment.halo.run/v1alpha1","kind":"Moment",
+                 "metadata":{"name":"moment-test"},
+                 "spec":{"content":{"raw":"edited"},"owner":"other","approved":true}}
+                """)
+            .exchange().expectStatus().isOk();
+
+        var saved = ArgumentCaptor.forClass(Moment.class);
+        verify(service).updateBy(saved.capture());
+        assertThat(saved.getValue().getSpec().getEmotionalAttachment()).isNull();
         assertThat(saved.getValue().getSpec().getOwner()).isEqualTo("alice");
         assertThat(saved.getValue().getSpec().getApproved()).isFalse();
     }

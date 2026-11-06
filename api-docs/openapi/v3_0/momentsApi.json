@@ -13,6 +13,88 @@
     "bearerAuth" : [ ]
   } ],
   "paths" : {
+    "/apis/console.api.moment.halo.run/v1alpha1/moments/{name}/follow-ups" : {
+      "post" : {
+        "description" : "Append a later reflection to an owned moment.",
+        "operationId" : "AppendMomentFollowUp",
+        "parameters" : [
+          {
+            "in" : "path",
+            "name" : "name",
+            "required" : true,
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        ],
+        "requestBody" : {
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/FollowUpRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "default" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Moment"
+                }
+              }
+            },
+            "description" : "default response"
+          }
+        },
+        "tags" : [
+          "console.api.moment.halo.run/v1alpha1/Moment"
+        ]
+      }
+    },
+    "/apis/uc.api.moment.halo.run/v1alpha1/moments/{name}/follow-ups" : {
+      "post" : {
+        "description" : "Append a later reflection to the current user's moment.",
+        "operationId" : "AppendMyMomentFollowUp",
+        "parameters" : [
+          {
+            "in" : "path",
+            "name" : "name",
+            "required" : true,
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        ],
+        "requestBody" : {
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/FollowUpRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "default" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Moment"
+                }
+              }
+            },
+            "description" : "default response"
+          }
+        },
+        "tags" : [
+          "uc.api.moment.halo.run/v1alpha1/moment"
+        ]
+      }
+    },
     "/apis/console.api.moment.halo.run/v1alpha1/moments" : {
       "get" : {
         "description" : "List moments.",
@@ -993,6 +1075,69 @@
         },
         "description" : "Media item of moment"
       },
+      "FollowUpRequest" : {
+        "required" : [
+          "content"
+        ],
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "maxLength" : 1000,
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Plain-text reflection"
+          }
+        }
+      },
+      "MomentFollowUp" : {
+        "required" : [
+          "content",
+          "createdAt",
+          "id"
+        ],
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "maxLength" : 1000,
+            "type" : "string",
+            "description" : "Plain-text reflection"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "description" : "Server-recorded time of the reflection",
+            "format" : "date-time"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Server-generated identifier"
+          }
+        }
+      },
+      "MomentEmotion" : {
+        "type" : "object",
+        "properties" : {
+          "mood" : {
+            "maxLength" : 32,
+            "type" : "string",
+            "description" : "Selected mood, including its emoji"
+          },
+          "location" : {
+            "maxLength" : 100,
+            "type" : "string",
+            "description" : "City or locality name. Exact coordinates are not stored"
+          },
+          "weather" : {
+            "maxLength" : 64,
+            "type" : "string",
+            "description" : "Weather snapshot, including temperature when available"
+          },
+          "weatherSource" : {
+            "type" : "string",
+            "description" : "Attribution for automatically retrieved weather",
+            "enum" : [ "open-meteo" ]
+          }
+        }
+      },
       "MomentSpec" : {
         "required" : [ "content", "owner" ],
         "type" : "object",
@@ -1007,6 +1152,17 @@
           },
           "content" : {
             "$ref" : "#/components/schemas/MomentContent"
+          },
+          "emotionalAttachment" : {
+            "$ref" : "#/components/schemas/MomentEmotion"
+          },
+          "followUps" : {
+            "maxItems" : 100,
+            "type" : "array",
+            "description" : "Later reflections, in append order",
+            "items" : {
+              "$ref" : "#/components/schemas/MomentFollowUp"
+            }
           },
           "owner" : {
             "type" : "string",
