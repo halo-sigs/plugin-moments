@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.fn.builders.schema.Builder;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -19,10 +20,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.ServerWebInputException;
 import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.endpoint.CustomEndpoint;
 import run.halo.app.extension.GroupVersion;
 import run.halo.app.extension.ListResult;
+import run.halo.moments.followup.FollowUpRequest;
+import run.halo.moments.followup.MomentFollowUpService;
 import run.halo.moments.service.MomentService;
 
 /**
@@ -37,10 +42,21 @@ public class MomentEndpoint implements CustomEndpoint {
 
     private final MomentService momentService;
 
+    private final MomentFollowUpService followUpService;
+
     @Override
     public RouterFunction<ServerResponse> endpoint() {
         final var tag = "console.api.moment.halo.run/v1alpha1/Moment";
         return SpringdocRouteBuilder.route()
+            .POST("moments/{name}/follow-ups", this::appendFollowUp,
+                builder -> builder.operationId("AppendMomentFollowUp")
+                    .description("Append a later reflection to an owned moment.")
+                    .tag(tag)
+                    .parameter(parameterBuilder().name("name").in(ParameterIn.PATH)
+                        .required(true).implementation(String.class))
+                    .requestBody(requestBodyBuilder().required(true)
+                        .implementation(FollowUpRequest.class))
+                    .response(responseBuilder().implementation(Moment.class)))
             .GET("moments", this::listMoment, builder -> {
                 builder.operationId("ListMoments")
                     .description("List moments.")
@@ -93,6 +109,16 @@ public class MomentEndpoint implements CustomEndpoint {
                         .implementation(Moment.class))
             )
             .build();
+    }
+
+    private Mono<ServerResponse> appendFollowUp(ServerRequest request) {
+        return getCurrentUser()
+            .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED)))
+            .flatMap(username -> request.bodyToMono(FollowUpRequest.class)
+                .switchIfEmpty(Mono.error(new ServerWebInputException("请输入后续内容")))
+                .flatMap(body -> followUpService.append(request.pathVariable("name"),
+                    body.content(), username, false)))
+            .flatMap(moment -> ServerResponse.ok().bodyValue(moment));
     }
 
     private Mono<ServerResponse> getMoment(ServerRequest request) {

@@ -52,6 +52,7 @@ public class MomentServiceImpl implements MomentService {
 
     @Override
     public Mono<Moment> create(Moment moment) {
+        moment.getSpec().setFollowUps(null);
         if (Objects.isNull(moment.getSpec().getReleaseTime())) {
             moment.getSpec().setReleaseTime(Instant.now());
         }

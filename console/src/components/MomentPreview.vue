@@ -8,6 +8,8 @@ import { computed, inject, ref } from "vue";
 import LucideFileAudio from "~icons/lucide/file-audio";
 import LucideFileVideo from "~icons/lucide/file-video";
 import RiHeart3Line from "~icons/ri/heart-3-line";
+import EmotionAttachment from "./EmotionAttachment.vue";
+import MomentFollowUps from "./MomentFollowUps.vue";
 import PreviewDetailModal from "./PreviewDetailModal.vue";
 
 const props = defineProps<{
@@ -196,6 +198,10 @@ defineOptions({
         </li>
       </ul>
     </div>
+
+    <EmotionAttachment :value="moment.moment.spec.emotionalAttachment" />
+
+    <MomentFollowUps :moment="moment.moment" :uc="uc" />
 
     <div class=":uno: mt-4 flex items-center gap-3">
       <div class=":uno: inline-flex items-center gap-1 text-gray-600 hover:text-gray-900">

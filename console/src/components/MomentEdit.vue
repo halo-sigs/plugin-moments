@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { momentsConsoleApiClient, momentsCoreApiClient } from "@/api";
 import type { JsonPatchInner, Moment, MomentMedia, MomentMediaTypeEnum } from "@/api/generated";
+import EmotionAttachmentEditor from "@/components/EmotionAttachmentEditor.vue";
 import MediaCard from "@/components/MediaCard.vue";
 import ReleaseTimePicker from "@/components/ReleaseTimePicker.vue";
 import { useConsoleTagQueryFetch } from "@/composables/use-tag";
+import { normalizeEmotion } from "@/utils/emotional-attachment";
 import { IconEye, IconEyeOff, Toast, VButton, VLoading } from "@halo-dev/components";
 import type { AttachmentLike } from "@halo-dev/ui-shared";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -78,6 +80,7 @@ const releaseTimeChanged = computed(() => {
 
 const formState = ref<Moment>(cloneDeep(initMoment));
 const saving = ref<boolean>(false);
+const emotionLoading = ref(false);
 const attachmentSelectorModal = ref(false);
 const isUpdateMode = computed(() => !!formState.value.metadata.creationTimestamp);
 const isEditorEmpty = ref<boolean>(true);
@@ -88,10 +91,13 @@ const handlerCreateOrUpdateMoment = async () => {
   try {
     saving.value = true;
     queryEditorTags();
+    formState.value.spec.emotionalAttachment = normalizeEmotion(
+      formState.value.spec.emotionalAttachment
+    );
     if (isUpdateMode.value) {
-      handleUpdate();
+      await handleUpdate();
     } else {
-      handleSave(formState.value);
+      await handleSave(formState.value);
       handleReset();
     }
   } catch (error) {
@@ -132,6 +138,16 @@ const handleUpdate = async () => {
       value: formState.value.spec.visible || false,
     },
   ];
+
+  if (formState.value.spec.emotionalAttachment) {
+    jsonPatchInner.push({
+      op: "add",
+      path: "/spec/emotionalAttachment",
+      value: formState.value.spec.emotionalAttachment,
+    });
+  } else if (props.moment?.spec.emotionalAttachment) {
+    jsonPatchInner.push({ op: "remove", path: "/spec/emotionalAttachment" });
+  }
 
   if (releaseTimeChanged.value && releaseTime.value) {
     jsonPatchInner.push({
@@ -255,6 +271,12 @@ const onAttachmentsSelect = async (attachments: AttachmentLike[]) => {
 };
 
 const saveDisable = computed(() => {
+  if (saving.value || emotionLoading.value) {
+    return true;
+  }
+  if (normalizeEmotion(formState.value.spec.emotionalAttachment)) {
+    return false;
+  }
   const medium = formState.value.spec.content.medium;
   if (medium !== undefined && medium.length > 0 && medium.length <= 9) {
     return false;
@@ -264,6 +286,9 @@ const saveDisable = computed(() => {
   }
 
   if (isUpdateMode.value) {
+    if (props.moment?.spec.emotionalAttachment) {
+      return false;
+    }
     const oldVisible = props.moment?.spec.visible;
     if (oldVisible != formState.value.spec.visible) {
       return false;
@@ -366,7 +391,7 @@ function handleKeydown(event: KeyboardEvent) {
       </ul>
     </div>
     <div class=":uno: flex flex-wrap justify-between gap-2 bg-white px-3.5 py-2">
-      <div class=":uno: h-fit">
+      <div class=":uno: h-fit flex items-center gap-1">
         <button
           type="button"
           class=":uno: group flex cursor-pointer items-center justify-center rounded-full p-2 hover:bg-sky-600/10"
@@ -374,6 +399,11 @@ function handleKeydown(event: KeyboardEvent) {
         >
           <TablerPhoto class=":uno: size-full text-base text-gray-600 group-hover:text-sky-600" />
         </button>
+        <EmotionAttachmentEditor
+          v-model="formState.spec.emotionalAttachment"
+          :disabled="saving"
+          @update:loading="emotionLoading = $event"
+        />
       </div>
 
       <div class=":uno: flex flex-wrap items-center justify-end gap-2">

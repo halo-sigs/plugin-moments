@@ -12,6 +12,13 @@
       .moment .moment-owner img { width: 2rem; height: 2rem; border-radius: 50%; object-fit: cover; }
       .moment .moment-media img, .moment .moment-media video { display: block; max-width: 100%; height: auto; margin-top: 1rem; border-radius: 0.5rem; }
       .moment .moment-media audio { width: 100%; margin-top: 1rem; }
+      .moment .moment-emotion { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; margin-top: 1rem; font-size: 0.875rem; opacity: 0.8; }
+      .moment .moment-follow-ups { margin-top: 1.25rem; border-left: 2px solid #bae6fd; padding-left: 1rem; }
+      .moment .moment-follow-ups h3 { margin: 0 0 0.75rem; color: #0284c7; font-size: 0.875rem; }
+      .moment .moment-follow-ups ol { list-style: none; margin: 0; padding: 0; }
+      .moment .moment-follow-ups li + li { margin-top: 1rem; }
+      .moment .moment-follow-ups time { font-size: 0.75rem; opacity: 0.7; }
+      .moment .moment-follow-ups p { margin: 0.25rem 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
       .moment > a { color: inherit; }
     </style>
   </th:block>
@@ -65,6 +72,32 @@
             ></audio>
           </th:block>
         </div>
+        <div
+          class="moment-emotion"
+          aria-label="情感寄托"
+          th:if="${moment.spec.emotionalAttachment != null}"
+          th:with="emotion=${moment.spec.emotionalAttachment}"
+        >
+          <span th:if="${not #strings.isEmpty(emotion.mood)}" th:text="${emotion.mood}"></span>
+          <span th:if="${not #strings.isEmpty(emotion.weather)}"
+                th:title="${emotion.weatherSource == 'open-meteo' ? '天气数据来自 Open-Meteo（https://open-meteo.com/）' : null}">
+            <span aria-hidden="true">☁️ </span><span th:text="${emotion.weather}"></span>
+          </span>
+          <span th:if="${not #strings.isEmpty(emotion.location)}">
+            <span aria-hidden="true">📍 </span><span th:text="${emotion.location}"></span>
+          </span>
+        </div>
+        <section class="moment-follow-ups" aria-label="后来的我"
+                 th:if="${not #lists.isEmpty(moment.spec.followUps)}">
+          <h3>🌱 后来的我</h3>
+          <ol>
+            <li th:each="followUp : ${moment.spec.followUps}">
+              <time th:if="${followUp.createdAt != null}" th:datetime="${followUp.createdAt}"
+                    th:text="${#temporals.format(followUp.createdAt, 'yyyy-MM-dd HH:mm')}"></time>
+              <p th:text="${followUp.content}"></p>
+            </li>
+          </ol>
+        </section>
       </article>
 
       <section class="moment-comments" th:if="${haloCommentEnabled}">

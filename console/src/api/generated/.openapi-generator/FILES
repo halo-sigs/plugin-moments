@@ -13,12 +13,15 @@ index.ts
 models/add-operation.ts
 models/contributor.ts
 models/copy-operation.ts
+models/follow-up-request.ts
 models/index.ts
 models/json-patch-inner.ts
 models/listed-moment-list.ts
 models/listed-moment.ts
 models/metadata.ts
 models/moment-content.ts
+models/moment-emotion.ts
+models/moment-follow-up.ts
 models/moment-list.ts
 models/moment-media.ts
 models/moment-spec.ts

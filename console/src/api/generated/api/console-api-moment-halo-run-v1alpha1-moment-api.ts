@@ -22,6 +22,8 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
+import type { FollowUpRequest } from '../models';
+// @ts-ignore
 import type { ListedMoment } from '../models';
 // @ts-ignore
 import type { ListedMomentList } from '../models';
@@ -33,6 +35,53 @@ import type { Moment } from '../models';
  */
 export const ConsoleApiMomentHaloRunV1alpha1MomentApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * Append a later reflection to an owned moment.
+         * @param {string} name
+         * @param {FollowUpRequest} followUpRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        appendMomentFollowUp: async (name: string, followUpRequest: FollowUpRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'name' is not null or undefined
+            assertParamExists('appendMomentFollowUp', 'name', name)
+            // verify required parameter 'followUpRequest' is not null or undefined
+            assertParamExists('appendMomentFollowUp', 'followUpRequest', followUpRequest)
+            const localVarPath = `/apis/console.api.moment.halo.run/v1alpha1/moments/{name}/follow-ups`
+                .replace(`{${"name"}}`, encodeURIComponent(String(name)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(followUpRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * Create a Moment.
          * @param {Moment} moment 
@@ -271,6 +320,19 @@ export const ConsoleApiMomentHaloRunV1alpha1MomentApiFp = function(configuration
     const localVarAxiosParamCreator = ConsoleApiMomentHaloRunV1alpha1MomentApiAxiosParamCreator(configuration)
     return {
         /**
+         * Append a later reflection to an owned moment.
+         * @param {string} name
+         * @param {FollowUpRequest} followUpRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async appendMomentFollowUp(name: string, followUpRequest: FollowUpRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Moment>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.appendMomentFollowUp(name, followUpRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ConsoleApiMomentHaloRunV1alpha1MomentApi.appendMomentFollowUp']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Create a Moment.
          * @param {Moment} moment 
          * @param {*} [options] Override http request option.
@@ -340,6 +402,15 @@ export const ConsoleApiMomentHaloRunV1alpha1MomentApiFactory = function (configu
     const localVarFp = ConsoleApiMomentHaloRunV1alpha1MomentApiFp(configuration)
     return {
         /**
+         * Append a later reflection to an owned moment.
+         * @param {ConsoleApiMomentHaloRunV1alpha1MomentApiAppendMomentFollowUpRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        appendMomentFollowUp(requestParameters: ConsoleApiMomentHaloRunV1alpha1MomentApiAppendMomentFollowUpRequest, options?: RawAxiosRequestConfig): AxiosPromise<Moment> {
+            return localVarFp.appendMomentFollowUp(requestParameters.name, requestParameters.followUpRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Create a Moment.
          * @param {ConsoleApiMomentHaloRunV1alpha1MomentApiCreateMomentRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -377,6 +448,27 @@ export const ConsoleApiMomentHaloRunV1alpha1MomentApiFactory = function (configu
         },
     };
 };
+
+/**
+ * Request parameters for appendMomentFollowUp operation in ConsoleApiMomentHaloRunV1alpha1MomentApi.
+ * @export
+ * @interface ConsoleApiMomentHaloRunV1alpha1MomentApiAppendMomentFollowUpRequest
+ */
+export interface ConsoleApiMomentHaloRunV1alpha1MomentApiAppendMomentFollowUpRequest {
+    /**
+     *
+     * @type {string}
+     * @memberof ConsoleApiMomentHaloRunV1alpha1MomentApiAppendMomentFollowUp
+     */
+    readonly name: string
+
+    /**
+     *
+     * @type {FollowUpRequest}
+     * @memberof ConsoleApiMomentHaloRunV1alpha1MomentApiAppendMomentFollowUp
+     */
+    readonly followUpRequest: FollowUpRequest
+}
 
 /**
  * Request parameters for createMoment operation in ConsoleApiMomentHaloRunV1alpha1MomentApi.
@@ -518,6 +610,17 @@ export interface ConsoleApiMomentHaloRunV1alpha1MomentApiListTagsRequest {
  * @extends {BaseAPI}
  */
 export class ConsoleApiMomentHaloRunV1alpha1MomentApi extends BaseAPI {
+    /**
+     * Append a later reflection to an owned moment.
+     * @param {ConsoleApiMomentHaloRunV1alpha1MomentApiAppendMomentFollowUpRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ConsoleApiMomentHaloRunV1alpha1MomentApi
+     */
+    public appendMomentFollowUp(requestParameters: ConsoleApiMomentHaloRunV1alpha1MomentApiAppendMomentFollowUpRequest, options?: RawAxiosRequestConfig) {
+        return ConsoleApiMomentHaloRunV1alpha1MomentApiFp(this.configuration).appendMomentFollowUp(requestParameters.name, requestParameters.followUpRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Create a Moment.
      * @param {ConsoleApiMomentHaloRunV1alpha1MomentApiCreateMomentRequest} requestParameters Request parameters.
